@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Title>Atc API Generator CLI</Title>
+    <Authors>Atc-net</Authors>
+    <Description>A .NET Tool that can update you project with the lates atc-coding-rules.</Description>
+    <PackageProjectUrl>https://github.com/atc-net/atc-coding-rules-updater/tree/master/src/Atc.CodingRules.Updater.CLI</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/atc-net/atc/master/images/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/atc-net/atc-coding-rules-updater</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageId>atc-coding-rule-updater</PackageId>
+    <AssemblyName>atc-coding-rule-updater</AssemblyName>
+    <DebugType>embedded</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <TieredCompilation>true</TieredCompilation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="1.0.278" />
+    <PackageReference Include="Colorful.Console" Version="1.2.11" />
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
+    <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

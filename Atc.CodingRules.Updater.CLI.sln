@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules.Updater.CLI", "src\Atc.CodingRules.Updater.CLI\Atc.CodingRules.Updater.CLI.csproj", "{40A9E694-220D-4FF9-8D35-9D993882B5ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40A9E694-220D-4FF9-8D35-9D993882B5ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A9E694-220D-4FF9-8D35-9D993882B5ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A9E694-220D-4FF9-8D35-9D993882B5ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A9E694-220D-4FF9-8D35-9D993882B5ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A24C1323-4C10-4EED-B1FC-19D04C3B1C08}
+	EndGlobalSection
+EndGlobal
