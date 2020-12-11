@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using Atc.Data.Models;
 using McMaster.Extensions.CommandLineUtils;
 
@@ -32,9 +33,19 @@ namespace Atc.CodingRules.Updater.CLI
 
             foreach (var logItem in logItems)
             {
-                var message = "#".Equals(logItem.Value, StringComparison.Ordinal)
-                    ? $"{logItem.Key} # {logItem.LogCategory}: {logItem.Description}"
-                    : $"{logItem.Key} # {logItem.LogCategory}: {logItem.Value} - {logItem.Description}";
+                var sb = new StringBuilder();
+                sb.Append($"{logItem.Key} # {logItem.LogCategory}: ");
+                if (!"#".Equals(logItem.Value))
+                {
+                    sb.Append($"{logItem.Value}");
+                }
+
+                if (!string.IsNullOrEmpty(logItem.Description))
+                {
+                    sb.Append($"- {logItem.Description}");
+                }
+
+                var message = sb.ToString();
                 switch (logItem.LogCategory)
                 {
                     case LogCategoryType.Error:
