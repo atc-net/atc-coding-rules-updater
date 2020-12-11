@@ -14,8 +14,8 @@
     <RepositoryUrl>https://github.com/atc-net/atc-coding-rules-updater</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageId>atc-coding-rule-updater</PackageId>
-    <AssemblyName>atc-coding-rule-updater</AssemblyName>
+    <PackageId>atc-coding-rules-updater</PackageId>
+    <AssemblyName>atc-coding-rules-updater</AssemblyName>
     <DebugType>embedded</DebugType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IsPackable>true</IsPackable>
