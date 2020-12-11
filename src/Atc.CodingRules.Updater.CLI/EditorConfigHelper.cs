@@ -125,7 +125,7 @@ namespace Atc.CodingRules.Updater.CLI
                 var rawGitData = HttpClientHelper.GetRawFile(rawGitUrl);
                 var rawFileData = GetRawFile(file);
 
-                if (rawGitData.Equals(rawFileData, StringComparison.Ordinal))
+                if (IsFileDataLengthEqual(rawGitData, rawFileData))
                 {
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
                 }
@@ -177,7 +177,7 @@ namespace Atc.CodingRules.Updater.CLI
                 var rawGitData = HttpClientHelper.GetRawFile(rawGitUrl);
                 var rawFileData = GetRawFile(file);
 
-                if (rawGitData.Equals(rawFileData, StringComparison.Ordinal))
+                if (IsFileDataLengthEqual(rawGitData, rawFileData))
                 {
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
                 }
@@ -227,7 +227,7 @@ namespace Atc.CodingRules.Updater.CLI
                 var rawGitData = HttpClientHelper.GetRawFile(rawGitUrl);
                 var rawFileData = GetRawFile(file);
 
-                if (rawGitData.Equals(rawFileData, StringComparison.Ordinal))
+                if (IsFileDataLengthEqual(rawGitData, rawFileData))
                 {
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
                 }

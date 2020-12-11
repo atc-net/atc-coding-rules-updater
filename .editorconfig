@@ -1,6 +1,6 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.2
-# Updated: 10-12-2020
+# Version: 1.0.3
+# Updated: 11-12-2020
 # Location: Root
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
@@ -433,6 +433,7 @@ dotnet_naming_rule.parameters_rule.severity             = warning
 
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
+dotnet_diagnostic.MA0016.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0016.md
 
 
 # Microsoft - Code Analysis
@@ -449,6 +450,7 @@ dotnet_naming_rule.parameters_rule.severity             = warning
 
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+dotnet_diagnostic.SA1009.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1009.md
 dotnet_diagnostic.SA1101.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1101.md
 dotnet_diagnostic.SA1200.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1200.md
 dotnet_diagnostic.SA1413.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1413.md
@@ -465,6 +467,3 @@ dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
-
-dotnet_diagnostic.SA1009.severity = none            # Wating for https://github.com/atc-net/atc-coding-rules/issues/10
-dotnet_diagnostic.MA0016.severity = none            # Wating for https://github.com/atc-net/atc-coding-rules/issues/12

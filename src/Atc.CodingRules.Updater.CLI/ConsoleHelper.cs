@@ -24,7 +24,7 @@ namespace Atc.CodingRules.Updater.CLI
             configCmd.ShowHelp();
         }
 
-        public static void WriteLogItems(List<LogKeyValueItem> logItems, bool verboseMode)
+        public static void WriteLogItems(IList<LogKeyValueItem> logItems, bool verboseMode)
         {
             if (logItems == null)
             {
@@ -35,7 +35,7 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 var sb = new StringBuilder();
                 sb.Append($"{logItem.Key} # {logItem.LogCategory}: ");
-                if (!"#".Equals(logItem.Value))
+                if (!"#".Equals(logItem.Value, StringComparison.Ordinal))
                 {
                     sb.Append($"{logItem.Value}");
                 }
@@ -68,7 +68,7 @@ namespace Atc.CodingRules.Updater.CLI
             }
         }
 
-        public static int WriteLogItemsAndExit(List<LogKeyValueItem> logItems, bool verboseMode, string area)
+        public static int WriteLogItemsAndExit(IList<LogKeyValueItem> logItems, bool verboseMode, string area)
         {
             WriteLogItems(logItems, verboseMode);
             Console.WriteLine();
