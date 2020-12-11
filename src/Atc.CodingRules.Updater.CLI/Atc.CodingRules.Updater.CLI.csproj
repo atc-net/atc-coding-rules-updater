@@ -21,6 +21,9 @@
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
     <TieredCompilation>true</TieredCompilation>
+		<IncludeSymbols>true</IncludeSymbols>
+		<DebugType>embedded</DebugType>
+		<Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -34,6 +37,8 @@
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
     <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
