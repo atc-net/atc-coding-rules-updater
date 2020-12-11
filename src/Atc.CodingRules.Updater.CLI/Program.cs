@@ -13,12 +13,6 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public static async Task<int> Main(string[] args)
         {
-            args = new[]
-            {
-                "-r", @"C:\Temp\#",
-                "-v", "true",
-            };
-
             var builder = new HostBuilder();
 
             try
