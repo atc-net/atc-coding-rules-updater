@@ -10,7 +10,7 @@ namespace Atc.CodingRules.Updater.CLI
         public static bool GetVerboseMode(CommandLineApplication configCmd)
         {
             return TryGetValueForParameter(configCmd, "verboseMode", "v", out string parameterValueResult) &&
-                   bool.TryParse(parameterValueResult, out bool result) &&
+                   bool.TryParse(parameterValueResult, out var result) &&
                    result;
         }
 

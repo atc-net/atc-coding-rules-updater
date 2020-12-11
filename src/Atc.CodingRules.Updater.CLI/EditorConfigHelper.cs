@@ -10,12 +10,13 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public static List<LogKeyValueItem> Update(string rawCodingRulesDistribution, DirectoryInfo rootPath)
         {
-            var logItems = new List<LogKeyValueItem>();
-
-            logItems.Add(Update("root", rawCodingRulesDistribution, rootPath, string.Empty));
-            logItems.Add(Update("src", rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "src")), "src"));
-            logItems.Add(Update("test", rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "test")), "test"));
-            logItems.Add(Update("sample", rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "sample")), "sample"));
+            var logItems = new List<LogKeyValueItem>
+            {
+                Update("root", rawCodingRulesDistribution, rootPath, string.Empty),
+                Update("src", rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "src")), "src"),
+                Update("test", rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "test")), "test"),
+                Update("sample", rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "sample")), "sample"),
+            };
 
             return logItems;
         }
@@ -59,11 +60,13 @@ namespace Atc.CodingRules.Updater.CLI
                     .Replace("\r\n", string.Empty, StringComparison.Ordinal)
                     .Replace("\r", string.Empty, StringComparison.Ordinal)
                     .Replace("\n", string.Empty, StringComparison.Ordinal);
+
                 var rawFileAtcDataLength = rawFileAtcData
                     .Replace("\r\n", string.Empty, StringComparison.Ordinal)
                     .Replace("\r", string.Empty, StringComparison.Ordinal)
                     .Replace("\n", string.Empty, StringComparison.Ordinal);
-                if (rawGitDataLength.Equals(rawFileAtcDataLength))
+
+                if (rawGitDataLength.Equals(rawFileAtcDataLength, StringComparison.Ordinal))
                 {
                     return new LogKeyValueItem(LogCategoryType.Information, logKey, ".editorconfig skipped");
                 }
@@ -71,6 +74,7 @@ namespace Atc.CodingRules.Updater.CLI
                 var rawFileCustomData = GetRawFileCustomData(rawFileData);
                 var data = rawGitData + Environment.NewLine + rawFileCustomData;
                 File.WriteAllText(file.FullName, data);
+
                 return new LogKeyValueItem(LogCategoryType.Information, logKey, ".editorconfig updated with merge");
             }
             catch (Exception ex)
@@ -83,6 +87,7 @@ namespace Atc.CodingRules.Updater.CLI
         {
             var lines = rawFileData.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             var sb = new StringBuilder();
+
             foreach (var line in lines)
             {
                 sb.AppendLine(line);
@@ -100,7 +105,8 @@ namespace Atc.CodingRules.Updater.CLI
         {
             var lines = rawFileData.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             var sb = new StringBuilder();
-            bool addLines = false;
+            var addLines = false;
+
             foreach (var line in lines)
             {
                 if (addLines)
