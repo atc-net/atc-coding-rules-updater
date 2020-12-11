@@ -1,0 +1,99 @@
+name: "CI/CD"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '.github/**'
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '.github/**'      
+  release:
+    types:
+      - published      
+      
+jobs:
+  dotnet-build:      
+  runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Building library in release mode
+        run: dotnet build -c Release -p:ContinuousIntegrationBuild=true
+  
+  dotnet-test:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Running unit tests
+        run: |
+          dotnet build -c Debug /p:UseSourceLink=true
+          dotnet test -c Debug --no-build
+  
+  publish-nuget-packages:
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/dev') || github.event_name == 'release'
+    needs: [dotnet-build, dotnet-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+
+      - uses: nelonoel/branch-name@v1.0.1
+     
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+          
+      - run: dotnet restore
+
+      - name: Creating library package for pre-release
+        if: github.event_name != 'release'
+        run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true
+      
+      - name: Creating library package for release
+        if: github.event_name == 'release'
+        run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+      
+      - name: Push packages to GitHub Package Registry
+        run: |
+           for f in ${GITHUB_WORKSPACE}/packages/*.nupkg
+           do
+             curl -vX PUT -u "egil:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/atc-net/
+           done
+        shell: bash
+
+      - name: Push packages to NuGet
+        if: github.event_name == 'release'
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
