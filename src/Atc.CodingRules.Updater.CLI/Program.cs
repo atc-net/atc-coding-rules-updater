@@ -19,8 +19,8 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 return await builder
                         .RunCommandLineApplicationAsync<RootCommand>(args)
-                        .ConfigureAwait(false)
-;           }
+                        .ConfigureAwait(false);
+            }
             catch (TargetInvocationException ex) when (ex.InnerException != null)
             {
                 Colorful.Console.WriteLine($@"Error: {ex.InnerException.Message}", Color.Red);
