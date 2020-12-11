@@ -136,14 +136,14 @@ namespace Atc.CodingRules.Updater.CLI
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} updated");
                 }
 
-                var rawFileAtcData = GetRawFileAtcData(rawFileData);
+                var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);
 
                 if (IsFileDataLengthEqual(rawGitData, rawFileAtcData))
                 {
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
                 }
 
-                var rawFileCustomData = GetRawFileCustomData(rawFileData);
+                var rawFileCustomData = GetRawFileCustomDataWithoutCustomRulesHeader(rawFileData);
                 var data = rawGitData + Environment.NewLine + rawFileCustomData;
                 File.WriteAllText(file.FullName, data);
 
@@ -188,7 +188,7 @@ namespace Atc.CodingRules.Updater.CLI
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} updated");
                 }
 
-                var rawFileAtcData = GetRawFileAtcData(rawFileData);
+                var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);
 
                 if (IsFileDataLengthEqual(rawGitData, rawFileAtcData))
                 {
@@ -238,7 +238,7 @@ namespace Atc.CodingRules.Updater.CLI
                     return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} updated");
                 }
 
-                var rawFileAtcData = GetRawFileAtcData(rawFileData);
+                var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);
 
                 if (IsFileDataLengthEqual(rawGitData, rawFileAtcData))
                 {
@@ -255,7 +255,7 @@ namespace Atc.CodingRules.Updater.CLI
             }
         }
 
-        private static string GetRawFileAtcData(string rawFileData)
+        private static string GetRawFileAtcDataWithCustomRulesHeader(string rawFileData)
         {
             var lines = rawFileData.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             var sb = new StringBuilder();
@@ -273,7 +273,7 @@ namespace Atc.CodingRules.Updater.CLI
             return sb.ToString();
         }
 
-        private static string GetRawFileCustomData(string rawFileData)
+        private static string GetRawFileCustomDataWithoutCustomRulesHeader(string rawFileData)
         {
             var lines = rawFileData.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             var sb = new StringBuilder();
@@ -283,12 +283,13 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 if (addLines)
                 {
-                    sb.AppendLine(line);
+                    if (!"##########################################".Equals(line, StringComparison.Ordinal))
+                    {
+                        sb.AppendLine(line);
+                    }
                 }
                 else if ("# Custom - Code Analyzers Rules".Equals(line, StringComparison.Ordinal))
                 {
-                    sb.AppendLine("##########################################");
-                    sb.AppendLine(line);
                     addLines = true;
                 }
             }
