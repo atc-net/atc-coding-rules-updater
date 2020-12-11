@@ -7,7 +7,7 @@
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <Title>Atc API Generator CLI</Title>
     <Authors>Atc-net</Authors>
-    <Description>A .NET Tool that can update you project with the lates atc-coding-rules.</Description>
+    <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
     <PackageProjectUrl>https://github.com/atc-net/atc-coding-rules-updater/tree/master/src/Atc.CodingRules.Updater.CLI</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/atc-net/atc/master/images/icon.png</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
