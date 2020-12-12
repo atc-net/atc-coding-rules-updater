@@ -16,29 +16,29 @@ The Atc.CodingRules.Updater.CLI library mentioned above is available through a c
 
 The tool can be installed as a .NET Core global tool that you can call from the shell / command line
 ```
-dotnet tool install --global atc-coding-rule-updater
+dotnet tool install --global atc-coding-rules-updater
 ```
-or by following the instructions [here](https://www.nuget.org/packages/atc-coding-rule-updater/) to install a specific version of the tool.
+or by following the instructions [here](https://www.nuget.org/packages/atc-coding-rules-updater/) to install a specific version of the tool.
 
 A successful installation will output something like:
 ```
 You can invoke the tool using the following command: atc-api
-Tool 'atc-coding-rule-updater' (version '1.0.xxx') was successfully installed.`
+Tool 'atc-coding-rules-updater' (version '1.0.xxx') was successfully installed.`
 ```
 
 ## Update:
 
 The tool can also be updated by following command.
 ```
-dotnet tool update --global atc-coding-rule-updater
+dotnet tool update --global atc-coding-rules-updater
 ```
 
 ## Usage
 
-Since the tool is published as a .NET Core Tool, it can be launched from anywhere using any command line interface by calling **atc-coding-rules-updater**. The help information is displayed using the `--help` argument to **atc-coding-rule-updater**
+Since the tool is published as a .NET Core Tool, it can be launched from anywhere using any command line interface by calling **atc-coding-rules-updater**. The help information is displayed using the `--help` argument to **atc-coding-rules-updater**
 
 ```
-$ atc-coding-rule-updater --help
+$ atc-coding-rules-updater --help
 ```
 
 ## Example
@@ -48,7 +48,7 @@ If you have a project folder in c:\code\MyProject where you have or will have yo
 Then do the following:
 
 ```
-$ atc-coding-rule-updater -r c:\code\MyProject -v true
+$ atc-coding-rules-updater -r c:\code\MyProject -v true
 ```
 
 Running the command above produces the following output:
