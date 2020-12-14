@@ -35,7 +35,9 @@ namespace Atc.CodingRules.Updater.CLI
                 ? new FileInfo(optionsPath)
                 : new FileInfo(Path.Combine(optionsPath, "atc-coding-rules-updater.json"));
 
-            return DeserializeFile(fileInfo);
+            var options = DeserializeFile(fileInfo);
+            options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));
+            return options;
         }
 
         private static Options DeserializeFile(FileInfo fileInfo)

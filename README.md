@@ -107,4 +107,15 @@ The parameter option: `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
 }
 ```
 
+or 
+
+```json
+{
+	"Mappings": {
+		"Src": { "Paths": [ "source" ] },
+		"Test": { "Paths": [ "tests" ] }
+	}
+}
+```
+
 **Note:** if there are a `atc-coding-rules-updater.json` file in the root folder given by options `--outputRootPath` /  `-r`, then it will automatic be used.

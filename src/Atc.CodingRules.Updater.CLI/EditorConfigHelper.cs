@@ -170,7 +170,7 @@ namespace Atc.CodingRules.Updater.CLI
                 {
                     if (!isFirstTime)
                     {
-                        return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                        return new LogKeyValueItem(LogCategoryType.Trace, "FileSkip", $"{descriptionPart} skipped");
                     }
 
                     Directory.CreateDirectory(file.Directory.FullName);
@@ -187,7 +187,7 @@ namespace Atc.CodingRules.Updater.CLI
                 if (string.IsNullOrEmpty(rawFileData))
                 {
                     File.WriteAllText(file.FullName, rawGitData);
-                    return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} updated");
+                    return new LogKeyValueItem(LogCategoryType.Debug, "FileCreate", $"{descriptionPart} created");
                 }
 
                 var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);
@@ -232,7 +232,7 @@ namespace Atc.CodingRules.Updater.CLI
                 {
                     if (!isFirstTime)
                     {
-                        return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                        return new LogKeyValueItem(LogCategoryType.Trace, "FileSkip", $"{descriptionPart} skipped");
                     }
 
                     Directory.CreateDirectory(file.Directory.FullName);
@@ -249,7 +249,7 @@ namespace Atc.CodingRules.Updater.CLI
                 if (string.IsNullOrEmpty(rawFileData))
                 {
                     File.WriteAllText(file.FullName, rawGitData);
-                    return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} updated");
+                    return new LogKeyValueItem(LogCategoryType.Debug, "FileCreate", $"{descriptionPart} created");
                 }
 
                 var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);
@@ -292,7 +292,7 @@ namespace Atc.CodingRules.Updater.CLI
                 {
                     if (!isFirstTime)
                     {
-                        return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                        return new LogKeyValueItem(LogCategoryType.Trace, "FileSkip", $"{descriptionPart} skipped");
                     }
 
                     Directory.CreateDirectory(file.Directory.FullName);
@@ -309,7 +309,7 @@ namespace Atc.CodingRules.Updater.CLI
                 if (string.IsNullOrEmpty(rawFileData))
                 {
                     File.WriteAllText(file.FullName, rawGitData);
-                    return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} updated");
+                    return new LogKeyValueItem(LogCategoryType.Debug, "FileCreate", $"{descriptionPart} created");
                 }
 
                 var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);

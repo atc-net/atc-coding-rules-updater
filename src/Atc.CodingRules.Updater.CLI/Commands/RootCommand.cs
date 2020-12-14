@@ -10,7 +10,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
     {
         private const string RawCodingRulesDistribution = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
 
-        public static int OnExecute(CommandLineApplication configCmd)
+        public int OnExecute(CommandLineApplication configCmd)
         {
             if (configCmd == null)
             {

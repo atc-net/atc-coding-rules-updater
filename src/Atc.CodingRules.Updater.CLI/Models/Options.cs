@@ -4,10 +4,7 @@ namespace Atc.CodingRules.Updater.CLI.Models
     {
         public OptionsMappings Mappings { get; set; } = new OptionsMappings();
 
-        public bool HasMappingsPaths() =>
-            Mappings?.Sample?.Paths?.Count > 0 ||
-            Mappings?.Src?.Paths?.Count > 0 ||
-            Mappings?.Test?.Paths?.Count > 0;
+        public bool HasMappingsPaths() => Mappings.HasMappingsPaths();
 
         public override string ToString()
         {
