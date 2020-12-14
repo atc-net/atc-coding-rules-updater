@@ -10,7 +10,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
     {
         private const string RawCodingRulesDistribution = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
 
-        public int OnExecute(CommandLineApplication configCmd)
+        public static int OnExecute(CommandLineApplication configCmd)
         {
             if (configCmd == null)
             {
@@ -19,10 +19,11 @@ namespace Atc.CodingRules.Updater.CLI.Commands
 
             ConsoleHelper.WriteHeader();
             var verboseMode = CommandLineApplicationHelper.GetVerboseMode(configCmd);
+            var options = OptionsHelper.CreateDefault(configCmd);
             var rootPath = CommandLineApplicationHelper.GetRootPath(configCmd);
             var logItems = new List<LogKeyValueItem>();
 
-            logItems.AddRange(EditorConfigHelper.Update(RawCodingRulesDistribution, rootPath));
+            logItems.AddRange(EditorConfigHelper.Update(RawCodingRulesDistribution, rootPath, options));
 
             return ConsoleHelper.WriteLogItemsAndExit(logItems, verboseMode, "Update");
         }

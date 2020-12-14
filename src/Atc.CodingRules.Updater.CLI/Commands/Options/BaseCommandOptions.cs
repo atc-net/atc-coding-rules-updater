@@ -11,5 +11,8 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Options
         [Required]
         [Option("--outputRootPath", "Path to root directory", CommandOptionType.SingleValue, ShortName = "r")]
         public string? OutputRootPath { get; set; }
+
+        [Option("--optionsPath", "Path to options json-file", CommandOptionType.SingleValue)]
+        public string? OptionsPath { get; set; }
     }
 }

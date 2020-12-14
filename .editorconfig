@@ -467,3 +467,4 @@ dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
+dotnet_diagnostic.MA0028.severity = none            # Wating for https://github.com/atc-net/atc-coding-rules/issues/19

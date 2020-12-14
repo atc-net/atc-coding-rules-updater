@@ -2,28 +2,72 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Atc.CodingRules.Updater.CLI.Models;
 using Atc.Data.Models;
 
 namespace Atc.CodingRules.Updater.CLI
 {
     public static class EditorConfigHelper
     {
-        public static IEnumerable<LogKeyValueItem> Update(string rawCodingRulesDistribution, DirectoryInfo rootPath)
+        private const string FileNameEditorConfig = ".editorconfig";
+
+        public static IEnumerable<LogKeyValueItem> Update(
+            string rawCodingRulesDistribution,
+            DirectoryInfo rootPath,
+            Options options)
         {
             var logItems = new List<LogKeyValueItem>();
 
+            bool isFirstTime = IsFirstTime(rootPath);
+
             logItems.AddRange(UpdateBuildProps(rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "build"))));
 
-            logItems.Add(UpdateEditorConfig("root", rawCodingRulesDistribution, rootPath, string.Empty));
+            logItems.Add(UpdateEditorConfig(isFirstTime: false, "root", rawCodingRulesDistribution, rootPath, string.Empty));
 
-            logItems.AddRange(UpdateEditorConfigAndDirectoryBuildFiles("src", rawCodingRulesDistribution, rootPath, "src", "src"));
-            logItems.AddRange(UpdateEditorConfigAndDirectoryBuildFiles("test", rawCodingRulesDistribution, rootPath, "test", "test"));
-            logItems.AddRange(UpdateEditorConfigAndDirectoryBuildFiles("sample", rawCodingRulesDistribution, rootPath, "sample", "sample"));
+            if (options.HasMappingsPaths())
+            {
+                foreach (var item in options.Mappings.Sample.Paths)
+                {
+                    var path = new DirectoryInfo(item);
+                    logItems.Add(UpdateEditorConfig(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                    logItems.Add(UpdateDirectoryBuildProps(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                    logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                }
+
+                foreach (var item in options.Mappings.Src.Paths)
+                {
+                    var path = new DirectoryInfo(item);
+                    logItems.Add(UpdateEditorConfig(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
+                    logItems.Add(UpdateDirectoryBuildProps(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
+                    logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
+                }
+
+                foreach (var item in options.Mappings.Test.Paths)
+                {
+                    var path = new DirectoryInfo(item);
+                    logItems.Add(UpdateEditorConfig(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
+                    logItems.Add(UpdateDirectoryBuildProps(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
+                    logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
+                }
+            }
+            else
+            {
+                logItems.AddRange(UpdateEditorConfigAndDirectoryBuildFiles(isFirstTime, "sample", rawCodingRulesDistribution, rootPath, "sample", "sample"));
+                logItems.AddRange(UpdateEditorConfigAndDirectoryBuildFiles(isFirstTime, "src", rawCodingRulesDistribution, rootPath, "src", "src"));
+                logItems.AddRange(UpdateEditorConfigAndDirectoryBuildFiles(isFirstTime, "test", rawCodingRulesDistribution, rootPath, "test", "test"));
+            }
 
             return logItems;
         }
 
+        private static bool IsFirstTime(DirectoryInfo rootPath)
+        {
+            var file = new FileInfo(Path.Combine(rootPath.FullName, FileNameEditorConfig));
+            return !file.Exists;
+        }
+
         private static IEnumerable<LogKeyValueItem> UpdateEditorConfigAndDirectoryBuildFiles(
+            bool isFirstTime,
             string area,
             string rawCodingRulesDistribution,
             DirectoryInfo rootPath,
@@ -33,9 +77,9 @@ namespace Atc.CodingRules.Updater.CLI
             var path = new DirectoryInfo(Path.Combine(rootPath.FullName, filePart));
             var logItems = new List<LogKeyValueItem>
             {
-                UpdateEditorConfig(area, rawCodingRulesDistribution, path, urlPart),
-                UpdateDirectoryBuildProps(area, rawCodingRulesDistribution, path, urlPart),
-                UpdateDirectoryBuildTargets(area, rawCodingRulesDistribution, path, urlPart),
+                UpdateEditorConfig(isFirstTime, area, rawCodingRulesDistribution, path, urlPart),
+                UpdateDirectoryBuildProps(isFirstTime, area, rawCodingRulesDistribution, path, urlPart),
+                UpdateDirectoryBuildTargets(isFirstTime, area, rawCodingRulesDistribution, path, urlPart),
             };
 
             return logItems;
@@ -103,22 +147,32 @@ namespace Atc.CodingRules.Updater.CLI
             }
         }
 
-        private static LogKeyValueItem UpdateEditorConfig(string area, string rawCodingRulesDistribution, DirectoryInfo path, string urlPart)
+        private static LogKeyValueItem UpdateEditorConfig(
+            bool isFirstTime,
+            string area,
+            string rawCodingRulesDistribution,
+            DirectoryInfo path,
+            string urlPart)
         {
             var descriptionPart = string.IsNullOrEmpty(urlPart)
-                ? ".editorconfig"
-                : $"{urlPart}/.editorconfig";
+                ? FileNameEditorConfig
+                : $"{urlPart}/{FileNameEditorConfig}";
 
-            var file = new FileInfo(Path.Combine(path.FullName, ".editorconfig"));
+            var file = new FileInfo(Path.Combine(path.FullName, FileNameEditorConfig));
 
             var rawGitUrl = string.IsNullOrEmpty(urlPart)
-                ? $"{rawCodingRulesDistribution}/.editorconfig"
-                : $"{rawCodingRulesDistribution}/{urlPart}/.editorconfig";
+                ? $"{rawCodingRulesDistribution}/{FileNameEditorConfig}"
+                : $"{rawCodingRulesDistribution}/{urlPart}/{FileNameEditorConfig}";
 
             try
             {
                 if (!file.Directory!.Exists)
                 {
+                    if (!isFirstTime)
+                    {
+                        return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                    }
+
                     Directory.CreateDirectory(file.Directory.FullName);
                 }
 
@@ -155,7 +209,12 @@ namespace Atc.CodingRules.Updater.CLI
             }
         }
 
-        private static LogKeyValueItem UpdateDirectoryBuildProps(string area, string rawCodingRulesDistribution, DirectoryInfo path, string urlPart)
+        private static LogKeyValueItem UpdateDirectoryBuildProps(
+            bool isFirstTime,
+            string area,
+            string rawCodingRulesDistribution,
+            DirectoryInfo path,
+            string urlPart)
         {
             var descriptionPart = string.IsNullOrEmpty(urlPart)
                 ? "directory.build.props"
@@ -171,6 +230,11 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 if (!file.Directory!.Exists)
                 {
+                    if (!isFirstTime)
+                    {
+                        return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                    }
+
                     Directory.CreateDirectory(file.Directory.FullName);
                 }
 
@@ -205,7 +269,12 @@ namespace Atc.CodingRules.Updater.CLI
             }
         }
 
-        private static LogKeyValueItem UpdateDirectoryBuildTargets(string area, string rawCodingRulesDistribution, DirectoryInfo path, string urlPart)
+        private static LogKeyValueItem UpdateDirectoryBuildTargets(
+            bool isFirstTime,
+            string area,
+            string rawCodingRulesDistribution,
+            DirectoryInfo path,
+            string urlPart)
         {
             var descriptionPart = string.IsNullOrEmpty(urlPart)
                 ? "directory.build.targets"
@@ -221,6 +290,11 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 if (!file.Directory!.Exists)
                 {
+                    if (!isFirstTime)
+                    {
+                        return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                    }
+
                     Directory.CreateDirectory(file.Directory.FullName);
                 }
 
