@@ -1,36 +1,38 @@
-# ATC.Net Coding rule update
+# ATC.Net Coding rules updater
 
-This repository contains the CLI tool that can maintain the `coding-rules` in your project defined from `atc-coding-rules`.
+This repository contains the CLI tool, which can be used to maintain the `coding-rules` in a project, where [atc-coding-rules](https://github.com/atc-net/atc-coding-rules) have been utilized.
 
-* Read more about the [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
-* Master rule files is located in [atc-coding-rules distribution](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
+* Read more about [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
+* Master rule files are located [here](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
 
-# CLI Tool Usage
+# CLI Tool
 
-The Atc.CodingRules.Updater.CLI library mentioned above is available through a cross platform command line application.
+The Atc.CodingRules.Updater.CLI library is available through a cross platform command line application.
 
-**Requirements**
+## Requirements
+
 - .NET Core 3.1 runtime
 
-## Install:
+## Installation
 
-The tool can be installed as a .NET Core global tool that you can call from the shell / command line
+The tool can be installed as a .NET Core global tool by the following command
 
 ```powershell
 dotnet tool install --global atc-coding-rules-updater
 ```
+
 or by following the instructions [here](https://www.nuget.org/packages/atc-coding-rules-updater/) to install a specific version of the tool.
 
-A successful installation will output something like:
+A successful installation will output something like
 
 ```powershell
-You can invoke the tool using the following command: atc-api
+The tool can be invoked by the following command: atc-api
 Tool 'atc-coding-rules-updater' (version '1.0.xxx') was successfully installed.`
 ```
 
-## Update:
+## Update
 
-The tool can also be updated by following command.
+The tool can be updated by following command
 
 ```powershell
 dotnet tool update --global atc-coding-rules-updater
@@ -38,7 +40,7 @@ dotnet tool update --global atc-coding-rules-updater
 
 ## Usage
 
-Since the tool is published as a .NET Core Tool, it can be launched from anywhere using any command line interface by calling **atc-coding-rules-updater**. The help information is displayed using the `--help` argument to **atc-coding-rules-updater**
+Since the tool is published as a .NET Core Tool, it can be launched from anywhere using any shell or command-line interface by calling **atc-coding-rules-updater**. The help information is displayed when providing the `--help` argument to **atc-coding-rules-updater**
 
 ```powershell
 $ atc-coding-rules-updater --help
@@ -46,15 +48,13 @@ $ atc-coding-rules-updater --help
 
 ## Example
 
-If you have a project folder in c:\code\MyProject where you have or will have your .sln file for C# projects.
-
-Then do the following:
+Having a project folder in c:\code\MyProject where the .sln file for C# projects exists in the root, run the following command
 
 ```powershell
 $ atc-coding-rules-updater -r c:\code\MyProject -v true
 ```
 
-Running the command above produces the following output:
+Running the command above produces the following output
 
 ```powershell
         ___  ______  _____        ___          __                                 __        __
@@ -79,11 +79,12 @@ FileUpdate # Debug: sample/directory.build.targets updated
 Update is OK.
 ```
 
-## Options file schema / example:
+## Options file schema / example
 
-The parameter option: `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
+The tool has an optional options parameter, which can be used to control the paths for persisting the .editorconfigs and props files. This can be applied as follows `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
 
-**atc-coding-rules-updater.json:**
+**atc-coding-rules-updater.json example**
+
 ```json
 {
 	"Mappings": {
@@ -107,7 +108,7 @@ The parameter option: `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
 }
 ```
 
-or 
+or
 
 ```json
 {
@@ -118,13 +119,12 @@ or
 }
 ```
 
-**Note:** if there are a `atc-coding-rules-updater.json` file in the root folder given by options `--outputRootPath` /  `-r`, then it will automatic be used.
+**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--outputRootPath` /  `-r`), then it will automatically be found and used.
 
-# CLI Tool Usage from powershell:
+# CLI Tool Usage from powershell
 
-If you want to have a script that can ensure you have the latest version of the tool `atc-coding-rules-updater` and
-it use what you have defined, when follow this recipi:
+To ensure that the latest version of the CLI tool `atc-coding-rules-updater` is being used, the following methodology can be used:
 
-1) Download the 2 files from `sample` into your project root folder.
-2) Modify the `atc-coding-rules-updater.json` to your needs.
+1) Download the 2 files from `sample` into a project root folder.
+2) Modify the `atc-coding-rules-updater.json` to the projects specific needs.
 3) Run `atc-coding-rules-updater.ps1` from powershell
