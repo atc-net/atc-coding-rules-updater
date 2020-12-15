@@ -26,7 +26,7 @@ namespace Atc.CodingRules.Updater.CLI
 
         public static void WriteLogItems(IList<LogKeyValueItem> logItems, bool verboseMode)
         {
-            if (logItems == null)
+            if (logItems is null)
             {
                 throw new ArgumentNullException(nameof(logItems));
             }

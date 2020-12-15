@@ -12,7 +12,7 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public static Options CreateDefault(CommandLineApplication configCmd)
         {
-            if (configCmd == null)
+            if (configCmd is null)
             {
                 throw new ArgumentNullException(nameof(configCmd));
             }
@@ -22,7 +22,7 @@ namespace Atc.CodingRules.Updater.CLI
                 .FirstOrDefault(x => x.LongName!.Equals("optionsPath", StringComparison.OrdinalIgnoreCase));
 
             string optionsPath;
-            if (cmdOptionOptionsPath == null || string.IsNullOrEmpty(cmdOptionOptionsPath.Value()))
+            if (cmdOptionOptionsPath is null || string.IsNullOrEmpty(cmdOptionOptionsPath.Value()))
             {
                 optionsPath = CommandLineApplicationHelper.GetRootPath(configCmd).FullName;
             }

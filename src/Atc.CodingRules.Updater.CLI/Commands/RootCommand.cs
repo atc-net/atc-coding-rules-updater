@@ -12,7 +12,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
 
         public int OnExecute(CommandLineApplication configCmd)
         {
-            if (configCmd == null)
+            if (configCmd is null)
             {
                 throw new ArgumentNullException(nameof(configCmd));
             }

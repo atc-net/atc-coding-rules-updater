@@ -18,7 +18,7 @@ namespace Atc.CodingRules.Updater.CLI
         {
             var logItems = new List<LogKeyValueItem>();
 
-            bool isFirstTime = IsFirstTime(rootPath);
+            var isFirstTime = IsFirstTime(rootPath);
 
             logItems.AddRange(UpdateBuildProps(rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "build"))));
 
@@ -101,7 +101,7 @@ namespace Atc.CodingRules.Updater.CLI
 
                     return new List<LogKeyValueItem>
                     {
-                        new LogKeyValueItem(LogCategoryType.Information, "FileUpdate", "common.props updated - Remember to change CompanyName in the file"),
+                        new LogKeyValueItem(LogCategoryType.Information, "FileUpdate", "common.props updated - Remember to change the CompanyName in the file"),
                         new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", "code-analysis.props updated"),
                     };
                 }
@@ -372,11 +372,9 @@ namespace Atc.CodingRules.Updater.CLI
         }
 
         private static string GetRawFile(FileInfo file)
-        {
-            return file.Exists
+            => file.Exists
                 ? File.ReadAllText(file.FullName)
                 : string.Empty;
-        }
 
         private static bool IsFileDataLengthEqual(string dataA, string dataB)
         {

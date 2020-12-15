@@ -12,13 +12,13 @@ namespace Atc.CodingRules.Updater.CLI.Models
         public OptionsFolderMappings Test { get; set; } = new OptionsFolderMappings();
 
         public bool HasMappingsPaths() =>
-            Sample?.Paths?.Count > 0 ||
-            Src?.Paths?.Count > 0 ||
-            Test?.Paths?.Count > 0;
+            Sample.Paths.Count > 0 ||
+            Src.Paths.Count > 0 ||
+            Test.Paths.Count > 0;
 
         public void ResolvePaths(DirectoryInfo rootPath)
         {
-            if (rootPath == null)
+            if (rootPath is null)
             {
                 throw new ArgumentNullException(nameof(rootPath));
             }
@@ -28,7 +28,7 @@ namespace Atc.CodingRules.Updater.CLI.Models
                 return;
             }
 
-            for (int i = 0; i < Sample.Paths.Count; i++)
+            for (var i = 0; i < Sample.Paths.Count; i++)
             {
                 if (TryResolvePathIfNeeded(rootPath, Sample.Paths[i], out string newPath))
                 {
@@ -36,7 +36,7 @@ namespace Atc.CodingRules.Updater.CLI.Models
                 }
             }
 
-            for (int i = 0; i < Src.Paths.Count; i++)
+            for (var i = 0; i < Src.Paths.Count; i++)
             {
                 if (TryResolvePathIfNeeded(rootPath, Src.Paths[i], out string newPath))
                 {
@@ -44,7 +44,7 @@ namespace Atc.CodingRules.Updater.CLI.Models
                 }
             }
 
-            for (int i = 0; i < Test.Paths.Count; i++)
+            for (var i = 0; i < Test.Paths.Count; i++)
             {
                 if (TryResolvePathIfNeeded(rootPath, Test.Paths[i], out string newPath))
                 {

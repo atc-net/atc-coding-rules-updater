@@ -29,14 +29,18 @@ namespace Atc.CodingRules.Updater.CLI
             throw new ArgumentNullOrDefaultException(parameterName, $"Argument {parameterName} is not specified.");
         }
 
-        private static bool TryGetValueForParameter(CommandLineApplication configCmd, string parameterName, string? shortParameterName, out string value)
+        private static bool TryGetValueForParameter(
+            CommandLineApplication configCmd,
+            string parameterName,
+            string? shortParameterName,
+            out string value)
         {
-            if (configCmd == null)
+            if (configCmd is null)
             {
                 throw new ArgumentNullException(nameof(configCmd));
             }
 
-            if (parameterName == null)
+            if (parameterName is null)
             {
                 throw new ArgumentNullException(nameof(parameterName));
             }
@@ -45,14 +49,14 @@ namespace Atc.CodingRules.Updater.CLI
                 .GetOptions()
                 .FirstOrDefault(x => x.LongName!.Equals(parameterName, StringComparison.OrdinalIgnoreCase));
 
-            if (cmdOptionParameter == null && shortParameterName != null)
+            if (cmdOptionParameter is null && shortParameterName != null)
             {
                 cmdOptionParameter = configCmd
                     .GetOptions()
                     .FirstOrDefault(x => x.ShortName!.Equals(shortParameterName, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (cmdOptionParameter == null || string.IsNullOrEmpty(cmdOptionParameter.Value()))
+            if (cmdOptionParameter is null || string.IsNullOrEmpty(cmdOptionParameter.Value()))
             {
                 value = string.Empty;
                 return false;
