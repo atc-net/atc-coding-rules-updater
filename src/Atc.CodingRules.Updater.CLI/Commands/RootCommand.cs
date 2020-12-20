@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Atc.CodingRules.Updater.CLI.Commands.Options;
 using Atc.Data.Models;
 using McMaster.Extensions.CommandLineUtils;
@@ -10,6 +11,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
     {
         private const string RawCodingRulesDistribution = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
 
+        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Can't change it do to interface signature.")]
         public int OnExecute(CommandLineApplication configCmd)
         {
             if (configCmd is null)
@@ -23,7 +25,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
             var rootPath = CommandLineApplicationHelper.GetRootPath(configCmd);
             var logItems = new List<LogKeyValueItem>();
 
-            logItems.AddRange(EditorConfigHelper.Update(RawCodingRulesDistribution, rootPath, options));
+            logItems.AddRange(ConfigHelper.HandleFiles(RawCodingRulesDistribution, rootPath, options));
 
             return ConsoleHelper.WriteLogItemsAndExit(logItems, verboseMode, "Update");
         }

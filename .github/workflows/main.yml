@@ -17,13 +17,13 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - '.github/**'      
+      - '.github/**'
   release:
     types:
-      - published      
-      
+      - published
+
 jobs:
-  dotnet-build:      
+  dotnet-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -37,7 +37,7 @@ jobs:
 
       - name: Building library in release mode
         run: dotnet build -c Release -p:ContinuousIntegrationBuild=true
-  
+
   dotnet-test:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
         run: |
           dotnet build -c Debug /p:UseSourceLink=true
           dotnet test -c Debug --no-build
-  
+
   publish-nuget-packages:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/dev') || github.event_name == 'release'
     needs: [dotnet-build, dotnet-test]
@@ -67,7 +67,7 @@ jobs:
           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
       - uses: nelonoel/branch-name@v1.0.1
-     
+
       - uses: dotnet/nbgv@master
         with:
           setAllVars: true
@@ -75,17 +75,17 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-          
+
       - run: dotnet restore
 
       - name: Creating library package for pre-release
         if: github.event_name != 'release'
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true
-      
+
       - name: Creating library package for release
         if: github.event_name == 'release'
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-      
+
       - name: Push packages to GitHub Package Registry
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'atc-coding-rules-updater.'${NBGV_SimpleVersion}'.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/atc-net/index.json --skip-duplicate
 
