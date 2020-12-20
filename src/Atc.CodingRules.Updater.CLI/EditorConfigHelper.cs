@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Atc.CodingRules.Updater.CLI.Models;
 using Atc.Data.Models;
@@ -22,14 +24,14 @@ namespace Atc.CodingRules.Updater.CLI
 
             logItems.AddRange(UpdateBuildProps(rawCodingRulesDistribution, new DirectoryInfo(Path.Combine(rootPath.FullName, "build"))));
 
-            logItems.Add(UpdateEditorConfig(isFirstTime: false, "root", rawCodingRulesDistribution, rootPath, string.Empty));
+            logItems.AddRange(UpdateEditorConfig(isFirstTime: false, "root", rawCodingRulesDistribution, rootPath, string.Empty));
 
             if (options.HasMappingsPaths())
             {
                 foreach (var item in options.Mappings.Sample.Paths)
                 {
                     var path = new DirectoryInfo(item);
-                    logItems.Add(UpdateEditorConfig(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                    logItems.AddRange(UpdateEditorConfig(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
                     logItems.Add(UpdateDirectoryBuildProps(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
                     logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
                 }
@@ -37,7 +39,7 @@ namespace Atc.CodingRules.Updater.CLI
                 foreach (var item in options.Mappings.Src.Paths)
                 {
                     var path = new DirectoryInfo(item);
-                    logItems.Add(UpdateEditorConfig(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
+                    logItems.AddRange(UpdateEditorConfig(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
                     logItems.Add(UpdateDirectoryBuildProps(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
                     logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
                 }
@@ -45,7 +47,7 @@ namespace Atc.CodingRules.Updater.CLI
                 foreach (var item in options.Mappings.Test.Paths)
                 {
                     var path = new DirectoryInfo(item);
-                    logItems.Add(UpdateEditorConfig(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
+                    logItems.AddRange(UpdateEditorConfig(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
                     logItems.Add(UpdateDirectoryBuildProps(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
                     logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
                 }
@@ -75,13 +77,10 @@ namespace Atc.CodingRules.Updater.CLI
             string urlPart)
         {
             var path = new DirectoryInfo(Path.Combine(rootPath.FullName, filePart));
-            var logItems = new List<LogKeyValueItem>
-            {
-                UpdateEditorConfig(isFirstTime, area, rawCodingRulesDistribution, path, urlPart),
-                UpdateDirectoryBuildProps(isFirstTime, area, rawCodingRulesDistribution, path, urlPart),
-                UpdateDirectoryBuildTargets(isFirstTime, area, rawCodingRulesDistribution, path, urlPart),
-            };
-
+            var logItems = new List<LogKeyValueItem>();
+            logItems.AddRange(UpdateEditorConfig(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
+            logItems.Add(UpdateDirectoryBuildProps(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
+            logItems.Add(UpdateDirectoryBuildTargets(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
             return logItems;
         }
 
@@ -147,7 +146,8 @@ namespace Atc.CodingRules.Updater.CLI
             }
         }
 
-        private static LogKeyValueItem UpdateEditorConfig(
+        [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+        private static IEnumerable<LogKeyValueItem> UpdateEditorConfig(
             bool isFirstTime,
             string area,
             string rawCodingRulesDistribution,
@@ -164,13 +164,15 @@ namespace Atc.CodingRules.Updater.CLI
                 ? $"{rawCodingRulesDistribution}/{FileNameEditorConfig}"
                 : $"{rawCodingRulesDistribution}/{urlPart}/{FileNameEditorConfig}";
 
+            var logItems = new List<LogKeyValueItem>();
             try
             {
                 if (!file.Directory!.Exists)
                 {
                     if (!isFirstTime)
                     {
-                        return new LogKeyValueItem(LogCategoryType.Trace, "FileSkip", $"{descriptionPart} skipped");
+                        logItems.Add(new LogKeyValueItem(LogCategoryType.Trace, "FileSkip", $"{descriptionPart} skipped"));
+                        return logItems;
                     }
 
                     Directory.CreateDirectory(file.Directory.FullName);
@@ -181,31 +183,42 @@ namespace Atc.CodingRules.Updater.CLI
 
                 if (IsFileDataLengthEqual(rawGitData, rawFileData))
                 {
-                    return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                    logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped"));
+                    return logItems;
                 }
 
                 if (string.IsNullOrEmpty(rawFileData))
                 {
                     File.WriteAllText(file.FullName, rawGitData);
-                    return new LogKeyValueItem(LogCategoryType.Debug, "FileCreate", $"{descriptionPart} created");
+                    logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileCreate", $"{descriptionPart} created"));
+                    return logItems;
                 }
 
                 var rawFileAtcData = GetRawFileAtcDataWithCustomRulesHeader(rawFileData);
 
                 if (IsFileDataLengthEqual(rawGitData, rawFileAtcData))
                 {
-                    return new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped");
+                    logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped"));
+                    return logItems;
                 }
 
                 var rawFileCustomData = GetRawFileCustomDataWithoutCustomRulesHeader(rawFileData);
                 var data = rawGitData + Environment.NewLine + rawFileCustomData;
-                File.WriteAllText(file.FullName, data);
 
-                return new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} files merged");
+                File.WriteAllText(file.FullName, data);
+                logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{descriptionPart} files merged"));
+
+                var rawGitDataKeyValues = GetKeyValues(rawGitData);
+                var rawFileDataKeyValues = GetKeyValues(rawFileAtcData);
+                var rawFileCustomDataKeyValues = GetKeyValues(rawFileCustomData);
+                logItems.AddRange(LogSeverityDiffs(rawGitDataKeyValues, rawFileDataKeyValues, rawFileCustomDataKeyValues));
+
+                return logItems;
             }
             catch (Exception ex)
             {
-                return new LogKeyValueItem(LogCategoryType.Error, "FileSkip", $"{area} skipped - {ex.Message}");
+                logItems.Add(new LogKeyValueItem(LogCategoryType.Error, "FileSkip", $"{area} skipped - {ex.Message}"));
+                return logItems;
             }
         }
 
@@ -375,6 +388,56 @@ namespace Atc.CodingRules.Updater.CLI
             => file.Exists
                 ? File.ReadAllText(file.FullName)
                 : string.Empty;
+
+        private static List<KeyValueItem> GetKeyValues(string data)
+        {
+            var list = new List<KeyValueItem>();
+
+            var lines = data.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrEmpty(line) || line.StartsWith("#", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                var keyValueLine = line.Split("=", StringSplitOptions.RemoveEmptyEntries);
+                if (keyValueLine.Length == 2)
+                {
+                    list.Add(new KeyValueItem(keyValueLine[0], keyValueLine[1]));
+                }
+            }
+
+            return list;
+        }
+
+        private static List<LogKeyValueItem> LogSeverityDiffs(List<KeyValueItem> rawGitDataKeyValues, List<KeyValueItem> rawFileDataKeyValues, List<KeyValueItem> rawFileCustomDataKeyValues)
+        {
+            var list = new List<LogKeyValueItem>();
+
+            foreach (var rawGitDataKeyValue in rawGitDataKeyValues)
+            {
+                var key = rawGitDataKeyValue.Key;
+                if (!key.StartsWith("dotnet_diagnostic.", StringComparison.Ordinal) ||
+                    !key.Contains(".severity", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                if (rawFileCustomDataKeyValues.Any(x => x.Key.Equals(key, StringComparison.Ordinal)))
+                {
+                    // Duplicate
+                    list.Add(new LogKeyValueItem(LogCategoryType.Warning, "- Duplicate key", key));
+                }
+                else if (!rawFileDataKeyValues.Any(x => x.Key.Equals(key, StringComparison.Ordinal)))
+                {
+                    // New
+                    list.Add(new LogKeyValueItem(LogCategoryType.Debug, "- New key/value", $"{key}={rawGitDataKeyValue.Value}"));
+                }
+            }
+
+            return list;
+        }
 
         private static bool IsFileDataLengthEqual(string dataA, string dataB)
         {

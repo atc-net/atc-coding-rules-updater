@@ -1,6 +1,6 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.3
-# Updated: 11-12-2020
+# Version: 1.0.4
+# Updated: 20-12-2020
 # Location: Root
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
@@ -28,7 +28,7 @@ trim_trailing_whitespace = true
 indent_style = tab
 
 # Visual Studio XML Project Files
-[*.{csproj,vbproj,vcxproj.filters,proj,projitems,shproj}]
+[*.{csproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
 
 # XML Configuration Files
@@ -79,7 +79,7 @@ dotnet_separate_import_directive_groups = false
 
 # .NET Code Style Settings
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#net-code-style-settings
-[*.{cs,csx,cake,vb,vbx}]
+[*.{cs,csx,cake}]
 # "this." and "Me." qualifiers
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#this-and-me
 dotnet_style_qualification_for_field = false
@@ -434,6 +434,8 @@ dotnet_naming_rule.parameters_rule.severity             = warning
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
 dotnet_diagnostic.MA0016.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0016.md
+dotnet_diagnostic.MA0025.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0025.md
+dotnet_diagnostic.MA0026.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0026.md
 
 
 # Microsoft - Code Analysis
@@ -462,9 +464,9 @@ dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net
 
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
+dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/SonarAnalyzerCSharp/S1135.md
 
 
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
-dotnet_diagnostic.MA0028.severity = none            # Wating for https://github.com/atc-net/atc-coding-rules/issues/19
