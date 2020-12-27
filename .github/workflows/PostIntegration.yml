@@ -9,7 +9,8 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - '.github/**'
+      - '!.github/**'
+      - '.github/workflow/PostIntegration.yml'
 
 jobs:
   merge-to-stable:
