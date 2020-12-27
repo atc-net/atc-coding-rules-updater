@@ -11,10 +11,10 @@ on:
       - 'test/**'
       - '.github/**'
   push:
-    branches:
-      - '!main'
-      - '!stable'
-      - '!release'
+    branches-ignore:
+      - 'main'
+      - 'stable'
+      - 'release'
     paths:
       - 'src/**'
       - 'test/**'
