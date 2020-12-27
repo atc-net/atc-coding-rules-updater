@@ -101,7 +101,7 @@ namespace Atc.CodingRules.Updater.CLI
             var rawGitDataKeyValues = GetKeyValues(rawGitData);
             var rawFileDataKeyValues = GetKeyValues(rawFileAtcData);
             var rawFileCustomDataKeyValues = GetKeyValues(rawFileCustomData);
-            logItems.AddRange(LogSeverityDiffs(rawGitDataKeyValues, rawFileDataKeyValues, rawFileCustomDataKeyValues));
+            logItems.AddRange(LogSeverityDiffs(rawGitDataKeyValues, rawFileDataKeyValues, rawFileCustomDataKeyValues, rawGitData, data));
 
             return logItems;
         }
@@ -175,10 +175,14 @@ namespace Atc.CodingRules.Updater.CLI
         private static IEnumerable<LogKeyValueItem> LogSeverityDiffs(
             IEnumerable<KeyValueItem> rawGitDataKeyValues,
             IReadOnlyCollection<KeyValueItem> rawFileDataKeyValues,
-            IReadOnlyCollection<KeyValueItem> rawFileCustomDataKeyValues)
+            IReadOnlyCollection<KeyValueItem> rawFileCustomDataKeyValues,
+            string rawGitData,
+            string rawFileData)
         {
             var list = new List<LogKeyValueItem>();
 
+            var gitLines = rawGitData.Split(FileHelper.LineBreaks, StringSplitOptions.None);
+            var fileLines = rawFileData.Split(FileHelper.LineBreaks, StringSplitOptions.None);
             foreach (var rawGitDataKeyValue in rawGitDataKeyValues)
             {
                 var key = rawGitDataKeyValue.Key;
@@ -188,10 +192,24 @@ namespace Atc.CodingRules.Updater.CLI
                     continue;
                 }
 
-                if (rawFileCustomDataKeyValues.Any(x => x.Key.Equals(key, StringComparison.Ordinal)))
+                var item = rawFileCustomDataKeyValues.FirstOrDefault(x => x.Key.Equals(key, StringComparison.Ordinal));
+                if (item != null)
                 {
                     // Duplicate
+                    int gitLineNumber = GetLineNumberForwardSearch(gitLines, key);
+                    int fileLineNumber = GetLineNumberReverseSearch(fileLines, item);
+
                     list.Add(new LogKeyValueItem(LogCategoryType.Warning, "- Duplicate key", key));
+                    list.Add(
+                        new LogKeyValueItem(
+                            LogCategoryType.Warning,
+                            FormattableString.Invariant($"-- GitHub section (line {gitLineNumber:0000}): "),
+                            rawGitDataKeyValue.Value.Trim()));
+                    list.Add(
+                        new LogKeyValueItem(
+                            LogCategoryType.Warning,
+                            FormattableString.Invariant($"-- Custom section (line {fileLineNumber:0000}): "),
+                            item.Value.Trim()));
                 }
                 else if (!rawFileDataKeyValues.Any(x => x.Key.Equals(key, StringComparison.Ordinal)))
                 {
@@ -201,6 +219,32 @@ namespace Atc.CodingRules.Updater.CLI
             }
 
             return list;
+        }
+
+        private static int GetLineNumberForwardSearch(IReadOnlyList<string> lines, string key)
+        {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].StartsWith(key, StringComparison.Ordinal))
+                {
+                    return i + 1;
+                }
+            }
+
+            return -1;
+        }
+
+        private static int GetLineNumberReverseSearch(IReadOnlyList<string> lines, KeyValueItem keyValueItem)
+        {
+            for (int i = lines.Count - 1; i >= 0; i--)
+            {
+                if (lines[i].Equals($"{keyValueItem.Key}={keyValueItem.Value}", StringComparison.Ordinal))
+                {
+                    return i + 1;
+                }
+            }
+
+            return -1;
         }
     }
 }
