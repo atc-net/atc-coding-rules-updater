@@ -10,7 +10,7 @@ on:
       - 'src/**'
       - 'test/**'
       - '!.github/**'
-      - '.github/workflow/PostIntegration.yml'
+      - '.github/workflows/PostIntegration.yml'
 
 jobs:
   merge-to-stable:
