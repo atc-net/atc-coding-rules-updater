@@ -34,7 +34,9 @@ namespace Atc.CodingRules.Updater.CLI
             foreach (var logItem in logItems)
             {
                 var sb = new StringBuilder();
-                sb.Append($"{logItem.Key} # {logItem.LogCategory}: ");
+                sb.Append(logItem.Key.StartsWith("--", StringComparison.Ordinal)
+                    ? logItem.Key
+                    : $"{logItem.Key} # {logItem.LogCategory}: ");
                 if (!"#".Equals(logItem.Value, StringComparison.Ordinal))
                 {
                     sb.Append($"{logItem.Value}");
