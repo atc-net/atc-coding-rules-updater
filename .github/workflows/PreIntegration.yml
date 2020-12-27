@@ -1,4 +1,4 @@
-name: "PreIntegration"
+name: "Pre-Integration"
 
 on:
   pull_request:
