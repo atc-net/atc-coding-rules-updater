@@ -18,7 +18,8 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - '.github/**'
+      - '!.github/**'
+      - '.github/workflow/PreIntegration.yml'
 
 jobs:
   dotnet-build:
