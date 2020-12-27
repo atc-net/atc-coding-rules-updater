@@ -37,7 +37,6 @@ jobs:
         run: dotnet build -c Release -p:ContinuousIntegrationBuild=true
 
   dotnet-test:
-    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
