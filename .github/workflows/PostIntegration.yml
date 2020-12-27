@@ -23,6 +23,10 @@ jobs:
 
       - uses: nelonoel/branch-name@v1.0.1
 
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
@@ -42,3 +46,6 @@ jobs:
 
       - name: Creating library package for release
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+
+      - name: Push packages to GitHub Package Registry
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'atc-coding-rules-updater.'${NBGV_SimpleVersion}'.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/atc-net/index.json --skip-duplicate
