@@ -12,7 +12,7 @@ on:
       - '.github/**'
   push:
     branches:
-      - main
+      - '!main'
       - '!stable'
       - '!release'
     paths:
