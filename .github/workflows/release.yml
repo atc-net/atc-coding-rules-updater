@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT_WORKFLOWS }}
 
       - uses: nelonoel/branch-name@v1.0.1
 
@@ -35,8 +36,11 @@ jobs:
 
       - name: Merge to release
         run: |
+          git config --local user.email "atcnet.org@gmail.com"
+          git config --local user.name "Atc-Net"
           git checkout release
           git merge --ff-only stable
+          git push origin release
 
       - name: Creating library package for release
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
