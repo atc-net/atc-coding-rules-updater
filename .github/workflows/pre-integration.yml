@@ -19,7 +19,7 @@ on:
       - 'src/**'
       - 'test/**'
       - '!.github/**'
-      - '.github/workflows/PreIntegration.yml'
+      - '.github/workflows/pre-integration.yml'
 
 jobs:
   dotnet-build:
