@@ -12,7 +12,7 @@ on:
 
 jobs:
   release:
-    if: github.ref == 'ref/heads/stable'
+    if: github.ref == 'refs/heads/stable'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
