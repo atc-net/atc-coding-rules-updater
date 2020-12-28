@@ -46,8 +46,11 @@ jobs:
 
       - name: Merge to stable
         run: |
+          git config --local user.email "atcnet.org@gmail.com"
+          git config --local user.name "Atc-Net"
           git checkout stable
           git merge --ff-only main
+          git push origin stable
 
       - name: Creating library package for pre-release
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true
