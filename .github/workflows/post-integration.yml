@@ -18,7 +18,7 @@ on:
       - 'src/**'
       - 'test/**'
       - '!.github/**'
-      - '.github/workflows/PostIntegration.yml'
+      - '.github/workflows/post-integration.yml'
 
 jobs:
   merge-to-stable:
