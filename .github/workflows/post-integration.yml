@@ -2,13 +2,8 @@ name: "Post-Integration"
 
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'     
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
+    braches:
+      - main
   push:
     branches:
       - main
