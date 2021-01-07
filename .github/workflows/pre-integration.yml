@@ -6,20 +6,11 @@ on:
       - opened
       - synchronize
       - reopened
-    paths:
-      - 'src/**'
-      - 'test/**'
-      - '.github/**'
   push:
     branches-ignore:
       - 'main'
       - 'stable'
       - 'release'
-    paths:
-      - 'src/**'
-      - 'test/**'
-      - '!.github/**'
-      - '.github/workflows/pre-integration.yml'
 
 jobs:
   dotnet-build:

@@ -1,19 +1,11 @@
 name: "Post-Integration"
 
 on:
-  workflow_dispatch:
-    braches:
-      - main
   push:
     branches:
       - main
       - '!stable'
       - '!release'
-    paths:
-      - 'src/**'
-      - 'test/**'
-      - '!.github/**'
-      - '.github/workflows/post-integration.yml'
 
 jobs:
   merge-to-stable:
