@@ -29,7 +29,8 @@ jobs:
 
       - name: Build and run unit tests
         run: |
-          dotnet build -c Debug /p:UseSourceLink=true
+          dotnet restore
+          dotnet build -c Debug /p:UseSourceLink=true --no-restore
           dotnet test -c Debug --no-build
 
       - name: Merge to stable
