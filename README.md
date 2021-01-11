@@ -15,11 +15,11 @@
 ![Build](https://github.com/atc-net/atc-coding-rules-updater/workflows/Release/badge.svg)
 
 ### Code Quality
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=security_rating)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=bugs)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=security_rating)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=bugs)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
 
 # ATC.Net Coding rules updater
 
