@@ -49,27 +49,8 @@ jobs:
       - name: 🧪 Run unit tests
         run: dotnet test -c Debug --no-build
 
-      - name: 🌩️ SonarCloud cache packages
-        uses: actions/cache@v1
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: 🌩️ SonarCloud cache scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v1
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
-
       - name: 🌩️ SonarCloud install scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+        run: dotnet tool install --global dotnet-sonarscanner
 
       - name: 🌩️ SonarCloud analyze
         env:
@@ -77,9 +58,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"atc-coding-rules-updater" /o:"atc-net" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet sonarscanner begin /k:"atc-coding-rules-updater" /o:"atc-net" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build -c Debug /p:UseSourceLink=true --no-restore
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
       - name: ⏩ Merge to stable-branch
         run: |
