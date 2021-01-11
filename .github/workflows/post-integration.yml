@@ -7,42 +7,90 @@ on:
       - '!stable'
       - '!release'
 
+env:
+  ATC_EMAIL: 'atcnet.org@gmail.com'
+  ATC_NAME: 'Atc-Net'
+  NUGET_REPO_URL: 'https://nuget.pkg.github.com/atc-net/index.json'
+
 jobs:
   merge-to-stable:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: 🛒 Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           token: ${{ secrets.PAT_WORKFLOWS }}
 
-      - uses: nelonoel/branch-name@v1.0.1
+      - name: ⚛️ Sets environment variables - branch-name
+        uses: nelonoel/branch-name@v1.0.1
 
-      - uses: dotnet/nbgv@master
+      - name: ⚛️ Sets environment variables - Nerdbank.GitVersioning
+        uses: dotnet/nbgv@master
         with:
           setAllVars: true
 
-      - uses: actions/setup-dotnet@v1
+      - name: ⚙️ Setup dotnet 5.0.x
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
 
-      - name: Build and run unit tests
+      - name: ⚙️ Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: 📋 Prepare build for unit tests
         run: |
+          dotnet clean -c Debug
           dotnet restore
           dotnet build -c Debug /p:UseSourceLink=true --no-restore
-          dotnet test -c Debug --no-build
 
-      - name: Merge to stable
+      - name: 🧪 Run unit tests
+        run: dotnet test -c Debug --no-build
+
+      - name: 🌩️ SonarCloud cache packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: 🌩️ SonarCloud cache scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: 🌩️ SonarCloud install scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
         run: |
-          git config --local user.email "atcnet.org@gmail.com"
-          git config --local user.name "Atc-Net"
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+
+      - name: 🌩️ SonarCloud analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"atc-coding-rules-updater" /o:"atc-net" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build -c Debug /p:UseSourceLink=true --no-restore
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      - name: ⏩ Merge to stable-branch
+        run: |
+          git config --local user.email ${{ env.ATC_EMAIL }}
+          git config --local user.name ${{ env.ATC_NAME }}
           git checkout stable
           git merge --ff-only main
           git push origin stable
 
-      - name: Creating library package for pre-release
+      - name: 🗳️ Creating library package for pre-release
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:ContinuousIntegrationBuild=true
 
-      - name: Push packages to GitHub Package Registry
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'atc-coding-rules-updater.'${NBGV_NuGetPackageVersion}'.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/atc-net/index.json --skip-duplicate
+      - name: 📦 Push packages to GitHub Package Registry
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'atc-coding-rules-updater.'${NBGV_NuGetPackageVersion}'.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate

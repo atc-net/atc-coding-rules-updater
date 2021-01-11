@@ -1,3 +1,26 @@
+### General Project Info
+[![Github top language](https://img.shields.io/github/languages/top/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
+[![Github stars](https://img.shields.io/github/stars/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
+[![Github forks](https://img.shields.io/github/forks/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
+[![Github size](https://img.shields.io/github/repo-size/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
+[![Issues Open](https://img.shields.io/github/issues/atc-net/atc-coding-rules-updater.svg?logo=github)](https://github.com/atc-net/atc-coding-rules-updater/issues)
+
+### Packages
+[![Github Version](https://img.shields.io/static/v1?logo=github&color=blue&label=github&message=latest)](https://github.com/orgs/atc-net/packages?repo_name=atc-coding-rules-updater)
+[![NuGet Version](https://img.shields.io/nuget/v/atc-coding-rules-updater.svg?logo=nuget)](https://www.nuget.org/profiles/atc-net)
+
+### Build Status
+![Build](https://github.com/atc-net/atc-coding-rules-updater/workflows/Pre-Integration/badge.svg)
+![Build](https://github.com/atc-net/atc-coding-rules-updater/workflows/Post-Integration/badge.svg)
+![Build](https://github.com/atc-net/atc-coding-rules-updater/workflows/Release/badge.svg)
+
+### Code Quality
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=security_rating)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=bugs)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atc-net_atc-coding-rules-updater&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=atc-net_atc-coding-rules-updater)
+
 # ATC.Net Coding rules updater
 
 This repository contains the CLI tool, which can be used to maintain the `coding-rules` in a project, where [atc-coding-rules](https://github.com/atc-net/atc-coding-rules) have been utilized.
