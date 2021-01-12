@@ -8,7 +8,7 @@
     <Title>ATC CodingRules Updater CLI</Title>
     <Authors>atc-net</Authors>
     <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
-    <PackageProjectUrl>https://github.com/atc-net/atc-coding-rules-updater/tree/master/src/Atc.CodingRules.Updater.CLI</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/atc-net/atc-coding-rules-updater/tree/main/src/Atc.CodingRules.Updater.CLI</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/atc-net/atc/master/images/icon.png</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/atc-net/atc-coding-rules-updater</RepositoryUrl>
