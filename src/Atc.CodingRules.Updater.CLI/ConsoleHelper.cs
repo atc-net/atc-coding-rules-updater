@@ -18,6 +18,11 @@ namespace Atc.CodingRules.Updater.CLI
 
         public static void WriteHelp(CommandLineApplication configCmd, string message)
         {
+            if (configCmd == null)
+            {
+                throw new ArgumentNullException(nameof(configCmd));
+            }
+
             WriteHeader();
             Console.WriteLine(message);
             Console.WriteLine();

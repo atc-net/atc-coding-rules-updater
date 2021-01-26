@@ -1,6 +1,6 @@
 namespace Atc.CodingRules.Updater.CLI.Models
 {
-    public class Options
+    public class OptionRoot
     {
         public OptionsMappings Mappings { get; set; } = new OptionsMappings();
 

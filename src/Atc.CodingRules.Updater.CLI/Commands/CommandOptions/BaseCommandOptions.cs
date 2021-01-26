@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Atc.CodingRules.Updater.CLI.Commands.Options
+namespace Atc.CodingRules.Updater.CLI.Commands.CommandOptions
 {
     public class BaseCommandOptions
     {

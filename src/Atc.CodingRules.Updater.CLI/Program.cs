@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 using Atc.CodingRules.Updater.CLI.Commands;
 using Microsoft.Extensions.Hosting;
 
+[assembly: CLSCompliant(false)]
+
 namespace Atc.CodingRules.Updater.CLI
 {
     [ExcludeFromCodeCoverage]
     public static class Program
     {
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
         public static async Task<int> Main(string[] args)
         {
+            args = new[]
+            {
+                "-r", @"C:\Temp\x",
+            };
+
             var builder = new HostBuilder();
 
             try
@@ -23,12 +31,12 @@ namespace Atc.CodingRules.Updater.CLI
             }
             catch (TargetInvocationException ex) when (ex.InnerException != null)
             {
-                Colorful.Console.WriteLine($@"Error: {ex.InnerException.Message}", Color.Red);
+                Colorful.Console.WriteLine($"Error: {ex.InnerException.Message}", Color.Red);
                 return ExitStatusCodes.Failure;
             }
             catch (Exception ex)
             {
-                Colorful.Console.WriteLine($@"Error: {ex.Message}", Color.Red);
+                Colorful.Console.WriteLine($"Error: {ex.Message}", Color.Red);
                 return ExitStatusCodes.Failure;
             }
         }

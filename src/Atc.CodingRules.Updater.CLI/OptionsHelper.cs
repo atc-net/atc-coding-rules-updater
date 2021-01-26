@@ -10,7 +10,7 @@ namespace Atc.CodingRules.Updater.CLI
 {
     public static class OptionsHelper
     {
-        public static Options CreateDefault(CommandLineApplication configCmd)
+        public static OptionRoot CreateDefault(CommandLineApplication configCmd)
         {
             if (configCmd is null)
             {
@@ -40,9 +40,9 @@ namespace Atc.CodingRules.Updater.CLI
             return options;
         }
 
-        private static Options DeserializeFile(FileInfo fileInfo)
+        private static OptionRoot DeserializeFile(FileInfo fileInfo)
         {
-            var options = new Options();
+            var options = new OptionRoot();
 
             if (!fileInfo.Exists)
             {
@@ -55,7 +55,7 @@ namespace Atc.CodingRules.Updater.CLI
 
             using var stream = new StreamReader(fileInfo.FullName);
             var json = stream.ReadToEnd();
-            options = JsonSerializer.Deserialize<Options>(json, serializeOptions);
+            options = JsonSerializer.Deserialize<OptionRoot>(json, serializeOptions);
 
             return options;
         }

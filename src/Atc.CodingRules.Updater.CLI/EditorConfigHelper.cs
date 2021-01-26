@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public const string FileNameEditorConfig = ".editorconfig";
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
+        [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "OK.")]
         public static IEnumerable<LogKeyValueItem> HandleFile(
             bool isFirstTime,
             string area,
@@ -19,6 +22,11 @@ namespace Atc.CodingRules.Updater.CLI
             DirectoryInfo path,
             string urlPart)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             var descriptionPart = string.IsNullOrEmpty(urlPart)
                 ? FileNameEditorConfig
                 : $"{urlPart}/{FileNameEditorConfig}";
