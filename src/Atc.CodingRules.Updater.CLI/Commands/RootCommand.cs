@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Atc.CodingRules.Updater.CLI.Commands.Options;
+using Atc.CodingRules.Updater.CLI.Commands.CommandOptions;
 using Atc.Data.Models;
 using McMaster.Extensions.CommandLineUtils;
 

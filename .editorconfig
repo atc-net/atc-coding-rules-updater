@@ -470,10 +470,3 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
-dotnet_diagnostic.CA1014.severity = none            # For now..
-dotnet_diagnostic.CA1031.severity = none            # For now..
-dotnet_diagnostic.CA1054.severity = none            # For now..
-dotnet_diagnostic.CA1062.severity = none            # For now..
-dotnet_diagnostic.CA1724.severity = none            # For now..
-dotnet_diagnostic.CA1801.severity = none            # For now..
-dotnet_diagnostic.CA2227.severity = none            # For now..

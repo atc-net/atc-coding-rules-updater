@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -11,8 +12,18 @@ namespace Atc.CodingRules.Updater.CLI
         public static IEnumerable<LogKeyValueItem> HandleFiles(
             string rawCodingRulesDistribution,
             DirectoryInfo rootPath,
-            Options options)
+            OptionRoot options)
         {
+            if (rootPath == null)
+            {
+                throw new ArgumentNullException(nameof(rootPath));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             var logItems = new List<LogKeyValueItem>();
 
             if (HasOldBuildStructure(rootPath))
@@ -43,14 +54,14 @@ namespace Atc.CodingRules.Updater.CLI
                 {
                     var path = new DirectoryInfo(item);
                     logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
-                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
                 }
 
                 foreach (var item in options.Mappings.Test.Paths)
                 {
                     var path = new DirectoryInfo(item);
                     logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
-                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
                 }
             }
             else
