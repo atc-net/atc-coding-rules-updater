@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Atc.Data.Models;
 
+// ReSharper disable InvertIf
 namespace Atc.CodingRules.Updater.CLI
 {
     public static class EditorConfigHelper
