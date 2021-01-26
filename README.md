@@ -90,14 +90,11 @@ FileUpdate # Information: common.props updated - Remember to change CompanyName 
 FileUpdate # Debug: code-analysis.props updated
 FileUpdate # Debug: .editorconfig updated
 FileUpdate # Debug: src/.editorconfig updated
-FileUpdate # Debug: src/directory.build.props updated
-FileUpdate # Debug: src/directory.build.targets updated
+FileUpdate # Debug: src/Directory.Build.props updated
 FileUpdate # Debug: test/.editorconfig updated
-FileUpdate # Debug: test/directory.build.props updated
-FileUpdate # Debug: test/directory.build.targets updated
+FileUpdate # Debug: test/Directory.Build.props updated
 FileUpdate # Debug: sample/.editorconfig updated
-FileUpdate # Debug: sample/directory.build.props updated
-FileUpdate # Debug: sample/directory.build.targets updated
+FileUpdate # Debug: sample/Directory.Build.props updated
 
 Update is OK.
 ```
