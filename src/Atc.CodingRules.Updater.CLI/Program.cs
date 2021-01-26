@@ -16,11 +16,6 @@ namespace Atc.CodingRules.Updater.CLI
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
         public static async Task<int> Main(string[] args)
         {
-            args = new[]
-            {
-                "-r", @"C:\Temp\x",
-            };
-
             var builder = new HostBuilder();
 
             try
