@@ -15,9 +15,7 @@ namespace Atc.CodingRules.Updater.CLI
         }
 
         public static DirectoryInfo GetRootPath(CommandLineApplication configCmd)
-        {
-            return new DirectoryInfo(GetValueForParameter(configCmd, "outputRootPath", "r"));
-        }
+            => new DirectoryInfo(GetValueForParameter(configCmd, "outputRootPath", "r"));
 
         private static string GetValueForParameter(CommandLineApplication configCmd, string parameterName, string? shortParameterName = null)
         {

@@ -13,7 +13,6 @@ namespace Atc.CodingRules.Updater.CLI
     [ExcludeFromCodeCoverage]
     public static class Program
     {
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
         public static async Task<int> Main(string[] args)
         {
             var builder = new HostBuilder();

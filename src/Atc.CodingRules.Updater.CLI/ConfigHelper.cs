@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Atc.CodingRules.Updater.CLI.Models;
 using Atc.Data.Models;
 
+// ReSharper disable InvertIf
 namespace Atc.CodingRules.Updater.CLI
 {
     public static class ConfigHelper
@@ -80,7 +80,6 @@ namespace Atc.CodingRules.Updater.CLI
             return File.Exists(file);
         }
 
-        [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
         private static IEnumerable<LogKeyValueItem> CleanupOldBuildStructure(DirectoryInfo rootPath)
         {
             var logItems = new List<LogKeyValueItem>();

@@ -11,8 +11,6 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public const string FileNameDirectoryBuildProps = "Directory.Build.props";
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-        [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "OK.")]
         public static IEnumerable<LogKeyValueItem> HandleFile(
             bool isFirstTime,
             string area,
@@ -58,12 +56,9 @@ namespace Atc.CodingRules.Updater.CLI
                     return logItems;
                 }
 
-                if (string.IsNullOrEmpty(rawFileData))
-                {
-                    return CreateFile(file, rawGitData, logItems, descriptionPart);
-                }
-
-                return UpdateFile(file, rawGitData, logItems, descriptionPart);
+                return string.IsNullOrEmpty(rawFileData)
+                    ? CreateFile(file, rawGitData, logItems, descriptionPart)
+                    : UpdateFile(file, rawGitData, logItems, descriptionPart);
             }
             catch (Exception ex)
             {
@@ -86,7 +81,6 @@ namespace Atc.CodingRules.Updater.CLI
         [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK for now.")]
         [SuppressMessage("Info Code Smell", "S1135:Track uses of \"TODO\" tags", Justification = "OK for now.")]
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK for now.")]
-        [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "OK for now.")]
         private static IEnumerable<LogKeyValueItem> UpdateFile(
             FileInfo file,
             string rawGitData,

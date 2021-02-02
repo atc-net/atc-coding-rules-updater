@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,8 +12,6 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public const string FileNameEditorConfig = ".editorconfig";
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-        [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "OK.")]
         public static IEnumerable<LogKeyValueItem> HandleFile(
             bool isFirstTime,
             string area,
@@ -38,6 +35,7 @@ namespace Atc.CodingRules.Updater.CLI
                 : $"{rawCodingRulesDistribution}/{urlPart}/{FileNameEditorConfig}";
 
             var logItems = new List<LogKeyValueItem>();
+
             try
             {
                 if (!file.Directory!.Exists)
@@ -192,6 +190,7 @@ namespace Atc.CodingRules.Updater.CLI
 
             var gitLines = rawGitData.Split(FileHelper.LineBreaks, StringSplitOptions.None);
             var fileLines = rawFileData.Split(FileHelper.LineBreaks, StringSplitOptions.None);
+
             foreach (var rawGitDataKeyValue in rawGitDataKeyValues)
             {
                 var key = rawGitDataKeyValue.Key;
@@ -232,7 +231,7 @@ namespace Atc.CodingRules.Updater.CLI
 
         private static int GetLineNumberForwardSearch(IReadOnlyList<string> lines, string key)
         {
-            for (int i = 0; i < lines.Count; i++)
+            for (var i = 0; i < lines.Count; i++)
             {
                 if (lines[i].StartsWith(key, StringComparison.Ordinal))
                 {
@@ -245,7 +244,7 @@ namespace Atc.CodingRules.Updater.CLI
 
         private static int GetLineNumberReverseSearch(IReadOnlyList<string> lines, KeyValueItem keyValueItem)
         {
-            for (int i = lines.Count - 1; i >= 0; i--)
+            for (var i = lines.Count - 1; i >= 0; i--)
             {
                 if (lines[i].Equals($"{keyValueItem.Key}={keyValueItem.Value}", StringComparison.Ordinal))
                 {

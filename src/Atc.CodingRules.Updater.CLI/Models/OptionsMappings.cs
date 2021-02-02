@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 
+// ReSharper disable InvertIf
 namespace Atc.CodingRules.Updater.CLI.Models
 {
     public class OptionsMappings

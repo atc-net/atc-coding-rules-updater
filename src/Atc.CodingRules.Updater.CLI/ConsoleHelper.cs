@@ -42,6 +42,7 @@ namespace Atc.CodingRules.Updater.CLI
                 sb.Append(logItem.Key.StartsWith("--", StringComparison.Ordinal)
                     ? logItem.Key
                     : $"{logItem.Key} # {logItem.LogCategory}: ");
+
                 if (!"#".Equals(logItem.Value, StringComparison.Ordinal))
                 {
                     sb.Append($"{logItem.Value}");
@@ -79,6 +80,7 @@ namespace Atc.CodingRules.Updater.CLI
         {
             WriteLogItems(logItems, verboseMode);
             Console.WriteLine();
+
             if (logItems.Any(x => x.LogCategory == LogCategoryType.Error))
             {
                 Colorful.Console.WriteLine($"{area} has errors.", Color.Red);
