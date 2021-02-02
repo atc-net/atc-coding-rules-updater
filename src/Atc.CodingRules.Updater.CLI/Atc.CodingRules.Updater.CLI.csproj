@@ -1,42 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <TargetFramework>net5.0</TargetFramework>
     <Title>ATC CodingRules Updater CLI</Title>
-    <Authors>atc-net</Authors>
-    <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
-    <PackageProjectUrl>https://github.com/atc-net/atc-coding-rules-updater/tree/main/src/Atc.CodingRules.Updater.CLI</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/atc-net/atc/master/images/icon.png</PackageIconUrl>
-    <PackageIcon>icon.png</PackageIcon>
-    <RepositoryUrl>https://github.com/atc-net/atc-coding-rules-updater</RepositoryUrl>
     <PackageId>atc-coding-rules-updater</PackageId>
-    <AssemblyName>atc-coding-rules-updater</AssemblyName>
-    <IsPackable>true</IsPackable>
+    <PackageTags>coding-rules;rules</PackageTags>
+    <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
     <PackAsTool>true</PackAsTool>
-    <TieredCompilation>true</TieredCompilation>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <Nullable>enable</Nullable>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="1.0.278" />
-    <PackageReference Include="Colorful.Console" Version="1.2.11" />
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
-    <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" />
+    <PackageReference Include="Atc" Version="1.1.89" />
+    <PackageReference Include="Colorful.Console" Version="1.2.15" />
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
+    <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
