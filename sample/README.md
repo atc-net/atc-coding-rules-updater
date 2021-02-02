@@ -1,8 +1,9 @@
-# CLI Tool Usage from powershell:
+# CLI Tool Usage from PowerShell
 
-If you want to have a script that can ensure you have the latest version of the tool `atc-coding-rules-updater` and
-it use what you have defined, when follow this recipi:
+Utilize this sample script, to ensure always having the latest version of the `atc-coding-rules-updater` tool.
 
-1) Download the 2 files from `sample` into your project root folder.
-2) Modify the `atc-coding-rules-updater.json` to your needs.
-3) Run `atc-coding-rules-updater.ps1` from powershell
+In order to get started, follow these 3 steps:
+
+1) Download the 2 files from `sample` folder into a project root folder.
+2) Modify the `atc-coding-rules-updater.json` to project needs.
+3) Run `atc-coding-rules-updater.ps1` from PowerShell.
