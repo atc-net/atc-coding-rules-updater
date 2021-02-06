@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <Title>ATC CodingRules Updater CLI</Title>
     <PackageId>atc-coding-rules-updater</PackageId>
     <PackageTags>coding-rules;rules</PackageTags>
     <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
+    <Title>ATC CodingRules Updater CLI</Title>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>atc-api</AssemblyName>
     <PackAsTool>true</PackAsTool>
     <IncludeSymbols>false</IncludeSymbols>
   </PropertyGroup>
