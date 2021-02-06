@@ -7,7 +7,7 @@
     <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
     <Title>ATC CodingRules Updater CLI</Title>
     <OutputType>Exe</OutputType>
-    <AssemblyName>atc-api</AssemblyName>
+    <AssemblyName>atc-coding-rules-updater</AssemblyName>
     <PackAsTool>true</PackAsTool>
     <IncludeSymbols>false</IncludeSymbols>
   </PropertyGroup>
