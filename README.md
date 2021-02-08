@@ -49,7 +49,7 @@ or by following the instructions [here](https://www.nuget.org/packages/atc-codin
 A successful installation will output something like
 
 ```powershell
-The tool can be invoked by the following command: atc-api
+The tool can be invoked by the following command: atc-coding-rules-updater
 Tool 'atc-coding-rules-updater' (version '1.0.xxx') was successfully installed.`
 ```
 
@@ -148,6 +148,71 @@ To ensure that the latest version of the CLI tool `atc-coding-rules-updater` is 
 1) Download the 2 files from `sample` into a project root folder.
 2) Modify the `atc-coding-rules-updater.json` to the projects specific needs.
 3) Run `atc-coding-rules-updater.ps1` from powershell
+
+# Deep dive in what `atc-coding-rules-updater` actual do and don't do
+
+The `atc-coding-rules-updater` download files from the [atc-coding-rules repositiory's distribution folder](https://github.com/atc-net/atc-coding-rules/tree/main/distribution).
+
+From here it works with 2 consepts:
+* Scaffolding files (`.editorconfig` and `Directory.Build.props`) - if a file don't exist - create a copy.
+* Updating files (`.editorconfig`) - if a file exist - update the file first content part and don't touch the second content part.
+    * First content part is - above the line `# Custom - Code Analyzers Rules` - and will be updated - also known/called as ATC-part.
+    * Seconf content part is - below the line `# Custom - Code Analyzers Rules` - and will not be touched - also known/called as Customer-part.
+
+## A use case-scenario for 2 coding structure setups - Scenario A
+
+In the scenario A we have root where `src` and `test` destination is defined as:
+```json
+{
+	"Mappings": {
+		"Src": { "Paths": [ "src" ] },
+		"Test": { "Paths": [ "test" ] }
+	}
+}
+```
+
+When the `atc-coding-rules-update` is exceuted first time:
+
+- ![#70AD47](https://via.placeholder.com/15/70AD47/000000?text=+) arrows indicate files created in `root` folder.
+- ![#00B0F0](https://via.placeholder.com/15/00B0F0/000000?text=+) arrows indicate files created in `src` folder.
+- ![#7030A0](https://via.placeholder.com/15/7030A0/000000?text=+) arrows indicate files created in `test` folder.
+
+![Img](docs/scenario-a-first-run.png)
+
+## A use case-scenario for 2 coding structure setups - Scenario B
+
+In the scenario A we have root where `src` and `test` destination is defined as:
+```json
+{
+	"Mappings": {
+		"Src": { "Paths": [ 
+            "MyDemo.Gui",
+            "MyDemo.SharedContracts",
+            "MyDemo.WebApi"
+            ] },
+		"Test": { "Paths": [
+            "MyDemo.Gui.Tests",
+            "MyDemo.SharedContracts.Tests",
+            "MyDemo.WebApi.Tests"
+            ] }
+	}
+}
+```
+
+When the `atc-coding-rules-update` is exceuted first time:
+
+- ![#70AD47](https://via.placeholder.com/15/70AD47/000000?text=+) arrows indicate files created in `root` folder.
+- ![#00B0F0](https://via.placeholder.com/15/00B0F0/000000?text=+) arrows indicate files created in `src` folder.
+- ![#7030A0](https://via.placeholder.com/15/7030A0/000000?text=+) arrows indicate files created in `test` folder.
+
+![Img](docs/scenario-b-first-run.png)
+
+## For both case-scenarios
+
+For both scenario A and scenario B, when the `atc-coding-rules-update` is exceuted again it only update `.editorconfig` file. And again when it update these files, it is only the first content part. 
+
+![Img](docs/scenario-ab-second-run.png)
+
 
 # The workflow setup for this repository
 [Read more on Git-Flow](docs/GitFlow.md)
