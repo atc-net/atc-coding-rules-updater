@@ -151,17 +151,17 @@ To ensure that the latest version of the CLI tool `atc-coding-rules-updater` is 
 
 # Deep dive in what `atc-coding-rules-updater` actual do and don't do
 
-The `atc-coding-rules-updater` download files from the [atc-coding-rules repositiory's distribution folder](https://github.com/atc-net/atc-coding-rules/tree/main/distribution).
+The `atc-coding-rules-updater` downloads files from the [atc-coding-rules repository's distribution folder](https://github.com/atc-net/atc-coding-rules/tree/main/distribution).
 
-From here it works with 2 consepts:
-* Scaffolding files (`.editorconfig` and `Directory.Build.props`) - if a file don't exist - create a copy.
-* Updating files (`.editorconfig`) - if a file exist - update the file first content part and don't touch the second content part.
-    * First content part is - above the line `# Custom - Code Analyzers Rules` - and will be updated - also known/called as ATC-part.
-    * Seconf content part is - below the line `# Custom - Code Analyzers Rules` - and will not be touched - also known/called as Customer-part.
+From here it works with 2 concepts:
+* Scaffolding files (`.editorconfig` and `Directory.Build.props`) - if a file does not exist - it creates a copy.
+* Updating files (`.editorconfig`) - if a file exist - updates the files first content part and does not touch the second content part.
+    * First content part is related to rules above the line `# Custom - Code Analyzers Rules` - and will be updated - herafter known as ATC-part.
+    * Second content part is related to rules below the line `# Custom - Code Analyzers Rules` - and will not be touched - herafter known as Customer-part.
 
-## A use case-scenario for 2 coding structure setups - Scenario A
+## A use case-scenario for coding rules structure setups - Scenario A
 
-In the scenario A we have root where `src` and `test` destination is defined as:
+In scenario A we have root where `src` and `test` destination is defined as:
 ```json
 {
 	"Mappings": {
@@ -171,7 +171,7 @@ In the scenario A we have root where `src` and `test` destination is defined as:
 }
 ```
 
-When the `atc-coding-rules-update` is exceuted first time:
+When the `atc-coding-rules-update` is exceuted first time, the following happens (see legend for explanation):
 
 - ![#70AD47](https://via.placeholder.com/15/70AD47/000000?text=+) arrows indicate files created in `root` folder.
 - ![#00B0F0](https://via.placeholder.com/15/00B0F0/000000?text=+) arrows indicate files created in `src` folder.
@@ -179,13 +179,13 @@ When the `atc-coding-rules-update` is exceuted first time:
 
 ![Img](docs/scenario-a-first-run.png)
 
-## A use case-scenario for 2 coding structure setups - Scenario B
+## A use case-scenario for coding rules structure setups - Scenario B
 
-In the scenario A we have root where `src` and `test` destination is defined as:
+In this scenario we have root where `src` and `test` destination is defined as:
 ```json
 {
 	"Mappings": {
-		"Src": { "Paths": [ 
+		"Src": { "Paths": [
             "MyDemo.Gui",
             "MyDemo.SharedContracts",
             "MyDemo.WebApi"
@@ -199,7 +199,7 @@ In the scenario A we have root where `src` and `test` destination is defined as:
 }
 ```
 
-When the `atc-coding-rules-update` is exceuted first time:
+When the `atc-coding-rules-update` is executed first time, the following happens (see legend for explanation):
 
 - ![#70AD47](https://via.placeholder.com/15/70AD47/000000?text=+) arrows indicate files created in `root` folder.
 - ![#00B0F0](https://via.placeholder.com/15/00B0F0/000000?text=+) arrows indicate files created in `src` folder.
@@ -207,12 +207,11 @@ When the `atc-coding-rules-update` is exceuted first time:
 
 ![Img](docs/scenario-b-first-run.png)
 
-## For both case-scenarios
+## For both use-case scenarios
 
-For both scenario A and scenario B, when the `atc-coding-rules-update` is exceuted again it only update `.editorconfig` file. And again when it update these files, it is only the first content part. 
+For both scenario A and scenario B, when the `atc-coding-rules-update` is executed a second time it will only update `.editorconfig` file. And as previously stated, it will only update the ATC-part of these files.
 
 ![Img](docs/scenario-ab-second-run.png)
-
 
 # The workflow setup for this repository
 [Read more on Git-Flow](docs/GitFlow.md)
