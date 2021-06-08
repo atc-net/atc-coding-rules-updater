@@ -1,10 +1,11 @@
+using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 
 namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
     {
-        public override AnalyzerProviderBaseRuleData CollectBaseRules()
+        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
         {
             var data = new AnalyzerProviderBaseRuleData("SonarAnalyzer.CSharp");
 

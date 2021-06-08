@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 
 namespace Atc.CodingRules.AnalyzerProviders.Providers
@@ -7,7 +8,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
     {
         public virtual Uri? DocumentationLink { get; set; }
 
-        public virtual AnalyzerProviderBaseRuleData CollectBaseRules()
+        public virtual Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
         {
             throw new NotImplementedException("Please override RetrieveData.");
         }

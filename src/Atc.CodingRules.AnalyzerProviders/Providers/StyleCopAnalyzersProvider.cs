@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using HtmlAgilityPack;
 
@@ -15,12 +16,12 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
         public override Uri? DocumentationLink { get; set; } = new Uri("https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md", UriKind.Absolute);
 
-        public override AnalyzerProviderBaseRuleData CollectBaseRules()
+        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
         {
             var data = new AnalyzerProviderBaseRuleData("StyleCop.Analyzers");
 
             var web = new HtmlWeb();
-            var htmlDoc = web.Load(DocumentationLink);
+            var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
             var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
             var articleRuleLinks = articleNode.SelectNodes("//*//strong//a").ToList();
 

@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Atc.CodingRules.AnalyzerProviders;
 
 namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
 {
@@ -12,7 +13,7 @@ namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
 
         public static void Main(string[] args)
         {
-            var analyzerProviders = new AnalyzerProviders.Providers.AnalyzerProviders();
+            var analyzerProviders = new AnalyzerProviderCollector();
             var apsData = analyzerProviders.CollectAllBaseRules();
 
             var jsonOptions = new JsonSerializerOptions
