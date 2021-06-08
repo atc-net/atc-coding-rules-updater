@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
@@ -13,7 +12,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         private const int TableColumnCategory = 1;
         private const int TableColumnTitle = 2;
 
-        [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
         public override Uri? DocumentationLink { get; set; } = new Uri("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
 
         public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
@@ -9,7 +8,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
     {
-        [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
         public override Uri? DocumentationLink { get; set; } = new Uri("https://security-code-scan.github.io", UriKind.Absolute);
 
         public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
