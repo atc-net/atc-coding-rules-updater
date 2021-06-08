@@ -36,7 +36,20 @@
   },
   {
     "Name": "Asyncify",
-    "Rules": []
+    "Rules": [
+      {
+        "Code": "AsyncifyInvocation",
+        "Title": "Invocation",
+        "Link": "https://github.com/hvanbakel/Asyncify-CSharp",
+        "Description": "This invocation could benefit from the use of Task async."
+      },
+      {
+        "Code": "AsyncifyVariableAccess",
+        "Title": "Variable access",
+        "Link": "https://github.com/hvanbakel/Asyncify-CSharp",
+        "Description": "This variable access could benefit from the use of Task async."
+      }
+    ]
   },
   {
     "Name": "Meziantou.Analyzer",
