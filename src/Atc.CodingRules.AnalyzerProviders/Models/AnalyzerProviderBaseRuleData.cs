@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 
-namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.Models
+namespace Atc.CodingRules.AnalyzerProviders.Models
 {
-    public class AnalyzerProviderData
+    public class AnalyzerProviderBaseRuleData
     {
-        public AnalyzerProviderData()
+        public AnalyzerProviderBaseRuleData()
         {
         }
 
-        public AnalyzerProviderData(string name)
+        public AnalyzerProviderBaseRuleData(string name)
         {
             this.Name = name;
         }

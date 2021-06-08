@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
-using Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.AnalyzerProviders;
-using Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.Models;
 
 namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
 {
@@ -10,17 +9,19 @@ namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
     {
         static void Main(string[] args)
         {
-            var aps = new List<AnalyzerProviderData>();
+            var analyzerProviders = new AnalyzerProviders.Providers.AnalyzerProviders();
+            var apsData = analyzerProviders.CollectAllBaseRules();
 
-            var apAsyncFixerData = new AsyncFixerProvider().RetrieveData();
-            aps.Add(apAsyncFixerData);
-
-            var apMeziantouData = new MeziantouProvider().RetrieveData();
-            aps.Add(apMeziantouData);
+            var jsonOptions = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true,
+            };
 
             string file = @"C:\Code\atc-net\atc-coding-rules-updater\AnalyzerRulesMetaData.json";
-            var json = JsonSerializer.Serialize(aps, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(file, json);
+
+            var json = JsonSerializer.Serialize(apsData, jsonOptions);
+            File.WriteAllText(file, json, Encoding.UTF8);
         }
     }
 }

@@ -1,13 +1,13 @@
 using System;
-using Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.Models;
+using Atc.CodingRules.AnalyzerProviders.Models;
 
-namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.AnalyzerProviders
+namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public abstract class AnalyzerProviderBase : IAnalyzerProvider
     {
         public virtual Uri? DocumentationLink { get; set; }
 
-        public virtual AnalyzerProviderData RetrieveData()
+        public virtual AnalyzerProviderBaseRuleData CollectBaseRules()
         {
             throw new NotImplementedException("Please override RetrieveData.");
         }

@@ -1,19 +1,23 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.Models;
+using Atc.CodingRules.AnalyzerProviders.Models;
 using HtmlAgilityPack;
 
-namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.AnalyzerProviders
+namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class MeziantouProvider : AnalyzerProviderBase
     {
+        private const int TableColumnId = 0;
+        private const int TableColumnCategory = 1;
+        private const int TableColumnDescription = 2;
+
         [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
         public override Uri DocumentationLink { get; set; } = new Uri("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
 
-        public override AnalyzerProviderData RetrieveData()
+        public override AnalyzerProviderBaseRuleData CollectBaseRules()
         {
-            var ap = new AnalyzerProviderData("Meziantou.Analyzer");
+            var data = new AnalyzerProviderBaseRuleData("Meziantou.Analyzer");
 
             var web = new HtmlWeb();
             var htmlDoc = web.Load(DocumentationLink);
@@ -33,20 +37,22 @@ namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI.AnalyzerProviders
                     continue;
                 }
 
-                var aHrefNode = cells[0].SelectSingleNode("a");
+                var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
 
                 var code = aHrefNode.InnerText;
-                var title = cells[2].InnerText;
+                var title = HtmlEntity.DeEntitize(cells[TableColumnDescription].InnerText);
                 var link = aHrefNode.Attributes[0].Value;
+                var category = cells[TableColumnCategory].InnerText;
 
-                ap.Rules.Add(
+                data.Rules.Add(
                     new Rule(
                         code,
                         title,
-                        link));
+                        link,
+                        category));
             }
 
-            return ap;
+            return data;
         }
     }
 }
