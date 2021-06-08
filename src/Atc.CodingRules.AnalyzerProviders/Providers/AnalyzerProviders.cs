@@ -15,19 +15,29 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var asyncFixerData = asyncFixerProvider.CollectBaseRules();
             data.Add(asyncFixerData);
 
-            // TODO: Asyncify
+            var asyncifyProvider = new AsyncifyProvider();
+            var asyncifyData = asyncifyProvider.CollectBaseRules();
+            data.Add(asyncifyData);
 
             var meziantouProvider = new MeziantouProvider();
             var meziantouData = meziantouProvider.CollectBaseRules();
             data.Add(meziantouData);
 
-            // TODO: Microsoft.CodeAnalysis.NetAnalyzers
+            var microsoftCodeAnalysisNetAnalyzersProvider = new MicrosoftCodeAnalysisNetAnalyzersProvider();
+            var microsoftCodeAnalysisNetAnalyzersData = microsoftCodeAnalysisNetAnalyzersProvider.CollectBaseRules();
+            data.Add(microsoftCodeAnalysisNetAnalyzersData);
 
-            // TODO: SecurityCodeScan.VS2019
+            var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider();
+            var securityCodeScanVs2019Data = securityCodeScanVs2019Provider.CollectBaseRules();
+            data.Add(securityCodeScanVs2019Data);
 
-            // TODO: StyleCop.Analyzers
+            var styleCopAnalyzersProvider = new StyleCopAnalyzersProvider();
+            var styleCopAnalyzersData = styleCopAnalyzersProvider.CollectBaseRules();
+            data.Add(styleCopAnalyzersData);
 
-            // TODO: SonarAnalyzer.CSharp
+            var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider();
+            var sonarAnalyzerCSharpData = sonarAnalyzerCSharpProvider.CollectBaseRules();
+            data.Add(sonarAnalyzerCSharpData);
 
             return data;
         }
