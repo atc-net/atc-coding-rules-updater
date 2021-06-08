@@ -9,7 +9,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var data = new AnalyzerProviderBaseRuleData("SecurityCodeScan.VS2019");
 
             // TODO: Fix this..
-
             return data;
         }
     }

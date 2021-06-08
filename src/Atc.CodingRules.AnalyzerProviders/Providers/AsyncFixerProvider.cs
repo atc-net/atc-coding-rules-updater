@@ -9,7 +9,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var data = new AnalyzerProviderBaseRuleData("AsyncFixer");
 
             // TODO: Fix this..
-
             return data;
         }
     }

@@ -9,7 +9,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var data = new AnalyzerProviderBaseRuleData("Microsoft.CodeAnalysis.NetAnalyzers");
 
             // TODO: Fix this..
-
             return data;
         }
     }

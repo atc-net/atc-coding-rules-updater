@@ -10,10 +10,10 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
     {
         private const int TableColumnId = 0;
         private const int TableColumnCategory = 1;
-        private const int TableColumnDescription = 2;
+        private const int TableColumnTitle = 2;
 
         [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
-        public override Uri DocumentationLink { get; set; } = new Uri("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
+        public override Uri? DocumentationLink { get; set; } = new Uri("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
 
         public override AnalyzerProviderBaseRuleData CollectBaseRules()
         {
@@ -38,9 +38,13 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 }
 
                 var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
+                if (aHrefNode == null)
+                {
+                    continue;
+                }
 
                 var code = aHrefNode.InnerText;
-                var title = HtmlEntity.DeEntitize(cells[TableColumnDescription].InnerText);
+                var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
                 var link = aHrefNode.Attributes[0].Value;
                 var category = cells[TableColumnCategory].InnerText;
 
