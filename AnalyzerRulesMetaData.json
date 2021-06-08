@@ -1,2104 +1,223 @@
 ﻿[
   {
-    "Name": "Meziantou.Analyzer",
+    "Name": "SecurityCodeScan.VS2019",
     "Rules": [
       {
-        "Code": "MA0001",
-        "Title": "StringComparison is missing",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0001.md",
-        "Category": "Usage",
+        "Code": "SCS0001",
+        "Title": "Command Injection",
+        "Link": "https://security-code-scan.github.io#scs0001---command-injection",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0002",
-        "Title": "IEqualityComparer<string> or IComparer<string> is missing",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0002.md",
-        "Category": "Usage",
+        "Code": "SCS0002",
+        "Title": "SQL Injection",
+        "Link": "https://security-code-scan.github.io#scs0002---sql-injection",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0003",
-        "Title": "Add argument name to improve readability",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0003.md",
-        "Category": "Style",
+        "Code": "SCS0003",
+        "Title": "XPath Injection",
+        "Link": "https://security-code-scan.github.io#scs0003---xpath-injection",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0004",
-        "Title": "Use Task.ConfigureAwait(false)",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0004.md",
-        "Category": "Usage",
+        "Code": "SCS0007",
+        "Title": "XML eXternal Entity Injection (XXE)",
+        "Link": "https://security-code-scan.github.io#scs0007---xml-external-entity-injection-(xxe)",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0005",
-        "Title": "Use Array.Empty<T>()",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0005.md",
-        "Category": "Performance",
+        "Code": "SCS0018",
+        "Title": "Path Traversal",
+        "Link": "https://security-code-scan.github.io#scs0018---path-traversal",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0006",
-        "Title": "Use String.Equals instead of equality operator",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0006.md",
-        "Category": "Usage",
+        "Code": "SCS0029",
+        "Title": "Cross-Site Scripting (XSS)",
+        "Link": "https://security-code-scan.github.io#scs0029---cross-site-scripting-(xss)",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0007",
-        "Title": "Add a comma after the last value",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0007.md",
-        "Category": "Style",
+        "Code": "SCS0026",
+        "Title": "LDAP Distinguished Name Injection",
+        "Link": "https://security-code-scan.github.io#scs0026---ldap-distinguished-name-injection",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0008",
-        "Title": "Add StructLayoutAttribute",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0008.md",
-        "Category": "Performance",
+        "Code": "SCS0031",
+        "Title": "LDAP Filter Injection",
+        "Link": "https://security-code-scan.github.io#scs0031---ldap-filter-injection",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0009",
-        "Title": "Add regex evaluation timeout",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0009.md",
-        "Category": "Security",
+        "Code": "SCS0004",
+        "Title": "Certificate Validation Disabled",
+        "Link": "https://security-code-scan.github.io#scs0004---certificate-validation-disabled",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0010",
-        "Title": "Mark attributes with AttributeUsageAttribute",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0010.md",
-        "Category": "Design",
+        "Code": "SCS0005",
+        "Title": "Weak Random Number Generator",
+        "Link": "https://security-code-scan.github.io#scs0005---weak-random-number-generator",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0011",
-        "Title": "IFormatProvider is missing",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0011.md",
-        "Category": "Usage",
+        "Code": "SCS0006",
+        "Title": "Weak hashing function",
+        "Link": "https://security-code-scan.github.io#scs0006---weak-hashing-function",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0012",
-        "Title": "Do not raise reserved exception type",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0012.md",
-        "Category": "Design",
+        "Code": "SCS0010",
+        "Title": "Weak cipher algorithm",
+        "Link": "https://security-code-scan.github.io#scs0010---weak-cipher-algorithm",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0013",
-        "Title": "Types should not extend System.ApplicationException",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0013.md",
-        "Category": "Design",
+        "Code": "SCS0013",
+        "Title": "Potential usage of weak CipherMode mode",
+        "Link": "https://security-code-scan.github.io#scs0013---potential-usage-of-weak-ciphermode-mode",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0014",
-        "Title": "Do not raise System.ApplicationException type",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0014.md",
-        "Category": "Design",
+        "Code": "SCS0008",
+        "Title": "Cookie Without SSL Flag",
+        "Link": "https://security-code-scan.github.io#scs0008---cookie-without-ssl-flag",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0015",
-        "Title": "Specify the parameter name in ArgumentException",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0015.md",
-        "Category": "Usage",
+        "Code": "SCS0009",
+        "Title": "Cookie Without HttpOnly Flag",
+        "Link": "https://security-code-scan.github.io#scs0009---cookie-without-httponly-flag",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0016",
-        "Title": "Prefer return collection abstraction instead of implementation",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0016.md",
-        "Category": "Design",
+        "Code": "SCS0023",
+        "Title": "View State Not Encrypted",
+        "Link": "https://security-code-scan.github.io#scs0023---view-state-not-encrypted",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0017",
-        "Title": "Abstract types should not have public or internal constructors",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0017.md",
-        "Category": "Design",
+        "Code": "SCS0024",
+        "Title": "View State MAC Disabled",
+        "Link": "https://security-code-scan.github.io#scs0024---view-state-mac-disabled",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0018",
-        "Title": "Do not declare static members on generic types",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0018.md",
-        "Category": "Design",
+        "Code": "SCS0017",
+        "Title": "Request Validation Disabled (Attribute)",
+        "Link": "https://security-code-scan.github.io#scs0017---request-validation-disabled-(attribute)",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0019",
-        "Title": "Use EventArgs.Empty",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0019.md",
-        "Category": "Usage",
+        "Code": "SCS0021",
+        "Title": "Request Validation Disabled (Configuration File)",
+        "Link": "https://security-code-scan.github.io#scs0021---request-validation-disabled-(configuration-file)",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0020",
-        "Title": "Use direct methods instead of LINQ methods",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0020.md",
-        "Category": "Performance",
+        "Code": "SCS0030",
+        "Title": "Request validation is enabled only for pages (Configuration File)",
+        "Link": "https://security-code-scan.github.io#scs0030---request-validation-is-enabled-only-for-pages-(configuration-file)",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0021",
-        "Title": "Use StringComparer.GetHashCode instead of string.GetHashCode",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0021.md",
-        "Category": "Usage",
+        "Code": "SCS0015",
+        "Title": "Hardcoded Password",
+        "Link": "https://security-code-scan.github.io#scs0015---hardcoded-password",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0022",
-        "Title": "Return Task.FromResult instead of returning null",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0022.md",
-        "Category": "Design",
+        "Code": "SCS0034",
+        "Title": "Password RequiredLength Not Set",
+        "Link": "https://security-code-scan.github.io#scs0034---password-requiredlength-not-set",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0023",
-        "Title": "Add RegexOptions.ExplicitCapture",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0023.md",
-        "Category": "Performance",
+        "Code": "SCS0032",
+        "Title": "Password RequiredLength Too Small",
+        "Link": "https://security-code-scan.github.io#scs0032---password-requiredlength-too-small",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0024",
-        "Title": "Use an explicit StringComparer when possible",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0024.md",
-        "Category": "Usage",
+        "Code": "SCS0033",
+        "Title": "Password Complexity",
+        "Link": "https://security-code-scan.github.io#scs0033---password-complexity",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0025",
-        "Title": "Implement the functionality instead of throwing NotImplementedException",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0025.md",
-        "Category": "Design",
+        "Code": "SCS0011",
+        "Title": "Unsafe XSLT setting used",
+        "Link": "https://security-code-scan.github.io#scs0011---unsafe-xslt-setting-used",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0026",
-        "Title": "Fix TODO comment",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0026.md",
-        "Category": "Design",
+        "Code": "SCS0012",
+        "Title": "Controller method is potentially vulnerable to authorization bypass",
+        "Link": "https://security-code-scan.github.io#scs0012---controller-method-is-potentially-vulnerable-to-authorization-bypass",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0027",
-        "Title": "Do not remove original exception",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0027.md",
-        "Category": "Usage",
+        "Code": "SCS0016",
+        "Title": "Cross-Site Request Forgery (CSRF)",
+        "Link": "https://security-code-scan.github.io#scs0016---cross-site-request-forgery-(csrf)",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0028",
-        "Title": "Optimize StringBuilder usage",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0028.md",
-        "Category": "Performance",
+        "Code": "SCS0019",
+        "Title": "OutputCache Conflict",
+        "Link": "https://security-code-scan.github.io#scs0019---outputcache-conflict",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0029",
-        "Title": "Combine LINQ methods",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0029.md",
-        "Category": "Performance",
+        "Code": "SCS0022",
+        "Title": "Event Validation Disabled",
+        "Link": "https://security-code-scan.github.io#scs0022---event-validation-disabled",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0030",
-        "Title": "Remove useless OrderBy call",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0030.md",
-        "Category": "Performance",
+        "Code": "SCS0027",
+        "Title": "Open Redirect",
+        "Link": "https://security-code-scan.github.io#scs0027---open-redirect",
+        "Category": null,
         "Description": null
       },
       {
-        "Code": "MA0031",
-        "Title": "Optimize Enumerable.Count() usage",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0031.md",
-        "Category": "Performance",
+        "Code": "SCS0028",
+        "Title": "Insecure Deserialization",
+        "Link": "https://security-code-scan.github.io#scs0028---insecure-deserialization",
+        "Category": null,
         "Description": null
-      },
-      {
-        "Code": "MA0032",
-        "Title": "Use an overload with a CancellationToken argument",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0032.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0033",
-        "Title": "Do not tag instance fields with ThreadStaticAttribute",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0033.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0035",
-        "Title": "Do not use dangerous threading methods",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0035.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0036",
-        "Title": "Make class static",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0036.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0037",
-        "Title": "Remove empty statement",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0037.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0038",
-        "Title": "Make method static",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0038.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0039",
-        "Title": "Do not write your own certificate validation method",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0039.md",
-        "Category": "Security",
-        "Description": null
-      },
-      {
-        "Code": "MA0040",
-        "Title": "Flow the cancellation token",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0040.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0041",
-        "Title": "Make property static",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0041.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0042",
-        "Title": "Do not use blocking calls in an async method",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0042.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0043",
-        "Title": "Use nameof operator in ArgumentException",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0043.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0044",
-        "Title": "Remove useless ToString call",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0044.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0045",
-        "Title": "Do not use blocking call in a sync method (need to make containing method async)",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0045.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0046",
-        "Title": "Use EventHandler<T> to declare events",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0046.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0047",
-        "Title": "Declare types in namespaces",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0047.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0048",
-        "Title": "File name must match type name",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0048.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0049",
-        "Title": "Type name should not match containing namespace",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0049.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0050",
-        "Title": "Validate arguments correctly in iterator methods",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0050.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0051",
-        "Title": "Method is too long",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0051.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0052",
-        "Title": "Replace constant Enum.ToString with nameof",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0052.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0053",
-        "Title": "Make class sealed",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0053.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0054",
-        "Title": "Embed the caught exception as innerException",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0054.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0055",
-        "Title": "Do not use finalizer",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0055.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0056",
-        "Title": "Do not call overridable members in constructor",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0056.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0057",
-        "Title": "Class name should end with 'Attribute'",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0057.md",
-        "Category": "Naming",
-        "Description": null
-      },
-      {
-        "Code": "MA0058",
-        "Title": "Class name should end with 'Exception'",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0058.md",
-        "Category": "Naming",
-        "Description": null
-      },
-      {
-        "Code": "MA0059",
-        "Title": "Class name should end with 'EventArgs'",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0059.md",
-        "Category": "Naming",
-        "Description": null
-      },
-      {
-        "Code": "MA0060",
-        "Title": "The value returned by Stream.Read/Stream.ReadAsync is not used",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0060.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0061",
-        "Title": "Method overrides should not change parameter defaults",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0061.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0062",
-        "Title": "Non-flags enums should not be marked with \"FlagsAttribute\"",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0062.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0063",
-        "Title": "Use Where before OrderBy",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0063.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0064",
-        "Title": "Avoid locking on publicly accessible instance",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0064.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0065",
-        "Title": "Default ValueType.Equals or HashCode is used for struct's equality",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0065.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0066",
-        "Title": "Hash table unfriendly type is used in a hash table",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0066.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0067",
-        "Title": "Use Guid.Empty",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0067.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0068",
-        "Title": "Invalid parameter name for nullable attribute",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0068.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0069",
-        "Title": "Non-constant static fields should not be visible",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0069.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0070",
-        "Title": "Obsolete attributes should include explanations",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0070.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0071",
-        "Title": "Avoid using redundant else",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0071.md",
-        "Category": "Style",
-        "Description": null
-      },
-      {
-        "Code": "MA0072",
-        "Title": "Do not throw from a finally block",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0072.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0073",
-        "Title": "Avoid comparison with bool constant",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0073.md",
-        "Category": "Style",
-        "Description": null
-      },
-      {
-        "Code": "MA0074",
-        "Title": "Avoid implicit culture-sensitive methods",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0074.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0075",
-        "Title": "Do not use implicit culture-sensitive ToString",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0075.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0076",
-        "Title": "Do not use implicit culture-sensitive ToString in interpolated strings",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0076.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0077",
-        "Title": "A class that provides Equals(T) should implement IEquatable<T>",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0077.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0078",
-        "Title": "Use 'Cast' instead of 'Select' to cast",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0078.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0079",
-        "Title": "Flow the cancellation token using .WithCancellation()",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0079.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0080",
-        "Title": "Use a cancellation token using .WithCancellation()",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0080.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0081",
-        "Title": "Method overrides should not omit params keyword",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0081.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0082",
-        "Title": "NaN should not be used in comparisons",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0082.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0083",
-        "Title": "ConstructorArgument parameters should exist in constructors",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0083.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0084",
-        "Title": "Local variable should not hide other symbols",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0084.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0085",
-        "Title": "Anonymous delegates should not be used to unsubscribe from Events",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0085.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0086",
-        "Title": "Do not throw from a finalizer",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0086.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0087",
-        "Title": "Parameters with [DefaultParameterValue] attributes should also be marked [Optional]",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0087.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0088",
-        "Title": "Use [DefaultParameterValue] instead of [DefaultValue]",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0088.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0089",
-        "Title": "Optimize string method usage",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0089.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0090",
-        "Title": "Remove empty else/finally block",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0090.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0091",
-        "Title": "Sender should be 'this' for instance events",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0091.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0092",
-        "Title": "Sender should be 'null' for static events",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0092.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0093",
-        "Title": "EventArgs should not be null",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0093.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0094",
-        "Title": "A class that provides CompareTo(T) should implement IComparable<T>",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0094.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0095",
-        "Title": "A class that implements IEquatable<T> should override Equals(object)",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0095.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0096",
-        "Title": "A class that implements IComparable<T> should also implement IEquatable<T>",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0096.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0097",
-        "Title": "A class that implements IComparable<T> or IComparable should override comparison operators",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0097.md",
-        "Category": "Design",
-        "Description": null
-      },
-      {
-        "Code": "MA0098",
-        "Title": "Use indexer instead of LINQ methods",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0098.md",
-        "Category": "Performance",
-        "Description": null
-      },
-      {
-        "Code": "MA0099",
-        "Title": "Use Explicit enum value instead of 0",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0099.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0100",
-        "Title": "Await task before disposing resources",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0100.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0101",
-        "Title": "String contains an implicit end of line character",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0101.md",
-        "Category": "Usage",
-        "Description": null
-      },
-      {
-        "Code": "MA0102",
-        "Title": "Make member readonly",
-        "Link": "https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0102.md",
-        "Category": "Design",
-        "Description": null
-      }
-    ]
-  },
-  {
-    "Name": "StyleCop.Analyzers",
-    "Rules": [
-      {
-        "Code": "SA0001",
-        "Title": "Xml comment analysis disabled",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0001.md",
-        "Category": "Special",
-        "Description": "All diagnostics of XML documentation comments has been disabled due to the current project configuration."
-      },
-      {
-        "Code": "SA0002",
-        "Title": "Invalid settings file",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0002.md",
-        "Category": "Special",
-        "Description": "The stylecop.json settings file could not be loaded due to a deserialization error."
-      },
-      {
-        "Code": "SA1000",
-        "Title": "Keywords must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1000.md",
-        "Category": "Spacing",
-        "Description": "The spacing around a C# keyword is incorrect."
-      },
-      {
-        "Code": "SA1001",
-        "Title": "Commas must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1001.md",
-        "Category": "Spacing",
-        "Description": "The spacing around a comma is incorrect, within a C# code file."
-      },
-      {
-        "Code": "SA1002",
-        "Title": "Semicolons must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1002.md",
-        "Category": "Spacing",
-        "Description": "The spacing around a semicolon is incorrect, within a C# code file."
-      },
-      {
-        "Code": "SA1003",
-        "Title": "Symbols must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1003.md",
-        "Category": "Spacing",
-        "Description": "The spacing around an operator symbol is incorrect, within a C# code file."
-      },
-      {
-        "Code": "SA1004",
-        "Title": "Documentation lines must begin with single space",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1004.md",
-        "Category": "Spacing",
-        "Description": "A line within a documentation header above a C# element does not begin with a single space."
-      },
-      {
-        "Code": "SA1005",
-        "Title": "Single line comments must begin with single space",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1005.md",
-        "Category": "Spacing",
-        "Description": "A single-line comment within a C# code file does not begin with a single space."
-      },
-      {
-        "Code": "SA1006",
-        "Title": "Preprocessor keywords must not be preceded by space",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1006.md",
-        "Category": "Spacing",
-        "Description": "A C# preprocessor-type keyword is preceded by space."
-      },
-      {
-        "Code": "SA1007",
-        "Title": "Operator keyword must be followed by space",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1007.md",
-        "Category": "Spacing",
-        "Description": "The operator keyword within a C# operator overload method is not followed by any whitespace."
-      },
-      {
-        "Code": "SA1008",
-        "Title": "Opening parenthesis must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1008.md",
-        "Category": "Spacing",
-        "Description": "An opening parenthesis within a C# statement is not spaced correctly."
-      },
-      {
-        "Code": "SA1009",
-        "Title": "Closing parenthesis must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1009.md",
-        "Category": "Spacing",
-        "Description": "A closing parenthesis within a C# statement is not spaced correctly."
-      },
-      {
-        "Code": "SA1010",
-        "Title": "Opening square brackets must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1010.md",
-        "Category": "Spacing",
-        "Description": "An opening square bracket within a C# statement is not spaced correctly."
-      },
-      {
-        "Code": "SA1011",
-        "Title": "Closing square brackets must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1011.md",
-        "Category": "Spacing",
-        "Description": "A closing square bracket within a C# statement is not spaced correctly."
-      },
-      {
-        "Code": "SA1012",
-        "Title": "Opening braces must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1012.md",
-        "Category": "Spacing",
-        "Description": "An opening brace within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1013",
-        "Title": "Closing braces must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1013.md",
-        "Category": "Spacing",
-        "Description": "A closing brace within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1014",
-        "Title": "Opening generic brackets must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1014.md",
-        "Category": "Spacing",
-        "Description": "An opening generic bracket within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1015",
-        "Title": "Closing generic brackets must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1015.md",
-        "Category": "Spacing",
-        "Description": "A closing generic bracket within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1016",
-        "Title": "Opening attribute brackets must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1016.md",
-        "Category": "Spacing",
-        "Description": "An opening attribute bracket within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1017",
-        "Title": "Closing attribute brackets must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1017.md",
-        "Category": "Spacing",
-        "Description": "A closing attribute bracket within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1018",
-        "Title": "Nullable type symbols must not be preceded by space",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1018.md",
-        "Category": "Spacing",
-        "Description": "A nullable type symbol within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1019",
-        "Title": "Member access symbols must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1019.md",
-        "Category": "Spacing",
-        "Description": "The spacing around a member access symbol is incorrect, within a C# code file."
-      },
-      {
-        "Code": "SA1020",
-        "Title": "Increment decrement symbols must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1020.md",
-        "Category": "Spacing",
-        "Description": "An increment or decrement symbol within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1021",
-        "Title": "Negative signs must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1021.md",
-        "Category": "Spacing",
-        "Description": "A negative sign within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1022",
-        "Title": "Positive signs must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1022.md",
-        "Category": "Spacing",
-        "Description": "A positive sign within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1023",
-        "Title": "Dereference and access of must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1023.md",
-        "Category": "Spacing",
-        "Description": "A dereference symbol or an access-of symbol within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1024",
-        "Title": "Colons must be spaced correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1024.md",
-        "Category": "Spacing",
-        "Description": "A colon within a C# element is not spaced correctly."
-      },
-      {
-        "Code": "SA1025",
-        "Title": "Code must not contain multiple whitespace in ARow",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1025.md",
-        "Category": "Spacing",
-        "Description": "The code contains multiple whitespace characters in a row."
-      },
-      {
-        "Code": "SA1026",
-        "Title": "Code must not contain space after new keyword in implicitly typed array allocation",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1026.md",
-        "Category": "Spacing",
-        "Description": "An implicitly typed new array allocation within a C# code file is not spaced correctly."
-      },
-      {
-        "Code": "SA1027",
-        "Title": "Use tabs correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1027.md",
-        "Category": "Spacing",
-        "Description": "The code contains a tab or space character which is not consistent with the current project settings."
-      },
-      {
-        "Code": "SA1028",
-        "Title": "Code must not contain trailing whitespace",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1028.md",
-        "Category": "Spacing",
-        "Description": "A line of code ends with a space, tab, or other whitespace characters before the end of line character(s)."
-      },
-      {
-        "Code": "SA1100",
-        "Title": "Do not prefix calls with base unless local implementation exists",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1100.md",
-        "Category": "Readability",
-        "Description": "A call to a member from an inherited class begins with base., and the local class does not contain an override or implementation of the member."
-      },
-      {
-        "Code": "SA1101",
-        "Title": "Prefix local calls with this",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1101.md",
-        "Category": "Readability",
-        "Description": "A call to an instance member of the local class or a base class is not prefixed with 'this.', within a C# code file."
-      },
-      {
-        "Code": "SA1102",
-        "Title": "Query clauses",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1102.md",
-        "Category": "Readability",
-        "Description": "A C# query clause does not begin on the same line as the previous clause, or on the next line."
-      },
-      {
-        "Code": "SA1103",
-        "Title": "Query clauses",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1103.md",
-        "Category": "Readability",
-        "Description": "The clauses within a C# query expression are not all placed on the same line, and each clause is not placed on its own line."
-      },
-      {
-        "Code": "SA1104",
-        "Title": "Query clauses",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1104.md",
-        "Category": "Readability",
-        "Description": "A clause within a C# query expression begins on the same line as the previous clause, when the previous clause spans across multiple lines."
-      },
-      {
-        "Code": "SA1105",
-        "Title": "Query clauses",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1105.md",
-        "Category": "Readability",
-        "Description": "A clause within a C# query expression spans across multiple lines, and does not begin on its own line."
-      },
-      {
-        "Code": "SA1106",
-        "Title": "Code must not contain empty statements",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1106.md",
-        "Category": "Readability",
-        "Description": "The C# code contains an extra semicolon."
-      },
-      {
-        "Code": "SA1107",
-        "Title": "Code must not contain multiple statements on one line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1107.md",
-        "Category": "Readability",
-        "Description": "The C# code contains more than one statement on a single line."
-      },
-      {
-        "Code": "SA1108",
-        "Title": "Block statements must not contain embedded comments",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1108.md",
-        "Category": "Readability",
-        "Description": "A C# statement contains a comment between the declaration of the statement and the opening brace of the statement."
-      },
-      {
-        "Code": "SA1109",
-        "Title": "Block statements must not contain embedded regions",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1109.md",
-        "Category": "Readability",
-        "Description": "A C# statement contains a region tag between the declaration of the statement and the opening brace of the statement."
-      },
-      {
-        "Code": "SA1110",
-        "Title": "Opening parenthesis must be on declaration line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1110.md",
-        "Category": "Readability",
-        "Description": "The opening parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the method or indexer name."
-      },
-      {
-        "Code": "SA1111",
-        "Title": "Closing parenthesis must be on line of last parameter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1111.md",
-        "Category": "Readability",
-        "Description": "The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the last parameter."
-      },
-      {
-        "Code": "SA1112",
-        "Title": "Closing parenthesis must be on line of opening parenthesis",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1112.md",
-        "Category": "Readability",
-        "Description": "The closing parenthesis or bracket in a call to a C# method or indexer, or the declaration of a method or indexer, is not placed on the same line as the opening bracket when the element does not take any parameters."
-      },
-      {
-        "Code": "SA1113",
-        "Title": "Comma must be on same line as previous parameter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1113.md",
-        "Category": "Readability",
-        "Description": "A comma between two parameters in a call to a C# method or indexer, or in the declaration of a method or indexer, is not placed on the same line as the previous parameter."
-      },
-      {
-        "Code": "SA1114",
-        "Title": "Parameter list must follow declaration",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1114.md",
-        "Category": "Readability",
-        "Description": "The start of the parameter list for a method or indexer call or declaration does not begin on the same line as the opening bracket, or on the line after the opening bracket."
-      },
-      {
-        "Code": "SA1115",
-        "Title": "Parameter must follow comma",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1115.md",
-        "Category": "Readability",
-        "Description": "A parameter within a C# method or indexer call or declaration does not begin on the same line as the previous parameter, or on the next line."
-      },
-      {
-        "Code": "SA1116",
-        "Title": "Split parameters must start on line after declaration",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1116.md",
-        "Category": "Readability",
-        "Description": "The parameters to a C# method or indexer call or declaration span across multiple lines, but the first parameter does not start on the line after the opening bracket."
-      },
-      {
-        "Code": "SA1117",
-        "Title": "Parameters must be on same line or separate lines",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1117.md",
-        "Category": "Readability",
-        "Description": "The parameters to a C# method or indexer call or declaration are not all on the same line or each on a separate line."
-      },
-      {
-        "Code": "SA1118",
-        "Title": "Parameter must not span multiple lines",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1118.md",
-        "Category": "Readability",
-        "Description": "A parameter to a C# method or indexer, other than the first parameter, spans across multiple lines."
-      },
-      {
-        "Code": "SA1120",
-        "Title": "Comments must contain text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1120.md",
-        "Category": "Readability",
-        "Description": "The C# comment does not contain any comment text."
-      },
-      {
-        "Code": "SA1121",
-        "Title": "Use built in type alias",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1121.md",
-        "Category": "Readability",
-        "Description": "The code uses one of the basic C# types, but does not use the built-in alias for the type."
-      },
-      {
-        "Code": "SA1122",
-        "Title": "Use string empty for empty strings",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1122.md",
-        "Category": "Readability",
-        "Description": "The C# code includes an empty string, written as \"\"."
-      },
-      {
-        "Code": "SA1123",
-        "Title": "Do not place regions within elements",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1123.md",
-        "Category": "Readability",
-        "Description": "The C# code contains a region within the body of a code element."
-      },
-      {
-        "Code": "SA1124",
-        "Title": "Do not use regions",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1124.md",
-        "Category": "Readability",
-        "Description": "The C# code contains a region."
-      },
-      {
-        "Code": "SA1125",
-        "Title": "Use shorthand for nullable types",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1125.md",
-        "Category": "Readability",
-        "Description": "The Nullable type has been defined not using the C# shorthand."
-      },
-      {
-        "Code": "SA1126",
-        "Title": "Prefix calls correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1126.md",
-        "Category": "Readability",
-        "Description": "A call to a member is not prefixed with the 'this.', 'base.', 'object.' or 'typename.' prefix to indicate the intended method call, within a C# code file."
-      },
-      {
-        "Code": "SA1127",
-        "Title": "Generic type constraints must be on own line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1127.md",
-        "Category": "Readability",
-        "Description": "A generic constraint on a type or method declaration is on the same line as the declaration, within a C# code file."
-      },
-      {
-        "Code": "SA1128",
-        "Title": "Constructor initializer must be on own line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1128.md",
-        "Category": "Readability",
-        "Description": "A constructor initializer is on the same line as the constructor declaration, within a C# code file."
-      },
-      {
-        "Code": "SA1129",
-        "Title": "Do not use default value type constructor",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1129.md",
-        "Category": "Readability",
-        "Description": "A value type was constructed using the syntax new T()."
-      },
-      {
-        "Code": "SA1130",
-        "Title": "Use lambda syntax",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1130.md",
-        "Category": "Readability",
-        "Description": "An anonymous method was declared using the form delegate (parameters) { }, when a lambda expression would provide equivalent behavior with the syntax (parameters) =&gt; { }."
-      },
-      {
-        "Code": "SA1131",
-        "Title": "Use readable conditions",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1131.md",
-        "Category": "Readability",
-        "Description": "A comparison was made between a variable and a literal or constant value, and the variable appeared on the right-hand side of the expression."
-      },
-      {
-        "Code": "SA1132",
-        "Title": "Do not combine fields",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1132.md",
-        "Category": "Readability",
-        "Description": "Two or more fields were declared in the same field declaration syntax."
-      },
-      {
-        "Code": "SA1133",
-        "Title": "Do not combine attributes",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1133.md",
-        "Category": "Readability",
-        "Description": "Two or more attributes appeared within the same set of square brackets."
-      },
-      {
-        "Code": "SA1134",
-        "Title": "Attributes must not share line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1134.md",
-        "Category": "Readability",
-        "Description": "An attribute is placed on the same line of code as another attribute or element."
-      },
-      {
-        "Code": "SA1135",
-        "Title": "Using directives must be qualified",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1135.md",
-        "Category": "Readability",
-        "Description": "A using directive is not qualified."
-      },
-      {
-        "Code": "SA1136",
-        "Title": "Enum values should be on separate lines",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1136.md",
-        "Category": "Readability",
-        "Description": "Multiple enum values are placed on the same line of code."
-      },
-      {
-        "Code": "SA1137",
-        "Title": "Elements should have the same indentation",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1137.md",
-        "Category": "Readability",
-        "Description": "Two sibling elements which each start on their own line have different levels of indentation."
-      },
-      {
-        "Code": "SA1139",
-        "Title": "Use literals suffix notation instead of casting",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1139.md",
-        "Category": "Readability",
-        "Description": "Use literal suffix notation instead of casting."
-      },
-      {
-        "Code": "SA1141",
-        "Title": "Use tuple syntax",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1141.md",
-        "Category": "Readability",
-        "Description": "Use tuple syntax instead of the underlying ValueTuple implementation type."
-      },
-      {
-        "Code": "SA1142",
-        "Title": "Refer to tuple elements by name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1142.md",
-        "Category": "Readability",
-        "Description": "An element of a tuple was referenced by its metadata name when an element name is available."
-      },
-      {
-        "Code": "SA1200",
-        "Title": "Using directives must be placed correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1200.md",
-        "Category": "Ordering",
-        "Description": "A C# using directive is placed outside of a namespace element."
-      },
-      {
-        "Code": "SA1201",
-        "Title": "Elements must appear in the correct order",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1201.md",
-        "Category": "Ordering",
-        "Description": "An element within a C# code file is out of order in relation to the other elements in the code."
-      },
-      {
-        "Code": "SA1202",
-        "Title": "Elements must be ordered by access",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1202.md",
-        "Category": "Ordering",
-        "Description": "An element within a C# code file is out of order within regard to access level, in relation to other elements in the code."
-      },
-      {
-        "Code": "SA1203",
-        "Title": "Constants must appear before fields",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1203.md",
-        "Category": "Ordering",
-        "Description": "A constant field is placed beneath a non-constant field."
-      },
-      {
-        "Code": "SA1204",
-        "Title": "Static elements must appear before instance elements",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1204.md",
-        "Category": "Ordering",
-        "Description": "A static element is positioned beneath an instance element of the same type."
-      },
-      {
-        "Code": "SA1205",
-        "Title": "Partial elements must declare access",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1205.md",
-        "Category": "Ordering",
-        "Description": "The partial element does not have an access modifier defined."
-      },
-      {
-        "Code": "SA1206",
-        "Title": "Declaration keywords must follow order",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1206.md",
-        "Category": "Ordering",
-        "Description": "The keywords within the declaration of an element do not follow a standard ordering scheme."
-      },
-      {
-        "Code": "SA1207",
-        "Title": "Protected must come before internal",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1207.md",
-        "Category": "Ordering",
-        "Description": "The keyword protected is positioned after the keyword internal within the declaration of a protected internal C# element."
-      },
-      {
-        "Code": "SA1208",
-        "Title": "System using directives must be placed before other using directives",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1208.md",
-        "Category": "Ordering",
-        "Description": "A using directive which declares a member of the System namespace appears after a using directive which declares a member of a different namespace, within a C# code file."
-      },
-      {
-        "Code": "SA1209",
-        "Title": "Using alias directives must be placed after other using directives",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1209.md",
-        "Category": "Ordering",
-        "Description": "A using-alias directive is positioned before a regular using directive."
-      },
-      {
-        "Code": "SA1210",
-        "Title": "Using directives must be ordered alphabetically by namespace",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1210.md",
-        "Category": "Ordering",
-        "Description": "The using directives within a C# code file are not sorted alphabetically by namespace."
-      },
-      {
-        "Code": "SA1211",
-        "Title": "Using alias directives must be ordered alphabetically by alias name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1211.md",
-        "Category": "Ordering",
-        "Description": "The using-alias directives within a C# code file are not sorted alphabetically by alias name."
-      },
-      {
-        "Code": "SA1212",
-        "Title": "Property accessors must follow order",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1212.md",
-        "Category": "Ordering",
-        "Description": "A get accessor appears after a set accessor within a property or indexer."
-      },
-      {
-        "Code": "SA1213",
-        "Title": "Event accessors must follow order",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1213.md",
-        "Category": "Ordering",
-        "Description": "An add accessor appears after a remove accessor within an event."
-      },
-      {
-        "Code": "SA1214",
-        "Title": "Readonly elements must appear before non readonly elements",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1214.md",
-        "Category": "Ordering",
-        "Description": "A readonly field is positioned beneath a non-readonly field."
-      },
-      {
-        "Code": "SA1215",
-        "Title": "Instance readonly elements must appear before instance non readonly elements",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1215.md",
-        "Category": "Ordering",
-        "Description": "An instance readonly element is positioned beneath an instance non-readonly element of the same type."
-      },
-      {
-        "Code": "SA1216",
-        "Title": "Using static directives must be placed at the correct location",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1216.md",
-        "Category": "Ordering",
-        "Description": "A using static directive is positioned at the wrong location (before a regular using directive or after an alias using directive)."
-      },
-      {
-        "Code": "SA1217",
-        "Title": "Using static directives must be ordered alphabetically",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1217.md",
-        "Category": "Ordering",
-        "Description": "The using static directives within a C# code file are not sorted alphabetically by full type name."
-      },
-      {
-        "Code": "SA1300",
-        "Title": "Element must begin with upper case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1300.md",
-        "Category": "Naming",
-        "Description": "The name of a C# element does not begin with an upper-case letter."
-      },
-      {
-        "Code": "SA1301",
-        "Title": "Element must begin with lower case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1301.md",
-        "Category": "Naming",
-        "Description": "There are currently no situations in which this rule will fire."
-      },
-      {
-        "Code": "SA1302",
-        "Title": "Interface names must begin with I",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1302.md",
-        "Category": "Naming",
-        "Description": "The name of a C# interface does not begin with the capital letter I."
-      },
-      {
-        "Code": "SA1303",
-        "Title": "Const field names must begin with upper case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md",
-        "Category": "Naming",
-        "Description": "The name of a constant C# field should begin with an upper-case letter."
-      },
-      {
-        "Code": "SA1304",
-        "Title": "Non private readonly fields must begin with upper case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1304.md",
-        "Category": "Naming",
-        "Description": "The name of a non-private readonly C# field should being with an upper-case letter."
-      },
-      {
-        "Code": "SA1305",
-        "Title": "Field names must not use hungarian notation",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1305.md",
-        "Category": "Naming",
-        "Description": "The name of a field or variable in C# uses Hungarian notation."
-      },
-      {
-        "Code": "SA1306",
-        "Title": "Field names must begin with lower case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1306.md",
-        "Category": "Naming",
-        "Description": "The name of a field in C# does not begin with a lower-case letter."
-      },
-      {
-        "Code": "SA1307",
-        "Title": "Accessible fields must begin with upper case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1307.md",
-        "Category": "Naming",
-        "Description": "The name of a public or internal field in C# does not begin with an upper-case letter."
-      },
-      {
-        "Code": "SA1308",
-        "Title": "Variable names must not be prefixed",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1308.md",
-        "Category": "Naming",
-        "Description": "A field name in C# is prefixed with m_ or s_."
-      },
-      {
-        "Code": "SA1309",
-        "Title": "Field names must not begin with underscore",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1309.md",
-        "Category": "Naming",
-        "Description": "A field name in C# begins with an underscore."
-      },
-      {
-        "Code": "SA1310",
-        "Title": "Field names must not contain underscore",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1310.md",
-        "Category": "Naming",
-        "Description": "A field name in C# contains an underscore."
-      },
-      {
-        "Code": "SA1311",
-        "Title": "Static readonly fields must begin with upper case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1311.md",
-        "Category": "Naming",
-        "Description": "The name of a static readonly field does not begin with an upper-case letter."
-      },
-      {
-        "Code": "SA1312",
-        "Title": "Variable names must begin with lower case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1312.md",
-        "Category": "Naming",
-        "Description": "The name of a variable in C# does not begin with a lower-case letter."
-      },
-      {
-        "Code": "SA1313",
-        "Title": "Parameter names must begin with lower case letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1313.md",
-        "Category": "Naming",
-        "Description": "The name of a parameter in C# does not begin with a lower-case letter."
-      },
-      {
-        "Code": "SA1314",
-        "Title": "Type parameter names must begin with T",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1314.md",
-        "Category": "Naming",
-        "Description": "The name of a C# type parameter does not begin with the capital letter T."
-      },
-      {
-        "Code": "SA1316",
-        "Title": "Tuple element names should use correct casing",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1316.md",
-        "Category": "Naming",
-        "Description": "Element names within a tuple type should have the correct casing."
-      },
-      {
-        "Code": "SA1119",
-        "Title": "Statement must not use unnecessary parenthesis",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1119.md",
-        "Category": "Maintainability",
-        "Description": "A C# statement contains parenthesis which are unnecessary and should be removed."
-      },
-      {
-        "Code": "SA1400",
-        "Title": "Access modifier must be declared",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1400.md",
-        "Category": "Maintainability",
-        "Description": "The access modifier for a C# element has not been explicitly defined."
-      },
-      {
-        "Code": "SA1401",
-        "Title": "Fields must be private",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1401.md",
-        "Category": "Maintainability",
-        "Description": "A field within a C# class has an access modifier other than private."
-      },
-      {
-        "Code": "SA1402",
-        "Title": "File may only contain ASingle type",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1402.md",
-        "Category": "Maintainability",
-        "Description": "A C# code file contains more than one unique type."
-      },
-      {
-        "Code": "SA1403",
-        "Title": "File may only contain ASingle namespace",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1403.md",
-        "Category": "Maintainability",
-        "Description": "A C# code file contains more than one namespace."
-      },
-      {
-        "Code": "SA1404",
-        "Title": "Code analysis suppression must have justification",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1404.md",
-        "Category": "Maintainability",
-        "Description": "A Code Analysis SuppressMessage attribute does not include a justification."
-      },
-      {
-        "Code": "SA1405",
-        "Title": "Debug assert must provide message text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1405.md",
-        "Category": "Maintainability",
-        "Description": "A call to Debug.Assert in C# code does not include a descriptive message."
-      },
-      {
-        "Code": "SA1406",
-        "Title": "Debug fail must provide message text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1406.md",
-        "Category": "Maintainability",
-        "Description": "A call to Debug.Fail in C# code does not include a descriptive message."
-      },
-      {
-        "Code": "SA1407",
-        "Title": "Arithmetic expressions must declare precedence",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1407.md",
-        "Category": "Maintainability",
-        "Description": "A C# statement contains a complex arithmetic expression which omits parenthesis around operators."
-      },
-      {
-        "Code": "SA1408",
-        "Title": "Conditional expressions must declare precedence",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1408.md",
-        "Category": "Maintainability",
-        "Description": "A C# statement contains a complex conditional expression which omits parenthesis around operators."
-      },
-      {
-        "Code": "SA1409",
-        "Title": "Remove unnecessary code",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1409.md",
-        "Category": "Maintainability",
-        "Description": "A C# file contains code which is unnecessary and can be removed without changing the overall logic of the code."
-      },
-      {
-        "Code": "SA1410",
-        "Title": "Remove delegate parenthesis when possible",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1410.md",
-        "Category": "Maintainability",
-        "Description": "A call to a C# anonymous method does not contain any method parameters, yet the statement still includes parenthesis."
-      },
-      {
-        "Code": "SA1411",
-        "Title": "Attribute constructor must not use unnecessary parenthesis",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1411.md",
-        "Category": "Maintainability",
-        "Description": "An attribute declaration does not contain any parameters, yet it still includes parenthesis."
-      },
-      {
-        "Code": "SA1412",
-        "Title": "Store files as utf8",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1412.md",
-        "Category": "Maintainability",
-        "Description": "The encoding of the file is not UTF-8 with byte order mark."
-      },
-      {
-        "Code": "SA1413",
-        "Title": "Use trailing commas in multi line initializers",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1413.md",
-        "Category": "Maintainability",
-        "Description": "A multi-line initializer should use a comma on the last item."
-      },
-      {
-        "Code": "SA1414",
-        "Title": "Tuple types in signatures should have element names",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1414.md",
-        "Category": "Maintainability",
-        "Description": "Tuple types appearing in member declarations should have explicitly named tuple elements."
-      },
-      {
-        "Code": "SA1500",
-        "Title": "Braces for multi line statements must not share line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1500.md",
-        "Category": "Layout",
-        "Description": "The opening or closing brace within a C# statement, element, or expression is not placed on its own line."
-      },
-      {
-        "Code": "SA1501",
-        "Title": "Statement must not be on single line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1501.md",
-        "Category": "Layout",
-        "Description": "A C# statement containing opening and closing braces is written completely on a single line."
-      },
-      {
-        "Code": "SA1502",
-        "Title": "Element must not be on single line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1502.md",
-        "Category": "Layout",
-        "Description": "A C# element containing opening and closing braces is written completely on a single line."
-      },
-      {
-        "Code": "SA1503",
-        "Title": "Braces must not be omitted",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1503.md",
-        "Category": "Layout",
-        "Description": "The opening and closing braces for a C# statement have been omitted."
-      },
-      {
-        "Code": "SA1504",
-        "Title": "All accessors must be single line or multi line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1504.md",
-        "Category": "Layout",
-        "Description": "Within a C# property, indexer or event, at least one of the child accessors is written on a single line, and at least one of the child accessors is written across multiple lines."
-      },
-      {
-        "Code": "SA1505",
-        "Title": "Opening braces must not be followed by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1505.md",
-        "Category": "Layout",
-        "Description": "An opening brace within a C# element, statement, or expression is followed by a blank line."
-      },
-      {
-        "Code": "SA1506",
-        "Title": "Element documentation headers must not be followed by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1506.md",
-        "Category": "Layout",
-        "Description": "An element documentation header above a C# element is followed by a blank line."
-      },
-      {
-        "Code": "SA1507",
-        "Title": "Code must not contain multiple blank lines in ARow",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1507.md",
-        "Category": "Layout",
-        "Description": "The C# code contains multiple blank lines in a row."
-      },
-      {
-        "Code": "SA1508",
-        "Title": "Closing braces must not be preceded by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1508.md",
-        "Category": "Layout",
-        "Description": "A closing brace within a C# element, statement, or expression is preceded by a blank line."
-      },
-      {
-        "Code": "SA1509",
-        "Title": "Opening braces must not be preceded by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1509.md",
-        "Category": "Layout",
-        "Description": "An opening brace within a C# element, statement, or expression is preceded by a blank line."
-      },
-      {
-        "Code": "SA1510",
-        "Title": "Chained statement blocks must not be preceded by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1510.md",
-        "Category": "Layout",
-        "Description": "Chained C# statements are separated by a blank line."
-      },
-      {
-        "Code": "SA1511",
-        "Title": "While do footer must not be preceded by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1511.md",
-        "Category": "Layout",
-        "Description": "The while footer at the bottom of a do-while statement is separated from the statement by a blank line."
-      },
-      {
-        "Code": "SA1512",
-        "Title": "Single line comments must not be followed by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1512.md",
-        "Category": "Layout",
-        "Description": "A single-line comment within C# code is followed by a blank line."
-      },
-      {
-        "Code": "SA1513",
-        "Title": "Closing brace must be followed by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1513.md",
-        "Category": "Layout",
-        "Description": "A closing brace within a C# element, statement, or expression is not followed by a blank line."
-      },
-      {
-        "Code": "SA1514",
-        "Title": "Element documentation header must be preceded by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1514.md",
-        "Category": "Layout",
-        "Description": "An element documentation header above a C# element is not preceded by a blank line."
-      },
-      {
-        "Code": "SA1515",
-        "Title": "Single line comment must be preceded by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1515.md",
-        "Category": "Layout",
-        "Description": "A single-line comment within C# code is not preceded by a blank line."
-      },
-      {
-        "Code": "SA1516",
-        "Title": "Elements must be separated by blank line",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1516.md",
-        "Category": "Layout",
-        "Description": "Adjacent C# elements are not separated by a blank line."
-      },
-      {
-        "Code": "SA1517",
-        "Title": "Code must not contain blank lines at start of file",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1517.md",
-        "Category": "Layout",
-        "Description": "The code file has blank lines at the start."
-      },
-      {
-        "Code": "SA1518",
-        "Title": "Use line endings correctly at end of file",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1518.md",
-        "Category": "Layout",
-        "Description": "The line endings at the end of a file do not match the settings for the project."
-      },
-      {
-        "Code": "SA1519",
-        "Title": "Braces must not be omitted from multi line child statement",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1519.md",
-        "Category": "Layout",
-        "Description": "The opening and closing braces for a multi-line C# statement have been omitted."
-      },
-      {
-        "Code": "SA1520",
-        "Title": "Use braces consistently",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1520.md",
-        "Category": "Layout",
-        "Description": "The opening and closing braces of a chained if/else if/else construct were included for some clauses, but omitted for others."
-      },
-      {
-        "Code": "SA1600",
-        "Title": "Elements must be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md",
-        "Category": "Documentation",
-        "Description": "A C# code element is missing a documentation header."
-      },
-      {
-        "Code": "SA1601",
-        "Title": "Partial elements must be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1601.md",
-        "Category": "Documentation",
-        "Description": "A C# partial element is missing a documentation header."
-      },
-      {
-        "Code": "SA1602",
-        "Title": "Enumeration items must be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1602.md",
-        "Category": "Documentation",
-        "Description": "An item within a C# enumeration is missing an Xml documentation header."
-      },
-      {
-        "Code": "SA1603",
-        "Title": "Documentation must contain valid xml",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1603.md",
-        "Category": "Documentation",
-        "Description": "The Xml within a C# element's document header is badly formed."
-      },
-      {
-        "Code": "SA1604",
-        "Title": "Element documentation must have summary",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1604.md",
-        "Category": "Documentation",
-        "Description": "The Xml header documentation for a C# element is missing a &lt;summary&gt; tag."
-      },
-      {
-        "Code": "SA1605",
-        "Title": "Partial element documentation must have summary",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1605.md",
-        "Category": "Documentation",
-        "Description": "The &lt;summary&gt; or &lt;content&gt; tag within the documentation header for a C# code element is missing or empty."
-      },
-      {
-        "Code": "SA1606",
-        "Title": "Element documentation must have summary text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1606.md",
-        "Category": "Documentation",
-        "Description": "The &lt;summary&gt; tag within the documentation header for a C# code element is empty."
-      },
-      {
-        "Code": "SA1607",
-        "Title": "Partial element documentation must have summary text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1607.md",
-        "Category": "Documentation",
-        "Description": "The &lt;summary&gt; or &lt;content&gt; tag within the documentation header for a C# code element is empty."
-      },
-      {
-        "Code": "SA1608",
-        "Title": "Element documentation must not have default summary",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1608.md",
-        "Category": "Documentation",
-        "Description": "The &lt;summary&gt; tag within an element's Xml header documentation contains the default text generated by Visual Studio during the creation of the element."
-      },
-      {
-        "Code": "SA1609",
-        "Title": "Property documentation must have value",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1609.md",
-        "Category": "Documentation",
-        "Description": "The Xml header documentation for a C# property does not contain a &lt;value&gt; tag."
-      },
-      {
-        "Code": "SA1610",
-        "Title": "Property documentation must have value text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1610.md",
-        "Category": "Documentation",
-        "Description": "The Xml header documentation for a C# property contains an empty &lt;value&gt; tag."
-      },
-      {
-        "Code": "SA1611",
-        "Title": "Element parameters must be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1611.md",
-        "Category": "Documentation",
-        "Description": "A C# method, constructor, delegate or indexer element is missing documentation for one or more of its parameters."
-      },
-      {
-        "Code": "SA1612",
-        "Title": "Element parameter documentation must match element parameters",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1612.md",
-        "Category": "Documentation",
-        "Description": "The documentation describing the parameters to a C# method, constructor, delegate or indexer element does not match the actual parameters on the element."
-      },
-      {
-        "Code": "SA1613",
-        "Title": "Element parameter documentation must declare parameter name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1613.md",
-        "Category": "Documentation",
-        "Description": "A &lt;param&gt; tag within a C# element's documentation header is missing a name attribute containing the name of the parameter."
-      },
-      {
-        "Code": "SA1614",
-        "Title": "Element parameter documentation must have text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1614.md",
-        "Category": "Documentation",
-        "Description": "A &lt;param&gt; tag within a C# element's documentation header is empty."
-      },
-      {
-        "Code": "SA1615",
-        "Title": "Element return value must be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1615.md",
-        "Category": "Documentation",
-        "Description": "A C# element is missing documentation for its return value."
-      },
-      {
-        "Code": "SA1616",
-        "Title": "Element return value documentation must have text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1616.md",
-        "Category": "Documentation",
-        "Description": "The &lt;returns&gt; tag within a C# element's documentation header is empty."
-      },
-      {
-        "Code": "SA1617",
-        "Title": "Void return value must not be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1617.md",
-        "Category": "Documentation",
-        "Description": "A C# code element does not contain a return value, or returns void, but the documentation header for the element contains a &lt;returns&gt; tag."
-      },
-      {
-        "Code": "SA1618",
-        "Title": "Generic type parameters must be documented",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1618.md",
-        "Category": "Documentation",
-        "Description": "A generic C# element is missing documentation for one or more of its generic type parameters."
-      },
-      {
-        "Code": "SA1619",
-        "Title": "Generic type parameters must be documented partial class",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1619.md",
-        "Category": "Documentation",
-        "Description": "A generic, partial C# element is missing documentation for one or more of its generic type parameters, and the documentation for the element contains a &lt;summary&gt; tag."
-      },
-      {
-        "Code": "SA1620",
-        "Title": "Generic type parameter documentation must match type parameters",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1620.md",
-        "Category": "Documentation",
-        "Description": "The &lt;typeparam&gt; tags within the Xml header documentation for a generic C# element do not match the generic type parameters on the element."
-      },
-      {
-        "Code": "SA1621",
-        "Title": "Generic type parameter documentation must declare parameter name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1621.md",
-        "Category": "Documentation",
-        "Description": "A &lt;typeparam&gt; tag within the Xml header documentation for a generic C# element is missing a name attribute, or contains an empty name attribute."
-      },
-      {
-        "Code": "SA1622",
-        "Title": "Generic type parameter documentation must have text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1622.md",
-        "Category": "Documentation",
-        "Description": "A &lt;typeparam&gt; tag within the Xml header documentation for a generic C# element is empty."
-      },
-      {
-        "Code": "SA1623",
-        "Title": "Property summary documentation must match accessors",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1623.md",
-        "Category": "Documentation",
-        "Description": "The documentation text within a C# property's &lt;summary&gt; tag does not match the accessors within the property."
-      },
-      {
-        "Code": "SA1624",
-        "Title": "Property summary documentation must omit set accessor with restricted access",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1624.md",
-        "Category": "Documentation",
-        "Description": "The documentation text within a C# property's &lt;summary&gt; tag takes into account all of the accessors within the property, but one of the accessors has limited access."
-      },
-      {
-        "Code": "SA1625",
-        "Title": "Element documentation must not be copied and pasted",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1625.md",
-        "Category": "Documentation",
-        "Description": "The Xml documentation for a C# element contains two or more identical entries, indicating that the documentation has been copied and pasted."
-      },
-      {
-        "Code": "SA1626",
-        "Title": "Single line comments must not use documentation style slashes",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1626.md",
-        "Category": "Documentation",
-        "Description": "The C# code contains a single-line comment which begins with three forward slashes in a row."
-      },
-      {
-        "Code": "SA1627",
-        "Title": "Documentation text must not be empty",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1627.md",
-        "Category": "Documentation",
-        "Description": "The Xml header documentation for a C# code element contains an empty tag."
-      },
-      {
-        "Code": "SA1628",
-        "Title": "Documentation text must begin with ACapital letter",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1628.md",
-        "Category": "Documentation",
-        "Description": "A section of the Xml header documentation for a C# element does not begin with a capital letter."
-      },
-      {
-        "Code": "SA1629",
-        "Title": "Documentation text must end with APeriod",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1629.md",
-        "Category": "Documentation",
-        "Description": "A section of the Xml header documentation for a C# element does not end with a period (also known as a full stop)."
-      },
-      {
-        "Code": "SA1630",
-        "Title": "Documentation text must contain whitespace",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1630.md",
-        "Category": "Documentation",
-        "Description": "A section of the Xml header documentation for a C# element does not contain any whitespace between words."
-      },
-      {
-        "Code": "SA1631",
-        "Title": "Documentation must meet character percentage",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1631.md",
-        "Category": "Documentation",
-        "Description": "A section of the Xml header documentation for a C# element does not contain enough alphabetic characters."
-      },
-      {
-        "Code": "SA1632",
-        "Title": "Documentation text must meet minimum character length",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1632.md",
-        "Category": "Documentation",
-        "Description": "From StyleCop 4.5 this rule is disabled by default."
-      },
-      {
-        "Code": "SA1633",
-        "Title": "File must have header",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1633.md",
-        "Category": "Documentation",
-        "Description": "A C# code file is missing a standard file header."
-      },
-      {
-        "Code": "SA1634",
-        "Title": "File header must show copyright",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1634.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file is missing a copyright tag."
-      },
-      {
-        "Code": "SA1635",
-        "Title": "File header must have copyright text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1635.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file is missing copyright text."
-      },
-      {
-        "Code": "SA1636",
-        "Title": "File header copyright text must match",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1636.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file does not contain the appropriate copyright text."
-      },
-      {
-        "Code": "SA1637",
-        "Title": "File header must contain file name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1637.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file is missing the file name."
-      },
-      {
-        "Code": "SA1638",
-        "Title": "File header file name documentation must match file name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1638.md",
-        "Category": "Documentation",
-        "Description": "The file tag within the file header at the top of a C# code file does not contain the name of the file."
-      },
-      {
-        "Code": "SA1639",
-        "Title": "File header must have summary",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1639.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file does not contain a filled-in summary tag."
-      },
-      {
-        "Code": "SA1640",
-        "Title": "File header must have valid company text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1640.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file does not contain company name text."
-      },
-      {
-        "Code": "SA1641",
-        "Title": "File header company name text must match",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1641.md",
-        "Category": "Documentation",
-        "Description": "The file header at the top of a C# code file does not contain the appropriate company name text."
-      },
-      {
-        "Code": "SA1642",
-        "Title": "Constructor summary documentation must begin with standard text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1642.md",
-        "Category": "Documentation",
-        "Description": "The XML documentation header for a C# constructor does not contain the appropriate summary text."
-      },
-      {
-        "Code": "SA1643",
-        "Title": "Destructor summary documentation must begin with standard text",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1643.md",
-        "Category": "Documentation",
-        "Description": "The Xml documentation header for a C# finalizer does not contain the appropriate summary text."
-      },
-      {
-        "Code": "SA1644",
-        "Title": "Documentation headers must not contain blank lines",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1644.md",
-        "Category": "Documentation",
-        "Description": "A section within the Xml documentation header for a C# element contains blank lines."
-      },
-      {
-        "Code": "SA1645",
-        "Title": "Included documentation file does not exist",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1645.md",
-        "Category": "Documentation",
-        "Description": "An included Xml documentation file does not exist."
-      },
-      {
-        "Code": "SA1646",
-        "Title": "Included documentation XPath does not exist",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1646.md",
-        "Category": "Documentation",
-        "Description": "An included Xml documentation link contains an invalid path."
-      },
-      {
-        "Code": "SA1647",
-        "Title": "Include node does not contain valid file and path",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1647.md",
-        "Category": "Documentation",
-        "Description": "An include tag within an Xml documentation header does not contain valid file and path attribute."
-      },
-      {
-        "Code": "SA1648",
-        "Title": "Inherit doc must be used with inheriting class",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1648.md",
-        "Category": "Documentation",
-        "Description": "&lt;inheritdoc&gt; has been used on an element that doesn't inherit from a base class or implement an interface."
-      },
-      {
-        "Code": "SA1649",
-        "Title": "File name must match type name",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1649.md",
-        "Category": "Documentation",
-        "Description": "The file name of a C# code file does not match the first type declared in the file."
-      },
-      {
-        "Code": "SA1650",
-        "Title": "Element documentation must be spelled correctly",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1650.md",
-        "Category": "Documentation",
-        "Description": "The element documentation for the element contains one or more spelling mistakes or unrecognized words."
-      },
-      {
-        "Code": "SA1651",
-        "Title": "Do not use placeholder elements",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1651.md",
-        "Category": "Documentation",
-        "Description": "The documentation for the element contains one or more &lt;placeholder&gt; elements."
-      },
-      {
-        "Code": "SA1652",
-        "Title": "Enable xml documentation output",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1652.md",
-        "Category": "Documentation",
-        "Description": "This rule was moved to SA0001"
-      },
-      {
-        "Code": "SX1101",
-        "Title": "Do not prefix local members with this",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1101.md",
-        "Category": "Alternative",
-        "Description": "A call to an instance member of the local class or a base class is prefixed with 'this.', within a C# code file."
-      },
-      {
-        "Code": "SX1309",
-        "Title": "Field names must begin with underscore",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309.md",
-        "Category": "Alternative",
-        "Description": "A field name does not begin with an underscore."
-      },
-      {
-        "Code": "SX1309S",
-        "Title": "Static field names must begin with underscore",
-        "Link": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SX1309S.md",
-        "Category": "Alternative",
-        "Description": "A static field name does not begin with an underscore."
       }
     ]
   }
