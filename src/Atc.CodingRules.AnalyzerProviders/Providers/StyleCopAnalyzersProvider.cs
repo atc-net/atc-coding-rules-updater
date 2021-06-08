@@ -32,7 +32,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 }
 
                 var webChild = new HtmlWeb();
-                var htmlDocChild = webChild.Load(new Uri($"https://github.com{item.Attributes[0].Value}", UriKind.Absolute));
+                var htmlDocChild = webChild.Load(new Uri($"https://github.com{item.Attributes["href"].Value}", UriKind.Absolute));
                 var articleNodeChild = htmlDocChild.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
                 var articleTableRowsChild = articleNodeChild.SelectNodes("//*//table[1]//tr").ToList();
                 var category = articleNodeChild.Descendants("h3").First().InnerText;
@@ -63,7 +63,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
                     var code = aHrefNode.InnerText;
                     var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText).NormalizePascalCase();
-                    var link = "https://github.com" + aHrefNode.Attributes[0].Value;
+                    var link = $"https://github.com{aHrefNode.Attributes["href"].Value}";
                     var description = cells[TableColumnDescription].InnerText;
 
                     data.Rules.Add(

@@ -31,7 +31,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 var sa = item.InnerText.Split(':');
                 var code = sa[0];
                 var title = sa[1];
-                var link = $"{DocumentationLink}#{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal)}";
+                var hashTagId = $"user-content-{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal).Replace("/", string.Empty, StringComparison.Ordinal).Replace(".", string.Empty, StringComparison.Ordinal)}";
+                var link = $"{this.DocumentationLink.OriginalString}#{hashTagId}";
 
                 data.Rules.Add(
                     new Rule(

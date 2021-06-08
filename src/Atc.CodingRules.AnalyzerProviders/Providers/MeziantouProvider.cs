@@ -44,7 +44,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
                 var code = aHrefNode.InnerText;
                 var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
-                var link = aHrefNode.Attributes[0].Value;
+                var link = aHrefNode.Attributes["href"].Value;
                 var category = cells[TableColumnCategory].InnerText;
 
                 data.Rules.Add(
