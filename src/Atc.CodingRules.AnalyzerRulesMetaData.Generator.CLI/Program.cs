@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders;
 
 namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
@@ -11,10 +12,10 @@ namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
     {
         private const string OutputFile = @"C:\Code\atc-net\atc-coding-rules-updater\AnalyzerRulesMetaData.json";
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var analyzerProviders = new AnalyzerProviderCollector();
-            var apsData = analyzerProviders.CollectAllBaseRules();
+            var apsData = await analyzerProviders.CollectAllBaseRules();
 
             var jsonOptions = new JsonSerializerOptions
             {
@@ -24,7 +25,7 @@ namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
             };
 
             var json = JsonSerializer.Serialize(apsData, jsonOptions);
-            File.WriteAllText(OutputFile, json, Encoding.UTF8);
+            await File.WriteAllTextAsync(OutputFile, json, Encoding.UTF8);
         }
     }
 }
