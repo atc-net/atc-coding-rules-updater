@@ -53,7 +53,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         code,
                         title,
                         link,
-                        category));
+                        category: category));
             }
 
             return data;

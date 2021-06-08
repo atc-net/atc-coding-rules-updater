@@ -37,7 +37,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 var articleNodeChild = htmlDocChild.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
                 var articleTableRowsChild = articleNodeChild.SelectNodes("//*//table[1]//tr").ToList();
                 var category = articleNodeChild.Descendants("h3").First().InnerText;
-                int i = category.IndexOf(" Rules", StringComparison.Ordinal);
+                var i = category.IndexOf(" Rules", StringComparison.Ordinal);
                 if (i > 0)
                 {
                     category = category.Substring(0, i);
@@ -72,10 +72,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                             code,
                             title,
                             link,
-                            category)
-                        {
-                            Description = description,
-                        });
+                            category,
+                            description));
                 }
             }
 

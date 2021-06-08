@@ -9,21 +9,15 @@ namespace Atc.CodingRules.AnalyzerProviders.Models
         public Rule(
             string code,
             string title,
-            string link)
+            string link,
+            string? category = null,
+            string? description = null)
         {
             this.Code = code;
             this.Title = title;
             this.Link = link;
-        }
-
-        public Rule(
-            string code,
-            string title,
-            string link,
-            string category)
-            : this(code, title, link)
-        {
             this.Category = category;
+            this.Description = description;
         }
 
         public string Code { get; set; } = string.Empty;
