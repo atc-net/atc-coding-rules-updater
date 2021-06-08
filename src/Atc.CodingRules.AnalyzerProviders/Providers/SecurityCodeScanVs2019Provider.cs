@@ -30,7 +30,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
                 var code = sa[0];
                 var title = sa[1];
-                var link = this.DocumentationLink!.OriginalString + $"#{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}---{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal)}";
+                var link = this.DocumentationLink!.OriginalString + $"#{code}";
 
                 data.Rules.Add(
                     new Rule(
