@@ -14,32 +14,42 @@ namespace Atc.CodingRules.AnalyzerProviders
             var data = new Collection<AnalyzerProviderBaseRuleData>();
 
             var asyncFixerProvider = new AsyncFixerProvider();
-            var asyncFixerData = await asyncFixerProvider.CollectBaseRules();
-            data.Add(asyncFixerData);
+            var asyncFixerTask = asyncFixerProvider.CollectBaseRules();
 
             var asyncifyProvider = new AsyncifyProvider();
-            var asyncifyData = await asyncifyProvider.CollectBaseRules();
-            data.Add(asyncifyData);
+            var asyncifyTask = asyncifyProvider.CollectBaseRules();
 
             var meziantouProvider = new MeziantouProvider();
-            var meziantouData = await meziantouProvider.CollectBaseRules();
-            data.Add(meziantouData);
+            var meziantouTask = meziantouProvider.CollectBaseRules();
 
             var microsoftCodeAnalysisNetAnalyzersProvider = new MicrosoftCodeAnalysisNetAnalyzersProvider();
-            var microsoftCodeAnalysisNetAnalyzersData = await microsoftCodeAnalysisNetAnalyzersProvider.CollectBaseRules();
-            data.Add(microsoftCodeAnalysisNetAnalyzersData);
+            var microsoftCodeAnalysisNetAnalyzersTask = microsoftCodeAnalysisNetAnalyzersProvider.CollectBaseRules();
 
             var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider();
-            var securityCodeScanVs2019Data = await securityCodeScanVs2019Provider.CollectBaseRules();
-            data.Add(securityCodeScanVs2019Data);
+            var securityCodeScanVs2019Task = securityCodeScanVs2019Provider.CollectBaseRules();
 
             var styleCopAnalyzersProvider = new StyleCopAnalyzersProvider();
-            var styleCopAnalyzersData = await styleCopAnalyzersProvider.CollectBaseRules();
-            data.Add(styleCopAnalyzersData);
+            var styleCopAnalyzersTask = styleCopAnalyzersProvider.CollectBaseRules();
 
             var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider();
-            var sonarAnalyzerCSharpData = await sonarAnalyzerCSharpProvider.CollectBaseRules();
-            data.Add(sonarAnalyzerCSharpData);
+            var sonarAnalyzerCSharpTask = sonarAnalyzerCSharpProvider.CollectBaseRules();
+
+            await Task.WhenAll(
+                asyncFixerTask,
+                asyncifyTask,
+                meziantouTask,
+                microsoftCodeAnalysisNetAnalyzersTask,
+                securityCodeScanVs2019Task,
+                styleCopAnalyzersTask,
+                sonarAnalyzerCSharpTask);
+
+            data.Add(await asyncFixerTask);
+            data.Add(await asyncifyTask);
+            data.Add(await meziantouTask);
+            data.Add(await microsoftCodeAnalysisNetAnalyzersTask);
+            data.Add(await securityCodeScanVs2019Task);
+            data.Add(await styleCopAnalyzersTask);
+            data.Add(await sonarAnalyzerCSharpTask);
 
             return data;
         }
