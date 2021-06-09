@@ -29,8 +29,13 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 var description = item.NextSibling.NextSibling.InnerText.Replace(" Here is an example:", string.Empty, StringComparison.OrdinalIgnoreCase);
 
                 var sa = item.InnerText.Split(':');
+                if (sa.Length != 2)
+                {
+                    continue;
+                }
+
                 var code = sa[0];
-                var title = sa[1];
+                var title = sa[1].Trim();
                 var hashTagId = $"user-content-{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal).Replace("/", string.Empty, StringComparison.Ordinal).Replace(".", string.Empty, StringComparison.Ordinal)}";
                 var link = $"{this.DocumentationLink.OriginalString}#{hashTagId}";
 
