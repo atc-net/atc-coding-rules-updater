@@ -19,8 +19,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
             Assert.NotNull(actual);
             Assert.NotNull(actual.Name);
             Assert.Equal("SonarAnalyzer.CSharp", actual.Name);
-            // TODO: Assert.NotNull(actual.Rules);
-            // TODO: Assert.True(actual.Rules.Count >= 198);
+            Assert.NotNull(actual.Rules);
+            Assert.True(actual.Rules.Count >= 409);
         }
     }
 }
