@@ -4,32 +4,32 @@
     "Rules": [
       {
         "Code": "AsyncFixer01",
-        "Title": " Unnecessary async/await usage",
-        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer01-unnecessary-asyncawait-usage",
+        "Title": "Unnecessary async/await usage",
+        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer01unnecessary-asyncawait-usage",
         "Description": "There are some async methods where there is no need to use async/await keywords. It is important to detect this kind of misuse because adding the async modifier comes at a price. AsyncFixer automatically removes async/await keywords from those methods."
       },
       {
         "Code": "AsyncFixer02",
-        "Title": " Long-running or blocking operations inside an async method",
-        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer02-long-running-or-blocking-operations-inside-an-async-method",
+        "Title": "Long-running or blocking operations inside an async method",
+        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer02long-running-or-blocking-operations-inside-an-async-method",
         "Description": "Developers use some potentially long-running or blocking operations inside async methods even though there are corresponding asynchronous versions of these methods in .NET or third-party libraries. Some examples for such operations: Task.Wait(), Task.Result, StreamReader.ReadToEnd(), Thread.Sleep(), etc."
       },
       {
         "Code": "AsyncFixer03",
-        "Title": " Fire-and-forget async-void methods and delegates",
-        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer03-fire-and-forget-async-void-methods-and-delegates",
+        "Title": "Fire-and-forget async-void methods and delegates",
+        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer03fire-and-forget-async-void-methods-and-delegates",
         "Description": "Some async methods and delegates are fire-and-forget, which return void. Unless a method is only called as an event handler, it must be awaitable. Otherwise, it is a code smell because it complicates control flow and makes error detection/correction difficult. Unhandled exceptions in those async-void methods and delegates will crash the process as well."
       },
       {
         "Code": "AsyncFixer04",
-        "Title": " Fire-and-forget async call inside an using block",
-        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer04-fire-and-forget-async-call-inside-an-using-block",
+        "Title": "Fire-and-forget async call inside an using block",
+        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer04fire-and-forget-async-call-inside-an-using-block",
         "Description": "Inside a using block, developers insert a fire-and-forget async call which uses a disposable object as a parameter or target object. It can cause potential exceptions or wrong results."
       },
       {
         "Code": "AsyncFixer05",
-        "Title": " Downcasting from a nested task to an outer task.",
-        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer05-downcasting-from-a-nested-task-to-an-outer-task",
+        "Title": "Downcasting from a nested task to an outer task.",
+        "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer05downcasting-from-a-nested-task-to-an-outer-task",
         "Description": "Downcasting from a nested task to a task or awaiting a nested task is dangerous. There is no way to wait for and get the result of the child task. This usually occurs when mixing async/await keywords with the old threading APIs such as TaskFactory.StartNew."
       }
     ]
@@ -3534,6 +3534,2461 @@
   },
   {
     "Name": "SonarAnalyzer.CSharp",
-    "Rules": []
+    "Rules": [
+      {
+        "Code": "S6096",
+        "Title": "Extracting archives should not lead to zip slip vulnerabilities",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-6096",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5334",
+        "Title": "Dynamic code execution should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5334",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5146",
+        "Title": "HTTP request redirections should not be open to forging attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5146",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5135",
+        "Title": "Deserialization should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5135",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5131",
+        "Title": "Endpoints should not be vulnerable to reflected cross-site scripting (XSS) attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5131",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S3884",
+        "Title": "\"CoSetProxyBlanket\" and \"CoInitializeSecurity\" should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3884",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S3649",
+        "Title": "Database queries should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3649",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2755",
+        "Title": "XML parsers should not be vulnerable to XXE attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2755",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2115",
+        "Title": "A secure password should be used when connecting to a database",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2115",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2091",
+        "Title": "XPath expressions should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2091",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2083",
+        "Title": "I/O function calls should not be vulnerable to path injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2083",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2078",
+        "Title": "LDAP queries should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2078",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2076",
+        "Title": "OS commands should not be vulnerable to command injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2076",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4159",
+        "Title": "Classes should implement their \"ExportAttribute\" interfaces",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4159",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3889",
+        "Title": "Neither \"Thread.Resume\" nor \"Thread.Suspend\" should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3889",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3869",
+        "Title": "\"SafeHandle.DangerousGetHandle\" should not be called",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3869",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3464",
+        "Title": "Type inheritance should not be recursive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3464",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2930",
+        "Title": "\"IDisposables\" should be disposed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2930",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2857",
+        "Title": "SQL keywords should be delimited by whitespace",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2857",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2275",
+        "Title": "Composite format strings should not lead to unexpected behavior at runtime",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2275",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2190",
+        "Title": "Recursion should not be infinite",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2190",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1048",
+        "Title": "Destructors should not throw exceptions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1048",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2068",
+        "Title": "Hard-coded credentials are security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2068",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S3877",
+        "Title": "Exceptions should not be thrown from unexpected methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3877",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3875",
+        "Title": "\"operator==\" should not be overloaded on reference types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3875",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3443",
+        "Title": "Type should not be examined on \"System.Type\" instances",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3443",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3433",
+        "Title": "Test method signatures should be correct",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3433",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3427",
+        "Title": "Method overloads with default parameter values should not overlap ",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3427",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3237",
+        "Title": "\"value\" parameters should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3237",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3060",
+        "Title": "\"is\" should not be used with \"this\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3060",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2953",
+        "Title": "Methods named \"Dispose\" should implement \"IDisposable.Dispose\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2953",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2699",
+        "Title": "Tests should include assertions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2699",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2437",
+        "Title": "Silly bit operations should not be performed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2437",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2368",
+        "Title": "Public methods should not have multidimensional array parameters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2368",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2187",
+        "Title": "TestCases should contain tests",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2187",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2178",
+        "Title": "Short-circuit logic should be used in boolean contexts",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2178",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S5659",
+        "Title": "JWT should be signed and verified with strong cipher algorithms",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5659",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5547",
+        "Title": "Cipher algorithms should be robust",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5547",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5542",
+        "Title": "Encryption algorithms should be used with secure mode and padding scheme",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5542",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5445",
+        "Title": "Insecure temporary file creation methods should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5445",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4830",
+        "Title": "Server certificates should be verified during SSL/TLS connections",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4830",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4433",
+        "Title": "LDAP connections should be authenticated",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4433",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4426",
+        "Title": "Cryptographic keys should be robust",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4426",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4423",
+        "Title": "Weak SSL/TLS protocols should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4423",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S3329",
+        "Title": "Cipher Block Chaining IV's should be unpredictable",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3329",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2631",
+        "Title": "Regular expressions should not be vulnerable to Denial of Service attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2631",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2053",
+        "Title": "Hashes should include an unpredictable salt",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2053",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4586",
+        "Title": "Non-async \"Task/Task&lt;T&gt;\" methods should not return null",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4586",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4583",
+        "Title": "Calls to delegate's method \"BeginInvoke\" should be paired with calls to \"EndInvoke\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4583",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4277",
+        "Title": "\"Shared\" parts should not be created with \"new\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4277",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4275",
+        "Title": "Getters and setters should access the expected fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4275",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3449",
+        "Title": "Right operands of shift operators should be integers",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3449",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2551",
+        "Title": "Shared resources should not be used for locking",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2551",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S5443",
+        "Title": "Using publicly writable directories is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5443",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S5332",
+        "Title": "Using clear-text protocols is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5332",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S5042",
+        "Title": "Expanding archive files without controlling resource consumption is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5042",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4792",
+        "Title": "Configuring loggers is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4792",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4790",
+        "Title": "Using weak hashing algorithms is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4790",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4502",
+        "Title": "Disabling CSRF protections is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4502",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S2257",
+        "Title": "Using non-standard cryptographic algorithms is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2257",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S2245",
+        "Title": "Using pseudorandom number generators (PRNGs) is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2245",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S927",
+        "Title": "Parameter names should match base declaration and other partial definitions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-927",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S5034",
+        "Title": "\"ValueTask\" should be consumed correctly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5034",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4635",
+        "Title": "String offset-based methods should be preferred for finding substrings from offsets",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4635",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4524",
+        "Title": "\"default\" clauses should be first or last",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4524",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4487",
+        "Title": "Unread \"private\" fields should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4487",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4019",
+        "Title": "Base class methods should not be hidden",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4019",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4015",
+        "Title": "Inherited member visibility should not be decreased",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4015",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3998",
+        "Title": "Threads should not lock on objects with weak identity",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3998",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3973",
+        "Title": "A conditionally executed single line should be denoted by indentation",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3973",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3972",
+        "Title": "Conditionals should start on new lines",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3972",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3904",
+        "Title": "Assemblies should have version information",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3904",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3871",
+        "Title": "Exception types should be \"public\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3871",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3776",
+        "Title": "Cognitive Complexity of methods should not be too high",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3776",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3600",
+        "Title": "\"params\" should not be introduced on overrides",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3600",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3451",
+        "Title": "\"[DefaultValue]\" should not be used when \"[DefaultParameterValue]\" is meant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3451",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3447",
+        "Title": "\"[Optional]\" should not be used on \"ref\" or \"out\" parameters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3447",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3265",
+        "Title": "Non-flags enums should not be used in bitwise operations",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3265",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3218",
+        "Title": "Inner class members should not shadow outer class \"static\" or type members",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3218",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3217",
+        "Title": "\"Explicit\" conversions of \"foreach\" loops should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3217",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2696",
+        "Title": "Instance members should not write to \"static\" fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2696",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2692",
+        "Title": "\"IndexOf\" checks should not be for positive numbers",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2692",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2479",
+        "Title": "Whitespace and control characters in string literals should be explicit",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2479",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2365",
+        "Title": "Properties should not make collection or array copies",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2365",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2346",
+        "Title": "Flags enumerations zero-value members should be named \"None\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2346",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2291",
+        "Title": "Overflow checking should not be disabled for \"Enumerable.Sum\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2291",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2290",
+        "Title": "Field-like events should not be virtual",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2290",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2223",
+        "Title": "Non-constant static fields should not be visible",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2223",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1944",
+        "Title": "Inappropriate casts should not be made",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1944",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1699",
+        "Title": "Constructors should only call non-overridable methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1699",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1215",
+        "Title": "\"GC.Collect\" should not be called",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1215",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1186",
+        "Title": "Methods should not be empty",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1186",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1163",
+        "Title": "Exceptions should not be thrown in finally blocks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1163",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1006",
+        "Title": "Method overrides should not change parameter defaults",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1006",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S5773",
+        "Title": "Types allowed to be deserialized should be restricted",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5773",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5144",
+        "Title": "Server-side requests should not be vulnerable to forging attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5144",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4211",
+        "Title": "Members should not have conflicting transparency annotations",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4211",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4428",
+        "Title": "\"PartCreationPolicyAttribute\" should be used with \"ExportAttribute\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4428",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4260",
+        "Title": "\"ConstructorArgument\" parameters should exist in constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4260",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4210",
+        "Title": "Windows Forms entry points should be marked with STAThread",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4210",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4143",
+        "Title": "Collection elements should not be replaced unconditionally",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4143",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3984",
+        "Title": "Exceptions should not be created without being thrown",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3984",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3981",
+        "Title": "Collection sizes and array length comparisons should make sense",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3981",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3927",
+        "Title": "Serialization event handlers should be implemented correctly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3927",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3926",
+        "Title": "Deserialization methods should be provided for \"OptionalField\" members",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3926",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3923",
+        "Title": "All branches in a conditional structure should not have exactly the same implementation",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3923",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3903",
+        "Title": "Types should be defined in named namespaces",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3903",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3655",
+        "Title": "Empty nullable value should not be accessed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3655",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3610",
+        "Title": "Nullable type comparison should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3610",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3603",
+        "Title": "Methods with \"Pure\" attribute should return a value ",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3603",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3598",
+        "Title": "One-way \"OperationContract\" methods should have \"void\" return type",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3598",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3466",
+        "Title": "Optional parameters should be passed to \"base\" calls",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3466",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3453",
+        "Title": "Classes should not have only \"private\" constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3453",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3346",
+        "Title": "Expressions used in \"Debug.Assert\" should not produce side effects",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3346",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3343",
+        "Title": "Caller information parameters should come at the end of the parameter list",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3343",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3263",
+        "Title": "Static fields should appear in the order they must be initialized ",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3263",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3249",
+        "Title": "Classes directly extending \"object\" should not call \"base\" in \"GetHashCode\" or \"Equals\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3249",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3244",
+        "Title": "Anonymous delegates should not be used to unsubscribe from Events",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3244",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3172",
+        "Title": "Delegates should not be subtracted",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3172",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3168",
+        "Title": "\"async\" methods should not return \"void\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3168",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3005",
+        "Title": "\"ThreadStatic\" should not be used on non-static fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3005",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2997",
+        "Title": "\"IDisposables\" created in a \"using\" statement should not be returned",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2997",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2996",
+        "Title": "\"ThreadStatic\" fields should not be initialized",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2996",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2995",
+        "Title": "\"Object.ReferenceEquals\" should not be used for value types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2995",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2761",
+        "Title": "Doubled prefix operators \"!!\" and \"~~\" should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2761",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2757",
+        "Title": "\"=+\" should not be used instead of \"+=\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2757",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2688",
+        "Title": "\"NaN\" should not be used in comparisons",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2688",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2583",
+        "Title": "Conditionally executed code should be reachable",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2583",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2259",
+        "Title": "Null pointers should not be dereferenced",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2259",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2252",
+        "Title": "For-loop conditions should be true at least once",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2252",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2251",
+        "Title": "A \"for\" loop update clause should move the counter in the right direction",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2251",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2225",
+        "Title": "\"ToString()\" method should not return null",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2225",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2201",
+        "Title": "Return values from functions without side effects should not be ignored",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2201",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2123",
+        "Title": "Values should not be uselessly incremented",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2123",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2114",
+        "Title": "Collections should not be passed as arguments to their own methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2114",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1862",
+        "Title": "Related \"if/else if\" statements should not have the same condition",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1862",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1848",
+        "Title": "Objects should not be created to be dropped immediately without being used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1848",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1764",
+        "Title": "Identical expressions should not be used on both sides of a binary operator",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1764",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1751",
+        "Title": "Loops with at most one iteration should be refactored",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1751",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1656",
+        "Title": "Variables should not be self-assigned",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1656",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S5766",
+        "Title": "Deserializing objects without performing data validation is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5766",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S5753",
+        "Title": "Disabling ASP.NET \"Request Validation\" feature is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5753",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S5693",
+        "Title": "Allowing requests with excessive content length is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5693",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S2612",
+        "Title": "Setting loose file permissions is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2612",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S2077",
+        "Title": "Formatting SQL queries is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2077",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S1313",
+        "Title": "Using hardcoded IP addresses is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1313",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S907",
+        "Title": "\"goto\" statement should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-907",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4581",
+        "Title": "\"new Guid()\" should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4581",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4457",
+        "Title": "Parameter validation in \"async\"/\"await\" methods should be wrapped",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4457",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4456",
+        "Title": "Parameter validation in yielding methods should be wrapped",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4456",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4220",
+        "Title": "Events should have proper arguments",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4220",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4214",
+        "Title": "\"P/Invoke\" methods should not be visible",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4214",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4200",
+        "Title": "Native methods should be wrapped",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4200",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4144",
+        "Title": "Methods should not have identical implementations",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4144",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4070",
+        "Title": "Non-flags enums should not be marked with \"FlagsAttribute\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4070",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4035",
+        "Title": "Classes implementing \"IEquatable&lt;T&gt;\" should be sealed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4035",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3971",
+        "Title": "\"GC.SuppressFinalize\" should not be called",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3971",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3966",
+        "Title": "Objects should not be disposed more than once",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3966",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3928",
+        "Title": "Parameter names used into ArgumentException constructors should match an existing one ",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3928",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3925",
+        "Title": "\"ISerializable\" should be implemented correctly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3925",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3885",
+        "Title": "\"Assembly.Load\" should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3885",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3881",
+        "Title": "\"IDisposable\" should be implemented correctly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3881",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3597",
+        "Title": "\"ServiceContract\" and \"OperationContract\" attributes should be used together",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3597",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3457",
+        "Title": "Composite format strings should be used correctly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3457",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3445",
+        "Title": "Exceptions should not be explicitly rethrown",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3445",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3442",
+        "Title": "\"abstract\" classes should not have \"public\" constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3442",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3415",
+        "Title": "Assertion arguments should be passed in the correct order",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3415",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3358",
+        "Title": "Ternary operators should not be nested",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3358",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3264",
+        "Title": "Events should be invoked",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3264",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3262",
+        "Title": "\"params\" should be used on overrides",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3262",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3246",
+        "Title": "Generic type parameters should be co/contravariant when possible",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3246",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3169",
+        "Title": "Multiple \"OrderBy\" calls should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3169",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3011",
+        "Title": "Reflection should not be used to increase accessibility of classes, methods, or fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3011",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3010",
+        "Title": "Static fields should not be updated in constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3010",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2971",
+        "Title": "\"IEnumerable\" LINQs should be simplified",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2971",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2933",
+        "Title": "Fields that are only assigned in the constructor should be \"readonly\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2933",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2743",
+        "Title": "Static fields should not be used in generic types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2743",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2681",
+        "Title": "Multiline blocks should be enclosed in curly braces",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2681",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2589",
+        "Title": "Boolean expressions should not be gratuitous",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2589",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2436",
+        "Title": "Types and methods should not have too many generic parameters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2436",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2376",
+        "Title": "Write-only properties should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2376",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2372",
+        "Title": "Exceptions should not be thrown from property getters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2372",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2326",
+        "Title": "Unused type parameters should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2326",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2234",
+        "Title": "Parameters should be passed in the correct order",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2234",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1871",
+        "Title": "Two branches in a conditional structure should not have exactly the same implementation",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1871",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1854",
+        "Title": "Unused assignments should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1854",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1607",
+        "Title": "Tests should not be ignored",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1607",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1479",
+        "Title": "\"switch\" statements should not have too many \"case\" clauses",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1479",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S125",
+        "Title": "Sections of code should not be commented out",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-125",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1172",
+        "Title": "Unused method parameters should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1172",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1168",
+        "Title": "Empty arrays and collections should be returned instead of null",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1168",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1144",
+        "Title": "Unused private types or members should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1144",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1134",
+        "Title": "Track uses of \"FIXME\" tags",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1134",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1123",
+        "Title": "\"Obsolete\" attributes should include explanations",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1123",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1121",
+        "Title": "Assignments should not be made from within sub-expressions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1121",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S112",
+        "Title": "General exceptions should never be thrown",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-112",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1118",
+        "Title": "Utility classes should not have public constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1118",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1117",
+        "Title": "Local variables should not shadow class fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1117",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1110",
+        "Title": "Redundant pairs of parentheses should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1110",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S110",
+        "Title": "Inheritance tree of classes should not be too deep",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-110",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S108",
+        "Title": "Nested blocks of code should not be left empty",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-108",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S107",
+        "Title": "Methods should not have too many parameters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-107",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1066",
+        "Title": "Collapsible \"if\" statements should be merged",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1066",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S5167",
+        "Title": "HTTP response headers should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5167",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S5145",
+        "Title": "Logging should not be vulnerable to injection attacks",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5145",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4158",
+        "Title": "Empty collections should not be accessed or iterated",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4158",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3887",
+        "Title": "Mutable, non-private fields should not be \"readonly\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3887",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3456",
+        "Title": "\"string.ToCharArray()\" should not be called redundantly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3456",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S3397",
+        "Title": "\"base.Equals\" should not be used to check for reference equality in \"Equals\" if \"base\" is not \"object\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3397",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2934",
+        "Title": "Property assignments should not be made for \"readonly\" fields not constrained to reference types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2934",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2345",
+        "Title": "Flags enumerations should explicitly initialize all their members",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2345",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2328",
+        "Title": "\"GetHashCode\" should not reference mutable fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2328",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2184",
+        "Title": "Results of integer division should not be assigned to floating point variables",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2184",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2183",
+        "Title": "Integral numbers should not be shifted by zero or more than their number of bits-1",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2183",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1206",
+        "Title": "\"Equals(Object)\" and \"GetHashCode()\" should be overridden in pairs",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1206",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S5122",
+        "Title": "Having a permissive Cross-Origin Resource Sharing policy is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-5122",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4507",
+        "Title": "Delivering code in production with debug features activated is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4507",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4036",
+        "Title": "Searching OS commands in PATH is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4036",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S3330",
+        "Title": "Creating cookies without the \"HttpOnly\" flag is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3330",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S2092",
+        "Title": "Creating cookies without the \"secure\" flag is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2092",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S818",
+        "Title": "Literal suffixes should be upper case",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-818",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4201",
+        "Title": "Null checks should not be used with \"is\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4201",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4136",
+        "Title": "Method overloads should be grouped together",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4136",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3963",
+        "Title": "\"static\" fields should be initialized inline",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3963",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3897",
+        "Title": "Classes that provide \"Equals(&lt;T&gt;)\" should implement \"IEquatable&lt;T&gt;\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3897",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3626",
+        "Title": "Jump statements should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3626",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3604",
+        "Title": "Member initializer values should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3604",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3459",
+        "Title": "Unassigned members should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3459",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3458",
+        "Title": "Empty \"case\" clauses that fall through to the \"default\" should be omitted",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3458",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3450",
+        "Title": "Parameters with \"[DefaultParameterValue]\" attributes should also be marked \"[Optional]\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3450",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3444",
+        "Title": "Interfaces should not simply inherit from base interfaces with colliding members",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3444",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3440",
+        "Title": "Variables should not be checked against the values they're about to be assigned",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3440",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3400",
+        "Title": "Methods should not return constants",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3400",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3376",
+        "Title": "Attribute, EventArgs, and Exception type names should end with the type being extended",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3376",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3261",
+        "Title": "Namespaces should not be empty",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3261",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3256",
+        "Title": "\"string.IsNullOrEmpty\" should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3256",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3251",
+        "Title": "Implementations should be provided for \"partial\" methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3251",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3247",
+        "Title": "Duplicate casts should not be made",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3247",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3241",
+        "Title": "Methods should not return values that are never used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3241",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3236",
+        "Title": "Caller information arguments should not be provided explicitly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3236",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3220",
+        "Title": "Method calls should not resolve ambiguously to overloads with \"params\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3220",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2737",
+        "Title": "\"catch\" clauses should do more than rethrow",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2737",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2486",
+        "Title": "Generic exceptions should not be ignored",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2486",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2386",
+        "Title": "Mutable fields should not be \"public static\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2386",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2344",
+        "Title": "Enumeration type names should not have \"Flags\" or \"Enum\" suffixes",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2344",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2342",
+        "Title": "Enumeration types should comply with a naming convention",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2342",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2292",
+        "Title": "Trivial properties should be auto-implemented",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2292",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2219",
+        "Title": "Runtime type checking should be simplified",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2219",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1940",
+        "Title": "Boolean checks should not be inverted",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1940",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1939",
+        "Title": "Inheritance list should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1939",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1905",
+        "Title": "Redundant casts should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1905",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1643",
+        "Title": "Strings should not be concatenated using '+' in a loop",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1643",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1481",
+        "Title": "Unused local variables should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1481",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1450",
+        "Title": "Private fields only used as local variables in methods should become local variables",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1450",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1264",
+        "Title": "A \"while\" loop should be used instead of a \"for\" loop",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1264",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1210",
+        "Title": "\"Equals\" and the comparison operators should be overridden when implementing \"IComparable\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1210",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1199",
+        "Title": "Nested code blocks should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1199",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1185",
+        "Title": "Overriding members should do more than simply call the same member in the base class",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1185",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1155",
+        "Title": "\"Any()\" should be used to test for emptiness",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1155",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1125",
+        "Title": "Boolean literals should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1125",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1116",
+        "Title": "Empty statements should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1116",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1104",
+        "Title": "Fields should not have public accessibility",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1104",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1075",
+        "Title": "URIs should not be hardcoded",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1075",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S101",
+        "Title": "Types should be named in PascalCase",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-101",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1135",
+        "Title": "Track uses of \"TODO\" tags",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1135",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2278",
+        "Title": "Neither DES (Data Encryption Standard) nor DESede (3DES) should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2278",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S3693",
+        "Title": "Exception constructors should not throw exceptions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3693",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2931",
+        "Title": "Classes with \"IDisposable\" members should implement \"IDisposable\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2931",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4462",
+        "Title": "Calls to \"async\" methods should not be blocking",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4462",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2387",
+        "Title": "Child class fields should not shadow parent class fields",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2387",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2306",
+        "Title": "\"async\" and \"await\" should not be used as identifiers",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2306",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1451",
+        "Title": "Track lack of copyright and license headers",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1451",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1147",
+        "Title": "Exit methods should not be called",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1147",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4432",
+        "Title": "AES encryption algorithm should be used with secured mode",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4432",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2070",
+        "Title": "SHA-1 and Message-Digest hash algorithms should not be used in secure contexts",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2070",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2952",
+        "Title": "Classes should \"Dispose\" of members from the classes' own \"Dispose\" methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2952",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4829",
+        "Title": "Reading the Standard Input is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4829",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4823",
+        "Title": "Using command line arguments is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4823",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4818",
+        "Title": "Using Sockets is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4818",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4787",
+        "Title": "Encrypting data is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4787",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4784",
+        "Title": "Using regular expressions is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4784",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4039",
+        "Title": "Interface methods should be callable by derived types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4039",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4025",
+        "Title": "Child class fields should not differ from parent class fields only by capitalization",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4025",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4000",
+        "Title": "Pointers to unmanaged memory should not be visible",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4000",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3937",
+        "Title": "Number patterns should be regular",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3937",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3874",
+        "Title": "\"out\" and \"ref\" parameters should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3874",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3353",
+        "Title": "Unchanged local variables should be \"const\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3353",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3216",
+        "Title": "\"ConfigureAwait(false)\" should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3216",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3215",
+        "Title": "\"interface\" instances should not be cast to concrete types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3215",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2701",
+        "Title": "Literal boolean values should not be used in assertions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2701",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2360",
+        "Title": "Optional parameters should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2360",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2339",
+        "Title": "Public constant members should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2339",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2330",
+        "Title": "Array covariance should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2330",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2302",
+        "Title": "\"nameof\" should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2302",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2197",
+        "Title": "Modulus results should not be checked for direct equality",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2197",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1994",
+        "Title": "\"for\" loop increment clauses should modify the loops' counters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1994",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1821",
+        "Title": "\"switch\" statements should not be nested",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1821",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1541",
+        "Title": "Methods and properties should not be too complex",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1541",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S134",
+        "Title": "Control flow statements \"if\", \"switch\", \"for\", \"foreach\", \"while\", \"do\"  and \"try\" should not be nested too deeply",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-134",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S131",
+        "Title": "\"switch/Select\" statements should contain a \"default/Case Else\" clauses",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-131",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S126",
+        "Title": "\"if ... else if\" constructs should end with \"else\" clauses",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-126",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S121",
+        "Title": "Control structures should use curly braces",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-121",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1067",
+        "Title": "Expressions should not be too complex",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1067",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4564",
+        "Title": "ASP.NET HTTP request validation feature should not be disabled",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4564",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S4212",
+        "Title": "Serialization constructors should be secured",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4212",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S3949",
+        "Title": "Calculations should not overflow",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3949",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2758",
+        "Title": "The ternary operator should not return the same value regardless of the condition",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2758",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1697",
+        "Title": "Short-circuit logic should be used to prevent null pointer dereferences in conditionals",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1697",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1244",
+        "Title": "Floating point numbers should not be tested for equality",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1244",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1145",
+        "Title": "Useless \"if(true) {...}\" and \"if(false){...}\" blocks should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1145",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S881",
+        "Title": "Increment (++) and decrement (--) operators should not be used in a method call or mixed with other operators in an expression",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-881",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4142",
+        "Title": "Duplicate values should not be passed as arguments",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4142",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4059",
+        "Title": "Property names should not match get methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4059",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4057",
+        "Title": "Locales should be set for data types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4057",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4055",
+        "Title": "Literals should not be passed as localized parameters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4055",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4050",
+        "Title": "Operators should be overloaded consistently",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4050",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4017",
+        "Title": "Method signatures should not contain nested generic types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4017",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4016",
+        "Title": "Enumeration members should not be named \"Reserved\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4016",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4005",
+        "Title": "\"System.Uri\" arguments should be used instead of strings",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4005",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4004",
+        "Title": "Collection properties should be readonly",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4004",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4002",
+        "Title": "Disposable types should declare finalizers",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4002",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3997",
+        "Title": "String URI overloads should call \"System.Uri\" overloads",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3997",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3996",
+        "Title": "URI properties should not be strings",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3996",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3995",
+        "Title": "URI return values should not be strings",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3995",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3994",
+        "Title": "URI Parameters should not be strings",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3994",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3993",
+        "Title": "Custom attributes should be marked with \"System.AttributeUsageAttribute\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3993",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3992",
+        "Title": "Assemblies should explicitly specify COM visibility",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3992",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3990",
+        "Title": "Assemblies should be marked as CLS compliant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3990",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3956",
+        "Title": "\"Generic.List\" instances should not be part of public APIs",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3956",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3909",
+        "Title": "Collections should implement the generic interface",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3909",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3908",
+        "Title": "Generic event handlers should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3908",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3906",
+        "Title": "Event Handlers should have the correct signature",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3906",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3902",
+        "Title": "\"Assembly.GetExecutingAssembly\" should not be called",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3902",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3900",
+        "Title": "Arguments of public methods should be validated against null",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3900",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3898",
+        "Title": "Value types should implement \"IEquatable&lt;T&gt;\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3898",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3880",
+        "Title": "Finalizers should not be empty",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3880",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3431",
+        "Title": "\"[ExpectedException]\" should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3431",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3366",
+        "Title": "\"this\" should not be exposed from constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3366",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2357",
+        "Title": "Fields should be private",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2357",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2327",
+        "Title": "\"try\" statements with identical \"catch\" and/or \"finally\" blocks should be merged",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2327",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1696",
+        "Title": "NullReferenceException should not be caught",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1696",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S138",
+        "Title": "Functions should not have too many lines of code",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-138",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S127",
+        "Title": "\"for\" loop stop conditions should be invariant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-127",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S122",
+        "Title": "Statements should be on separate lines",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-122",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1200",
+        "Title": "Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1200",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1151",
+        "Title": "\"switch case\" clauses should not have too many lines of code",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1151",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S109",
+        "Title": "Magic numbers should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-109",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S106",
+        "Title": "Standard outputs should not be used directly to log anything",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-106",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S104",
+        "Title": "Files should not have too many lines of code",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-104",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S103",
+        "Title": "Lines should not be too long",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-103",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2228",
+        "Title": "Console logging should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2228",
+        "Category": "Vulnerability"
+      },
+      {
+        "Code": "S2955",
+        "Title": "Generic parameters not constrained to reference types should not be compared to \"null\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2955",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S2674",
+        "Title": "The length returned from a stream read should be checked",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2674",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S1226",
+        "Title": "Method parameters, caught exceptions and foreach variables' initial values should not be ignored",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1226",
+        "Category": "Bug"
+      },
+      {
+        "Code": "S4834",
+        "Title": "Controlling permissions is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4834",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S2255",
+        "Title": "Writing cookies is security-sensitive",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2255",
+        "Category": "Security Hotspot"
+      },
+      {
+        "Code": "S4261",
+        "Title": "Methods should be named according to their synchronicities",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4261",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4226",
+        "Title": "Extensions should be in separate namespaces",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4226",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4225",
+        "Title": "Extension methods should not extend \"object\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4225",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4069",
+        "Title": "Operator overloads should have named alternatives",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4069",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4061",
+        "Title": "\"params\" should be used instead of \"varargs\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4061",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4060",
+        "Title": "Non-abstract attributes should be sealed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4060",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4058",
+        "Title": "Overloads with a \"StringComparison\" parameter should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4058",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4056",
+        "Title": "Overloads with a \"CultureInfo\" or an \"IFormatProvider\" parameter should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4056",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4052",
+        "Title": "Types should not extend outdated base types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4052",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4049",
+        "Title": "Properties should be preferred",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4049",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4047",
+        "Title": "Generics should be used when appropriate",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4047",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4041",
+        "Title": "Type names should not match namespaces",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4041",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4040",
+        "Title": "Strings should be normalized to uppercase",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4040",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4027",
+        "Title": "Exceptions should provide standard constructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4027",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4026",
+        "Title": "Assemblies should be marked with \"NeutralResourcesLanguageAttribute\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4026",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4023",
+        "Title": "Interfaces should not be empty",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4023",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4022",
+        "Title": "Enumerations should have \"Int32\" storage",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4022",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S4018",
+        "Title": "Generic methods should provide type parameters",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-4018",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3967",
+        "Title": "Multidimensional arrays should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3967",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3962",
+        "Title": "\"static readonly\" constants should be \"const\" instead",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3962",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3876",
+        "Title": "Strings or integral types should be used for indexers",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3876",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3872",
+        "Title": "Parameter names should not duplicate the names of their methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3872",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3717",
+        "Title": "Track use of \"NotImplementedException\"",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3717",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3532",
+        "Title": "Empty \"default\" clauses should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3532",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3441",
+        "Title": "Redundant property names should be omitted in anonymous classes",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3441",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3257",
+        "Title": "Declarations and initializations should be as concise as possible",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3257",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3254",
+        "Title": "Default parameter values should not be passed as arguments",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3254",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3253",
+        "Title": "Constructor and destructor declarations should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3253",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3242",
+        "Title": "Method parameters should be declared with base types",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3242",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3240",
+        "Title": "The simplest possible condition syntax should be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3240",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3235",
+        "Title": "Redundant parentheses should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3235",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3234",
+        "Title": "\"GC.SuppressFinalize\" should not be invoked for types without destructors",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3234",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S3052",
+        "Title": "Members should not be initialized to default values",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-3052",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2760",
+        "Title": "Sequential tests should not check the same condition",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2760",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2333",
+        "Title": "Redundant modifiers should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2333",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2325",
+        "Title": "Methods and properties that don't access instance data should be static",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2325",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2221",
+        "Title": "\"Exception\" should not be caught when not required by called methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2221",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2156",
+        "Title": "\"sealed\" classes should not have \"protected\" members",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2156",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S2148",
+        "Title": "Underscores should be used to make large numbers readable",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-2148",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1858",
+        "Title": "\"ToString()\" calls should not be redundant",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1858",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1698",
+        "Title": "\"==\" should not be used when \"Equals\" is overridden",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1698",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1694",
+        "Title": "An abstract class should have both abstract and concrete methods",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1694",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1659",
+        "Title": "Multiple variables should not be declared on the same line",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1659",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1449",
+        "Title": "Culture should be specified for \"string\" operations",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1449",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1301",
+        "Title": "\"switch\" statements should have at least 3 \"case\" clauses",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1301",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1227",
+        "Title": "break statements should not be used except for switch cases",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1227",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1192",
+        "Title": "String literals should not be duplicated",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1192",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S113",
+        "Title": "Files should contain an empty newline at the end",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-113",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1128",
+        "Title": "Unused \"using\" should be removed",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1128",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1109",
+        "Title": "A close curly brace should be located at the beginning of a line",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1109",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S105",
+        "Title": "Tabulation characters should not be used",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-105",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S100",
+        "Title": "Methods and properties should be named in PascalCase",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-100",
+        "Category": "Code Smell"
+      },
+      {
+        "Code": "S1309",
+        "Title": "Track uses of in-source issue suppressions",
+        "Link": "https://rules.sonarsource.com/csharp/RSPEC-1309",
+        "Category": "Code Smell"
+      }
+    ]
   }
 ]
