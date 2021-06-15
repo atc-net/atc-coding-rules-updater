@@ -25,7 +25,7 @@ namespace Atc.CodingRules.Updater.CLI
         [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "OK.")]
         private static Tuple<string, string> RunBuildCommand(DirectoryInfo rootPath)
         {
-            Process process = new Process
+            var process = new Process
             {
                 StartInfo =
                 {
