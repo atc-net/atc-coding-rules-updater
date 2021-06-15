@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using Atc.CodingRules.Updater.CLI.Models;
 using Atc.Data.Models;
 
+// ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable InvertIf
 namespace Atc.CodingRules.Updater.CLI
 {
@@ -78,15 +79,16 @@ namespace Atc.CodingRules.Updater.CLI
 
             if (useTemporarySuppressions)
             {
-                // TODO: Fix SonarAnalyzer
                 var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules();
                 var buildResult = DotnetBuildHelper.BuildAndCollectErrors(rootPath);
-                var suppressionLines = GetSuppressionsLines(analyzerProviderBaseRules, buildResult);
+                var suppressionLines = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
 
                 // TODO: Imp. this.
                 if (temporarySuppressionsPath is null)
                 {
                     // Append to root/.editorconfig
+
+                    // TODO: OWN SECTION IN THE BOTTOM..
                 }
                 else
                 {
@@ -97,15 +99,30 @@ namespace Atc.CodingRules.Updater.CLI
             return logItems;
         }
 
-        private static Tuple<string, List<string>> GetSuppressionsLines(
-            Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules,
-            Dictionary<string, int> buildResult)
+        private static IEnumerable<Tuple<string, List<string>>> GetSuppressionLines(IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules, Dictionary<string, int> buildResult)
         {
-            // TODO: SA1600	# COUNT - Name - Description
-            // "StyleCop.Analyzers"
-            // -> "SA1600 # COUNT - Name - Description"
-            // -> "SA1607 # COUNT - Name - Description"
-            throw new NotImplementedException();
+            var suppressionLines = new List<Tuple<string, string>>();
+            foreach (var (code, count) in buildResult.OrderBy(x => x.Key))
+            {
+                foreach (var analyzerProvider in analyzerProviderBaseRules)
+                {
+                    var rule = analyzerProvider.Rules.FirstOrDefault(x => x.Code.Equals(code, StringComparison.Ordinal));
+                    if (rule is not null)
+                    {
+                        // TODO: tabs between none and # ?
+                        var suppressionLine = string.IsNullOrEmpty(rule.Category)
+                            ? $"dotnet_diagnostic.{code}.severity = none    # {count.Pluralize("occurrence")} - {rule.Title} - {rule.Link}"
+                            : $"dotnet_diagnostic.{code}.severity = none    # {count.Pluralize("occurrence")} - Category: '{rule.Category}' - {rule.Title} - {rule.Link}";
+                        suppressionLines.Add(Tuple.Create(analyzerProvider.Name, suppressionLine));
+                    }
+                }
+            }
+
+            var groupedSuppressionLines = suppressionLines.GroupBy(item => item.Item1, StringComparer.Ordinal)
+                .Select(group => new { AnalyzerName = group.Key, Values = group.Select(item => item.Item2).ToList() })
+                .OrderBy(item => item.AnalyzerName).ToList();
+
+            return groupedSuppressionLines.Select(item => Tuple.Create(item.AnalyzerName, item.Values)).ToList();
         }
 
         private static bool HasOldBuildStructure(DirectoryInfo rootPath)
@@ -203,6 +220,20 @@ namespace Atc.CodingRules.Updater.CLI
             logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
             logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
             return logItems;
+        }
+
+        /// <summary>
+        /// Pluralize: takes a word, inserts a number in front, and makes the word plural if the number is not exactly 1.
+        /// </summary>
+        /// <example>"{n.Pluralize("maid")} a-milking.</example>
+        /// <param name="number">The number of objects.</param>
+        /// <param name="word">The word to make plural.</param>
+        /// <param name="pluralSuffix">An optional suffix; "s" is the default.</param>
+        /// <param name="singularSuffix">An optional suffix if the count is 1; "" is the default.</param>
+        /// <returns>Formatted string: "number word[suffix]", pluralSuffix (default "s") only added if the number is not 1, otherwise singularSuffix (default "") added.</returns>
+        private static string Pluralize(this int number, string word, string pluralSuffix = "s", string singularSuffix = "")
+        {
+            return $@"{number} {word}{(number != 1 ? pluralSuffix : singularSuffix)}";
         }
     }
 }
