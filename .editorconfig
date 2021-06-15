@@ -485,3 +485,4 @@ dotnet_diagnostic.MA0051.severity = none            # for now
 dotnet_diagnostic.CS8603.severity = none            # for now
 
 dotnet_diagnostic.S1075.severity = none             # for now
+dotnet_diagnostic.S4457.severity = none             # for now
