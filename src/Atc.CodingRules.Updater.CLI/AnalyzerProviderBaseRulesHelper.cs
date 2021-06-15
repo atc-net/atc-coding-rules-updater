@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
@@ -23,7 +24,9 @@ namespace Atc.CodingRules.Updater.CLI
             };
 
             var tempFile = Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules.json");
-            if (File.Exists(tempFile) /* TODO: && check not older the 1day */)
+            var fileInfo = new FileInfo(tempFile);
+
+            if (fileInfo.Exists && fileInfo.LastWriteTimeUtc > DateTime.UtcNow.AddDays(-1))
             {
                 var fileAsJson = await File.ReadAllTextAsync(tempFile, cancellationToken);
                 return JsonSerializer.Deserialize<Collection<AnalyzerProviderBaseRuleData>>(fileAsJson, jsonOptions);
