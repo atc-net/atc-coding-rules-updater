@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
+using Atc.CodingRules.AnalyzerProviders.Models;
 using Atc.CodingRules.Updater.CLI.Models;
 using Atc.Data.Models;
 
@@ -9,10 +12,12 @@ namespace Atc.CodingRules.Updater.CLI
 {
     public static class ConfigHelper
     {
-        public static IEnumerable<LogKeyValueItem> HandleFiles(
+        public static async Task<IEnumerable<LogKeyValueItem>> HandleFiles(
             string rawCodingRulesDistribution,
             DirectoryInfo rootPath,
-            OptionRoot options)
+            OptionRoot options,
+            bool useTemporarySuppressions,
+            DirectoryInfo? temporarySuppressionsPath)
         {
             if (rootPath == null)
             {
@@ -71,7 +76,36 @@ namespace Atc.CodingRules.Updater.CLI
                 logItems.AddRange(HandleEditorConfigAndDirectoryBuildFiles(isFirstTime, "test", rawCodingRulesDistribution, rootPath, "test", "test"));
             }
 
+            if (useTemporarySuppressions)
+            {
+                // TODO: Fix SonarAnalyzer
+                var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules();
+                var buildResult = DotnetBuildHelper.BuildAndCollectErrors(rootPath);
+                var suppressionLines = GetSuppressionsLines(analyzerProviderBaseRules, buildResult);
+
+                // TODO: Imp. this.
+                if (temporarySuppressionsPath is null)
+                {
+                    // Append to root/.editorconfig
+                }
+                else
+                {
+                    // Create new file in temporarySuppressionsPath
+                }
+            }
+
             return logItems;
+        }
+
+        private static Tuple<string, List<string>> GetSuppressionsLines(
+            Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules,
+            Dictionary<string, int> buildResult)
+        {
+            // TODO: SA1600	# COUNT - Name - Description
+            // "StyleCop.Analyzers"
+            // -> "SA1600 # COUNT - Name - Description"
+            // -> "SA1607 # COUNT - Name - Description"
+            throw new NotImplementedException();
         }
 
         private static bool HasOldBuildStructure(DirectoryInfo rootPath)

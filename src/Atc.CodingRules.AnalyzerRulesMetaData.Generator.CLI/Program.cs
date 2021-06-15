@@ -8,6 +8,7 @@ using Atc.CodingRules.AnalyzerProviders;
 
 namespace Atc.CodingRules.AnalyzerRulesMetaData.Generator.CLI
 {
+    // TODO: Kill this project
     public static class Program
     {
         private const string OutputFile = @"C:\Code\atc-net\atc-coding-rules-updater\AnalyzerRulesMetaData.json";

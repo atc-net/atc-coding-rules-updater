@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using Atc.CodingRules.AnalyzerProviders.Providers;
@@ -9,7 +10,7 @@ namespace Atc.CodingRules.AnalyzerProviders
     public class AnalyzerProviderCollector
     {
         [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "OK.")]
-        public async Task<Collection<AnalyzerProviderBaseRuleData>> CollectAllBaseRules()
+        public async Task<Collection<AnalyzerProviderBaseRuleData>> CollectAllBaseRules(CancellationToken cancellationToken = default)
         {
             var data = new Collection<AnalyzerProviderBaseRuleData>();
 

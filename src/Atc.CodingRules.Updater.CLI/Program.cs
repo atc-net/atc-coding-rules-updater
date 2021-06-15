@@ -15,6 +15,14 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public static async Task<int> Main(string[] args)
         {
+            args = new string[]
+            {
+                "-r", @"C:\Temp\@JanIssue55",
+                "-v",
+                "--useTemporarySuppressions",
+                "--temporarySuppressionPath", @"C:\Temp",
+            };
+
             var builder = new HostBuilder();
 
             try
