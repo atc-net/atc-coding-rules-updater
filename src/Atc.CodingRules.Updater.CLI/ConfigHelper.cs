@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using Atc.CodingRules.Updater.CLI.Models;
@@ -81,25 +82,54 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules();
                 var buildResult = DotnetBuildHelper.BuildAndCollectErrors(rootPath);
-                var suppressionLines = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
+                var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
+
+                if (!suppressionLinesPrAnalyzer.Any())
+                {
+                    return logItems;
+                }
 
                 // TODO: Imp. this.
                 if (temporarySuppressionsPath is null)
                 {
-                    // Append to root/.editorconfig
+                    var rootEditorConfigFile = new FileInfo(Path.Combine(rootPath.FullName, EditorConfigHelper.FileNameEditorConfig));
 
+                    // TODO: Append to root/.editorconfig
                     // TODO: OWN SECTION IN THE BOTTOM..
                 }
                 else
                 {
-                    // Create new file in temporarySuppressionsPath
+                    await CreateSuppressionsFileInTempPath(temporarySuppressionsPath, suppressionLinesPrAnalyzer);
                 }
             }
 
             return logItems;
         }
 
-        private static IEnumerable<Tuple<string, List<string>>> GetSuppressionLines(IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules, Dictionary<string, int> buildResult)
+        private static async Task CreateSuppressionsFileInTempPath(DirectoryInfo temporarySuppressionsPath, IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer)
+        {
+            var temporarySuppressionsFile = Path.Join(temporarySuppressionsPath.FullName, "AtcCodingRulesSuppressions.txt");
+
+            var sb = new StringBuilder();
+            foreach (var (analyzerName, suppressionLines) in suppressionLinesPrAnalyzer)
+            {
+                sb.Append(Environment.NewLine);
+                sb.Append($"# {analyzerName}");
+                sb.Append(Environment.NewLine);
+
+                foreach (var suppressionLine in suppressionLines)
+                {
+                    sb.Append(suppressionLine);
+                    sb.Append(Environment.NewLine);
+                }
+            }
+
+            await using FileStream fs = File.Create(temporarySuppressionsFile);
+            var content = new UTF8Encoding().GetBytes(sb.ToString());
+            await fs.WriteAsync(content);
+        }
+
+        private static List<Tuple<string, List<string>>> GetSuppressionLines(IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules, Dictionary<string, int> buildResult)
         {
             var suppressionLines = new List<Tuple<string, string>>();
             foreach (var (code, count) in buildResult.OrderBy(x => x.Key))
@@ -109,10 +139,9 @@ namespace Atc.CodingRules.Updater.CLI
                     var rule = analyzerProvider.Rules.FirstOrDefault(x => x.Code.Equals(code, StringComparison.Ordinal));
                     if (rule is not null)
                     {
-                        // TODO: tabs between none and # ?
                         var suppressionLine = string.IsNullOrEmpty(rule.Category)
-                            ? $"dotnet_diagnostic.{code}.severity = none    # {count.Pluralize("occurrence")} - {rule.Title} - {rule.Link}"
-                            : $"dotnet_diagnostic.{code}.severity = none    # {count.Pluralize("occurrence")} - Category: '{rule.Category}' - {rule.Title} - {rule.Link}";
+                            ? $"dotnet_diagnostic.{code}.severity = none\t\t\t\t# {count.Pluralize("occurrence")} - {rule.Title} - {rule.Link}"
+                            : $"dotnet_diagnostic.{code}.severity = none\t\t\t\t# {count.Pluralize("occurrence")} - Category: '{rule.Category}' - {rule.Title} - {rule.Link}";
                         suppressionLines.Add(Tuple.Create(analyzerProvider.Name, suppressionLine));
                     }
                 }
@@ -232,8 +261,6 @@ namespace Atc.CodingRules.Updater.CLI
         /// <param name="singularSuffix">An optional suffix if the count is 1; "" is the default.</param>
         /// <returns>Formatted string: "number word[suffix]", pluralSuffix (default "s") only added if the number is not 1, otherwise singularSuffix (default "") added.</returns>
         private static string Pluralize(this int number, string word, string pluralSuffix = "s", string singularSuffix = "")
-        {
-            return $@"{number} {word}{(number != 1 ? pluralSuffix : singularSuffix)}";
-        }
+            => $@"{number} {word}{(number != 1 ? pluralSuffix : singularSuffix)}";
     }
 }
