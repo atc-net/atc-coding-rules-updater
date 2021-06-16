@@ -15,10 +15,10 @@ namespace Atc.CodingRules.Updater.CLI.Commands.CommandOptions
         [Option("--optionsPath", "Path to options json-file", CommandOptionType.SingleValue)]
         public string? OptionsPath { get; set; }
 
-        [Option("--useTemporarySuppressions", "???", CommandOptionType.NoValue)]
+        [Option("--useTemporarySuppressions", "Use temporary suppressions from build - appends to .editorconfig - unless temporarySuppressionPath is set", CommandOptionType.NoValue)]
         public bool UseTemporarySuppressions { get; set; }
 
-        [Option("--temporarySuppressionPath", "???", CommandOptionType.SingleValue)]
+        [Option("--temporarySuppressionPath", "Path to temporary suppressions file - if not set .editorconfig file is used", CommandOptionType.SingleValue)]
         public string? TemporarySuppressionsPath { get; set; }
     }
 }
