@@ -5,6 +5,7 @@ using HtmlAgilityPack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 namespace Atc.CodingRules.AnalyzerProviders
 {
     /// <summary>
@@ -52,6 +53,10 @@ namespace Atc.CodingRules.AnalyzerProviders
                     }
                 }
             }
+            catch (IOException)
+            {
+                throw;
+            }
             catch
             {
                 return null;
@@ -92,7 +97,7 @@ namespace Atc.CodingRules.AnalyzerProviders
                     throw new IOException("ChromeDriver is not present on the system.");
                 }
             }
-            else
+            else if(File.Exists(chrome32BitExecutablePath))
             {
                 options.BinaryLocation = chrome32BitExecutablePath;
                 service = ChromeDriverService.CreateDefaultService(Chrome32BitPath);
@@ -101,6 +106,10 @@ namespace Atc.CodingRules.AnalyzerProviders
                 {
                     throw new IOException("ChromeDriver is not present on the system.");
                 }
+            }
+            else
+            {
+                throw new IOException("Chrome/chromedriver is not installed on this system.");
             }
 
             service.SuppressInitialDiagnosticInformation = true;
