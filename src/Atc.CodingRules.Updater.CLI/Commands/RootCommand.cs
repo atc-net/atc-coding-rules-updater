@@ -20,6 +20,12 @@ namespace Atc.CodingRules.Updater.CLI.Commands
                 throw new ArgumentNullException(nameof(configCmd));
             }
 
+            if (CommandLineApplicationHelper.GetHelpMode(configCmd))
+            {
+                ConsoleHelper.WriteHelp(configCmd, "Please specify some options");
+                return ExitStatusCodes.Failure;
+            }
+
             ConsoleHelper.WriteHeader();
             var verboseMode = CommandLineApplicationHelper.GetVerboseMode(configCmd);
             var options = OptionsHelper.CreateDefault(configCmd);
