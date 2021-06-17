@@ -4,10 +4,15 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;_PUBLISH_CHROMEDRIVER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Atc" Version="1.1.121" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="91.0.4472.10100" />
   </ItemGroup>
 
 </Project>

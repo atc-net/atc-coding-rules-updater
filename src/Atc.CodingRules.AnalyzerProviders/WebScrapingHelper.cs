@@ -90,26 +90,47 @@ namespace Atc.CodingRules.AnalyzerProviders
             if (File.Exists(chrome64BitExecutablePath))
             {
                 options.BinaryLocation = chrome64BitExecutablePath;
-                service = ChromeDriverService.CreateDefaultService(Chrome64BitPath);
 
-                if (!File.Exists(chromeDriver64BitExecutablePath))
+                if (File.Exists(chromeDriver64BitExecutablePath))
                 {
-                    throw new IOException("ChromeDriver is not present on the system.");
+                    service = ChromeDriverService.CreateDefaultService(Chrome64BitPath);
+                }
+                else
+                {
+                    var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    var filePath = Path.Combine(baseDirectory, "chromedriver.exe");
+                    if (File.Exists(filePath))
+                    {
+                        service = ChromeDriverService.CreateDefaultService(baseDirectory);
+                    }
                 }
             }
-            else if(File.Exists(chrome32BitExecutablePath))
+            else if (File.Exists(chrome32BitExecutablePath))
             {
                 options.BinaryLocation = chrome32BitExecutablePath;
-                service = ChromeDriverService.CreateDefaultService(Chrome32BitPath);
 
-                if (!File.Exists(chromeDriver32BitExecutablePath))
+                if (File.Exists(chromeDriver32BitExecutablePath))
                 {
-                    throw new IOException("ChromeDriver is not present on the system.");
+                    service = ChromeDriverService.CreateDefaultService(Chrome32BitPath);
+                }
+                else
+                {
+                    var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    var filePath = Path.Combine(baseDirectory, "chromedriver.exe");
+                    if (File.Exists(filePath))
+                    {
+                        service = ChromeDriverService.CreateDefaultService(baseDirectory);
+                    }
                 }
             }
             else
             {
-                throw new IOException("Chrome/chromedriver is not installed on this system.");
+                throw new IOException("Chrome is not installed on this system.");
+            }
+
+            if (service is null)
+            {
+                throw new IOException("ChromeDriver is not present on the system - Download from: https://chromedriver.chromium.org/downloads.");
             }
 
             service.SuppressInitialDiagnosticInformation = true;

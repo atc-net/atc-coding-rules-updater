@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
+using HtmlAgilityPack;
 
 namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
@@ -13,7 +15,17 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         {
             var data = new AnalyzerProviderBaseRuleData("SonarAnalyzer.CSharp");
 
-            var htmlDoc = WebScrapingHelper.GetPage(this.DocumentationLink!, true);
+            HtmlDocument? htmlDoc;
+            try
+            {
+                htmlDoc = WebScrapingHelper.GetPage(this.DocumentationLink!, true);
+            }
+            catch (IOException ex)
+            {
+                data.ExceptionMessage = ex.Message;
+                return data;
+            }
+
             WebScrapingHelper.QuitWebDriver();
             if (htmlDoc is null)
             {
