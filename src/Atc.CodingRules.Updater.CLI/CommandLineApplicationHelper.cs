@@ -7,6 +7,12 @@ namespace Atc.CodingRules.Updater.CLI
 {
     public static class CommandLineApplicationHelper
     {
+        public static bool GetHelpMode(CommandLineApplication configCmd)
+        {
+            return IsParameterDefined(configCmd, "help", "h") ||
+                   IsParameterDefined(configCmd, "help", "?");
+        }
+
         public static bool GetVerboseMode(CommandLineApplication configCmd)
         {
             return IsParameterDefined(configCmd, "verboseMode", "v");
