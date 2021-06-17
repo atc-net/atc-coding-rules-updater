@@ -473,10 +473,17 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 
 dotnet_diagnostic.CA2227.severity = none            # for now
 
+dotnet_diagnostic.CA1014.severity = none            # for now
 dotnet_diagnostic.CA1031.severity = none            # for now
 dotnet_diagnostic.CA1054.severity = none            # for now
 dotnet_diagnostic.CA1801.severity = none            # for now
+dotnet_diagnostic.CA2007.severity = none            # for now
 
+dotnet_diagnostic.MA0004.severity = none            # for now
+dotnet_diagnostic.MA0028.severity = none            # for now
 dotnet_diagnostic.MA0051.severity = none            # for now
 
 dotnet_diagnostic.CS8603.severity = none            # for now
+
+dotnet_diagnostic.S1075.severity = none             # for now
+dotnet_diagnostic.S4457.severity = none             # for now
