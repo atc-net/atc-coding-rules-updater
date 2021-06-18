@@ -21,6 +21,18 @@ namespace Atc.CodingRules.Updater.CLI
         public static DirectoryInfo GetRootPath(CommandLineApplication configCmd)
             => new DirectoryInfo(GetValueForParameter(configCmd, "outputRootPath", "r"));
 
+        public static FileInfo? GetBuildFile(CommandLineApplication configCmd)
+        {
+            if (TryGetValueForParameter(configCmd, "buildFile", shortParameterName: null, out string value))
+            {
+                return value.Contains(':', StringComparison.Ordinal)
+                    ? new FileInfo(value)
+                    : new FileInfo(Path.Combine(GetRootPath(configCmd).FullName, value));
+            }
+
+            return null;
+        }
+
         public static bool GetUseTemporarySuppressions(CommandLineApplication configCmd)
         {
             return IsParameterDefined(configCmd, "useTemporarySuppressions", null);
