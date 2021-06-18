@@ -32,6 +32,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
             var rootPath = CommandLineApplicationHelper.GetRootPath(configCmd);
             var useTemporarySuppressions = CommandLineApplicationHelper.GetUseTemporarySuppressions(configCmd);
             var temporarySuppressionsPath = CommandLineApplicationHelper.GetTemporarySuppressionsPath(configCmd);
+            var buildFile = CommandLineApplicationHelper.GetBuildFile(configCmd);
             var logItems = new List<LogKeyValueItem>();
 
             logItems.AddRange(
@@ -40,7 +41,8 @@ namespace Atc.CodingRules.Updater.CLI.Commands
                     rootPath,
                     options,
                     useTemporarySuppressions,
-                    temporarySuppressionsPath));
+                    temporarySuppressionsPath,
+                    buildFile));
 
             return ConsoleHelper.WriteLogItemsAndExit(logItems, verboseMode, "Update");
         }

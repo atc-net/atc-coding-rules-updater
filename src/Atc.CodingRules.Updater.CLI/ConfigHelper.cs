@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +24,8 @@ namespace Atc.CodingRules.Updater.CLI
             DirectoryInfo rootPath,
             OptionRoot options,
             bool useTemporarySuppressions,
-            DirectoryInfo? temporarySuppressionsPath)
+            DirectoryInfo? temporarySuppressionsPath,
+            FileInfo? buildFile)
         {
             if (rootPath == null)
             {
@@ -83,7 +86,7 @@ namespace Atc.CodingRules.Updater.CLI
 
             if (useTemporarySuppressions)
             {
-                await HandleTemporarySuppressions(rootPath, temporarySuppressionsPath, logItems);
+                await HandleTemporarySuppressions(rootPath, buildFile, temporarySuppressionsPath, logItems);
             }
 
             return logItems;
@@ -188,10 +191,12 @@ namespace Atc.CodingRules.Updater.CLI
 
         private static async Task HandleTemporarySuppressions(
             DirectoryInfo rootPath,
+            FileInfo? buildFile,
             DirectoryInfo? temporarySuppressionsPath,
             ICollection<LogKeyValueItem> logItems)
         {
             var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules();
+            HandlingAnalyzerProviderInformation(logItems, analyzerProviderBaseRules);
             HandlingAnalyzerProviderErrors(logItems, analyzerProviderBaseRules);
 
             if (temporarySuppressionsPath is null)
@@ -203,9 +208,18 @@ namespace Atc.CodingRules.Updater.CLI
                 DeleteSuppressionsFileInTempPath(temporarySuppressionsPath);
             }
 
-            var buildResult = DotnetBuildHelper.BuildAndCollectErrors(rootPath);
-            var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
+            Dictionary<string, int> buildResult;
+            try
+            {
+                buildResult = DotnetBuildHelper.BuildAndCollectErrors(rootPath, buildFile);
+            }
+            catch (DataException ex)
+            {
+                logItems.Add(new LogKeyValueItem(LogCategoryType.Error, "BuildError", ex.Message));
+                return;
+            }
 
+            var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
             if (!suppressionLinesPrAnalyzer.Any())
             {
                 logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "No suppressions.", "No suppressions need to be added."));
@@ -220,6 +234,17 @@ namespace Atc.CodingRules.Updater.CLI
             {
                 await CreateSuppressionsFileInTempPath(temporarySuppressionsPath, suppressionLinesPrAnalyzer);
             }
+        }
+
+        private static void HandlingAnalyzerProviderInformation(ICollection<LogKeyValueItem> logItems, Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
+        {
+            int rulesCount = 0;
+            foreach (var item in analyzerProviderBaseRules)
+            {
+                rulesCount += item.Rules.Count;
+            }
+
+            logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "AnalyzerProviders", $"Loaded {analyzerProviderBaseRules.Count} providers with {rulesCount} rules"));
         }
 
         private static void HandlingAnalyzerProviderErrors(ICollection<LogKeyValueItem> logItems, IEnumerable<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
@@ -324,7 +349,16 @@ namespace Atc.CodingRules.Updater.CLI
             var tabs = codeLength switch
             {
                 5 => "\t\t\t\t",
-                > 6 => "\t\t",
+                6 => "\t\t\t",
+                7 => "\t\t\t",
+                8 => "\t\t\t",
+                9 => "\t\t\t",
+                10 => "\t\t\t",
+                11 => "\t\t",
+                12 => "\t\t",
+                13 => "\t\t",
+                14 => "\t\t",
+                15 => "\t",
                 _ => "\t\t\t"
             };
 
