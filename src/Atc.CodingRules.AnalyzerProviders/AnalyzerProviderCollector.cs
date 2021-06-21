@@ -26,6 +26,9 @@ namespace Atc.CodingRules.AnalyzerProviders
             var microsoftCodeAnalysisNetAnalyzersProvider = new MicrosoftCodeAnalysisNetAnalyzersProvider();
             var microsoftCodeAnalysisNetAnalyzersTask = microsoftCodeAnalysisNetAnalyzersProvider.CollectBaseRules();
 
+            var microsoftCompilerErrorsProvider = new MicrosoftCompilerErrorsProvider();
+            var microsoftCompilerErrorsTask = microsoftCompilerErrorsProvider.CollectBaseRules();
+
             var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider();
             var securityCodeScanVs2019Task = securityCodeScanVs2019Provider.CollectBaseRules();
 
@@ -40,6 +43,7 @@ namespace Atc.CodingRules.AnalyzerProviders
                 asyncifyTask,
                 meziantouTask,
                 microsoftCodeAnalysisNetAnalyzersTask,
+                microsoftCompilerErrorsTask,
                 securityCodeScanVs2019Task,
                 styleCopAnalyzersTask,
                 sonarAnalyzerCSharpTask);
@@ -48,6 +52,7 @@ namespace Atc.CodingRules.AnalyzerProviders
             data.Add(await asyncifyTask);
             data.Add(await meziantouTask);
             data.Add(await microsoftCodeAnalysisNetAnalyzersTask);
+            data.Add(await microsoftCompilerErrorsTask);
             data.Add(await securityCodeScanVs2019Task);
             data.Add(await styleCopAnalyzersTask);
             data.Add(await sonarAnalyzerCSharpTask);
