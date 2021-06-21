@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Atc" Version="1.1.121" />
     <PackageReference Include="Colorful.Console" Version="1.2.15" />
+    <PackageReference Include="EPPlus" Version="5.7.0" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
     <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />

@@ -21,7 +21,10 @@ namespace Atc.CodingRules.Updater.CLI.Commands.CommandOptions
         [Option("--temporarySuppressionPath", "Optional path to temporary suppressions file - if not set .editorconfig file is used", CommandOptionType.SingleValue)]
         public string? TemporarySuppressionsPath { get; set; }
 
-        [Option("--buildFile", "Optional path to solution/project file", CommandOptionType.SingleValue)]
+        [Option("--temporarySuppressionAsExcel", "Optional - save temporary suppressions file as Excel (.xlsx)", CommandOptionType.NoValue)]
+        public bool TemporarySuppressionAsExcel { get; set; }
+
+        [Option("--buildFile", "Optional path to solution/project file - required when multiple .sln files exists in root path", CommandOptionType.SingleValue)]
         public string? BuildFile { get; set; }
     }
 }

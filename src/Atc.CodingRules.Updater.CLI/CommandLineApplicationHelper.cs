@@ -38,6 +38,11 @@ namespace Atc.CodingRules.Updater.CLI
             return IsParameterDefined(configCmd, "useTemporarySuppressions", null);
         }
 
+        public static bool GetTemporarySuppressionAsExcel(CommandLineApplication configCmd)
+        {
+            return IsParameterDefined(configCmd, "temporarySuppressionAsExcel", null);
+        }
+
         public static DirectoryInfo? GetTemporarySuppressionsPath(CommandLineApplication configCmd)
         {
             return TryGetValueForParameter(configCmd, "temporarySuppressionPath", null, out string value)

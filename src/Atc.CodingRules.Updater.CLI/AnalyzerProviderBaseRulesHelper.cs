@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,14 +30,19 @@ namespace Atc.CodingRules.Updater.CLI
 
             var tempFile = Path.Combine(Path.GetTempPath(), AtcAnalyzerProviderBaseRulesFileName);
             var fileInfo = new FileInfo(tempFile);
-            if (fileInfo.Exists && fileInfo.LastWriteTimeUtc > DateTime.UtcNow.AddDays(-1))
+            if (fileInfo.Exists && fileInfo.LastWriteTimeUtc > DateTime.UtcNow.AddMonths(-1))
             {
                 var fileAsJson = await File.ReadAllTextAsync(tempFile, cancellationToken);
                 return JsonSerializer.Deserialize<Collection<AnalyzerProviderBaseRuleData>>(fileAsJson, jsonOptions);
             }
 
             var analyzerProviders = new AnalyzerProviderCollector();
+
+            Colorful.Console.WriteLine("Working on collecting rules metadata.", Color.Tan);
+            Colorful.Console.WriteLine($"- start {DateTime.Now:T}", Color.Tan);
             var analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(cancellationToken);
+            Colorful.Console.WriteLine($"- end {DateTime.Now:T}", Color.Tan);
+            Console.WriteLine();
 
             bool hasErrors = analyzerProviderBaseRules.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
             if (!hasErrors)
