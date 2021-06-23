@@ -44,7 +44,7 @@ namespace Atc.CodingRules.Updater.CLI
             Colorful.Console.WriteLine($"- end {DateTime.Now:T}", Color.Tan);
             Console.WriteLine();
 
-            bool hasErrors = analyzerProviderBaseRules.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
+            var hasErrors = analyzerProviderBaseRules.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
             if (!hasErrors)
             {
                 var json = JsonSerializer.Serialize(analyzerProviderBaseRules, jsonOptions);
