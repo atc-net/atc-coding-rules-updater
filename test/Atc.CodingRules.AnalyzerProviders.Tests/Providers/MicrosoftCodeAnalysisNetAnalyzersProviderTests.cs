@@ -20,7 +20,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
             Assert.NotNull(actual.Name);
             Assert.Equal("Microsoft.CodeAnalysis.NetAnalyzers", actual.Name);
             Assert.NotNull(actual.Rules);
-            Assert.True(actual.Rules.Count >= 219);
+            Assert.True(actual.Rules.Count >= 252);
         }
     }
 }

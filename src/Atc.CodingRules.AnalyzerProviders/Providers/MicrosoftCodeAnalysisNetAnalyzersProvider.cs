@@ -43,7 +43,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 var sa = aHrefNode.InnerText.Split(":");
                 if (sa.Length != 2)
                 {
-                    continue;
+                    sa = aHrefNode.InnerText.Split(new[] { ' ' }, 2);
+                    if (sa.Length != 2)
+                    {
+                        continue;
+                    }
                 }
 
                 var code = sa[0];
