@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using HtmlAgilityPack;
 
+// ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class StyleCopAnalyzersProvider : AnalyzerProviderBase
@@ -23,6 +26,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
             var articleRuleLinks = articleNode.SelectNodes("//*//strong//a").ToList();
 
+            var ruleSetTasks = new List<Task<List<Rule>>>();
             foreach (var item in articleRuleLinks)
             {
                 if (item.Attributes.Count != 1 ||
@@ -31,52 +35,79 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                     continue;
                 }
 
-                var webChild = new HtmlWeb();
-                var htmlDocChild = webChild.Load(new Uri($"https://github.com{item.Attributes["href"].Value}", UriKind.Absolute));
-                var articleNodeChild = htmlDocChild.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
-                var articleTableRowsChild = articleNodeChild.SelectNodes("//*//table[1]//tr").ToList();
-                var category = articleNodeChild.Descendants("h3").First().InnerText;
-                var i = category.IndexOf(" Rules", StringComparison.Ordinal);
-                if (i > 0)
+                var ruleSetTask = GetRules(item);
+                ruleSetTasks.Add(ruleSetTask);
+            }
+
+            await Task.WhenAll(ruleSetTasks.ToArray());
+            foreach (var ruleSetTask in ruleSetTasks)
+            {
+                var ruleSet = await ruleSetTask;
+                foreach (var rule in ruleSet)
                 {
-                    category = category.Substring(0, i);
-                }
-
-                foreach (var row in articleTableRowsChild)
-                {
-                    if (row.SelectNodes("td") == null)
-                    {
-                        continue;
-                    }
-
-                    var cells = row.SelectNodes("td").ToList();
-                    if (cells.Count <= 0)
-                    {
-                        continue;
-                    }
-
-                    var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
-                    if (aHrefNode == null)
-                    {
-                        continue;
-                    }
-
-                    var code = aHrefNode.InnerText;
-                    var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText).NormalizePascalCase();
-                    var link = $"https://github.com{aHrefNode.Attributes["href"].Value}";
-                    var description = cells[TableColumnDescription].InnerText;
-
-                    data.Rules.Add(
-                        new Rule(
-                            code,
-                            title,
-                            link,
-                            category,
-                            description));
+                    data.Rules.Add(rule);
                 }
             }
 
             return data;
+        }
+
+        [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "OK.")]
+        [SuppressMessage("Security", "SCS0005:Weak random generator", Justification = "OK.")]
+        private static async Task<List<Rule>> GetRules(HtmlNode item)
+        {
+            // Try not to look like DDoS-attack
+            var rnd = new Random();
+            int nextMs = rnd.Next(250, 500);
+            await Task.Delay(nextMs);
+
+            var link = $"https://github.com{item.Attributes["href"].Value}";
+            var web = new HtmlWeb();
+            var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);
+            var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
+            var articleTableRows = articleNode.SelectNodes("//*//table[1]//tr").ToList();
+            var category = articleNode.Descendants("h3").First().InnerText;
+            var i = category.IndexOf(" Rules", StringComparison.Ordinal);
+            if (i > 0)
+            {
+                category = category.Substring(0, i);
+            }
+
+            var rules = new List<Rule>();
+            foreach (var row in articleTableRows)
+            {
+                if (row.SelectNodes("td") == null)
+                {
+                    continue;
+                }
+
+                var cells = row.SelectNodes("td").ToList();
+                if (cells.Count <= 0)
+                {
+                    continue;
+                }
+
+                var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
+                if (aHrefNode == null)
+                {
+                    continue;
+                }
+
+                var code = aHrefNode.InnerText;
+                var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText).NormalizePascalCase();
+                var helpLink = $"https://github.com{aHrefNode.Attributes["href"].Value}";
+                var description = cells[TableColumnDescription].InnerText;
+
+                rules.Add(
+                    new Rule(
+                        code,
+                        title,
+                        helpLink,
+                        category,
+                        description));
+            }
+
+            return rules;
         }
     }
 }
