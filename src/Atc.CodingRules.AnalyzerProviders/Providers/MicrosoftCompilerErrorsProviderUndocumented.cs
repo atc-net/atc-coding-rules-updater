@@ -19,6 +19,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var list = new List<Tuple<string, string>>
             {
                 Tuple.Create("CS1998", "Async method lacks 'await' operators and will run synchronously."),
+                Tuple.Create("CS8034", "Unable to load Analyzer assembly."),
                 Tuple.Create("CS8073", "The result of the expression is always the same since a value of this type is never equal to ‘null’."),
                 Tuple.Create("CS8597", "Thrown value may be null."),
                 Tuple.Create("CS8600", "Converting null literal or possible null value to non - nullable type."),
