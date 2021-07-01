@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 echo "Updating atc-coding-rules-updater tool to newest version"
 dotnet tool update -g atc-coding-rules-updater
 
