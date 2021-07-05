@@ -18,6 +18,7 @@ namespace Atc.CodingRules.Updater.CLI
     public static class AnalyzerProviderBaseRulesHelper
     {
         private const string AtcAnalyzerProviderBaseRulesFileName = "AtcAnalyzerProviderBaseRules.json";
+        private const string GitRawAtcAnalyzerProviderBaseRulesFileName = "https://raw.githubusercontent.com/atc-net/atc-coding-rules-updater/main/" + AtcAnalyzerProviderBaseRulesFileName;
 
         public static async Task<Collection<AnalyzerProviderBaseRuleData>> GetAnalyzerProviderBaseRules(CancellationToken cancellationToken = default)
         {
@@ -36,25 +37,32 @@ namespace Atc.CodingRules.Updater.CLI
                 return JsonSerializer.Deserialize<Collection<AnalyzerProviderBaseRuleData>>(fileAsJson, jsonOptions);
             }
 
-            var analyzerProviders = new AnalyzerProviderCollector();
-
+            Collection<AnalyzerProviderBaseRuleData>? analyzerProviderBaseRules;
             Colorful.Console.WriteLine("Working on collecting rules metadata.", Color.Tan);
             Colorful.Console.WriteLine($"- start {DateTime.Now:T}", Color.Tan);
-            Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules = null;
-            try
+
+            var rawGitData = HttpClientHelper.GetRawFile(GitRawAtcAnalyzerProviderBaseRulesFileName);
+            if (string.IsNullOrEmpty(rawGitData))
             {
+                var analyzerProviders = new AnalyzerProviderCollector();
                 analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(cancellationToken);
             }
-            catch (Exception ex)
+            else
             {
-                Colorful.Console.WriteLine(ex.Message, Color.Red);
-                Colorful.Console.Write(ex.StackTrace, Color.Orange);
+                // TODO: Imp. a check ala "LastWriteTimeUtc > DateTime.UtcNow.AddMonths(-1)" - take "relative-time" from non-rawGit as LastWriteTimeUtc
+
+                analyzerProviderBaseRules = JsonSerializer.Deserialize<Collection<AnalyzerProviderBaseRuleData>>(rawGitData, jsonOptions);
             }
 
             Colorful.Console.WriteLine($"- end {DateTime.Now:T}", Color.Tan);
             Console.WriteLine();
 
-            var hasErrors = analyzerProviderBaseRules!.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
+            if (analyzerProviderBaseRules is null)
+            {
+                return new Collection<AnalyzerProviderBaseRuleData>();
+            }
+
+            var hasErrors = analyzerProviderBaseRules.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
             if (!hasErrors)
             {
                 var json = JsonSerializer.Serialize(analyzerProviderBaseRules, jsonOptions);
