@@ -19,13 +19,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
-            var titleValue = htmlDoc.DocumentNode.SelectSingleNode("//*//title")?.InnerText;
-            if (titleValue is not null
-                && (
-                    titleValue.Contains("access", StringComparison.OrdinalIgnoreCase)
-                    || titleValue.Contains("denied", StringComparison.OrdinalIgnoreCase)
-                   )
-                )
+            if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
             {
                 data.ExceptionMessage = "Access Denied";
                 return data;
