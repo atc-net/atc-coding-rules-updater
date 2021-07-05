@@ -40,11 +40,21 @@ namespace Atc.CodingRules.Updater.CLI
 
             Colorful.Console.WriteLine("Working on collecting rules metadata.", Color.Tan);
             Colorful.Console.WriteLine($"- start {DateTime.Now:T}", Color.Tan);
-            var analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(cancellationToken);
+            Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules = null;
+            try
+            {
+                analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Colorful.Console.WriteLine(ex.Message, Color.Red);
+                Colorful.Console.Write(ex.StackTrace, Color.Orange);
+            }
+
             Colorful.Console.WriteLine($"- end {DateTime.Now:T}", Color.Tan);
             Console.WriteLine();
 
-            var hasErrors = analyzerProviderBaseRules.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
+            var hasErrors = analyzerProviderBaseRules!.Any(x => !string.IsNullOrEmpty(x.ExceptionMessage));
             if (!hasErrors)
             {
                 var json = JsonSerializer.Serialize(analyzerProviderBaseRules, jsonOptions);

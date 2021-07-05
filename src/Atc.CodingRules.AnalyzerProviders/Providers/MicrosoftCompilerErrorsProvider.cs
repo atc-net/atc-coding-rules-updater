@@ -19,7 +19,13 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri + "/toc.json").ConfigureAwait(false);
-            if (htmlDoc.DocumentNode.InnerText.Contains("<H1>Access Denied</H1>", StringComparison.OrdinalIgnoreCase))
+            var titleValue = htmlDoc.DocumentNode.SelectSingleNode("//*//title")?.InnerText;
+            if (titleValue is not null
+                && (
+                    titleValue.Contains("access", StringComparison.OrdinalIgnoreCase)
+                    || titleValue.Contains("denied", StringComparison.OrdinalIgnoreCase)
+                   )
+                )
             {
                 data.ExceptionMessage = "Access Denied";
                 return data;
@@ -72,12 +78,18 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         {
             // Try not to look like DDoS-attack
             var rnd = new Random();
-            int nextMs = rnd.Next(250, 500);
+            int nextMs = rnd.Next(500, 1000);
             await Task.Delay(nextMs);
 
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);
-            if (htmlDoc.DocumentNode.InnerText.Contains("<H1>Access Denied</H1>", StringComparison.OrdinalIgnoreCase))
+            var titleValue = htmlDoc.DocumentNode.SelectSingleNode("//*//title")?.InnerText;
+            if (titleValue is not null
+                && (
+                    titleValue.Contains("access", StringComparison.OrdinalIgnoreCase)
+                    || titleValue.Contains("denied", StringComparison.OrdinalIgnoreCase)
+                   )
+                )
             {
                 return null;
             }

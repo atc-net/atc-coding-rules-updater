@@ -58,7 +58,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         {
             // Try not to look like DDoS-attack
             var rnd = new Random();
-            int nextMs = rnd.Next(250, 500);
+            int nextMs = rnd.Next(500, 1000);
             await Task.Delay(nextMs);
 
             var link = $"https://github.com{item.Attributes["href"].Value}";

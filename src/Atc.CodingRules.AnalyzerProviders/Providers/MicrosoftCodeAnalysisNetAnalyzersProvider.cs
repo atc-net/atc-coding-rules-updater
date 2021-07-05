@@ -19,6 +19,18 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
+            var titleValue = htmlDoc.DocumentNode.SelectSingleNode("//*//title")?.InnerText;
+            if (titleValue is not null
+                && (
+                    titleValue.Contains("access", StringComparison.OrdinalIgnoreCase)
+                    || titleValue.Contains("denied", StringComparison.OrdinalIgnoreCase)
+                   )
+                )
+            {
+                data.ExceptionMessage = "Access Denied";
+                return data;
+            }
+
             var tableRows = htmlDoc.DocumentNode.SelectNodes("//*//table[1]//tr").ToList();
 
             foreach (var row in tableRows)
