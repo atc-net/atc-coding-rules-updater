@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders.Models;
@@ -26,24 +25,10 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
             var articleRuleLinks = articleNode.SelectNodes("//*//strong//a").ToList();
 
-            var ruleSetTasks = new List<Task<List<Rule>>>();
-            foreach (var item in articleRuleLinks)
+            foreach (var item in articleRuleLinks.Where(x => x.Attributes.Count == 1 && x.InnerText.Contains("(S", StringComparison.Ordinal)))
             {
-                if (item.Attributes.Count != 1 ||
-                    !item.InnerText.Contains("(S", StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                var ruleSetTask = GetRules(item);
-                ruleSetTasks.Add(ruleSetTask);
-            }
-
-            await Task.WhenAll(ruleSetTasks.ToArray());
-            foreach (var ruleSetTask in ruleSetTasks)
-            {
-                var ruleSet = await ruleSetTask;
-                foreach (var rule in ruleSet)
+                var rules = await GetRules(item);
+                foreach (var rule in rules)
                 {
                     data.Rules.Add(rule);
                 }
@@ -52,15 +37,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             return data;
         }
 
-        [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "OK.")]
-        [SuppressMessage("Security", "SCS0005:Weak random generator", Justification = "OK.")]
         private static async Task<List<Rule>> GetRules(HtmlNode item)
         {
-            // Try not to look like DDoS-attack
-            var rnd = new Random();
-            int nextMs = rnd.Next(250, 500);
-            await Task.Delay(nextMs);
-
             var link = $"https://github.com{item.Attributes["href"].Value}";
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);

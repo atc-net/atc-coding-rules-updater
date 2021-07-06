@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -19,7 +17,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri + "/toc.json").ConfigureAwait(false);
-            if (htmlDoc.DocumentNode.InnerText.Contains("<H1>Access Denied</H1>", StringComparison.OrdinalIgnoreCase))
+            if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
             {
                 data.ExceptionMessage = "Access Denied";
                 return data;
@@ -28,7 +26,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var jsonDoc = JsonDocument.Parse(htmlDoc.DocumentNode.InnerText);
             var jsonDocItems = jsonDoc.RootElement.GetProperty("items").EnumerateArray();
 
-            var ruleTasks = new List<Task<Rule?>>();
             while (jsonDocItems.MoveNext())
             {
                 var jsonElement = jsonDocItems.Current;
@@ -48,36 +45,22 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         ? "https://docs.microsoft.com/en-us/dotnet/csharp/" + hrefPart.Replace("../../", string.Empty, StringComparison.Ordinal)
                         : DocumentationLink.AbsoluteUri + "/" + hrefPart;
 
-                    var ruleTask = GetRuleByCode(code, link);
-                    ruleTasks.Add(ruleTask);
-                }
-            }
-
-            await Task.WhenAll(ruleTasks.ToArray());
-            foreach (var ruleTask in ruleTasks)
-            {
-                var rule = await ruleTask;
-                if (rule is not null)
-                {
-                    data.Rules.Add(rule);
+                    var rule = await GetRuleByCode(code, link);
+                    if (rule is not null)
+                    {
+                        data.Rules.Add(rule);
+                    }
                 }
             }
 
             return data;
         }
 
-        [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "OK.")]
-        [SuppressMessage("Security", "SCS0005:Weak random generator", Justification = "OK.")]
         private static async Task<Rule?> GetRuleByCode(string code, string link)
         {
-            // Try not to look like DDoS-attack
-            var rnd = new Random();
-            int nextMs = rnd.Next(250, 500);
-            await Task.Delay(nextMs);
-
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);
-            if (htmlDoc.DocumentNode.InnerText.Contains("<H1>Access Denied</H1>", StringComparison.OrdinalIgnoreCase))
+            if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
             {
                 return null;
             }
