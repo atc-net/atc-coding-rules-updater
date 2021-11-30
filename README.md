@@ -80,7 +80,7 @@ atc-coding-rules-updater --help
 Having a project folder in c:\code\MyProject where the .sln file for C# projects exists in the root, run the following command
 
 ```powershell
-atc-coding-rules-updater -r c:\code\MyProject -v true
+atc-coding-rules-updater -r c:\code\MyProject -v
 ```
 
 Running the command above produces the following output
