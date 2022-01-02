@@ -20,7 +20,6 @@ namespace Atc.CodingRules.Updater.CLI
     {
         private const string AtcAnalyzerProviderBaseRulesFileName = "AtcAnalyzerProviderBaseRules.json";
         private const string GitRawAtcAnalyzerProviderBaseRulesFileName = "https://raw.githubusercontent.com/atc-net/atc-coding-rules-updater/main/" + AtcAnalyzerProviderBaseRulesFileName;
-        private const string GitCommitsAtcAnalyzerProviderBaseRulesFileName = "https://github.com/atc-net/atc-coding-rules-updater/commits/main/" + AtcAnalyzerProviderBaseRulesFileName;
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -42,7 +41,7 @@ namespace Atc.CodingRules.Updater.CLI
             Colorful.Console.WriteLine("Working on collecting rules metadata.", Color.Tan);
             Colorful.Console.WriteLine($"- start {DateTime.Now:T}", Color.Tan);
 
-            analyzerProviderBaseRules = TryGetAnalyzerProviderBaseRulesFromGitHubIfExistAndTimeIsValid();
+            analyzerProviderBaseRules = TryGetAnalyzerProviderBaseRulesFromGitHub();
             if (analyzerProviderBaseRules is null)
             {
                 var analyzerProviders = new AnalyzerProviderCollector();
@@ -63,25 +62,12 @@ namespace Atc.CodingRules.Updater.CLI
         }
 
         [SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null", Justification = "OK. - By design.")]
-        private static Collection<AnalyzerProviderBaseRuleData>? TryGetAnalyzerProviderBaseRulesFromGitHubIfExistAndTimeIsValid()
+        private static Collection<AnalyzerProviderBaseRuleData>? TryGetAnalyzerProviderBaseRulesFromGitHub()
         {
             var rawGitData = HttpClientHelper.GetRawFile(GitRawAtcAnalyzerProviderBaseRulesFileName);
-            if (string.IsNullOrEmpty(rawGitData))
-            {
-                return null;
-            }
-
-            var htmlDoc = WebScrapingHelper.GetPage(new Uri(GitCommitsAtcAnalyzerProviderBaseRulesFileName));
-            var relativeTimesNode = htmlDoc?.DocumentNode.SelectNodes("//relative-time").ToList();
-            if (relativeTimesNode is null)
-            {
-                return null;
-            }
-
-            var lastCommit = DateTime.Parse(relativeTimesNode.First().Attributes["datetime"].Value, GlobalizationConstants.EnglishCultureInfo);
-            return lastCommit > DateTime.UtcNow.AddMonths(-1)
-                ? JsonSerializer.Deserialize<Collection<AnalyzerProviderBaseRuleData>>(rawGitData, JsonOptions)
-                : null;
+            return string.IsNullOrEmpty(rawGitData)
+                ? null
+                : JsonSerializer.Deserialize<Collection<AnalyzerProviderBaseRuleData>>(rawGitData, JsonOptions);
         }
     }
 }
