@@ -1,0 +1,1601 @@
+{
+  "Name": "Microsoft.CodeAnalysis.NetAnalyzers",
+  "Rules": [
+    {
+      "Code": "CA1000",
+      "Title": "Do not declare static members on generic types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1000",
+      "Description": "When a static member of a generic type is called, the type argument must be specified for the type. When a generic instance member that does not support inference is called, the type argument must be specified for the member. In these two cases, the syntax for specifying the type argument is different and easily confused."
+    },
+    {
+      "Code": "CA1001",
+      "Title": "Types that own disposable fields should be disposable",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1001",
+      "Description": "A class declares and implements an instance field that is a System.IDisposable type, and the class does not implement IDisposable. A class that declares an IDisposable field indirectly owns an unmanaged resource and should implement the IDisposable interface."
+    },
+    {
+      "Code": "CA1002",
+      "Title": "Do not expose generic lists",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1002",
+      "Description": "System.Collections.Generic.List<(Of <(T>)>) is a generic collection that is designed for performance, not inheritance. Therefore, List does not contain any virtual members. The generic collections that are designed for inheritance should be exposed instead."
+    },
+    {
+      "Code": "CA1003",
+      "Title": "Use generic event handler instances",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1003",
+      "Description": "A type contains a delegate that returns void, whose signature contains two parameters (the first an object and the second a type that is assignable to EventArgs), and the containing assembly targets Microsoft .NET Framework 2.0."
+    },
+    {
+      "Code": "CA1005",
+      "Title": "Avoid excessive parameters on generic types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1005",
+      "Description": "The more type parameters a generic type contains, the more difficult it is to know and remember what each type parameter represents. It is usually obvious with one type parameter, as in List<T>, and in certain cases that have two type parameters, as in Dictionary<TKey, TValue>. However, if more than two type parameters exist, the difficulty becomes too great for most users."
+    },
+    {
+      "Code": "CA1008",
+      "Title": "Enums should have zero value",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1008",
+      "Description": "The default value of an uninitialized enumeration, just as other value types, is zero. A nonflags-attributed enumeration should define a member by using the value of zero so that the default value is a valid value of the enumeration. If an enumeration that has the FlagsAttribute attribute applied defines a zero-valued member, its name should be \"None\" to indicate that no values have been set in the enumeration."
+    },
+    {
+      "Code": "CA1010",
+      "Title": "Collections should implement generic interface",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1010",
+      "Description": "To broaden the usability of a collection, implement one of the generic collection interfaces. Then the collection can be used to populate generic collection types."
+    },
+    {
+      "Code": "CA1012",
+      "Title": "Abstract types should not have constructors",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1012",
+      "Description": "Constructors on abstract types can be called only by derived types. Because public constructors create instances of a type, and you cannot create instances of an abstract type, an abstract type that has a public constructor is incorrectly designed."
+    },
+    {
+      "Code": "CA1014",
+      "Title": "Mark assemblies with CLSCompliantAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1014",
+      "Description": "The Common Language Specification (CLS) defines naming restrictions, data types, and rules to which assemblies must conform if they will be used across programming languages. Good design dictates that all assemblies explicitly indicate CLS compliance by using CLSCompliantAttribute . If this attribute is not present on an assembly, the assembly is not compliant."
+    },
+    {
+      "Code": "CA1016",
+      "Title": "Mark assemblies with AssemblyVersionAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1016",
+      "Description": ".NET uses the version number to uniquely identify an assembly and to bind to types in strongly named assemblies. The version number is used together with version and publisher policy. By default, applications run only with the assembly version with which they were built."
+    },
+    {
+      "Code": "CA1017",
+      "Title": "Mark assemblies with ComVisibleAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1017",
+      "Description": "ComVisibleAttribute determines how COM clients access managed code. Good design dictates that assemblies explicitly indicate COM visibility. COM visibility can be set for the whole assembly and then overridden for individual types and type members. If this attribute is not present, the contents of the assembly are visible to COM clients."
+    },
+    {
+      "Code": "CA1018",
+      "Title": "Mark attributes with AttributeUsageAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1018",
+      "Description": "When you define a custom attribute, mark it by using AttributeUsageAttribute to indicate where in the source code the custom attribute can be applied. The meaning and intended usage of an attribute will determine its valid locations in code."
+    },
+    {
+      "Code": "CA1019",
+      "Title": "Define accessors for attribute arguments",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1019",
+      "Description": "Attributes can define mandatory arguments that must be specified when you apply the attribute to a target. These are also known as positional arguments because they are supplied to attribute constructors as positional parameters. For every mandatory argument, the attribute should also provide a corresponding read-only property so that the value of the argument can be retrieved at execution time. Attributes can also define optional arguments, which are also known as named arguments. These arguments are supplied to attribute constructors by name and should have a corresponding read/write property."
+    },
+    {
+      "Code": "CA1021",
+      "Title": "Avoid out parameters",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1021",
+      "Description": "Passing types by reference (using out or ref) requires experience with pointers, understanding how value types and reference types differ, and handling methods with multiple return values. Also, the difference between out and ref parameters is not widely understood."
+    },
+    {
+      "Code": "CA1024",
+      "Title": "Use properties where appropriate",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1024",
+      "Description": "A public or protected method has a name that starts with \"Get\", takes no parameters, and returns a value that is not an array. The method might be a good candidate to become a property."
+    },
+    {
+      "Code": "CA1027",
+      "Title": "Mark enums with FlagsAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1027",
+      "Description": "An enumeration is a value type that defines a set of related named constants. Apply FlagsAttribute to an enumeration when its named constants can be meaningfully combined."
+    },
+    {
+      "Code": "CA1028",
+      "Title": "Enum storage should be Int32",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1028",
+      "Description": "An enumeration is a value type that defines a set of related named constants. By default, the System.Int32 data type is used to store the constant value. Although you can change this underlying type, it is not required or recommended for most scenarios."
+    },
+    {
+      "Code": "CA1030",
+      "Title": "Use events where appropriate",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1030",
+      "Description": "This rule detects methods that have names that ordinarily would be used for events. If a method is called in response to a clearly defined state change, the method should be invoked by an event handler. Objects that call the method should raise events instead of calling the method directly."
+    },
+    {
+      "Code": "CA1031",
+      "Title": "Do not catch general exception types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1031",
+      "Description": "General exceptions should not be caught. Catch a more specific exception, or rethrow the general exception as the last statement in the catch block."
+    },
+    {
+      "Code": "CA1032",
+      "Title": "Implement standard exception constructors",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1032",
+      "Description": "Failure to provide the full set of constructors can make it difficult to correctly handle exceptions."
+    },
+    {
+      "Code": "CA1033",
+      "Title": "Interface methods should be callable by child types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1033",
+      "Description": "An unsealed externally visible type provides an explicit method implementation of a public interface and does not provide an alternative externally visible method that has the same name."
+    },
+    {
+      "Code": "CA1034",
+      "Title": "Nested types should not be visible",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1034",
+      "Description": "A nested type is a type that is declared in the scope of another type. Nested types are useful to encapsulate private implementation details of the containing type. Used for this purpose, nested types should not be externally visible."
+    },
+    {
+      "Code": "CA1036",
+      "Title": "Override methods on comparable types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1036",
+      "Description": "A public or protected type implements the System.IComparable interface. It does not override Object.Equals nor does it overload the language-specific operator for equality, inequality, less than, or greater than."
+    },
+    {
+      "Code": "CA1040",
+      "Title": "Avoid empty interfaces",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1040",
+      "Description": "Interfaces define members that provide a behavior or usage contract. The functionality that is described by the interface can be adopted by any type, regardless of where the type appears in the inheritance hierarchy. A type implements an interface by providing implementations for the members of the interface. An empty interface does not define any members; therefore, it does not define a contract that can be implemented."
+    },
+    {
+      "Code": "CA1041",
+      "Title": "Provide ObsoleteAttribute message",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1041",
+      "Description": "A type or member is marked by using a System.ObsoleteAttribute attribute that does not have its ObsoleteAttribute.Message property specified. When a type or member that is marked by using ObsoleteAttribute is compiled, the Message property of the attribute is displayed. This gives the user information about the obsolete type or member."
+    },
+    {
+      "Code": "CA1043",
+      "Title": "Use integral or string argument for indexers",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1043",
+      "Description": "Indexers (that is, indexed properties) should use integral or string types for the index. These types are typically used for indexing data structures and they increase the usability of the library. Use of the Object type should be restricted to those cases where the specific integral or string type cannot be specified at design time."
+    },
+    {
+      "Code": "CA1044",
+      "Title": "Properties should not be write only",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1044",
+      "Description": "Although it is acceptable and often necessary to have a read-only property, the design guidelines prohibit the use of write-only properties. This is because letting a user set a value, and then preventing the user from viewing that value, does not provide any security. Also, without read access, the state of shared objects cannot be viewed, which limits their usefulness."
+    },
+    {
+      "Code": "CA1045",
+      "Title": "Do not pass types by reference",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1045",
+      "Description": "Passing types by reference (using out or ref) requires experience with pointers, understanding how value types and reference types differ, and handling methods that have multiple return values. Library architects who design for a general audience should not expect users to become proficient in working with out or ref parameters."
+    },
+    {
+      "Code": "CA1046",
+      "Title": "Do not overload operator equals on reference types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1046",
+      "Description": "For reference types, the default implementation of the equality operator is almost always correct. By default, two references are equal only if they point to the same object."
+    },
+    {
+      "Code": "CA1047",
+      "Title": "Do not declare protected members in sealed types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1047",
+      "Description": "Types declare protected members so that inheriting types can access or override the member. By definition, sealed types cannot be inherited, which means that protected methods on sealed types cannot be called."
+    },
+    {
+      "Code": "CA1050",
+      "Title": "Declare types in namespaces",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1050",
+      "Description": "Types are declared in namespaces to prevent name collisions and as a way to organize related types in an object hierarchy."
+    },
+    {
+      "Code": "CA1051",
+      "Title": "Do not declare visible instance fields",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1051",
+      "Description": "The primary use of a field should be as an implementation detail. Fields should be private or internal and should be exposed by using properties."
+    },
+    {
+      "Code": "CA1052",
+      "Title": "Static holder types should be sealed",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1052",
+      "Description": "A public or protected type contains only static members and is not declared by using the sealed (C# Reference) (NotInheritable) modifier. A type that is not meant to be inherited should be marked by using the sealed modifier to prevent its use as a base type."
+    },
+    {
+      "Code": "CA1053",
+      "Title": "Static holder types should not have constructors",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1053",
+      "Description": "A public or nested public type declares only static members and has a public or protected default constructor. The constructor is unnecessary because calling static members does not require an instance of the type. The string overload should call the uniform resource identifier (URI) overload by using the string argument for safety and security."
+    },
+    {
+      "Code": "CA1054",
+      "Title": "URI parameters should not be strings",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1054",
+      "Description": "If a method takes a string representation of a URI, a corresponding overload should be provided that takes an instance of the URI class, which provides these services in a safe and secure manner."
+    },
+    {
+      "Code": "CA1055",
+      "Title": "URI return values should not be strings",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1055",
+      "Description": "This rule assumes that the method returns a URI. A string representation of a URI is prone to parsing and encoding errors, and can lead to security vulnerabilities. The System.Uri class provides these services in a safe and secure manner."
+    },
+    {
+      "Code": "CA1056",
+      "Title": "URI properties should not be strings",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1056",
+      "Description": "This rule assumes that the property represents a Uniform Resource Identifier (URI). A string representation of a URI is prone to parsing and encoding errors, and can lead to security vulnerabilities. The System.Uri class provides these services in a safe and secure manner."
+    },
+    {
+      "Code": "CA1058",
+      "Title": "Types should not extend certain base types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1058",
+      "Description": "An externally visible type extends certain base types. Use one of the alternatives."
+    },
+    {
+      "Code": "CA1060",
+      "Title": "Move P/Invokes to NativeMethods class",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1060",
+      "Description": "Platform Invocation methods, such as those that are marked by using the System.Runtime.InteropServices.DllImportAttribute attribute, or methods that are defined by using the Declare keyword in Visual Basic, access unmanaged code. These methods should be of the NativeMethods, SafeNativeMethods, or UnsafeNativeMethods class."
+    },
+    {
+      "Code": "CA1061",
+      "Title": "Do not hide base class methods",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1061",
+      "Description": "A method in a base type is hidden by an identically named method in a derived type, when the parameter signature of the derived method differs only by types that are more weakly derived than the corresponding types in the parameter signature of the base method."
+    },
+    {
+      "Code": "CA1062",
+      "Title": "Validate arguments of public methods",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1062",
+      "Description": "All reference arguments that are passed to externally visible methods should be checked against null."
+    },
+    {
+      "Code": "CA1063",
+      "Title": "Implement IDisposable correctly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1063",
+      "Description": "All IDisposable types should implement the Dispose pattern correctly."
+    },
+    {
+      "Code": "CA1064",
+      "Title": "Exceptions should be public",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1064",
+      "Description": "An internal exception is visible only inside its own internal scope. After the exception falls outside the internal scope, only the base exception can be used to catch the exception. If the internal exception is inherited from Exception, SystemException, or ApplicationException, the external code will not have sufficient information to know what to do with the exception."
+    },
+    {
+      "Code": "CA1065",
+      "Title": "Do not raise exceptions in unexpected locations",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1065",
+      "Description": "A method that is not expected to throw exceptions throws an exception."
+    },
+    {
+      "Code": "CA1066",
+      "Title": "Implement IEquatable when overriding Equals",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1066",
+      "Description": "A value type overrides Equals method, but does not implement IEquatable<T>."
+    },
+    {
+      "Code": "CA1067",
+      "Title": "Override Equals when implementing IEquatable",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1067",
+      "Description": "A type implements IEquatable<T>, but does not override Equals method."
+    },
+    {
+      "Code": "CA1068",
+      "Title": "CancellationToken parameters must come last",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1068",
+      "Description": "A method has a CancellationToken parameter that is not the last parameter."
+    },
+    {
+      "Code": "CA1069",
+      "Title": "Enums should not have duplicate values",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1069",
+      "Description": "An enumeration has multiple members which are explicitly assigned the same constant value."
+    },
+    {
+      "Code": "CA1070",
+      "Title": "Do not declare event fields as virtual",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1070",
+      "Description": "A field-like event was declared as virtual."
+    },
+    {
+      "Code": "CA1200",
+      "Title": "Avoid using cref tags with a prefix",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1200",
+      "Description": "The cref attribute in an XML documentation tag means \"code reference\". It specifies that the inner text of the tag is a code element, such as a type, method, or property. Avoid using cref tags with prefixes, because it prevents the compiler from verifying references. It also prevents the Visual Studio integrated development environment (IDE) from finding and updating these symbol references during refactorings."
+    },
+    {
+      "Code": "CA1303",
+      "Title": "Do not pass literals as localized parameters",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1303",
+      "Description": "An externally visible method passes a string literal as a parameter to a .NET constructor or method, and that string should be localizable."
+    },
+    {
+      "Code": "CA1304",
+      "Title": "Specify CultureInfo",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1304",
+      "Description": "A method or constructor calls a member that has an overload that accepts a System.Globalization.CultureInfo parameter, and the method or constructor does not call the overload that takes the CultureInfo parameter. When a CultureInfo or System.IFormatProvider object is not supplied, the default value that is supplied by the overloaded member might not have the effect that you want in all locales."
+    },
+    {
+      "Code": "CA1305",
+      "Title": "Specify IFormatProvider",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1305",
+      "Description": "A method or constructor calls one or more members that have overloads that accept a System.IFormatProvider parameter, and the method or constructor does not call the overload that takes the IFormatProvider parameter. When a System.Globalization.CultureInfo or IFormatProvider object is not supplied, the default value that is supplied by the overloaded member might not have the effect that you want in all locales."
+    },
+    {
+      "Code": "CA1307",
+      "Title": "Specify StringComparison for clarity",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1307",
+      "Description": "A string comparison operation uses a method overload that does not set a StringComparison parameter."
+    },
+    {
+      "Code": "CA1308",
+      "Title": "Normalize strings to uppercase",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1308",
+      "Description": "Strings should be normalized to uppercase. A small group of characters cannot make a round trip when they are converted to lowercase."
+    },
+    {
+      "Code": "CA1309",
+      "Title": "Use ordinal StringComparison",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1309",
+      "Description": "A string comparison operation that is nonlinguistic does not set the StringComparison parameter to either Ordinal or OrdinalIgnoreCase. By explicitly setting the parameter to either StringComparison.Ordinal or StringComparison.OrdinalIgnoreCase, your code often gains speed, becomes more correct, and becomes more reliable."
+    },
+    {
+      "Code": "CA1310",
+      "Title": "Specify StringComparison for correctness",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1310",
+      "Description": "A string comparison operation uses a method overload that does not set a StringComparison parameter and uses culture-specific string comparison by default."
+    },
+    {
+      "Code": "CA1401",
+      "Title": "P/Invokes should not be visible",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1401",
+      "Description": "A public or protected method in a public type has the System.Runtime.InteropServices.DllImportAttribute attribute (also implemented by the Declare keyword in Visual Basic). Such methods should not be exposed."
+    },
+    {
+      "Code": "CA1416",
+      "Title": "Validate platform compatibility",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1416",
+      "Description": "Using platform-dependent APIs on a component makes the code no longer work across all platforms."
+    },
+    {
+      "Code": "CA1417",
+      "Title": "Do not use OutAttribute on string parameters for P/Invokes",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1417",
+      "Description": "String parameters passed by value with the OutAttribute can destabilize the runtime if the string is an interned string."
+    },
+    {
+      "Code": "CA1418",
+      "Title": "Use valid platform string",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1418",
+      "Description": "Platform compatibility analyzer requires a valid platform name and version."
+    },
+    {
+      "Code": "CA1501",
+      "Title": "Avoid excessive inheritance",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1501",
+      "Description": "A type is more than four levels deep in its inheritance hierarchy. Deeply nested type hierarchies can be difficult to follow, understand, and maintain."
+    },
+    {
+      "Code": "CA1502",
+      "Title": "Avoid excessive complexity",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1502",
+      "Description": "This rule measures the number of linearly independent paths through the method, which is determined by the number and complexity of conditional branches."
+    },
+    {
+      "Code": "CA1505",
+      "Title": "Avoid unmaintainable code",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1505",
+      "Description": "A type or method has a low maintainability index value. A low maintainability index indicates that a type or method is probably difficult to maintain and would be a good candidate for redesign."
+    },
+    {
+      "Code": "CA1506",
+      "Title": "Avoid excessive class coupling",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1506",
+      "Description": "This rule measures class coupling by counting the number of unique type references that a type or method contains."
+    },
+    {
+      "Code": "CA1507",
+      "Title": "Use nameof in place of string",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1507",
+      "Description": "A string literal is used as an argument where a nameof expression could be used."
+    },
+    {
+      "Code": "CA1508",
+      "Title": "Avoid dead conditional code",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1508",
+      "Description": "A method has conditional code that always evaluates to true or false at run time. This leads to dead code in the false branch of the condition."
+    },
+    {
+      "Code": "CA1509",
+      "Title": "Invalid entry in code metrics configuration file",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1509",
+      "Description": "Code metrics rules, such as CA1501, CA1502, CA1505 and CA1506, supplied a configuration file named CodeMetricsConfig.txt that has an invalid entry."
+    },
+    {
+      "Code": "CA1700",
+      "Title": "Do not name enum values 'Reserved'",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1700",
+      "Description": "This rule assumes that an enumeration member that has a name that contains \"reserved\" is not currently used but is a placeholder to be renamed or removed in a future version. Renaming or removing a member is a breaking change."
+    },
+    {
+      "Code": "CA1707",
+      "Title": "Identifiers should not contain underscores",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1707",
+      "Description": "By convention, identifier names do not contain the underscore (_) character. This rule checks namespaces, types, members, and parameters."
+    },
+    {
+      "Code": "CA1708",
+      "Title": "Identifiers should differ by more than case",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1708",
+      "Description": "Identifiers for namespaces, types, members, and parameters cannot differ only by case because languages that target the common language runtime are not required to be case-sensitive."
+    },
+    {
+      "Code": "CA1710",
+      "Title": "Identifiers should have correct suffix",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1710",
+      "Description": "By convention, the names of types that extend certain base types or that implement certain interfaces, or types that are derived from these types, have a suffix that is associated with the base type or interface."
+    },
+    {
+      "Code": "CA1711",
+      "Title": "Identifiers should not have incorrect suffix",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1711",
+      "Description": "By convention, only the names of types that extend certain base types or that implement certain interfaces, or types that are derived from these types, should end with specific reserved suffixes. Other type names should not use these reserved suffixes."
+    },
+    {
+      "Code": "CA1712",
+      "Title": "Do not prefix enum values with type name",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1712",
+      "Description": "Names of enumeration members are not prefixed by using the type name because development tools are expected to provide type information."
+    },
+    {
+      "Code": "CA1713",
+      "Title": "Events should not have before or after prefix",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1713",
+      "Description": "The name of an event starts with \"Before\" or \"After\". To name related events that are raised in a specific sequence, use the present or past tense to indicate the relative position in the sequence of actions."
+    },
+    {
+      "Code": "CA1714",
+      "Title": "Flags enums should have plural names",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1714",
+      "Description": "A public enumeration has the System.FlagsAttribute attribute, and its name does not end in \"s\". Types that are marked by using FlagsAttribute have names that are plural because the attribute indicates that more than one value can be specified."
+    },
+    {
+      "Code": "CA1715",
+      "Title": "Identifiers should have correct prefix",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1715",
+      "Description": "The name of an externally visible interface does not start with an uppercase \"I\". The name of a generic type parameter on an externally visible type or method does not start with an uppercase \"T\"."
+    },
+    {
+      "Code": "CA1716",
+      "Title": "Identifiers should not match keywords",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1716",
+      "Description": "A namespace name or a type name matches a reserved keyword in a programming language. Identifiers for namespaces and types should not match keywords that are defined by languages that target the common language runtime."
+    },
+    {
+      "Code": "CA1717",
+      "Title": "Only FlagsAttribute enums should have plural names",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1717",
+      "Description": "Naming conventions dictate that a plural name for an enumeration indicates that more than one value of the enumeration can be specified at the same time."
+    },
+    {
+      "Code": "CA1720",
+      "Title": "Identifiers should not contain type names",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1720",
+      "Description": "The name of a parameter in an externally visible member contains a data type name, or the name of an externally visible member contains a language-specific data type name."
+    },
+    {
+      "Code": "CA1721",
+      "Title": "Property names should not match get methods",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1721",
+      "Description": "The name of a public or protected member starts with \"Get\" and otherwise matches the name of a public or protected property. \"Get\" methods and properties should have names that clearly distinguish their function."
+    },
+    {
+      "Code": "CA1724",
+      "Title": "Type Names Should Not Match Namespaces",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1724",
+      "Description": "Type names should not match the names of .NET namespaces. Violating this rule can reduce the usability of the library."
+    },
+    {
+      "Code": "CA1725",
+      "Title": "Parameter names should match base declaration",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1725",
+      "Description": "Consistent naming of parameters in an override hierarchy increases the usability of the method overrides. A parameter name in a derived method that differs from the name in the base declaration can cause confusion about whether the method is an override of the base method or a new overload of the method."
+    },
+    {
+      "Code": "CA1801",
+      "Title": "Review unused parameters",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1801",
+      "Description": "A method signature includes a parameter that is not used in the method body."
+    },
+    {
+      "Code": "CA1802",
+      "Title": "Use Literals Where Appropriate",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1802",
+      "Description": "A field is declared static and read-only (Shared and ReadOnly in Visual Basic), and is initialized by using a value that is computable at compile time. Because the value that is assigned to the targeted field is computable at compile time, change the declaration to a const (Const in Visual Basic) field so that the value is computed at compile time instead of at run time."
+    },
+    {
+      "Code": "CA1805",
+      "Title": "Do not initialize unnecessarily",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1805",
+      "Description": "The .NET runtime initializes all fields of reference types to their default values before running the constructor. In most cases, explicitly initializing a field to its default value is redundant, which adds to maintenance costs and may degrade performance (such as with increased assembly size)."
+    },
+    {
+      "Code": "CA1806",
+      "Title": "Do not ignore method results",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1806",
+      "Description": "A new object is created but never used; or a method that creates and returns a new string is called and the new string is never used; or a COM or P/Invoke method returns an HRESULT or error code that is never used."
+    },
+    {
+      "Code": "CA1810",
+      "Title": "Initialize reference type static fields inline",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1810",
+      "Description": "When a type declares an explicit static constructor, the just-in-time (JIT) compiler adds a check to each static method and instance constructor of the type to make sure that the static constructor was previously called. Static constructor checks can decrease performance."
+    },
+    {
+      "Code": "CA1812",
+      "Title": "Avoid uninstantiated internal classes",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1812",
+      "Description": "An instance of an assembly-level type is not created by code in the assembly."
+    },
+    {
+      "Code": "CA1813",
+      "Title": "Avoid unsealed attributes",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1813",
+      "Description": ".NET provides methods for retrieving custom attributes. By default, these methods search the attribute inheritance hierarchy. Sealing the attribute eliminates the search through the inheritance hierarchy and can improve performance."
+    },
+    {
+      "Code": "CA1814",
+      "Title": "Prefer jagged arrays over multidimensional",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1814",
+      "Description": "A jagged array is an array whose elements are arrays. The arrays that make up the elements can be of different sizes, leading to less wasted space for some sets of data."
+    },
+    {
+      "Code": "CA1815",
+      "Title": "Override equals and operator equals on value types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1815",
+      "Description": "For value types, the inherited implementation of Equals uses the Reflection library and compares the contents of all fields. Reflection is computationally expensive, and comparing every field for equality might be unnecessary. If you expect users to compare or sort instances, or to use instances as hash table keys, your value type should implement Equals."
+    },
+    {
+      "Code": "CA1816",
+      "Title": "Call GC.SuppressFinalize correctly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1816",
+      "Description": "A method that is an implementation of Dispose does not call GC.SuppressFinalize; or a method that is not an implementation of Dispose calls GC.SuppressFinalize; or a method calls GC.SuppressFinalize and passes something other than this (Me in Visual Basic)."
+    },
+    {
+      "Code": "CA1819",
+      "Title": "Properties should not return arrays",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1819",
+      "Description": "Arrays that are returned by properties are not write-protected, even when the property is read-only. To keep the array tamper-proof, the property must return a copy of the array. Typically, users will not understand the adverse performance implications of calling such a property."
+    },
+    {
+      "Code": "CA1820",
+      "Title": "Test for empty strings using string length",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1820",
+      "Description": "Comparing strings by using the String.Length property or the String.IsNullOrEmpty method is significantly faster than using Equals."
+    },
+    {
+      "Code": "CA1821",
+      "Title": "Remove empty finalizers",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1821",
+      "Description": "Whenever you can, avoid finalizers because of the additional performance overhead that is involved in tracking object lifetime. An empty finalizer incurs added overhead and delivers no benefit."
+    },
+    {
+      "Code": "CA1822",
+      "Title": "Mark members as static",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1822",
+      "Description": "Members that do not access instance data or call instance methods can be marked as static (Shared in Visual Basic). After you mark the methods as static, the compiler will emit nonvirtual call sites to these members. This can give you a measurable performance gain for performance-sensitive code."
+    },
+    {
+      "Code": "CA1823",
+      "Title": "Avoid unused private fields",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1823",
+      "Description": "Private fields were detected that do not appear to be accessed in the assembly."
+    },
+    {
+      "Code": "CA1824",
+      "Title": "Mark assemblies with NeutralResourcesLanguageAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1824",
+      "Description": "The NeutralResourcesLanguage attribute informs the resource manager of the language that was used to display the resources of a neutral culture for an assembly. This improves lookup performance for the first resource that you load and can reduce your working set."
+    },
+    {
+      "Code": "CA1825",
+      "Title": "Avoid zero-length array allocations",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1825",
+      "Description": "Initializing a zero-length array leads to unnecessary memory allocation. Instead, use the statically allocated empty array instance by calling Array.Empty. The memory allocation is shared across all invocations of this method."
+    },
+    {
+      "Code": "CA1826",
+      "Title": "Use property instead of Linq Enumerable method",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1826",
+      "Description": "Enumerable LINQ method was used on a type that supports an equivalent, more efficient property."
+    },
+    {
+      "Code": "CA1827",
+      "Title": "Do not use Count/LongCount when Any can be used",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1827",
+      "Description": "Count or LongCount method was used where Any method would be more efficient."
+    },
+    {
+      "Code": "CA1828",
+      "Title": "Do not use CountAsync/LongCountAsync when AnyAsync can be used",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1828",
+      "Description": "CountAsync or LongCountAsync method was used where AnyAsync method would be more efficient."
+    },
+    {
+      "Code": "CA1829",
+      "Title": "Use Length/Count property instead of Enumerable.Count method",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1829",
+      "Description": "Count LINQ method was used on a type that supports an equivalent, more efficient Length or Count property."
+    },
+    {
+      "Code": "CA1830",
+      "Title": "Prefer strongly-typed Append and Insert method overloads on StringBuilder",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1830",
+      "Description": "Append and Insert provide overloads for multiple types beyond String.  When possible, prefer the strongly-typed overloads over using ToString() and the string-based overload."
+    },
+    {
+      "Code": "CA1831",
+      "Title": "Use AsSpan instead of Range-based indexers for string when appropriate",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1831",
+      "Description": "When using a range-indexer on a string and implicitly assigning the value to  ReadOnlySpan<char> type, the method Substring will be used instead of Slice, which produces a copy of requested portion of the string."
+    },
+    {
+      "Code": "CA1832",
+      "Title": "Use AsSpan or AsMemory instead of Range-based indexers for getting ReadOnlySpan or ReadOnlyMemory portion of an array",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1832",
+      "Description": "When using a range-indexer on an array and implicitly assigning the value to a ReadOnlySpan<T> or ReadOnlyMemory<T> type, the method GetSubArray will be used instead of Slice, which produces a copy of requested portion of the array."
+    },
+    {
+      "Code": "CA1833",
+      "Title": "Use AsSpan or AsMemory instead of Range-based indexers for getting Span or Memory portion of an array",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1833",
+      "Description": "When using a range-indexer on an array and implicitly assigning the value to a Span<T> or Memory<T> type, the method GetSubArray will be used instead of Slice, which produces a copy of requested portion of the array."
+    },
+    {
+      "Code": "CA1834",
+      "Title": "Use StringBuilder.Append(char) for single character strings",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1834",
+      "Description": "StringBuilder has an Append overload that takes a char as its argument. Prefer calling the char overload for performance reasons."
+    },
+    {
+      "Code": "CA1835",
+      "Title": "Prefer the 'Memory'-based overloads for 'ReadAsync' and 'WriteAsync'",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1835",
+      "Description": "'Stream' has a 'ReadAsync' overload that takes a 'Memory<Byte>' as the first argument, and a 'WriteAsync' overload that takes a 'ReadOnlyMemory<Byte>' as the first argument. Prefer calling the memory based overloads, which are more efficient."
+    },
+    {
+      "Code": "CA1836",
+      "Title": "Prefer IsEmpty over Count when available",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1836",
+      "Description": "Prefer IsEmpty property that is more efficient than Count, Length, Count<TSource>(IEnumerable<TSource>) or LongCount<TSource>(IEnumerable<TSource>) to determine whether the object contains or not any items."
+    },
+    {
+      "Code": "CA1837",
+      "Title": "Use Environment.ProcessId instead of Process.GetCurrentProcess().Id",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1837",
+      "Description": "Environment.ProcessId is simpler and faster than Process.GetCurrentProcess().Id."
+    },
+    {
+      "Code": "CA1838",
+      "Title": "Avoid StringBuilder parameters for P/Invokes",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1838",
+      "Description": "Marshaling of 'StringBuilder' always creates a native buffer copy, resulting in multiple allocations for one marshaling operation."
+    },
+    {
+      "Code": "CA1839",
+      "Title": "Use Environment.ProcessPath instead of Process.GetCurrentProcess().MainModule.FileName",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1837",
+      "Description": "Environment.ProcessPath is simpler and faster than Process.GetCurrentProcess().MainModule.FileName."
+    },
+    {
+      "Code": "CA1840",
+      "Title": "Use Environment.CurrentManagedThreadId instead of Thread.CurrentThread.ManagedThreadId",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1837",
+      "Description": "Environment.CurrentManagedThreadId is more compact and efficient than Thread.CurrentThread.ManagedThreadId."
+    },
+    {
+      "Code": "CA1841",
+      "Title": "Prefer Dictionary Contains methods",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1841",
+      "Description": "Calling Contains on the Keys or Values collection may often be more expensive than calling ContainsKey or ContainsValue on the dictionary itself."
+    },
+    {
+      "Code": "CA1844",
+      "Title": "Provide memory-based overrides of async methods when subclassing 'Stream'",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1844",
+      "Description": "To improve performance, override the memory-based async methods when subclassing 'Stream'. Then implement the array-based methods in terms of the memory-based methods."
+    },
+    {
+      "Code": "CA1845",
+      "Title": "Use span-based 'string.Concat'",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1845",
+      "Description": "It is more efficient to use AsSpan and string.Concat, instead of Substring and a concatenation operator."
+    },
+    {
+      "Code": "CA1846",
+      "Title": "Prefer AsSpan over Substring",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1846",
+      "Description": "AsSpan is more efficient than Substring. Substring performs an O(n) string copy, while AsSpan does not and has a constant cost. AsSpan also does not perform any heap allocations."
+    },
+    {
+      "Code": "CA1847",
+      "Title": "Use char literal for a single character lookup",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1847",
+      "Description": "Use string.Contains(char) instead of string.Contains(string) when searching for a single character."
+    },
+    {
+      "Code": "CA1849",
+      "Title": "Call async methods when in an async method",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1849",
+      "Description": "In a method which is already asynchronous, calls to other methods should be to their async versions, where they exist."
+    },
+    {
+      "Code": "CA1850",
+      "Title": "Prefer static HashData method over ComputeHash",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1850",
+      "Description": "It's more efficient to use the static HashData method over creating and managing a HashAlgorithm instance to call ComputeHash."
+    },
+    {
+      "Code": "CA2000",
+      "Title": "Dispose objects before losing scope",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2000",
+      "Description": "Because an exceptional event might occur that will prevent the finalizer of an object from running, the object should be explicitly disposed before all references to it are out of scope."
+    },
+    {
+      "Code": "CA2002",
+      "Title": "Do not lock on objects with weak identity",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2002",
+      "Description": "An object is said to have a weak identity when it can be directly accessed across application domain boundaries. A thread that tries to acquire a lock on an object that has a weak identity can be blocked by a second thread in a different application domain that has a lock on the same object."
+    },
+    {
+      "Code": "CA2007",
+      "Title": "Do not directly await a Task",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2007",
+      "Description": "An asynchronous method awaits a Task directly. When an asynchronous method awaits a Task directly, continuation occurs in the same thread that created the task. This behavior can be costly in terms of performance and can result in a deadlock on the UI thread. Consider calling Task.ConfigureAwait(Boolean) to signal your intention for continuation."
+    },
+    {
+      "Code": "CA2008",
+      "Title": "Do not create tasks without passing a TaskScheduler",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2008",
+      "Description": "A task creation or continuation operation uses a method overload that does not specify a TaskScheduler parameter."
+    },
+    {
+      "Code": "CA2009",
+      "Title": "Do not call ToImmutableCollection on an ImmutableCollection value",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2009",
+      "Description": "ToImmutable method was unnecessarily called on an immutable collection from System.Collections.Immutable namespace."
+    },
+    {
+      "Code": "CA2011",
+      "Title": "Do not assign property within its setter",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2011",
+      "Description": "A property was accidentally assigned a value within its own set accessor."
+    },
+    {
+      "Code": "CA2012",
+      "Title": "Use ValueTasks correctly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2012",
+      "Description": "ValueTasks returned from member invocations are intended to be directly awaited.  Attempts to consume a ValueTask multiple times or to directly access one's result before it's known to be completed may result in an exception or corruption.  Ignoring such a ValueTask is likely an indication of a functional bug and may degrade performance."
+    },
+    {
+      "Code": "CA2013",
+      "Title": "Do not use ReferenceEquals with value types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2013",
+      "Description": "When comparing values using System.Object.ReferenceEquals, if objA and objB are value types, they are boxed before they are passed to the ReferenceEquals method. This means that even if both objA and objB represent the same instance of a value type, the ReferenceEquals method nevertheless returns false."
+    },
+    {
+      "Code": "CA2014",
+      "Title": "Do not use stackalloc in loops.",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2014",
+      "Description": "Stack space allocated by a stackalloc is only released at the end of the current method's invocation.  Using it in a loop can result in unbounded stack growth and eventual stack overflow conditions."
+    },
+    {
+      "Code": "CA2015",
+      "Title": "Do not define finalizers for types derived from MemoryManager&lt;T&gt;",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2015",
+      "Description": "Adding a finalizer to a type derived from MemoryManager<T> may permit memory to be freed while it is still in use by a Span<T>."
+    },
+    {
+      "Code": "CA2016",
+      "Title": "Forward the CancellationToken parameter to methods that take one",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2016",
+      "Description": "Forward the CancellationToken parameter to methods that take one to ensure the operation cancellation notifications gets properly propagated, or pass in CancellationToken.None explicitly to indicate intentionally not propagating the token."
+    },
+    {
+      "Code": "CA2018",
+      "Title": "The count argument to Buffer.BlockCopy should specify the number of bytes to copy",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2018",
+      "Description": "When using Buffer.BlockCopy, the count argument specifies the number of bytes to copy. You should only use Array.Length for the count argument on arrays whose elements are exactly one byte in size. byte, sbyte, and bool arrays have elements that are one byte in size."
+    },
+    {
+      "Code": "CA2100",
+      "Title": "Review SQL queries for security vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2100",
+      "Description": "A method sets the System.Data.IDbCommand.CommandText property by using a string that is built from a string argument to the method. This rule assumes that the string argument contains user input. A SQL command string that is built from user input is vulnerable to SQL injection attacks."
+    },
+    {
+      "Code": "CA2101",
+      "Title": "Specify marshaling for P/Invoke string arguments",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2101",
+      "Description": "A platform invoke member allows partially trusted callers, has a string parameter, and does not explicitly marshal the string. This can cause a potential security vulnerability."
+    },
+    {
+      "Code": "CA2109",
+      "Title": "Review visible event handlers",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2109",
+      "Description": "A public or protected event-handling method was detected. Event-handling methods should not be exposed unless absolutely necessary."
+    },
+    {
+      "Code": "CA2119",
+      "Title": "Seal methods that satisfy private interfaces",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2119",
+      "Description": "An inheritable public type provides an overridable method implementation of an internal (Friend in Visual Basic) interface. To fix a violation of this rule, prevent the method from being overridden outside the assembly."
+    },
+    {
+      "Code": "CA2153",
+      "Title": "Avoid handling Corrupted State Exceptions",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2153",
+      "Description": "Corrupted State Exceptions (CSEs) indicate that memory corruption exists in your process. Catching these rather than allowing the process to crash can lead to security vulnerabilities if an attacker can place an exploit into the corrupted memory region."
+    },
+    {
+      "Code": "CA2200",
+      "Title": "Rethrow to preserve stack details",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2200",
+      "Description": "An exception is rethrown and the exception is explicitly specified in the throw statement. If an exception is rethrown by specifying the exception in the throw statement, the list of method calls between the original method that threw the exception and the current method is lost."
+    },
+    {
+      "Code": "CA2201",
+      "Title": "Do not raise reserved exception types",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2201",
+      "Description": "This makes the original error difficult to detect and debug."
+    },
+    {
+      "Code": "CA2207",
+      "Title": "Initialize value type static fields inline",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2207",
+      "Description": "A value type declares an explicit static constructor. To fix a violation of this rule, initialize all static data when it is declared and remove the static constructor."
+    },
+    {
+      "Code": "CA2208",
+      "Title": "Instantiate argument exceptions correctly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2208",
+      "Description": "A call is made to the default (parameterless) constructor of an exception type that is or derives from ArgumentException, or an incorrect string argument is passed to a parameterized constructor of an exception type that is or derives from ArgumentException."
+    },
+    {
+      "Code": "CA2211",
+      "Title": "Non-constant fields should not be visible",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2211",
+      "Description": "Static fields that are neither constants nor read-only are not thread-safe. Access to such a field must be carefully controlled and requires advanced programming techniques to synchronize access to the class object."
+    },
+    {
+      "Code": "CA2213",
+      "Title": "Disposable fields should be disposed",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2213",
+      "Description": "A type that implements System.IDisposable declares fields that are of types that also implement IDisposable. The Dispose method of the field is not called by the Dispose method of the declaring type."
+    },
+    {
+      "Code": "CA2214",
+      "Title": "Do not call overridable methods in constructors",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2214",
+      "Description": "When a constructor calls a virtual method, the constructor for the instance that invokes the method may not have executed."
+    },
+    {
+      "Code": "CA2215",
+      "Title": "Dispose methods should call base class dispose",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2215",
+      "Description": "If a type inherits from a disposable type, it must call the Dispose method of the base type from its own Dispose method."
+    },
+    {
+      "Code": "CA2216",
+      "Title": "Disposable types should declare finalizer",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2216",
+      "Description": "A type that implements System.IDisposable and has fields that suggest the use of unmanaged resources does not implement a finalizer, as described by Object.Finalize."
+    },
+    {
+      "Code": "CA2218",
+      "Title": "Override GetHashCode on overriding Equals",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2218",
+      "Description": "A public type overrides System.Object.Equals but does not override System.Object.GetHashCode."
+    },
+    {
+      "Code": "CA2217",
+      "Title": "Do not mark enums with FlagsAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2217",
+      "Description": "An externally visible enumeration is marked by using FlagsAttribute, and it has one or more values that are not powers of two or a combination of the other defined values on the enumeration."
+    },
+    {
+      "Code": "CA2219",
+      "Title": "Do not raise exceptions in exception clauses",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2219",
+      "Description": "When an exception is raised in a finally or fault clause, the new exception hides the active exception. When an exception is raised in a filter clause, the run time silently catches the exception. This makes the original error difficult to detect and debug."
+    },
+    {
+      "Code": "CA2224",
+      "Title": "Override equals on overloading operator equals",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2224",
+      "Description": "A public type implements the equality operator but doesn't override System.Object.Equals."
+    },
+    {
+      "Code": "CA2225",
+      "Title": "Operator overloads have named alternates",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2225",
+      "Description": "An operator overload was detected, and the expected named alternative method was not found. The named alternative member provides access to the same functionality as the operator and is provided for developers who program in languages that do not support overloaded operators."
+    },
+    {
+      "Code": "CA2226",
+      "Title": "Operators should have symmetrical overloads",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2226",
+      "Description": "A type implements the equality or inequality operator and does not implement the opposite operator."
+    },
+    {
+      "Code": "CA2227",
+      "Title": "Collection properties should be read only",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2227",
+      "Description": "A writable collection property allows a user to replace the collection with a different collection. A read-only property stops the collection from being replaced but still allows the individual members to be set."
+    },
+    {
+      "Code": "CA2229",
+      "Title": "Implement serialization constructors",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2229",
+      "Description": "To fix a violation of this rule, implement the serialization constructor. For a sealed class, make the constructor private; otherwise, make it protected."
+    },
+    {
+      "Code": "CA2231",
+      "Title": "Overload operator equals on overriding ValueType.Equals",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2231",
+      "Description": "A value type overrides Object.Equals but does not implement the equality operator."
+    },
+    {
+      "Code": "CA2234",
+      "Title": "Pass System.Uri objects instead of strings",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2234",
+      "Description": "A call is made to a method that has a string parameter whose name contains \"uri\", \"URI\", \"urn\", \"URN\", \"url\", or \"URL\". The declaring type of the method contains a corresponding method overload that has a System.Uri parameter."
+    },
+    {
+      "Code": "CA2235",
+      "Title": "Mark all non-serializable fields",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2235",
+      "Description": "An instance field of a type that is not serializable is declared in a type that is serializable."
+    },
+    {
+      "Code": "CA2237",
+      "Title": "Mark ISerializable types with SerializableAttribute",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2237",
+      "Description": "To be recognized by the common language runtime as serializable, types must be marked by using the SerializableAttribute attribute even when the type uses a custom serialization routine through implementation of the ISerializable interface."
+    },
+    {
+      "Code": "CA2241",
+      "Title": "Provide correct arguments to formatting methods",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2241",
+      "Description": "The format argument that is passed to System.String.Format does not contain a format item that corresponds to each object argument, or vice versa."
+    },
+    {
+      "Code": "CA2242",
+      "Title": "Test for NaN correctly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2242",
+      "Description": "This expression tests a value against Single.Nan or Double.Nan. Use Single.IsNan(Single) or Double.IsNan(Double) to test the value."
+    },
+    {
+      "Code": "CA2243",
+      "Title": "Attribute string literals should parse correctly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2243",
+      "Description": "The string literal parameter of an attribute does not parse correctly for a URL, a GUID, or a version."
+    },
+    {
+      "Code": "CA2244",
+      "Title": "Do not duplicate indexed element initializations",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2244",
+      "Description": "An object initializer has more than one indexed element initializer with the same constant index. All but the last initializer are redundant."
+    },
+    {
+      "Code": "CA2245",
+      "Title": "Do not assign a property to itself",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2245",
+      "Description": "A property was accidentally assigned to itself."
+    },
+    {
+      "Code": "CA2246",
+      "Title": "Do not assign a symbol and its member in the same statement",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2246",
+      "Description": "Assigning a symbol and its member, that is, a field or a property, in the same statement is not recommended. It is not clear if the member access was intended to use the symbol's old value prior to the assignment or the new value from the assignment in this statement."
+    },
+    {
+      "Code": "CA2247",
+      "Title": "Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum.",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2247",
+      "Description": "TaskCompletionSource has constructors that take TaskCreationOptions that control the underlying Task, and constructors that take object state that's stored in the task.  Accidentally passing a TaskContinuationOptions instead of a TaskCreationOptions will result in the call treating the options as state."
+    },
+    {
+      "Code": "CA2248",
+      "Title": "Provide correct enum argument to Enum.HasFlag",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2248",
+      "Description": "The enum type passed as an argument to the HasFlag method call is different from the calling enum type."
+    },
+    {
+      "Code": "CA2249",
+      "Title": "Consider using String.Contains instead of String.IndexOf",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2249",
+      "Description": "Calls to string.IndexOf where the result is used to check for the presence/absence of a substring can be replaced by string.Contains."
+    },
+    {
+      "Code": "CA2250",
+      "Title": "Use ThrowIfCancellationRequested",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2250",
+      "Description": "ThrowIfCancellationRequested automatically checks whether the token has been canceled, and throws an OperationCanceledException if it has."
+    },
+    {
+      "Code": "CA2251",
+      "Title": "Use String.Equals over String.Compare",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2251",
+      "Description": "It is both clearer and likely faster to use String.Equals instead of comparing the result of String.Compare to zero."
+    },
+    {
+      "Code": "CA2252",
+      "Title": "Opt in to preview features",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2252",
+      "Description": "Opt in to preview features before using preview APIs."
+    },
+    {
+      "Code": "CA2255",
+      "Title": "The ModuleInitializer attribute should not be used in libraries",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2255",
+      "Description": "Module initializers are intended to be used by application code to ensure an application's components are initialized before the application code begins executing."
+    },
+    {
+      "Code": "CA2300",
+      "Title": "Do not use insecure deserializer BinaryFormatter",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2300",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2301",
+      "Title": "Do not call BinaryFormatter.Deserialize without first setting BinaryFormatter.Binder",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2301",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2302",
+      "Title": "Ensure BinaryFormatter.Binder is set before calling BinaryFormatter.Deserialize",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2302",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2305",
+      "Title": "Do not use insecure deserializer LosFormatter",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2305",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2310",
+      "Title": "Do not use insecure deserializer NetDataContractSerializer",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2310",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2311",
+      "Title": "Do not deserialize without first setting NetDataContractSerializer.Binder",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2311",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2312",
+      "Title": "Ensure NetDataContractSerializer.Binder is set before deserializing",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2312",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2315",
+      "Title": "Do not use insecure deserializer ObjectStateFormatter",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2315",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2321",
+      "Title": "Do not deserialize with JavaScriptSerializer using a SimpleTypeResolver",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2321",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2322",
+      "Title": "Ensure JavaScriptSerializer is not initialized with SimpleTypeResolver before deserializing",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2322",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2326",
+      "Title": "Do not use TypeNameHandling values other than None",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2326",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2327",
+      "Title": "Do not use insecure JsonSerializerSettings",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2327",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2328",
+      "Title": "Ensure that JsonSerializerSettings are secure",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2328",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2329",
+      "Title": "Do not deserialize with JsonSerializer using an insecure configuration",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2329",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2330",
+      "Title": "Ensure that JsonSerializer has a secure configuration when deserializing",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2330",
+      "Description": "Insecure deserializers are vulnerable when deserializing untrusted data. An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects."
+    },
+    {
+      "Code": "CA2350",
+      "Title": "Ensure DataTable.ReadXml()'s input is trusted",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2350",
+      "Description": "When deserializing a DataTable with untrusted input, an attacker can craft malicious input to perform a denial of service attack. There may be unknown remote code execution vulnerabilities."
+    },
+    {
+      "Code": "CA2351",
+      "Title": "Ensure DataSet.ReadXml()'s input is trusted",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2351",
+      "Description": "When deserializing a DataSet with untrusted input, an attacker can craft malicious input to perform a denial of service attack. There may be unknown remote code execution vulnerabilities."
+    },
+    {
+      "Code": "CA2352",
+      "Title": "Unsafe DataSet or DataTable in serializable type can be vulnerable to remote code execution attacks",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2352",
+      "Description": "A class or struct marked with SerializableAttribute contains a DataSet or DataTable field or property, and doesn't have a GeneratedCodeAttribute."
+    },
+    {
+      "Code": "CA2353",
+      "Title": "Unsafe DataSet or DataTable in serializable type",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2353",
+      "Description": "A class or struct marked with an XML serialization attribute or a data contract attribute contains a DataSet or DataTable field or property."
+    },
+    {
+      "Code": "CA2354",
+      "Title": "Unsafe DataSet or DataTable in deserialized object graph can be vulnerable to remote code execution attack",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2354",
+      "Description": "Deserializing with an System.Runtime.Serialization.IFormatter serialized, and the casted type's object graph can include a DataSet or DataTable."
+    },
+    {
+      "Code": "CA2355",
+      "Title": "Unsafe DataSet or DataTable in deserialized object graph",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2355",
+      "Description": "Deserializing when the casted or specified type's object graph can include a DataSet or DataTable."
+    },
+    {
+      "Code": "CA2356",
+      "Title": "Unsafe DataSet or DataTable in web deserialized object graph",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2356",
+      "Description": "A method with a System.Web.Services.WebMethodAttribute or System.ServiceModel.OperationContractAttribute has a parameter that may reference a DataSet or DataTable."
+    },
+    {
+      "Code": "CA2361",
+      "Title": "Ensure autogenerated class containing DataSet.ReadXml() is not used with untrusted data",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2361",
+      "Description": "When deserializing a DataSet with untrusted input, an attacker can craft malicious input to perform a denial of service attack. There may be unknown remote code execution vulnerabilities."
+    },
+    {
+      "Code": "CA2362",
+      "Title": "Unsafe DataSet or DataTable in autogenerated serializable type can be vulnerable to remote code execution attacks",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2362",
+      "Description": "When deserializing untrusted input with BinaryFormatter and the deserialized object graph contains a DataSet or DataTable, an attacker can craft a malicious payload to perform a remote code execution attack."
+    },
+    {
+      "Code": "CA3001",
+      "Title": "Review code for SQL injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3001",
+      "Description": "When working with untrusted input and SQL commands, be mindful of SQL injection attacks. An SQL injection attack can execute malicious SQL commands, compromising the security and integrity of your application."
+    },
+    {
+      "Code": "CA3002",
+      "Title": "Review code for XSS vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3002",
+      "Description": "When working with untrusted input from web requests, be mindful of cross-site scripting (XSS) attacks. An XSS attack injects untrusted input into raw HTML output, allowing the attacker to execute malicious scripts or maliciously modify content in your web page."
+    },
+    {
+      "Code": "CA3003",
+      "Title": "Review code for file path injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3003",
+      "Description": "When working with untrusted input from web requests, be mindful of using user-controlled input when specifying paths to files."
+    },
+    {
+      "Code": "CA3004",
+      "Title": "Review code for information disclosure vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3004",
+      "Description": "Disclosing exception information gives attackers insight into the internals of your application, which can help attackers find other vulnerabilities to exploit."
+    },
+    {
+      "Code": "CA3006",
+      "Title": "Review code for process command injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3006",
+      "Description": "When working with untrusted input, be mindful of command injection attacks. A command injection attack can execute malicious commands on the underlying operating system, compromising the security and integrity of your server."
+    },
+    {
+      "Code": "CA3007",
+      "Title": "Review code for open redirect vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3007",
+      "Description": "When working with untrusted input, be mindful of open redirect vulnerabilities. An attacker can exploit an open redirect vulnerability to use your website to give the appearance of a legitimate URL, but redirect an unsuspecting visitor to a phishing or other malicious webpage."
+    },
+    {
+      "Code": "CA3008",
+      "Title": "Review code for XPath injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3008",
+      "Description": "When working with untrusted input, be mindful of XPath injection attacks. Constructing XPath queries using untrusted input may allow an attacker to maliciously manipulate the query to return an unintended result, and possibly disclose the contents of the queried XML."
+    },
+    {
+      "Code": "CA3009",
+      "Title": "Review code for XML injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3009",
+      "Description": "When working with untrusted input, be mindful of XML injection attacks."
+    },
+    {
+      "Code": "CA3010",
+      "Title": "Review code for XAML injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3010",
+      "Description": "When working with untrusted input, be mindful of XAML injection attacks. XAML is a markup language that directly represents object instantiation and execution. That means elements created in XAML can interact with system resources (for example, network access and file system IO)."
+    },
+    {
+      "Code": "CA3011",
+      "Title": "Review code for DLL injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3011",
+      "Description": "When working with untrusted input, be mindful of loading untrusted code. If your web application loads untrusted code, an attacker may be able to inject malicious DLLs into your process and execute malicious code."
+    },
+    {
+      "Code": "CA3012",
+      "Title": "Review code for regex injection vulnerabilities",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3012",
+      "Description": "When working with untrusted input, be mindful of regex injection attacks. An attacker can use regex injection to maliciously modify a regular expression, to make the regex match unintended results, or to make the regex consume excessive CPU resulting in a Denial of Service attack."
+    },
+    {
+      "Code": "CA3061",
+      "Title": "Do not add schema by URL",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3061",
+      "Description": "Do not use the unsafe overload of the Add method because it may cause dangerous external references."
+    },
+    {
+      "Code": "CA3075",
+      "Title": "Insecure DTD Processing",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3075",
+      "Description": "If you use insecure DTDProcessing instances or reference external entity sources, the parser may accept untrusted input and disclose sensitive information to attackers."
+    },
+    {
+      "Code": "CA3076",
+      "Title": "Insecure XSLT Script Execution",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3076",
+      "Description": "If you execute Extensible Stylesheet Language Transformations (XSLT) in .NET applications insecurely, the processor may resolve untrusted URI references that could disclose sensitive information to attackers, leading to Denial of Service and Cross-Site attacks."
+    },
+    {
+      "Code": "CA3077",
+      "Title": "Insecure Processing in API Design, XML Document and XML Text Reader",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3077",
+      "Description": "When designing an API derived from XMLDocument and XMLTextReader, be mindful of DtdProcessing. Using insecure DTDProcessing instances when referencing or resolving external entity sources or setting insecure values in the XML may lead to information disclosure."
+    },
+    {
+      "Code": "CA3147",
+      "Title": "Mark verb handlers with ValidateAntiForgeryToken",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca3147",
+      "Description": "When designing an ASP.NET MVC controller, be mindful of cross-site request forgery attacks. A cross-site request forgery attack can send malicious requests from an authenticated user to your ASP.NET MVC controller."
+    },
+    {
+      "Code": "CA5350",
+      "Title": "Do Not Use Weak Cryptographic Algorithms",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5350",
+      "Description": "Weak encryption algorithms and hashing functions are used today for a number of reasons, but they should not be used to guarantee the confidentiality or integrity of the data they protect. This rule triggers when it finds TripleDES, SHA1, or RIPEMD160 algorithms in the code."
+    },
+    {
+      "Code": "CA5351",
+      "Title": "Do Not Use Broken Cryptographic Algorithms",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5351",
+      "Description": "Broken cryptographic algorithms are not considered secure and their use should be strongly discouraged. This rule triggers when it finds the MD5 hash algorithm or either the DES or RC2 encryption algorithms in code."
+    },
+    {
+      "Code": "CA5358",
+      "Title": "Do Not Use Unsafe Cipher Modes",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5358",
+      "Description": "Do Not Use Unsafe Cipher Modes"
+    },
+    {
+      "Code": "CA5359",
+      "Title": "Do not disable certificate validation",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5359",
+      "Description": "A certificate can help authenticate the identity of the server. Clients should validate the server certificate to ensure requests are sent to the intended server. If the ServerCertificateValidationCallback always returns true, any certificate will pass validation."
+    },
+    {
+      "Code": "CA5360",
+      "Title": "Do not call dangerous methods in deserialization",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5360",
+      "Description": "Insecure deserialization is a vulnerability which occurs when untrusted data is used to abuse the logic of an application, inflict a Denial-of-Service (DoS) attack, or even execute arbitrary code upon it being deserialized. It's frequently possible for malicious users to abuse these deserialization features when the application is deserializing untrusted data which is under their control. Specifically, invoke dangerous methods in the process of deserialization. Successful insecure deserialization attacks could allow an attacker to carry out attacks such as DoS attacks, authentication bypasses, and remote code execution."
+    },
+    {
+      "Code": "CA5361",
+      "Title": "Do not disable Schannel use of strong crypto",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5361",
+      "Description": "Setting Switch.System.Net.DontEnableSchUseStrongCrypto to true weakens the cryptography used in outgoing Transport Layer Security (TLS) connections. Weaker cryptography can compromise the confidentiality of communication between your application and the server, making it easier for attackers to eavesdrop sensitive data."
+    },
+    {
+      "Code": "CA5362",
+      "Title": "Potential reference cycle in deserialized object graph",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5362",
+      "Description": "If deserializing untrusted data, then any code processing the deserialized object graph needs to handle reference cycles without going into infinite loops. This includes both code that's part of a deserialization callback and code that processes the object graph after deserialization completed. Otherwise, an attacker could perform a Denial-of-Service attack with malicious data containing a reference cycle."
+    },
+    {
+      "Code": "CA5363",
+      "Title": "Do not disable request validation",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5363",
+      "Description": "Request validation is a feature in ASP.NET that examines HTTP requests and determines whether they contain potentially dangerous content that can lead to injection attacks, including cross-site-scripting."
+    },
+    {
+      "Code": "CA5364",
+      "Title": "Do not use deprecated security protocols",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5364",
+      "Description": "Transport Layer Security (TLS) secures communication between computers, most commonly with Hypertext Transfer Protocol Secure (HTTPS). Older protocol versions of TLS are less secure than TLS 1.2 and TLS 1.3 and are more likely to have new vulnerabilities. Avoid older protocol versions to minimize risk."
+    },
+    {
+      "Code": "CA5365",
+      "Title": "Do Not Disable HTTP Header Checking",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5365",
+      "Description": "HTTP header checking enables encoding of the carriage return and newline characters, \\r and \\n, that are found in response headers. This encoding can help to avoid injection attacks that exploit an application that echoes untrusted data contained by the header."
+    },
+    {
+      "Code": "CA5366",
+      "Title": "Use XmlReader For DataSet Read XML",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5366",
+      "Description": "Using a DataSet to read XML with untrusted data may load dangerous external references, which should be restricted by using an XmlReader with a secure resolver or with DTD processing disabled."
+    },
+    {
+      "Code": "CA5367",
+      "Title": "Do Not Serialize Types With Pointer Fields",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5367",
+      "Description": "This rule checks whether there's a serializable class with a pointer field or property. Members that can't be serialized can be a pointer, such as static members or fields marked with NonSerializedAttribute."
+    },
+    {
+      "Code": "CA5368",
+      "Title": "Set ViewStateUserKey For Classes Derived From Page",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5368",
+      "Description": "Setting the ViewStateUserKey property can help you prevent attacks on your application by allowing you to assign an identifier to the view-state variable for individual users so that attackers cannot use the variable to generate an attack. Otherwise, there will be vulnerabilities to cross-site request forgery."
+    },
+    {
+      "Code": "CA5369",
+      "Title": "Use XmlReader for Deserialize",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5369",
+      "Description": "Processing untrusted DTD and XML schemas may enable loading dangerous external references, which should be restricted by using an XmlReader with a secure resolver or with DTD and XML inline schema processing disabled."
+    },
+    {
+      "Code": "CA5370",
+      "Title": "Use XmlReader for validating reader",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5370",
+      "Description": "Processing untrusted DTD and XML schemas may enable loading dangerous external references. This dangerous loading can be restricted by using an XmlReader with a secure resolver or with DTD and XML inline schema processing disabled."
+    },
+    {
+      "Code": "CA5371",
+      "Title": "Use XmlReader for schema read",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5371",
+      "Description": "Processing untrusted DTD and XML schemas may enable loading dangerous external references. Using an XmlReader with a secure resolver or with DTD and XML inline schema processing disabled restricts this."
+    },
+    {
+      "Code": "CA5372",
+      "Title": "Use XmlReader for XPathDocument",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5372",
+      "Description": "Processing XML from untrusted data may load dangerous external references, which can be restricted by using an XmlReader with a secure resolver or with DTD processing disabled."
+    },
+    {
+      "Code": "CA5373",
+      "Title": "Do not use obsolete key derivation function",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5373",
+      "Description": "This rule detects the invocation of weak key derivation methods System.Security.Cryptography.PasswordDeriveBytes and Rfc2898DeriveBytes.CryptDeriveKey. System.Security.Cryptography.PasswordDeriveBytes used a weak algorithm PBKDF1."
+    },
+    {
+      "Code": "CA5374",
+      "Title": "Do Not Use XslTransform",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5374",
+      "Description": "This rule checks if System.Xml.Xsl.XslTransform is instantiated in the code. System.Xml.Xsl.XslTransform is now obsolete and shouldn't be used."
+    },
+    {
+      "Code": "CA5375",
+      "Title": "Do not use account shared access signature",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5375",
+      "Description": "An account SAS can delegate access to read, write, and delete operations on blob containers, tables, queues, and file shares that are not permitted with a service SAS. However, it doesn't support container-level policies and has less flexibility and control over the permissions that are granted. Once malicious users get it, your storage account will be compromised easily."
+    },
+    {
+      "Code": "CA5376",
+      "Title": "Use SharedAccessProtocol HttpsOnly",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5376",
+      "Description": "SAS is sensitive data that can't be transported in plain text on HTTP."
+    },
+    {
+      "Code": "CA5377",
+      "Title": "Use container level access policy",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5377",
+      "Description": "A container-level access policy can be modified or revoked at any time. It provides greater flexibility and control over the permissions that are granted."
+    },
+    {
+      "Code": "CA5378",
+      "Title": "Do not disable ServicePointManagerSecurityProtocols",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5378",
+      "Description": "Setting Switch.System.ServiceModel.DisableUsingServicePointManagerSecurityProtocols to true limits Windows Communication Framework's (WCF) Transport Layer Security (TLS) connections to using TLS 1.0. That version of TLS will be deprecated."
+    },
+    {
+      "Code": "CA5379",
+      "Title": "Do not use weak key derivation function algorithm",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5379",
+      "Description": "The Rfc2898DeriveBytes class defaults to using the SHA1 algorithm. You should specify the hash algorithm to use in some overloads of the constructor with SHA256 or higher. Note, HashAlgorithm property only has a get accessor and doesn't have a overriden modifier."
+    },
+    {
+      "Code": "CA5380",
+      "Title": "Do not add certificates to root store",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5380",
+      "Description": "This rule detects code that adds a certificate into the Trusted Root Certification Authorities certificate store. By default, the Trusted Root Certification Authorities certificate store is configured with a set of public CAs that has met the requirements of the Microsoft Root Certificate Program."
+    },
+    {
+      "Code": "CA5381",
+      "Title": "Ensure certificates are not added to root store",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5381",
+      "Description": "This rule detects code that potentially adds a certificate into the Trusted Root Certification Authorities certificate store. By default, the Trusted Root Certification Authorities certificate store is configured with a set of public certification authorities (CAs) that has met the requirements of the Microsoft Root Certificate Program."
+    },
+    {
+      "Code": "CA5382",
+      "Title": "Use secure cookies in ASP.NET Core",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5382",
+      "Description": "Applications available over HTTPS must use secure cookies, which indicate to the browser that the cookie should only be transmitted using Secure Sockets Layer (SSL)."
+    },
+    {
+      "Code": "CA5383",
+      "Title": "Ensure use secure cookies in ASP.NET Core",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5383",
+      "Description": "Applications available over HTTPS must use secure cookies, which indicate to the browser that the cookie should only be transmitted using Secure Sockets Layer (SSL)."
+    },
+    {
+      "Code": "CA5384",
+      "Title": "Do not use digital signature algorithm (DSA)",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5384",
+      "Description": "DSA is a weak asymmetric encryption algorithm."
+    },
+    {
+      "Code": "CA5385",
+      "Title": "Use Rivest–Shamir–Adleman (RSA) algorithm with sufficient key size",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5385",
+      "Description": "An RSA key smaller than 2048 bits is more vulnerable to brute force attacks."
+    },
+    {
+      "Code": "CA5386",
+      "Title": "Avoid hardcoding SecurityProtocolType value",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5386",
+      "Description": "Transport Layer Security (TLS) secures communication between computers, most commonly with Hypertext Transfer Protocol Secure (HTTPS). Protocol versions TLS 1.0 and TLS 1.1 are deprecated, while TLS 1.2 and TLS 1.3 are current. In the future, TLS 1.2 and TLS 1.3 may be deprecated. To ensure that your application remains secure, avoid hardcoding a protocol version and target at least .NET Framework v4.7.1."
+    },
+    {
+      "Code": "CA5387",
+      "Title": "Do not use weak key derivation function with insufficient iteration count",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5387",
+      "Description": "This rule checks if a cryptographic key was generated by Rfc2898DeriveBytes with an iteration count of less than 100,000. A higher iteration count can help mitigate against dictionary attacks that try to guess the generated cryptographic key."
+    },
+    {
+      "Code": "CA5388",
+      "Title": "Ensure sufficient iteration count when using weak key derivation function",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5388",
+      "Description": "This rule checks if a cryptographic key was generated by Rfc2898DeriveBytes with an iteration count that may be less than 100,000. A higher iteration count can help mitigate against dictionary attacks that try to guess the generated cryptographic key."
+    },
+    {
+      "Code": "CA5389",
+      "Title": "Do not add archive item's path to the target file system path",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5389",
+      "Description": "File path can be relative and can lead to file system access outside of the expected file system target path, leading to malicious config changes and remote code execution via lay-and-wait technique."
+    },
+    {
+      "Code": "CA5390",
+      "Title": "Do not hard-code encryption key",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5390",
+      "Description": "For a symmetric algorithm to be successful, the secret key must be known only to the sender and the receiver. When a key is hard-coded, it is easily discovered. Even with compiled binaries, it is easy for malicious users to extract it. Once the private key is compromised, the cipher text can be decrypted directly and is not protected anymore."
+    },
+    {
+      "Code": "CA5391",
+      "Title": "Use antiforgery tokens in ASP.NET Core MVC controllers",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5391",
+      "Description": "Handling a POST, PUT, PATCH, or DELETE request without validating an antiforgery token may be vulnerable to cross-site request forgery attacks. A cross-site request forgery attack can send malicious requests from an authenticated user to your ASP.NET Core MVC controller."
+    },
+    {
+      "Code": "CA5392",
+      "Title": "Use DefaultDllImportSearchPaths attribute for P/Invokes",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5392",
+      "Description": "By default, P/Invoke functions using DllImportAttribute probe a number of directories, including the current working directory for the library to load. This can be a security issue for certain applications, leading to DLL hijacking."
+    },
+    {
+      "Code": "CA5393",
+      "Title": "Do not use unsafe DllImportSearchPath value",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5393",
+      "Description": "There could be a malicious DLL in the default DLL search directories and assembly directories. Or, depending on where your application is run from, there could be a malicious DLL in the application's directory."
+    },
+    {
+      "Code": "CA5394",
+      "Title": "Do not use insecure randomness",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5394",
+      "Description": "Using a cryptographically weak pseudo-random number generator may allow an attacker to predict what security-sensitive value will be generated."
+    },
+    {
+      "Code": "CA5395",
+      "Title": "Miss HttpVerb attribute for action methods",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5395",
+      "Description": "All the action methods that create, edit, delete, or otherwise modify data needs to be protected with the antiforgery attribute from cross-site request forgery attacks. Performing a GET operation should be a safe operation that has no side effects and doesn't modify your persisted data."
+    },
+    {
+      "Code": "CA5396",
+      "Title": "Set HttpOnly to true for HttpCookie",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5396",
+      "Description": "As a defense in depth measure, ensure security sensitive HTTP cookies are marked as HttpOnly. This indicates web browsers should disallow scripts from accessing the cookies. Injected malicious scripts are a common way of stealing cookies."
+    },
+    {
+      "Code": "CA5397",
+      "Title": "Do not use deprecated SslProtocols values",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5397",
+      "Description": "Transport Layer Security (TLS) secures communication between computers, most commonly with Hypertext Transfer Protocol Secure (HTTPS). Older protocol versions of TLS are less secure than TLS 1.2 and TLS 1.3 and are more likely to have new vulnerabilities. Avoid older protocol versions to minimize risk."
+    },
+    {
+      "Code": "CA5398",
+      "Title": "Avoid hardcoded SslProtocols values",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5398",
+      "Description": "Transport Layer Security (TLS) secures communication between computers, most commonly with Hypertext Transfer Protocol Secure (HTTPS). Protocol versions TLS 1.0 and TLS 1.1 are deprecated, while TLS 1.2 and TLS 1.3 are current. In the future, TLS 1.2 and TLS 1.3 may be deprecated. To ensure that your application remains secure, avoid hardcoding a protocol version."
+    },
+    {
+      "Code": "CA5399",
+      "Title": "Definitely disable HttpClient certificate revocation list check",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5399",
+      "Description": "A revoked certificate isn't trusted anymore. It could be used by attackers passing some malicious data or stealing sensitive data in HTTPS communication."
+    },
+    {
+      "Code": "CA5400",
+      "Title": "Ensure HttpClient certificate revocation list check is not disabled",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5400",
+      "Description": "A revoked certificate isn't trusted anymore. It could be used by attackers passing some malicious data or stealing sensitive data in HTTPS communication."
+    },
+    {
+      "Code": "CA5401",
+      "Title": "Do not use CreateEncryptor with non-default IV",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5401",
+      "Description": "Symmetric encryption should always use a non-repeatable initialization vector to prevent dictionary attacks."
+    },
+    {
+      "Code": "CA5402",
+      "Title": "Use CreateEncryptor with the default IV",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5402",
+      "Description": "Symmetric encryption should always use a non-repeatable initialization vector to prevent dictionary attacks."
+    },
+    {
+      "Code": "CA5403",
+      "Title": "Do not hard-code certificate",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5403",
+      "Description": "The data or rawData parameter of a X509Certificate or X509Certificate2 constructor is hard-coded."
+    },
+    {
+      "Code": "CA5404",
+      "Title": "Do not disable token validation checks",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5404",
+      "Description": "TokenValidationParameters properties that control token validation should not be set to false."
+    },
+    {
+      "Code": "CA5405",
+      "Title": "Do not always skip token validation in delegates",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5405",
+      "Description": "The callback assigned to AudienceValidator  or LifetimeValidator always returns true."
+    },
+    {
+      "Code": "IL3000",
+      "Title": "Avoid accessing Assembly file path when publishing as a single file",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/il3000",
+      "Description": "Avoid accessing Assembly file path when publishing as a single file."
+    },
+    {
+      "Code": "IL3001",
+      "Title": "Avoid accessing Assembly file path when publishing as a single-file",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/il3001",
+      "Description": "Avoid accessing Assembly file path when publishing as a single file."
+    },
+    {
+      "Code": "IL3002",
+      "Title": "Avoid calling members annotated with 'RequiresAssemblyFilesAttribute' when publishing as a single file",
+      "Link": "https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/il3002",
+      "Description": "Avoid calling members annotated with 'RequiresAssemblyFilesAttribute' when publishing as a single file"
+    }
+  ]
+}
