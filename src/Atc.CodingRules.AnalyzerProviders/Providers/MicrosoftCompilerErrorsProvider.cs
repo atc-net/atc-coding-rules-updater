@@ -68,15 +68,24 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 return null;
             }
 
-            var headers1 = htmlDoc.DocumentNode.SelectNodes("//h1").ToList();
-            var title = headers1.Count == 0
-                ? string.Empty
-                : headers1[0].InnerText;
+            var mainNode = htmlDoc.DocumentNode.SelectSingleNode("//main[@id='main']");
+            if (mainNode is null)
+            {
+                return null;
+            }
 
-            var paragraphs = htmlDoc.DocumentNode.SelectNodes("//p").ToList();
-            var description = headers1.Count == 0
-                ? string.Empty
-                : paragraphs[0].InnerText;
+            var paragraphs = mainNode.SelectNodes(".//p").ToList();
+            if (paragraphs.Count < 3)
+            {
+                return null;
+            }
+
+            var title = paragraphs[2].InnerText;
+            var description = string.Empty;
+            if (paragraphs.Count > 3)
+            {
+                description = paragraphs[3].InnerText;
+            }
 
             return new Rule(
                     code,
