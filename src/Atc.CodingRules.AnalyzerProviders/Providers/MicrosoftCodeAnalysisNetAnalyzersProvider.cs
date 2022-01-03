@@ -11,18 +11,23 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         private const int TableColumnId = 0;
         private const int TableColumnCategory = 1;
 
+        public static string Name => "Microsoft.CodeAnalysis.NetAnalyzers";
+
         public override Uri? DocumentationLink { get; set; } = new Uri("https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules", UriKind.Absolute);
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override AnalyzerProviderBaseRuleData CreateData()
         {
-            var data = new AnalyzerProviderBaseRuleData("Microsoft.CodeAnalysis.NetAnalyzers");
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
 
+        protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
+        {
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
             if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
             {
                 data.ExceptionMessage = "Access Denied";
-                return data;
+                return;
             }
 
             var tableRows = htmlDoc.DocumentNode.SelectNodes("//*//table[1]//tr").ToList();
@@ -69,8 +74,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         category: null,
                         description));
             }
-
-            return data;
         }
     }
 }

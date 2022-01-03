@@ -9,18 +9,23 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
     {
+        public static string Name => "Microsoft.CompilerErrors";
+
         public override Uri? DocumentationLink { get; set; } = new Uri("https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages", UriKind.Absolute);
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override AnalyzerProviderBaseRuleData CreateData()
         {
-            var data = new AnalyzerProviderBaseRuleData("Microsoft.CompilerErrors");
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
 
+        protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
+        {
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri + "/toc.json").ConfigureAwait(false);
             if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
             {
                 data.ExceptionMessage = "Access Denied";
-                return data;
+                return;
             }
 
             var jsonDoc = JsonDocument.Parse(htmlDoc.DocumentNode.InnerText);
@@ -52,8 +57,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                     }
                 }
             }
-
-            return data;
         }
 
         private static async Task<Rule?> GetRuleByCode(string code, string link)

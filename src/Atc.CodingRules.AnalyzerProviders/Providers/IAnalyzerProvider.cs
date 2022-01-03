@@ -5,6 +5,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public interface IAnalyzerProvider
     {
-        Task<AnalyzerProviderBaseRuleData> CollectBaseRules();
+        Task<AnalyzerProviderBaseRuleData> CollectBaseRules(ProviderCollectingMode providerCollectingMode);
     }
 }

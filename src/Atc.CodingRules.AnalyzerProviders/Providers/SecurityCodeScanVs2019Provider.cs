@@ -8,12 +8,17 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
     {
+        public static string Name => "SecurityCodeScan.VS2019";
+
         public override Uri? DocumentationLink { get; set; } = new Uri("https://security-code-scan.github.io", UriKind.Absolute);
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override AnalyzerProviderBaseRuleData CreateData()
         {
-            var data = new AnalyzerProviderBaseRuleData("SecurityCodeScan.VS2019");
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
 
+        protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
+        {
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
             var headers3 = htmlDoc.DocumentNode.SelectNodes("//h3").ToList();
@@ -41,8 +46,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         title,
                         link));
             }
-
-            return data;
         }
     }
 }

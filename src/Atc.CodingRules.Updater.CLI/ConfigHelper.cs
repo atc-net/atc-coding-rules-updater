@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Atc.CodingRules.AnalyzerProviders;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using Atc.CodingRules.Updater.CLI.Models;
 using Atc.Data.Models;
@@ -207,7 +208,7 @@ namespace Atc.CodingRules.Updater.CLI
             bool temporarySuppressionAsExcel,
             ICollection<LogKeyValueItem> logItems)
         {
-            var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules();
+            var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(ProviderCollectingMode.LocalCache);
             HandlingAnalyzerProviderInformation(logItems, analyzerProviderBaseRules);
             HandlingAnalyzerProviderErrors(logItems, analyzerProviderBaseRules);
             string rootEditorConfigContent = string.Empty;

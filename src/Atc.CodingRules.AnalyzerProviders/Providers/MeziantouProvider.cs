@@ -12,12 +12,17 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
         private const int TableColumnCategory = 1;
         private const int TableColumnTitle = 2;
 
+        public static string Name => "Meziantou.Analyzer";
+
         public override Uri? DocumentationLink { get; set; } = new Uri("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override AnalyzerProviderBaseRuleData CreateData()
         {
-            var data = new AnalyzerProviderBaseRuleData("Meziantou.Analyzer");
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
 
+        protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
+        {
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
             var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
@@ -54,8 +59,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         link,
                         category: category));
             }
-
-            return data;
         }
     }
 }

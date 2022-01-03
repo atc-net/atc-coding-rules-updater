@@ -8,12 +8,17 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class AsyncFixerProvider : AnalyzerProviderBase
     {
+        public static string Name => "AsyncFixer";
+
         public override Uri? DocumentationLink { get; set; } = new Uri("https://github.com/semihokur/AsyncFixer/blob/main/README.md", UriKind.Absolute);
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override AnalyzerProviderBaseRuleData CreateData()
         {
-            var data = new AnalyzerProviderBaseRuleData("AsyncFixer");
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
 
+        protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
+        {
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri);
 
@@ -36,7 +41,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
                 var code = sa[0];
                 var title = sa[1].Trim();
-                var hashTagId = $"user-content-{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal).Replace("/", string.Empty, StringComparison.Ordinal).Replace(".", string.Empty, StringComparison.Ordinal)}";
+                var hashTagId =
+                    $"user-content-{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal).Replace("/", string.Empty, StringComparison.Ordinal).Replace(".", string.Empty, StringComparison.Ordinal)}";
                 var link = $"{this.DocumentationLink.OriginalString}#{hashTagId}";
 
                 data.Rules.Add(
@@ -46,8 +52,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         link,
                         description: description));
             }
-
-            return data;
         }
     }
 }

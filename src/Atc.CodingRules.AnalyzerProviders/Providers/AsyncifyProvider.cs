@@ -10,12 +10,17 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 {
     public class AsyncifyProvider : AnalyzerProviderBase
     {
+        public static string Name => "Asyncify";
+
         public override Uri? DocumentationLink { get; set; } = new Uri("https://github.com/hvanbakel/Asyncify-CSharp", UriKind.Absolute);
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override AnalyzerProviderBaseRuleData CreateData()
         {
-            var data = new AnalyzerProviderBaseRuleData("Asyncify");
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
 
+        protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
+        {
             var web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync("https://raw.githubusercontent.com/hvanbakel/Asyncify-CSharp/master/Asyncify/Asyncify/Resources.resx").ConfigureAwait(false);
 
@@ -25,7 +30,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             var dataNodes = xml.SelectNodes("/root/data");
             if (dataNodes == null)
             {
-                return data;
+                return;
             }
 
             var codes = new List<string>();
@@ -94,8 +99,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                         category: null,
                         description));
             }
-
-            return data;
         }
     }
 }

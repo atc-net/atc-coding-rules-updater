@@ -6,19 +6,22 @@ namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
 {
     public class AsyncFixerProviderTests
     {
-        [Fact]
-        public async Task CollectBaseRules()
+        [Theory]
+        [InlineData(ProviderCollectingMode.LocalCache)]
+        [InlineData(ProviderCollectingMode.GitHub)]
+        [InlineData(ProviderCollectingMode.ReCollect)]
+        public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
         {
             // Arrange
             var provider = new AsyncFixerProvider();
 
             // Act
-            var actual = await provider.CollectBaseRules();
+            var actual = await provider.CollectBaseRules(providerCollectingMode);
 
             // Assert
             Assert.NotNull(actual);
             Assert.NotNull(actual.Name);
-            Assert.Equal("AsyncFixer", actual.Name);
+            Assert.Equal(AsyncFixerProvider.Name, actual.Name);
             Assert.NotNull(actual.Rules);
             Assert.True(actual.Rules.Count >= 5);
         }

@@ -10,12 +10,17 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
     /// </summary>
     public class MicrosoftCompilerErrorsProviderUndocumented : AnalyzerProviderBase
     {
+        public static string Name => "Microsoft.CompilerErrors.Undocumented";
+
+        protected override AnalyzerProviderBaseRuleData CreateData()
+        {
+            return new AnalyzerProviderBaseRuleData(Name);
+        }
+
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+        protected override async Task<AnalyzerProviderBaseRuleData> ReCollect(AnalyzerProviderBaseRuleData data)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            var data = new AnalyzerProviderBaseRuleData("Microsoft.CompilerErrors.Undocumented");
-
             var list = new List<Tuple<string, string>>
             {
                 Tuple.Create("CS1998", "Async method lacks 'await' operators and will run synchronously."),

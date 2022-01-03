@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
 {
-    public class StyleCopAnalyzersProviderTests
+    public class MicrosoftCompilerErrorsProviderUndocumentedTests
     {
         [Theory]
         [InlineData(ProviderCollectingMode.LocalCache)]
@@ -13,7 +13,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
         public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
         {
             // Arrange
-            var provider = new StyleCopAnalyzersProvider();
+            var provider = new MicrosoftCompilerErrorsProviderUndocumented();
 
             // Act
             var actual = await provider.CollectBaseRules(providerCollectingMode);
@@ -21,9 +21,9 @@ namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
             // Assert
             Assert.NotNull(actual);
             Assert.NotNull(actual.Name);
-            Assert.Equal(StyleCopAnalyzersProvider.Name, actual.Name);
+            Assert.Equal(MicrosoftCompilerErrorsProviderUndocumented.Name, actual.Name);
             Assert.NotNull(actual.Rules);
-            Assert.True(actual.Rules.Count >= 198);
+            Assert.True(actual.Rules.Count >= 46);
         }
     }
 }
