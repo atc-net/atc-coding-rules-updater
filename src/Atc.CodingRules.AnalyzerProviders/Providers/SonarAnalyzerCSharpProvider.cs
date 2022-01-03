@@ -29,10 +29,15 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             while (jsonDocItems.MoveNext())
             {
                 var jsonElement = jsonDocItems.Current;
-                var ruleKey = jsonElement.GetProperty("ruleKey").GetRawText();
-                var summary = jsonElement.GetProperty("summary").GetRawText();
+                var ruleKey = jsonElement.GetProperty("ruleKey").GetString();
+                var summary = jsonElement.GetProperty("summary").GetString() ?? string.Empty;
                 var link = RuleLinkBase + ruleKey;
-                var description = jsonElement.GetProperty("description").GetRawText();
+                var description = jsonElement.GetProperty("description").GetString();
+
+                if (ruleKey is null)
+                {
+                    continue;
+                }
 
                 var rule = new Rule(
                     ruleKey.Replace("RSPEC-", string.Empty, StringComparison.Ordinal),
