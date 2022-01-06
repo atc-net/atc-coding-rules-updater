@@ -211,10 +211,9 @@ namespace Atc.CodingRules.Updater.CLI
             var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(ProviderCollectingMode.LocalCache);
             HandlingAnalyzerProviderInformation(logItems, analyzerProviderBaseRules);
             HandlingAnalyzerProviderErrors(logItems, analyzerProviderBaseRules);
-            string rootEditorConfigContent = string.Empty;
+            var rootEditorConfigContent = string.Empty;
 
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var stopwatch = Stopwatch.StartNew();
             Colorful.Console.WriteLine("Started collecting build errors", Color.Tan);
             if (temporarySuppressionsPath is null)
             {
@@ -268,7 +267,7 @@ namespace Atc.CodingRules.Updater.CLI
             }
             else
             {
-                int totalSuppressions = suppressionLinesPrAnalyzer.Sum(x => x.Item2.Count);
+                var totalSuppressions = suppressionLinesPrAnalyzer.Sum(x => x.Item2.Count);
                 logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{EditorConfigHelper.FileNameEditorConfig} is updated with {totalSuppressions} suppressions"));
             }
 
