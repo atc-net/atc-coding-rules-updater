@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Atc.CodingRules.Updater.CLI
 {
@@ -9,7 +10,7 @@ namespace Atc.CodingRules.Updater.CLI
 
         public static string ReadAllText(FileInfo file)
         {
-            if (file == null)
+            if (file is null)
             {
                 throw new ArgumentNullException(nameof(file));
             }
@@ -19,14 +20,24 @@ namespace Atc.CodingRules.Updater.CLI
                 : string.Empty;
         }
 
+        public static void CreateFile(
+            ILogger logger,
+            FileInfo file,
+            string rawGitData,
+            string descriptionPart)
+        {
+            File.WriteAllText(file.FullName, rawGitData);
+            logger.LogInformation($"{EmojisConstants.FileCreated}    {descriptionPart} created");
+        }
+
         public static bool IsFileDataLengthEqual(string dataA, string dataB)
         {
-            if (dataA == null)
+            if (dataA is null)
             {
                 throw new ArgumentNullException(nameof(dataA));
             }
 
-            if (dataB == null)
+            if (dataB is null)
             {
                 throw new ArgumentNullException(nameof(dataB));
             }

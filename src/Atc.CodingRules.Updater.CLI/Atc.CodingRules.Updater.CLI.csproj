@@ -13,16 +13,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="1.1.124" />
-    <PackageReference Include="Colorful.Console" Version="1.2.15" />
+    <PackageReference Include="Atc" Version="1.1.360" />
+    <PackageReference Include="Atc.Console.Spectre" Version="1.1.360" />
     <PackageReference Include="EPPlus" Version="5.7.0" />
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
-    <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Atc.CodingRules.AnalyzerProviders\Atc.CodingRules.AnalyzerProviders.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

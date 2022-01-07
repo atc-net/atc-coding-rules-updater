@@ -7,20 +7,25 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 
 namespace Atc.CodingRules.Updater.CLI
 {
     public static class DotnetBuildHelper
     {
         [SuppressMessage("Design", "MA0016:Prefer return collection abstraction instead of implementation", Justification = "OK.")]
-        public static Dictionary<string, int> BuildAndCollectErrors(DirectoryInfo rootPath, int runNumber, FileInfo? buildFile)
+        public static Dictionary<string, int> BuildAndCollectErrors(
+            ILogger logger,
+            DirectoryInfo rootPath,
+            int runNumber,
+            FileInfo? buildFile)
         {
-            if (rootPath == null)
+            if (rootPath is null)
             {
                 throw new ArgumentNullException(nameof(rootPath));
             }
 
-            var buildResult = RunBuildCommand(rootPath, runNumber, buildFile);
+            var buildResult = RunBuildCommand(logger, rootPath, runNumber, buildFile);
             if (!string.IsNullOrEmpty(buildResult.Item2))
             {
                 throw new DataException(buildResult.Item2);
@@ -28,18 +33,20 @@ namespace Atc.CodingRules.Updater.CLI
 
             var parsedErrors = ParseBuildOutput(buildResult);
 
-            int totalErrors = parsedErrors.Sum(parsedError => parsedError.Value);
+            var totalErrors = parsedErrors.Sum(parsedError => parsedError.Value);
             if (totalErrors > 0)
             {
-                Colorful.Console.WriteLine($"- {totalErrors} errors found spread out on {parsedErrors.Count} rules", Color.Tan);
-                Console.WriteLine();
+                logger.LogInformation($"{totalErrors} errors found spread out on {parsedErrors.Count} rules");
             }
 
             return parsedErrors;
         }
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "OK.")]
-        private static Tuple<string, string> RunBuildCommand(DirectoryInfo rootPath, int runNumber, FileInfo? buildFile)
+        private static Tuple<string, string> RunBuildCommand(
+            ILogger logger,
+            DirectoryInfo rootPath,
+            int runNumber,
+            FileInfo? buildFile)
         {
             var arguments = "build --no-restore -c Release -v q -clp:NoSummary";
             if (buildFile is not null && buildFile.Exists)
@@ -80,18 +87,19 @@ namespace Atc.CodingRules.Updater.CLI
                 },
             };
 
-            Colorful.Console.WriteLine($"Working on Build ({runNumber})", Color.Tan);
-            Colorful.Console.WriteLine($"- start {DateTime.Now:T}", Color.Tan);
+            logger.LogInformation($"Working on Build ({runNumber}) - start {DateTime.Now:T}");
             process.Start();
-            string standardOutput = process.StandardOutput.ReadToEnd();
-            string standardError = process.StandardError.ReadToEnd();
+
+            var standardOutput = process.StandardOutput.ReadToEnd();
+            var standardError = process.StandardError.ReadToEnd();
             if (!string.IsNullOrEmpty(standardError))
             {
-                Colorful.Console.WriteLine(standardError, Color.Tan);
+                logger.LogInformation(standardError);
             }
 
             process.WaitForExit();
-            Colorful.Console.WriteLine($"- end {DateTime.Now:T}", Color.Tan);
+            logger.LogInformation($"Build ({runNumber}) - end {DateTime.Now:T}");
+
             return Tuple.Create(standardOutput, standardError);
         }
 

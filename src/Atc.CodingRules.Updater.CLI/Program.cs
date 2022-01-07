@@ -1,10 +1,12 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Reflection;
+using System.Linq;
 using System.Threading.Tasks;
 using Atc.CodingRules.Updater.CLI.Commands;
-using Microsoft.Extensions.Hosting;
+using Atc.Console.Spectre.Factories;
+using Atc.Console.Spectre.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 [assembly: CLSCompliant(false)]
 
@@ -13,25 +15,53 @@ namespace Atc.CodingRules.Updater.CLI
     [ExcludeFromCodeCoverage]
     public static class Program
     {
-        public static async Task<int> Main(string[] args)
+        public static Task<int> Main(string[] args)
         {
-            var builder = new HostBuilder();
+            //args = new[]
+            //{
+            //    "-r", @"C:\Temp\sletmig",
+            //   // "-v",
+            //};
 
-            try
+            args = WriteHelpIfNeeded(args);
+
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            var consoleLoggerConfiguration = new ConsoleLoggerConfiguration();
+            configuration.GetSection("ConsoleLogger").Bind(consoleLoggerConfiguration);
+
+            SetMinimumLogLevelIfNeeded(args, consoleLoggerConfiguration);
+
+            var serviceCollection = ServiceCollectionFactory.Create(consoleLoggerConfiguration);
+
+            var app = CommandAppFactory2.CreateWithSingleCommand<RootCommand>(serviceCollection);
+
+            return app.RunAsync(args);
+        }
+
+        private static string[] WriteHelpIfNeeded(string[] args)
+        {
+            if (!args.Any())
             {
-                return await builder
-                        .RunCommandLineApplicationAsync<RootCommand>(args)
-                        .ConfigureAwait(false);
+                args = new[]
+                {
+                    "-h",
+                };
             }
-            catch (TargetInvocationException ex) when (ex.InnerException != null)
+
+            return args;
+        }
+
+        private static void SetMinimumLogLevelIfNeeded(
+            string[] args,
+            ConsoleLoggerConfiguration consoleLoggerConfiguration)
+        {
+            if (args.Any(x => x.Equals("-v", StringComparison.OrdinalIgnoreCase)) ||
+                args.Any(x => x.Equals("--verboseMode", StringComparison.OrdinalIgnoreCase)))
             {
-                Colorful.Console.WriteLine($"Error: {ex.InnerException.Message}", Color.Red);
-                return ExitStatusCodes.Failure;
-            }
-            catch (Exception ex)
-            {
-                Colorful.Console.WriteLine($"Error: {ex.Message}", Color.Red);
-                return ExitStatusCodes.Failure;
+                consoleLoggerConfiguration.MinimumLogLevel = LogLevel.Trace;
             }
         }
     }

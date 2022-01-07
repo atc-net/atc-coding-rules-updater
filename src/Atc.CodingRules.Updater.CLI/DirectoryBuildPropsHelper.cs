@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Atc.Data.Models;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable InvertIf
 namespace Atc.CodingRules.Updater.CLI
@@ -11,14 +10,15 @@ namespace Atc.CodingRules.Updater.CLI
     {
         public const string FileNameDirectoryBuildProps = "Directory.Build.props";
 
-        public static IEnumerable<LogKeyValueItem> HandleFile(
+        public static void HandleFile(
+            ILogger logger,
             bool isFirstTime,
             string area,
             string rawCodingRulesDistribution,
             DirectoryInfo path,
             string urlPart)
         {
-            if (path == null)
+            if (path is null)
             {
                 throw new ArgumentNullException(nameof(path));
             }
@@ -33,15 +33,14 @@ namespace Atc.CodingRules.Updater.CLI
                 ? $"{rawCodingRulesDistribution}/{FileNameDirectoryBuildProps}"
                 : $"{rawCodingRulesDistribution}/{urlPart}/{FileNameDirectoryBuildProps}";
 
-            var logItems = new List<LogKeyValueItem>();
             try
             {
                 if (!file.Directory!.Exists)
                 {
                     if (!isFirstTime)
                     {
-                        logItems.Add(new LogKeyValueItem(LogCategoryType.Trace, "FileSkip", $"{descriptionPart} skipped"));
-                        return logItems;
+                        logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
+                        return;
                     }
 
                     Directory.CreateDirectory(file.Directory.FullName);
@@ -52,45 +51,36 @@ namespace Atc.CodingRules.Updater.CLI
 
                 if (FileHelper.IsFileDataLengthEqual(rawGitData, rawFileData))
                 {
-                    logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileSkip", $"{descriptionPart} skipped"));
-                    return logItems;
+                    logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
+                    return;
                 }
 
-                return string.IsNullOrEmpty(rawFileData)
-                    ? CreateFile(file, rawGitData, logItems, descriptionPart)
-                    : UpdateFile(file, rawGitData, logItems, descriptionPart);
+                if (string.IsNullOrEmpty(rawFileData))
+                {
+                    FileHelper.CreateFile(logger, file, rawGitData, descriptionPart);
+                }
+                else
+                {
+                    UpdateFile(logger, file, rawGitData, descriptionPart);
+                }
             }
             catch (Exception ex)
             {
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Error, "FileSkip", $"{area} skipped - {ex.Message}"));
-                return logItems;
+                logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
             }
         }
 
-        private static IEnumerable<LogKeyValueItem> CreateFile(
-            FileInfo file,
-            string rawGitData,
-            List<LogKeyValueItem> logItems,
-            string descriptionPart)
-        {
-            File.WriteAllText(file.FullName, rawGitData);
-            logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileCreate", $"{descriptionPart} created"));
-            return logItems;
-        }
-
-        [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK for now.")]
         [SuppressMessage("Info Code Smell", "S1135:Track uses of \"TODO\" tags", Justification = "OK for now.")]
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK for now.")]
-        private static IEnumerable<LogKeyValueItem> UpdateFile(
+        private static void UpdateFile(
+            ILogger logger,
             FileInfo file,
             string rawGitData,
-            List<LogKeyValueItem> logItems,
             string descriptionPart)
         {
             // TODO: Handle XML
             ////File.WriteAllText(file.FullName, rawGitData);
-            ////logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "UpdateCreate", $"{descriptionPart} updated"));
-            return logItems;
+            ////logger.LogDebug($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
         }
     }
 }

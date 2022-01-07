@@ -1,52 +1,117 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Threading.Tasks;
-using Atc.CodingRules.Updater.CLI.Commands.CommandOptions;
-using Atc.Data.Models;
-using McMaster.Extensions.CommandLineUtils;
+using Atc.CodingRules.Updater.CLI.Commands.Settings;
+using Microsoft.Extensions.Logging;
+using Spectre.Console;
+using Spectre.Console.Cli;
 
 namespace Atc.CodingRules.Updater.CLI.Commands
 {
-    public class RootCommand : BaseCommandOptions
+    public class RootCommand : AsyncCommand<RootCommandSettings>
     {
-        private const string RawCodingRulesDistribution = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
+        private readonly ILogger<RootCommand> logger;
 
-        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Can't change it do to interface signature.")]
-        public async Task<int> OnExecute(CommandLineApplication configCmd)
+        public RootCommand(ILogger<RootCommand> logger) => this.logger = logger;
+
+        public override Task<int> ExecuteAsync(CommandContext context, RootCommandSettings settings)
         {
-            if (configCmd is null)
+            if (settings is null)
             {
-                throw new ArgumentNullException(nameof(configCmd));
+                throw new ArgumentNullException(nameof(settings));
             }
 
-            if (CommandLineApplicationHelper.GetHelpMode(configCmd))
-            {
-                ConsoleHelper.WriteHelp(configCmd, "Please specify some options");
-                return ExitStatusCodes.Failure;
-            }
+            return ExecuteInternalAsync(settings);
+        }
 
+        private async Task<int> ExecuteInternalAsync(RootCommandSettings settings)
+        {
             ConsoleHelper.WriteHeader();
-            var verboseMode = CommandLineApplicationHelper.GetVerboseMode(configCmd);
-            var options = OptionsHelper.CreateDefault(configCmd);
-            var rootPath = CommandLineApplicationHelper.GetRootPath(configCmd);
-            var useTemporarySuppressions = CommandLineApplicationHelper.GetUseTemporarySuppressions(configCmd);
-            var temporarySuppressionsPath = CommandLineApplicationHelper.GetTemporarySuppressionsPath(configCmd);
-            var temporarySuppressionAsExcel = CommandLineApplicationHelper.GetTemporarySuppressionAsExcel(configCmd);
-            var buildFile = CommandLineApplicationHelper.GetBuildFile(configCmd);
-            var logItems = new List<LogKeyValueItem>();
 
-            logItems.AddRange(
+            var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
+            var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
+
+            var optionsPath = string.Empty;
+            if (settings.OptionsPath is not null && settings.OptionsPath.IsSet)
+            {
+                optionsPath = settings.OptionsPath.Value;
+            }
+
+            var options = OptionsHelper.CreateDefault(outputRootPath, optionsPath);
+
+            try
+            {
                 await ConfigHelper.HandleFiles(
-                    RawCodingRulesDistribution,
-                    rootPath,
+                    logger,
+                    outputRootPath,
                     options,
-                    useTemporarySuppressions,
+                    UseTemporarySuppressions(settings),
                     temporarySuppressionsPath,
-                    temporarySuppressionAsExcel,
-                    buildFile));
+                    TemporarySuppressionAsExcel(settings),
+                    GetBuildFile(outputRootPath, settings));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{EmojisConstants.Error} {ex.GetMessage(true, true)}");
+                return ConsoleExitStatusCodes.Failure;
+            }
 
-            return ConsoleHelper.WriteLogItemsAndExit(logItems, verboseMode, "Update");
+            logger.LogInformation($"{EmojisConstants.Done} Done");
+
+            return ConsoleExitStatusCodes.Success;
+        }
+
+        private static DirectoryInfo? GetTemporarySuppressionsPath(RootCommandSettings settings)
+        {
+            var temporarySuppressionsPath = string.Empty;
+            if (settings.TemporarySuppressionsPath is not null && settings.TemporarySuppressionsPath.IsSet)
+            {
+                temporarySuppressionsPath = settings.TemporarySuppressionsPath.Value;
+            }
+
+            return !string.IsNullOrEmpty(temporarySuppressionsPath)
+                ? new DirectoryInfo(temporarySuppressionsPath)
+                : null;
+        }
+
+        private static bool UseTemporarySuppressions(RootCommandSettings settings)
+        {
+            var result = false;
+            if (settings.UseTemporarySuppressions is not null && settings.UseTemporarySuppressions.IsSet)
+            {
+                result = settings.UseTemporarySuppressions.Value;
+            }
+
+            return result;
+        }
+
+        private static bool TemporarySuppressionAsExcel(RootCommandSettings settings)
+        {
+            var result = false;
+            if (settings.TemporarySuppressionAsExcel is not null && settings.TemporarySuppressionAsExcel.IsSet)
+            {
+                result = settings.TemporarySuppressionAsExcel.Value;
+            }
+
+            return result;
+        }
+
+        private static FileInfo? GetBuildFile(DirectoryInfo rootPath, RootCommandSettings settings)
+        {
+            var buildFile = string.Empty;
+            if (settings.BuildFile is not null && settings.BuildFile.IsSet)
+            {
+                buildFile = settings.BuildFile.Value;
+            }
+
+            if (!string.IsNullOrEmpty(buildFile))
+            {
+                return buildFile.Contains(':', StringComparison.Ordinal)
+                    ? new FileInfo(buildFile)
+                    : new FileInfo(Path.Combine(rootPath.FullName, buildFile));
+            }
+
+            return null;
         }
     }
 }

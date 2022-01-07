@@ -7,7 +7,7 @@ namespace HtmlAgilityPack
     {
         public static bool HasTitleWithAccessDenied(this HtmlNode hmlNode)
         {
-            if (hmlNode == null)
+            if (hmlNode is null)
             {
                 throw new ArgumentNullException(nameof(hmlNode));
             }

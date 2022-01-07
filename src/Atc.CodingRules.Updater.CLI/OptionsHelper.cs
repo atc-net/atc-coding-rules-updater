@@ -1,35 +1,20 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Atc.CodingRules.Updater.CLI.Models;
-using McMaster.Extensions.CommandLineUtils;
 
 namespace Atc.CodingRules.Updater.CLI
 {
     public static class OptionsHelper
     {
-        public static OptionRoot CreateDefault(CommandLineApplication configCmd)
+        public static OptionRoot CreateDefault(
+            DirectoryInfo rootPath,
+            string? settingsOptionsPath)
         {
-            if (configCmd is null)
-            {
-                throw new ArgumentNullException(nameof(configCmd));
-            }
-
-            var cmdOptionOptionsPath = configCmd
-                .GetOptions()
-                .FirstOrDefault(x => x.LongName!.Equals("optionsPath", StringComparison.OrdinalIgnoreCase));
-
-            string optionsPath;
-            if (cmdOptionOptionsPath is null || string.IsNullOrEmpty(cmdOptionOptionsPath.Value()))
-            {
-                optionsPath = CommandLineApplicationHelper.GetRootPath(configCmd).FullName;
-            }
-            else
-            {
-                optionsPath = cmdOptionOptionsPath.Value()!;
-            }
+            var optionsPath = settingsOptionsPath is null || string.IsNullOrEmpty(settingsOptionsPath)
+                ? rootPath.FullName
+                : settingsOptionsPath;
 
             var fileInfo = optionsPath.EndsWith(".json", StringComparison.Ordinal)
                 ? new FileInfo(optionsPath)
@@ -40,7 +25,8 @@ namespace Atc.CodingRules.Updater.CLI
             return options;
         }
 
-        private static OptionRoot DeserializeFile(FileInfo fileInfo)
+        private static OptionRoot DeserializeFile(
+            FileInfo fileInfo)
         {
             var options = new OptionRoot();
 

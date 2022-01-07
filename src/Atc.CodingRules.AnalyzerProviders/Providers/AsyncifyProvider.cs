@@ -28,7 +28,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
             xml.LoadXml(htmlDoc.Text);
 
             var dataNodes = xml.SelectNodes("/root/data");
-            if (dataNodes == null)
+            if (dataNodes is null)
             {
                 return;
             }
@@ -49,7 +49,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 }
 
                 var nameAttribute = xmlElement.Attributes["name"];
-                if (nameAttribute == null ||
+                if (nameAttribute is null ||
                     !nameAttribute.Value.StartsWith("Asyncify", StringComparison.Ordinal))
                 {
                     continue;
@@ -82,13 +82,13 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
             foreach (var code in codes)
             {
-                string? title = titles.FirstOrDefault(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
-                if (title == null)
+                var title = titles.FirstOrDefault(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
+                if (title is null)
                 {
                     continue;
                 }
 
-                string? description = descriptions.FirstOrDefault(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
+                var description = descriptions.FirstOrDefault(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
                 var link = this.DocumentationLink!.AbsoluteUri;
 
                 data.Rules.Add(

@@ -30,7 +30,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
 
             foreach (var row in articleTableRows)
             {
-                if (row.SelectNodes("td") == null)
+                if (row.SelectNodes("td") is null)
                 {
                     continue;
                 }
@@ -42,7 +42,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers
                 }
 
                 var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
-                if (aHrefNode == null)
+                if (aHrefNode is null)
                 {
                     continue;
                 }

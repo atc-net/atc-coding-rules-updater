@@ -12,26 +12,21 @@ using System.Threading.Tasks;
 using Atc.CodingRules.AnalyzerProviders;
 using Atc.CodingRules.AnalyzerProviders.Models;
 using Atc.CodingRules.Updater.CLI.Models;
-using Atc.Data.Models;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
-// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-// ReSharper disable InvertIf
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable UseDeconstruction
-// ReSharper disable ReplaceSubstringWithRangeIndexer
-// ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.CodingRules.Updater.CLI
 {
     public static class ConfigHelper
     {
+        private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
         private const string AtcCodingRulesSuppressionsFileName = "AtcCodingRulesSuppressions.txt";
         private const string AtcCodingRulesSuppressionsFileNameAsExcel = "AtcCodingRulesSuppressions.xlsx";
         private const int MaxNumberOfTimesToBuild = 9;
 
-        public static async Task<IEnumerable<LogKeyValueItem>> HandleFiles(
-            string rawCodingRulesDistribution,
+        public static async Task HandleFiles(
+            ILogger logger,
             DirectoryInfo rootPath,
             OptionRoot options,
             bool useTemporarySuppressions,
@@ -39,145 +34,111 @@ namespace Atc.CodingRules.Updater.CLI
             bool temporarySuppressionAsExcel,
             FileInfo? buildFile)
         {
-            if (rootPath == null)
+            if (rootPath is null)
             {
                 throw new ArgumentNullException(nameof(rootPath));
             }
 
-            if (options == null)
+            if (options is null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            var logItems = new List<LogKeyValueItem>();
-
-            if (HasOldBuildStructure(rootPath))
-            {
-                logItems.Add(
-                    new LogKeyValueItem(
-                        LogCategoryType.Warning,
-                        "Old-Structure",
-                        "Old structure has been detected - You have to manually drop 'directory.build.props' and re-create as 'Directory.Build.props' in GIT due too MsBuild issue on *nix."));
-                logItems.AddRange(CleanupOldBuildStructure(rootPath));
-            }
-
             var isFirstTime = IsFirstTime(rootPath);
 
-            logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime: false, "root", rawCodingRulesDistribution, rootPath, string.Empty));
-            logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime: false, "root", rawCodingRulesDistribution, rootPath, string.Empty));
+            HandleEditorConfigFiles(logger, rootPath, options, isFirstTime);
+            HandleDirectoryBuildPropsFiles(logger, rootPath, options, isFirstTime);
+
+            if (useTemporarySuppressions)
+            {
+                await HandleTemporarySuppressions(logger, rootPath, buildFile, temporarySuppressionsPath, temporarySuppressionAsExcel);
+            }
+        }
+
+        private static void HandleEditorConfigFiles(
+            ILogger logger,
+            DirectoryInfo rootPath,
+            OptionRoot options,
+            bool isFirstTime)
+        {
+            logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
+
+            EditorConfigHelper.HandleFile(logger, isFirstTime: false, "root", RawCodingRulesDistributionBaseUrl, rootPath, string.Empty);
 
             if (options.HasMappingsPaths())
             {
                 foreach (var item in options.Mappings.Sample.Paths)
                 {
                     var path = new DirectoryInfo(item);
-                    logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
-                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "sample", rawCodingRulesDistribution, path, "sample"));
+                    EditorConfigHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, path, "sample");
                 }
 
                 foreach (var item in options.Mappings.Src.Paths)
                 {
                     var path = new DirectoryInfo(item);
-                    logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
-                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "src", rawCodingRulesDistribution, path, "src"));
+                    EditorConfigHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, path, "src");
                 }
 
                 foreach (var item in options.Mappings.Test.Paths)
                 {
                     var path = new DirectoryInfo(item);
-                    logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
-                    logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, "test", rawCodingRulesDistribution, path, "test"));
+                    EditorConfigHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, path, "test");
                 }
             }
             else
             {
-                logItems.AddRange(HandleEditorConfigAndDirectoryBuildFiles(isFirstTime, "sample", rawCodingRulesDistribution, rootPath, "sample", "sample"));
-                logItems.AddRange(HandleEditorConfigAndDirectoryBuildFiles(isFirstTime, "src", rawCodingRulesDistribution, rootPath, "src", "src"));
-                logItems.AddRange(HandleEditorConfigAndDirectoryBuildFiles(isFirstTime, "test", rawCodingRulesDistribution, rootPath, "test", "test"));
-            }
+                var samplePath = new DirectoryInfo(Path.Combine(rootPath.FullName, "sample"));
+                EditorConfigHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, samplePath, "sample");
 
-            if (useTemporarySuppressions)
-            {
-                await HandleTemporarySuppressions(rootPath, buildFile, temporarySuppressionsPath, temporarySuppressionAsExcel, logItems);
-            }
+                var srcPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "src"));
+                EditorConfigHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, srcPath, "src");
 
-            return logItems;
+                var testPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "test"));
+                EditorConfigHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, testPath, "test");
+            }
         }
 
-        private static bool HasOldBuildStructure(DirectoryInfo rootPath)
+        private static void HandleDirectoryBuildPropsFiles(
+            ILogger logger,
+            DirectoryInfo rootPath,
+            OptionRoot options,
+            bool isFirstTime)
         {
-            var file = Path.Combine(rootPath.FullName, Path.Combine("build", "code-analysis.props"));
-            return File.Exists(file);
-        }
+            logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
 
-        private static IEnumerable<LogKeyValueItem> CleanupOldBuildStructure(DirectoryInfo rootPath)
-        {
-            var logItems = new List<LogKeyValueItem>();
+            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime: false, "root", RawCodingRulesDistributionBaseUrl, rootPath, string.Empty);
 
-            var file1 = Path.Combine(rootPath.FullName, Path.Combine("build", "code-analysis.props"));
-            if (File.Exists(file1))
+            if (options.HasMappingsPaths())
             {
-                File.Delete(file1);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "build/code-analysis.props"));
-            }
+                foreach (var item in options.Mappings.Sample.Paths)
+                {
+                    var path = new DirectoryInfo(item);
+                    DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, path, "sample");
+                }
 
-            var file2 = Path.Combine(rootPath.FullName, Path.Combine("build", "common.props"));
-            if (File.Exists(file2))
+                foreach (var item in options.Mappings.Src.Paths)
+                {
+                    var path = new DirectoryInfo(item);
+                    DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, path, "src");
+                }
+
+                foreach (var item in options.Mappings.Test.Paths)
+                {
+                    var path = new DirectoryInfo(item);
+                    DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, path, "test");
+                }
+            }
+            else
             {
-                File.Delete(file2);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "common.props"));
-            }
+                var samplePath = new DirectoryInfo(Path.Combine(rootPath.FullName, "sample"));
+                DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, samplePath, "sample");
 
-            var dir1 = Path.Combine(rootPath.FullName, Path.Combine("build"));
-            if (Directory.Exists(dir1) && Directory.GetFiles(dir1).Length == 0)
-            {
-                Directory.Delete(dir1);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "DirDelete", "build"));
-            }
+                var srcPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "src"));
+                DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, srcPath, "src");
 
-            var file3 = Path.Combine(rootPath.FullName, Path.Combine("sample", "directory.build.props"));
-            if (File.Exists(file3))
-            {
-                File.Delete(file3);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "sample/directory.build.props"));
+                var testPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "test"));
+                DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, testPath, "test");
             }
-
-            var file4 = Path.Combine(rootPath.FullName, Path.Combine("sample", "directory.build.targets"));
-            if (File.Exists(file4))
-            {
-                File.Delete(file4);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "sample/directory.build.targets"));
-            }
-
-            var file5 = Path.Combine(rootPath.FullName, Path.Combine("src", "directory.build.props"));
-            if (File.Exists(file5))
-            {
-                File.Delete(file5);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "src/directory.build.props"));
-            }
-
-            var file6 = Path.Combine(rootPath.FullName, Path.Combine("src", "directory.build.targets"));
-            if (File.Exists(file6))
-            {
-                File.Delete(file6);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "src/directory.build.targets"));
-            }
-
-            var file7 = Path.Combine(rootPath.FullName, Path.Combine("test", "directory.build.props"));
-            if (File.Exists(file7))
-            {
-                File.Delete(file7);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "test/directory.build.props"));
-            }
-
-            var file8 = Path.Combine(rootPath.FullName, Path.Combine("test", "directory.build.targets"));
-            if (File.Exists(file8))
-            {
-                File.Delete(file8);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "FileDelete", "test/directory.build.targets"));
-            }
-
-            return logItems;
         }
 
         private static bool IsFirstTime(DirectoryInfo rootPath)
@@ -186,35 +147,21 @@ namespace Atc.CodingRules.Updater.CLI
             return !file.Exists;
         }
 
-        private static IEnumerable<LogKeyValueItem> HandleEditorConfigAndDirectoryBuildFiles(
-            bool isFirstTime,
-            string area,
-            string rawCodingRulesDistribution,
-            DirectoryInfo rootPath,
-            string filePart,
-            string urlPart)
-        {
-            var path = new DirectoryInfo(Path.Combine(rootPath.FullName, filePart));
-            var logItems = new List<LogKeyValueItem>();
-            logItems.AddRange(EditorConfigHelper.HandleFile(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
-            logItems.AddRange(DirectoryBuildPropsHelper.HandleFile(isFirstTime, area, rawCodingRulesDistribution, path, urlPart));
-            return logItems;
-        }
-
         private static async Task HandleTemporarySuppressions(
+            ILogger logger,
             DirectoryInfo rootPath,
             FileInfo? buildFile,
             DirectoryInfo? temporarySuppressionsPath,
-            bool temporarySuppressionAsExcel,
-            ICollection<LogKeyValueItem> logItems)
+            bool temporarySuppressionAsExcel)
         {
-            var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(ProviderCollectingMode.LocalCache);
-            HandlingAnalyzerProviderInformation(logItems, analyzerProviderBaseRules);
-            HandlingAnalyzerProviderErrors(logItems, analyzerProviderBaseRules);
+            var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(logger, ProviderCollectingMode.LocalCache);
+            HandlingAnalyzerProviderInformation(logger, analyzerProviderBaseRules);
+            HandlingAnalyzerProviderErrors(logger, analyzerProviderBaseRules);
             var rootEditorConfigContent = string.Empty;
 
             var stopwatch = Stopwatch.StartNew();
-            Colorful.Console.WriteLine("Started collecting build errors", Color.Tan);
+            logger.LogInformation("Started collecting build errors");
+
             if (temporarySuppressionsPath is null)
             {
                 await EditorConfigHelper.UpdateRootFileRemoveCustomAtcAutogeneratedRuleSuppressions(rootPath);
@@ -226,20 +173,21 @@ namespace Atc.CodingRules.Updater.CLI
             }
 
             Dictionary<string, int> buildResult;
+
             try
             {
-                buildResult = DotnetBuildHelper.BuildAndCollectErrors(rootPath, 1, buildFile);
+                buildResult = DotnetBuildHelper.BuildAndCollectErrors(logger, rootPath, 1, buildFile);
             }
             catch (DataException ex)
             {
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Error, "BuildError", ex.Message));
+                logger.LogError($"{EmojisConstants.Error} {ex.Message}");
                 return;
             }
 
             var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
             if (!suppressionLinesPrAnalyzer.Any())
             {
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Information, "No suppressions.", "No suppressions need to be added."));
+                logger.LogInformation("No suppressions to add.");
                 return;
             }
 
@@ -247,12 +195,13 @@ namespace Atc.CodingRules.Updater.CLI
             for (var i = 0; i < MaxNumberOfTimesToBuild; i++)
             {
                 var runAgain = await BuildAndCollectErrorsAgainAndUpdateFile(
+                    logger,
                     rootPath,
                     2 + i,
                     buildFile,
-                    logItems,
                     buildResult,
                     analyzerProviderBaseRules);
+
                 if (!runAgain)
                 {
                     break;
@@ -263,31 +212,31 @@ namespace Atc.CodingRules.Updater.CLI
             if (temporarySuppressionsPath is not null)
             {
                 await EditorConfigHelper.WriteAllText(rootPath, rootEditorConfigContent);
-                await CreateSuppressionsFileInTempPath(logItems, temporarySuppressionsPath, temporarySuppressionAsExcel, suppressionLinesPrAnalyzer);
+                await CreateSuppressionsFileInTempPath(logger, temporarySuppressionsPath, temporarySuppressionAsExcel, suppressionLinesPrAnalyzer);
             }
             else
             {
                 var totalSuppressions = suppressionLinesPrAnalyzer.Sum(x => x.Item2.Count);
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", $"{EditorConfigHelper.FileNameEditorConfig} is updated with {totalSuppressions} suppressions"));
+                logger.LogDebug($"{EditorConfigHelper.FileNameEditorConfig} is updated with {totalSuppressions} suppressions");
             }
 
             stopwatch.Stop();
-            Colorful.Console.WriteLine($"Finished collecting build errors - Elapsed time: {stopwatch.Elapsed:mm\\:ss}", Color.Tan);
-            Console.WriteLine();
+            logger.LogInformation($"Finished collecting build errors - Elapsed time: {stopwatch.Elapsed:mm\\:ss}");
         }
 
         private static async Task<bool> BuildAndCollectErrorsAgainAndUpdateFile(
+            ILogger logger,
             DirectoryInfo rootPath,
             int runNumber,
             FileInfo? buildFile,
-            ICollection<LogKeyValueItem> logItems,
             Dictionary<string, int> buildResult,
             Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
         {
             bool hasFoundNewErrors;
+
             try
             {
-                var buildResultNextRun = DotnetBuildHelper.BuildAndCollectErrors(rootPath, runNumber, buildFile);
+                var buildResultNextRun = DotnetBuildHelper.BuildAndCollectErrors(logger, rootPath, runNumber, buildFile);
                 hasFoundNewErrors = buildResultNextRun.Count > 0;
                 foreach (var item in buildResultNextRun)
                 {
@@ -303,7 +252,7 @@ namespace Atc.CodingRules.Updater.CLI
             }
             catch (DataException ex)
             {
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Error, "BuildError", ex.Message));
+                logger.LogError($"{EmojisConstants.Error} {ex.Message}");
                 return false;
             }
 
@@ -321,7 +270,9 @@ namespace Atc.CodingRules.Updater.CLI
             return false;
         }
 
-        private static void HandlingAnalyzerProviderInformation(ICollection<LogKeyValueItem> logItems, Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
+        private static void HandlingAnalyzerProviderInformation(
+            ILogger logger,
+            Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
         {
             var rulesCount = 0;
             foreach (var item in analyzerProviderBaseRules)
@@ -329,21 +280,25 @@ namespace Atc.CodingRules.Updater.CLI
                 rulesCount += item.Rules.Count;
             }
 
-            logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "AnalyzerProviders", $"Loaded {analyzerProviderBaseRules.Count} providers with {rulesCount} rules"));
+            logger.LogDebug($"Loaded {analyzerProviderBaseRules.Count} providers with {rulesCount} rules");
         }
 
-        private static void HandlingAnalyzerProviderErrors(ICollection<LogKeyValueItem> logItems, IEnumerable<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
+        private static void HandlingAnalyzerProviderErrors(
+            ILogger logger,
+            IEnumerable<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
         {
             foreach (var item in analyzerProviderBaseRules)
             {
                 if (item.ExceptionMessage is not null)
                 {
-                    logItems.Add(new LogKeyValueItem(LogCategoryType.Error, $"AnalyzerProvider-{item.Name}", item.ExceptionMessage));
+                    logger.LogError($"AnalyzerProvider-{item.Name} - {item.ExceptionMessage}");
                 }
             }
         }
 
-        private static void DeleteSuppressionsFileInTempPath(DirectoryInfo temporarySuppressionsPath, bool temporarySuppressionAsExcel)
+        private static void DeleteSuppressionsFileInTempPath(
+            DirectoryInfo temporarySuppressionsPath,
+            bool temporarySuppressionAsExcel)
         {
             var temporarySuppressionsFile = Path.Join(
                 temporarySuppressionsPath.FullName,
@@ -356,7 +311,7 @@ namespace Atc.CodingRules.Updater.CLI
         }
 
         private static Task CreateSuppressionsFileInTempPath(
-            ICollection<LogKeyValueItem> logItems,
+            ILogger logger,
             DirectoryInfo temporarySuppressionsPath,
             bool temporarySuppressionAsExcel,
             IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer)
@@ -371,19 +326,20 @@ namespace Atc.CodingRules.Updater.CLI
 
                 using var excelPackage = new ExcelPackage();
 
-                excelPackage.Workbook.Properties.Author = "ATC-CodingRule-Update";
+                excelPackage.Workbook.Properties.Author = "ATC-CodingRules-Updater";
                 excelPackage.Workbook.Properties.Title = "Suppressions";
                 excelPackage.Workbook.Properties.Subject = "Suppressions";
                 excelPackage.Workbook.Properties.Created = DateTime.Now;
 
                 var worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
 
-                int rowNr = 1;
+                var rowNr = 1;
                 worksheet.Cells[rowNr, 1].Value = "Code";
                 worksheet.Cells[rowNr, 2].Value = "Occurrences";
                 worksheet.Cells[rowNr, 3].Value = "Message";
                 worksheet.Cells[rowNr, 4].Value = "HelpLink";
                 rowNr++;
+
                 foreach (var item in suppressionLinesPrAnalyzer)
                 {
                     foreach (var line in item.Item2)
@@ -445,7 +401,8 @@ namespace Atc.CodingRules.Updater.CLI
                 worksheet.Cells["B2:B" + rowNr].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.View.FreezePanes(2, 1);
 
-                logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", temporarySuppressionsFile));
+                logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+
                 return excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
             }
 
@@ -461,7 +418,8 @@ namespace Atc.CodingRules.Updater.CLI
                 }
             }
 
-            logItems.Add(new LogKeyValueItem(LogCategoryType.Debug, "FileUpdate", temporarySuppressionsFile));
+            logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+
             return File.WriteAllTextAsync(temporarySuppressionsFile, sb.ToString(), Encoding.UTF8);
         }
 
