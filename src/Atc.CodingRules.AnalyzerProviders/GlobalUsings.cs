@@ -15,3 +15,5 @@ global using Atc.CodingRules.AnalyzerProviders.Models;
 global using Atc.CodingRules.AnalyzerProviders.Providers;
 
 global using HtmlAgilityPack;
+
+global using Microsoft.Extensions.Logging;

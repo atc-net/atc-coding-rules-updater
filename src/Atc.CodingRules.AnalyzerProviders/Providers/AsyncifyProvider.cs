@@ -2,6 +2,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class AsyncifyProvider : AnalyzerProviderBase
 {
+    public AsyncifyProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "Asyncify";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://github.com/hvanbakel/Asyncify-CSharp", UriKind.Absolute);

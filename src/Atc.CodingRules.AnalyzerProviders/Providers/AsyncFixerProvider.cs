@@ -2,6 +2,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class AsyncFixerProvider : AnalyzerProviderBase
 {
+    public AsyncFixerProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "AsyncFixer";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://github.com/semihokur/AsyncFixer/blob/main/README.md", UriKind.Absolute);

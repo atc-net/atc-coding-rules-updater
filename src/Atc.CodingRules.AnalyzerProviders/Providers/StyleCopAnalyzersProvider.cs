@@ -7,6 +7,11 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
     private const int TableColumnTitle = 1;
     private const int TableColumnDescription = 2;
 
+    public StyleCopAnalyzersProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "StyleCop.Analyzers";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md", UriKind.Absolute);

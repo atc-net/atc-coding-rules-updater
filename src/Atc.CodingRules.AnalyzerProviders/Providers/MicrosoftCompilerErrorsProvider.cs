@@ -2,6 +2,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
 {
+    public MicrosoftCompilerErrorsProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "Microsoft.CompilerErrors";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages", UriKind.Absolute);

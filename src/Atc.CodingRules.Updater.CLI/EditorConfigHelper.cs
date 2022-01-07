@@ -20,8 +20,8 @@ public static class EditorConfigHelper
         ArgumentNullException.ThrowIfNull(path);
 
         var descriptionPart = string.IsNullOrEmpty(urlPart)
-            ? FileNameEditorConfig
-            : $"{urlPart}/{FileNameEditorConfig}";
+            ? $"[yellow]/[/]{FileNameEditorConfig}"
+            : $"[yellow]{urlPart}/[/]{FileNameEditorConfig}";
 
         var file = new FileInfo(Path.Combine(path.FullName, FileNameEditorConfig));
 
@@ -42,7 +42,7 @@ public static class EditorConfigHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var rawGitData = HttpClientHelper.GetRawFile(rawGitUrl);
+            var rawGitData = HttpClientHelper.GetRawFile(logger, rawGitUrl);
             var rawFileData = FileHelper.ReadAllText(file);
 
             if (FileHelper.IsFileDataLengthEqual(rawGitData, rawFileData))

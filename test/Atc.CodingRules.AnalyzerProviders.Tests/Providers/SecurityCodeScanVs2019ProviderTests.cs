@@ -9,7 +9,7 @@ public class SecurityCodeScanVs2019ProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new SecurityCodeScanVs2019Provider();
+        var provider = new SecurityCodeScanVs2019Provider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

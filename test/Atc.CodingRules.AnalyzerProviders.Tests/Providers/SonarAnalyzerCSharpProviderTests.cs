@@ -9,7 +9,7 @@ public class SonarAnalyzerCSharpProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new SonarAnalyzerCSharpProvider();
+        var provider = new SonarAnalyzerCSharpProvider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

@@ -1,5 +1,3 @@
-using Spectre.Console.Cli;
-
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class RootCommand : AsyncCommand<RootCommandSettings>
@@ -23,13 +21,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
 
         var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
         var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
-
-        var optionsPath = string.Empty;
-        if (settings.OptionsPath is not null && settings.OptionsPath.IsSet)
-        {
-            optionsPath = settings.OptionsPath.Value;
-        }
-
+        var optionsPath = GetOptionsPath(settings);
         var options = OptionsHelper.CreateDefault(outputRootPath, optionsPath);
 
         try
@@ -38,20 +30,31 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
                 logger,
                 outputRootPath,
                 options,
-                UseTemporarySuppressions(settings),
+                settings.UseTemporarySuppressions.GetValueOrDefault(),
                 temporarySuppressionsPath,
-                TemporarySuppressionAsExcel(settings),
+                settings.TemporarySuppressionAsExcel.GetValueOrDefault(),
                 GetBuildFile(outputRootPath, settings));
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage(true, true)}");
+            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage()}");
             return ConsoleExitStatusCodes.Failure;
         }
 
         logger.LogInformation($"{EmojisConstants.Done} Done");
-
         return ConsoleExitStatusCodes.Success;
+    }
+
+    private static string GetOptionsPath(
+        RootCommandSettings settings)
+    {
+        var optionsPath = string.Empty;
+        if (settings.OptionsPath is not null && settings.OptionsPath.IsSet)
+        {
+            optionsPath = settings.OptionsPath.Value;
+        }
+
+        return optionsPath;
     }
 
     private static DirectoryInfo? GetTemporarySuppressionsPath(
@@ -66,30 +69,6 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         return !string.IsNullOrEmpty(temporarySuppressionsPath)
             ? new DirectoryInfo(temporarySuppressionsPath)
             : null;
-    }
-
-    private static bool UseTemporarySuppressions(
-        RootCommandSettings settings)
-    {
-        var result = false;
-        if (settings.UseTemporarySuppressions is not null && settings.UseTemporarySuppressions.IsSet)
-        {
-            result = settings.UseTemporarySuppressions.Value;
-        }
-
-        return result;
-    }
-
-    private static bool TemporarySuppressionAsExcel(
-        RootCommandSettings settings)
-    {
-        var result = false;
-        if (settings.TemporarySuppressionAsExcel is not null && settings.TemporarySuppressionAsExcel.IsSet)
-        {
-            result = settings.TemporarySuppressionAsExcel.Value;
-        }
-
-        return result;
     }
 
     private static FileInfo? GetBuildFile(

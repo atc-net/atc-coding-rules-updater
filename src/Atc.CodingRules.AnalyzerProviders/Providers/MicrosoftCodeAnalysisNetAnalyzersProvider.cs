@@ -5,6 +5,11 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
     private const int TableColumnId = 0;
     private const int TableColumnCategory = 1;
 
+    public MicrosoftCodeAnalysisNetAnalyzersProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "Microsoft.CodeAnalysis.NetAnalyzers";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules", UriKind.Absolute);

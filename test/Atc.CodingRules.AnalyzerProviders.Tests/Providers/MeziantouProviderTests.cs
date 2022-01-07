@@ -9,7 +9,7 @@ public class MeziantouProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new MeziantouProvider();
+        var provider = new MeziantouProvider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

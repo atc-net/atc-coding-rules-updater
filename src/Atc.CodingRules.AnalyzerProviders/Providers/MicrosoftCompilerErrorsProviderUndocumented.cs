@@ -5,6 +5,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 /// </summary>
 public class MicrosoftCompilerErrorsProviderUndocumented : AnalyzerProviderBase
 {
+    public MicrosoftCompilerErrorsProviderUndocumented(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "Microsoft.CompilerErrors.Undocumented";
 
     protected override AnalyzerProviderBaseRuleData CreateData()

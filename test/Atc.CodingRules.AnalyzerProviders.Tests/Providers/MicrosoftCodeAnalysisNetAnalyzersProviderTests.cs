@@ -9,7 +9,7 @@ public class MicrosoftCodeAnalysisNetAnalyzersProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new MicrosoftCodeAnalysisNetAnalyzersProvider();
+        var provider = new MicrosoftCodeAnalysisNetAnalyzersProvider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

@@ -9,7 +9,7 @@ public class AsyncFixerProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new AsyncFixerProvider();
+        var provider = new AsyncFixerProvider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

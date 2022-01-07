@@ -2,6 +2,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
 {
+    public SonarAnalyzerCSharpProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "SonarAnalyzer.CSharp";
 
     public Uri? RuleLinkBase { get; set; } = new ("https://rules.sonarsource.com/csharp/", UriKind.Absolute);

@@ -16,8 +16,8 @@ public static class DirectoryBuildPropsHelper
         ArgumentNullException.ThrowIfNull(path);
 
         var descriptionPart = string.IsNullOrEmpty(urlPart)
-            ? FileNameDirectoryBuildProps
-            : $"{urlPart}/{FileNameDirectoryBuildProps}";
+            ? $"[yellow]/[/]{FileNameDirectoryBuildProps}"
+            : $"[yellow]{urlPart}/[/]{FileNameDirectoryBuildProps}";
 
         var file = new FileInfo(Path.Combine(path.FullName, FileNameDirectoryBuildProps));
 
@@ -38,7 +38,7 @@ public static class DirectoryBuildPropsHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var rawGitData = HttpClientHelper.GetRawFile(rawGitUrl);
+            var rawGitData = HttpClientHelper.GetRawFile(logger, rawGitUrl);
             var rawFileData = FileHelper.ReadAllText(file);
 
             if (FileHelper.IsFileDataLengthEqual(rawGitData, rawFileData))

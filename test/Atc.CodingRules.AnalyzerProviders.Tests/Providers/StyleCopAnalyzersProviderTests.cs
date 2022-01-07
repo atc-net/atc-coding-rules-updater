@@ -9,7 +9,7 @@ public class StyleCopAnalyzersProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new StyleCopAnalyzersProvider();
+        var provider = new StyleCopAnalyzersProvider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

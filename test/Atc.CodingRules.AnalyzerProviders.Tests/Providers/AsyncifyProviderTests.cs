@@ -9,7 +9,7 @@ public class AsyncifyProviderTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new AsyncifyProvider();
+        var provider = new AsyncifyProvider(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);

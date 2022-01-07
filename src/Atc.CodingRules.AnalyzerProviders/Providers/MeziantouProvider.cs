@@ -6,6 +6,11 @@ public class MeziantouProvider : AnalyzerProviderBase
     private const int TableColumnCategory = 1;
     private const int TableColumnTitle = 2;
 
+    public MeziantouProvider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "Meziantou.Analyzer";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);

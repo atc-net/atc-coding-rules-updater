@@ -3,6 +3,12 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 public abstract class AnalyzerProviderBase : IAnalyzerProvider
 {
     private const string GitRawAtcAnalyzerProviderBaseRulesBasePath = "https://raw.githubusercontent.com/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
+    private readonly ILogger logger;
+
+    protected AnalyzerProviderBase(ILogger logger)
+    {
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
     public virtual Uri? DocumentationLink { get; set; }
 
@@ -85,10 +91,10 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         return File.WriteAllTextAsync(tempFile, json);
     }
 
-    protected static Task<AnalyzerProviderBaseRuleData?> ReadFromGithub(
+    protected Task<AnalyzerProviderBaseRuleData?> ReadFromGithub(
         AnalyzerProviderBaseRuleData data)
     {
-        var rawGitData = HttpClientHelper.GetRawFile(GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json");
+        var rawGitData = HttpClientHelper.GetRawFile(logger, GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json");
         return Task.FromResult(string.IsNullOrEmpty(rawGitData)
             ? null
             : JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(rawGitData, AnalyzerProviderSerialization.JsonOptions)!);

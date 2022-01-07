@@ -2,6 +2,11 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
 {
+    public SecurityCodeScanVs2019Provider(ILogger logger)
+        : base(logger)
+    {
+    }
+
     public static string Name => "SecurityCodeScan.VS2019";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://security-code-scan.github.io", UriKind.Absolute);

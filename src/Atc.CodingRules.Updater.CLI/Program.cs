@@ -7,7 +7,14 @@ public static class Program
 {
     public static Task<int> Main(string[] args)
     {
-        args = WriteHelpIfNeeded(args);
+        args = new[]
+        {
+            "-r", @"c:\temp\Hest1",
+            "-v",
+        };
+
+        args = SetHelpArgumentIfNeeded(args);
+        args = SetOutputRootPathArgumentIfNeeded(args);
 
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -20,22 +27,34 @@ public static class Program
 
         var serviceCollection = ServiceCollectionFactory.Create(consoleLoggerConfiguration);
 
-        var app = CommandAppFactory2.CreateWithSingleCommand<RootCommand>(serviceCollection);
+        var app = CommandAppFactory.CreateWithSingleCommand<RootCommand>(serviceCollection);
 
         return app.RunAsync(args);
     }
 
-    private static string[] WriteHelpIfNeeded(string[] args)
+    private static string[] SetHelpArgumentIfNeeded(string[] args)
+        => args.Any()
+            ? args
+            : new[] { "-h", };
+
+    private static string[] SetOutputRootPathArgumentIfNeeded(string[] args)
     {
-        if (!args.Any())
+        var dot = args.FirstOrDefault(x => x.Equals(".", StringComparison.Ordinal));
+        if (string.IsNullOrEmpty(dot))
         {
-            args = new[]
-            {
-                "-h",
-            };
+            return args;
         }
 
-        return args;
+        if (args.Length == 1)
+        {
+            return new[] { "-r", Environment.CurrentDirectory };
+        }
+
+        return args
+            .Select(x => x.Equals(".", StringComparison.Ordinal)
+                ? Environment.CurrentDirectory
+                : x)
+            .ToArray();
     }
 
     private static void SetMinimumLogLevelIfNeeded(

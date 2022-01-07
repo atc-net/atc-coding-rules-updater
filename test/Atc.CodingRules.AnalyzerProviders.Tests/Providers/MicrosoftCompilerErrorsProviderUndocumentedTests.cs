@@ -9,7 +9,7 @@ public class MicrosoftCompilerErrorsProviderUndocumentedTests
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
-        var provider = new MicrosoftCompilerErrorsProviderUndocumented();
+        var provider = new MicrosoftCompilerErrorsProviderUndocumented(NullLogger.Instance);
 
         // Act
         var actual = await provider.CollectBaseRules(providerCollectingMode);
