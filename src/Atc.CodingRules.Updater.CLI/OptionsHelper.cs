@@ -1,49 +1,42 @@
-using System;
-using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Atc.CodingRules.Updater.CLI.Models;
+namespace Atc.CodingRules.Updater.CLI;
 
-namespace Atc.CodingRules.Updater.CLI
+public static class OptionsHelper
 {
-    public static class OptionsHelper
+    public static OptionRoot CreateDefault(
+        DirectoryInfo rootPath,
+        string? settingsOptionsPath)
     {
-        public static OptionRoot CreateDefault(
-            DirectoryInfo rootPath,
-            string? settingsOptionsPath)
+        var optionsPath = settingsOptionsPath is null || string.IsNullOrEmpty(settingsOptionsPath)
+            ? rootPath.FullName
+            : settingsOptionsPath;
+
+        var fileInfo = optionsPath.EndsWith(".json", StringComparison.Ordinal)
+            ? new FileInfo(optionsPath)
+            : new FileInfo(Path.Combine(optionsPath, "atc-coding-rules-updater.json"));
+
+        var options = DeserializeFile(fileInfo);
+        options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));
+        return options;
+    }
+
+    private static OptionRoot DeserializeFile(
+        FileInfo fileInfo)
+    {
+        var options = new OptionRoot();
+
+        if (!fileInfo.Exists)
         {
-            var optionsPath = settingsOptionsPath is null || string.IsNullOrEmpty(settingsOptionsPath)
-                ? rootPath.FullName
-                : settingsOptionsPath;
-
-            var fileInfo = optionsPath.EndsWith(".json", StringComparison.Ordinal)
-                ? new FileInfo(optionsPath)
-                : new FileInfo(Path.Combine(optionsPath, "atc-coding-rules-updater.json"));
-
-            var options = DeserializeFile(fileInfo);
-            options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));
             return options;
         }
 
-        private static OptionRoot DeserializeFile(
-            FileInfo fileInfo)
-        {
-            var options = new OptionRoot();
+        var serializeOptions = new JsonSerializerOptions();
+        serializeOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+        serializeOptions.WriteIndented = true;
 
-            if (!fileInfo.Exists)
-            {
-                return options;
-            }
+        using var stream = new StreamReader(fileInfo.FullName);
+        var json = stream.ReadToEnd();
+        options = JsonSerializer.Deserialize<OptionRoot>(json, serializeOptions);
 
-            var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-            serializeOptions.WriteIndented = true;
-
-            using var stream = new StreamReader(fileInfo.FullName);
-            var json = stream.ReadToEnd();
-            options = JsonSerializer.Deserialize<OptionRoot>(json, serializeOptions);
-
-            return options;
-        }
+        return options;
     }
 }

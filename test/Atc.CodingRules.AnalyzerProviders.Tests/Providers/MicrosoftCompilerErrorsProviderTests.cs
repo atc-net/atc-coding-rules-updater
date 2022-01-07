@@ -1,29 +1,24 @@
-using System.Threading.Tasks;
-using Atc.CodingRules.AnalyzerProviders.Providers;
-using Xunit;
+namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers;
 
-namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
+public class MicrosoftCompilerErrorsProviderTests
 {
-    public class MicrosoftCompilerErrorsProviderTests
+    [Theory]
+    [InlineData(ProviderCollectingMode.LocalCache)]
+    [InlineData(ProviderCollectingMode.GitHub)]
+    [InlineData(ProviderCollectingMode.ReCollect)]
+    public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
-        [Theory]
-        [InlineData(ProviderCollectingMode.LocalCache)]
-        [InlineData(ProviderCollectingMode.GitHub)]
-        [InlineData(ProviderCollectingMode.ReCollect)]
-        public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
-        {
-            // Arrange
-            var provider = new MicrosoftCompilerErrorsProvider();
+        // Arrange
+        var provider = new MicrosoftCompilerErrorsProvider();
 
-            // Act
-            var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Act
+        var actual = await provider.CollectBaseRules(providerCollectingMode);
 
-            // Assert
-            Assert.NotNull(actual);
-            Assert.NotNull(actual.Name);
-            Assert.Equal(MicrosoftCompilerErrorsProvider.Name, actual.Name);
-            Assert.NotNull(actual.Rules);
-            Assert.True(actual.Rules.Count >= 935);
-        }
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Name);
+        Assert.Equal(MicrosoftCompilerErrorsProvider.Name, actual.Name);
+        Assert.NotNull(actual.Rules);
+        Assert.True(actual.Rules.Count >= 935);
     }
 }

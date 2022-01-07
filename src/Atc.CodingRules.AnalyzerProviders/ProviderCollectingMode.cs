@@ -1,9 +1,8 @@
-namespace Atc.CodingRules.AnalyzerProviders
+namespace Atc.CodingRules.AnalyzerProviders;
+
+public enum ProviderCollectingMode
 {
-    public enum ProviderCollectingMode
-    {
-        LocalCache,
-        GitHub,
-        ReCollect,
-    }
+    LocalCache,
+    GitHub,
+    ReCollect,
 }

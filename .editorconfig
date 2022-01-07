@@ -476,14 +476,23 @@ dotnet_diagnostic.CA2227.severity = none            # for now
 dotnet_diagnostic.CA1014.severity = none            # for now
 dotnet_diagnostic.CA1031.severity = none            # for now
 dotnet_diagnostic.CA1054.severity = none            # for now
+dotnet_diagnostic.CA1062.severity = none            # for now
+dotnet_diagnostic.CA1305.severity = none            # for now
 dotnet_diagnostic.CA1801.severity = none            # for now
+dotnet_diagnostic.CA1848.severity = none            # for now
 dotnet_diagnostic.CA2007.severity = none            # for now
+dotnet_diagnostic.CA2234.severity = none            # for now
+dotnet_diagnostic.CA2254.severity = none            # for now
 
+dotnet_diagnostic.MA0002.severity = none            # for now
 dotnet_diagnostic.MA0004.severity = none            # for now
+dotnet_diagnostic.MA0011.severity = none            # for now
+dotnet_diagnostic.MA0016.severity = none            # for now
 dotnet_diagnostic.MA0028.severity = none            # for now
 dotnet_diagnostic.MA0051.severity = none            # for now
 
 dotnet_diagnostic.CS8603.severity = none            # for now
 
 dotnet_diagnostic.S1075.severity = none             # for now
+dotnet_diagnostic.S3267.severity = none             # for now
 dotnet_diagnostic.S4457.severity = none             # for now

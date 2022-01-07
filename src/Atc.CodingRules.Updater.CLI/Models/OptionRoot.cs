@@ -1,14 +1,12 @@
-namespace Atc.CodingRules.Updater.CLI.Models
+namespace Atc.CodingRules.Updater.CLI.Models;
+
+public class OptionRoot
 {
-    public class OptionRoot
-    {
-        public OptionsMappings Mappings { get; set; } = new OptionsMappings();
+    public OptionsMappings Mappings { get; set; } = new ();
 
-        public bool HasMappingsPaths() => Mappings.HasMappingsPaths();
+    public bool HasMappingsPaths()
+        => Mappings.HasMappingsPaths();
 
-        public override string ToString()
-        {
-            return $"{nameof(Mappings)}: ({Mappings})";
-        }
-    }
+    public override string ToString()
+        => $"{nameof(Mappings)}: ({Mappings})";
 }
