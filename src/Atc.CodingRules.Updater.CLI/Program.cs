@@ -7,12 +7,6 @@ public static class Program
 {
     public static Task<int> Main(string[] args)
     {
-        args = new[]
-        {
-            "-r", @"c:\temp\Hest1",
-            "-v",
-        };
-
         args = SetHelpArgumentIfNeeded(args);
         args = SetOutputRootPathArgumentIfNeeded(args);
 
