@@ -29,7 +29,6 @@ public static class AtcApiNugetClientHelper
 
                 stopwatch.Stop();
                 logger.LogTrace($"     Get newest version time: {stopwatch.Elapsed.GetPrettyTime()}");
-
             });
 
             if (string.IsNullOrEmpty(response) ||
@@ -40,7 +39,6 @@ public static class AtcApiNugetClientHelper
 
             Cache.GetOrAdd(packageId, version);
             return version;
-
         }
         catch (WebException ex)
         {

@@ -9,7 +9,7 @@ public static class ConfigHelper
 {
     // TODO: Use this "multi-distributions" branch for now.
     private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/feature/multi-distributions/distribution";
-    //private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
+    ////private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
     private const string AtcCodingRulesSuppressionsFileName = "AtcCodingRulesSuppressions.txt";
 
     private const string AtcCodingRulesSuppressionsFileNameAsExcel = "AtcCodingRulesSuppressions.xlsx";
