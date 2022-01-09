@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules.AnalyzerPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules.AnalyzerProviders.Tests", "test\Atc.CodingRules.AnalyzerProviders.Tests\Atc.CodingRules.AnalyzerProviders.Tests.csproj", "{53A87DE0-0F63-4505-967C-C130CAB165D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.CodingRules", "src\Atc.CodingRules\Atc.CodingRules.csproj", "{85273D86-2477-41FA-A55A-10B912334C88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules", "src\Atc.CodingRules\Atc.CodingRules.csproj", "{85273D86-2477-41FA-A55A-10B912334C88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.CodingRules.Updater", "Atc.CodingRules.Updater\Atc.CodingRules.Updater.csproj", "{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{85273D86-2477-41FA-A55A-10B912334C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85273D86-2477-41FA-A55A-10B912334C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85273D86-2477-41FA-A55A-10B912334C88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

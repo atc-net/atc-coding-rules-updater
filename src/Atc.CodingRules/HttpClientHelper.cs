@@ -1,29 +1,36 @@
-using System.Diagnostics;
-
 namespace Atc.CodingRules;
 
 public static class HttpClientHelper
 {
     private static readonly ConcurrentDictionary<string, string> Cache = new (StringComparer.Ordinal);
 
-    public static string GetRawFile(ILogger logger, string rawFileUrl)
+    public static string GetAsString(
+        ILogger logger,
+        string url,
+        CancellationToken cancellationToken = default)
     {
+        var cacheValue = Cache.GetValueOrDefault(url);
+        if (cacheValue is not null)
+        {
+            return cacheValue;
+        }
+
         try
         {
             var response = string.Empty;
             TaskHelper.RunSync(async () =>
             {
                 var stopwatch = Stopwatch.StartNew();
-                logger.LogTrace($"     Download from: {rawFileUrl}");
+                logger.LogTrace($"     Download from: {url}");
 
                 using var client = new HttpClient();
-                response = await client.GetStringAsync(rawFileUrl);
+                response = await client.GetStringAsync(url, cancellationToken);
 
                 stopwatch.Stop();
                 logger.LogTrace($"     Download time: {stopwatch.Elapsed.GetPrettyTime()}");
             });
 
-            return Cache.GetOrAdd(rawFileUrl, response);
+            return Cache.GetOrAdd(url, response);
         }
         catch (WebException ex)
         {

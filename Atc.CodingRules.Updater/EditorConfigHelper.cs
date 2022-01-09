@@ -1,6 +1,7 @@
 // ReSharper disable InvertIf
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
-namespace Atc.CodingRules.Updater.CLI;
+// ReSharper disable SuggestBaseTypeForParameter
+namespace Atc.CodingRules.Updater;
 
 public static class EditorConfigHelper
 {
@@ -42,30 +43,30 @@ public static class EditorConfigHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var rawGitData = HttpClientHelper.GetAsString(logger, rawGitUrl);
-            var rawFileData = FileHelper.ReadAllText(file);
+            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl);
+            var contentFile = FileHelper.ReadAllText(file);
 
-            if (FileHelper.IsFileDataLengthEqual(rawGitData, rawFileData))
+            if (FileHelper.IsFileDataLengthEqual(contentGit, contentFile))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
                 return;
             }
 
-            if (string.IsNullOrEmpty(rawFileData))
+            if (string.IsNullOrEmpty(contentFile))
             {
-                FileHelper.CreateFile(logger, file, rawGitData, descriptionPart);
+                FileHelper.CreateFile(logger, file, contentGit, descriptionPart);
                 return;
             }
 
-            var rawFileAtcData = ExtractDataAndCutAfterCustomRulesHeader(rawFileData);
+            var rawFileAtcData = ExtractDataAndCutAfterCustomRulesHeader(contentFile);
 
-            if (FileHelper.IsFileDataLengthEqual(rawGitData, rawFileAtcData))
+            if (FileHelper.IsFileDataLengthEqual(contentGit, rawFileAtcData))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
                 return;
             }
 
-            UpdateFile(logger, rawFileData, rawGitData, file, descriptionPart, rawFileAtcData);
+            UpdateFile(logger, contentFile, contentGit, file, descriptionPart, rawFileAtcData);
         }
         catch (Exception ex)
         {
@@ -339,13 +340,13 @@ public static class EditorConfigHelper
                 var fileLineNumber = GetLineNumberReverseSearch(fileLines, item);
 
                 logger.LogWarning($"{EmojisConstants.DuplicateKey}   Duplicate key: {key}");
-                logger.LogWarning($"{FormattableString.Invariant($"-- GitHub section (line {gitLineNumber:0000}): ")}{rawGitDataKeyValue.Value.Trim()}");
-                logger.LogWarning($"{FormattableString.Invariant($"-- Custom section (line {fileLineNumber:0000}): ")}{item.Value.Trim()}");
+                logger.LogWarning($"{FormattableString.Invariant($"     -- GitHub section (line {gitLineNumber:0000}): ")}{rawGitDataKeyValue.Value.Trim()}");
+                logger.LogWarning($"{FormattableString.Invariant($"     -- Custom section (line {fileLineNumber:0000}): ")}{item.Value.Trim()}");
             }
             else if (!rawFileDataKeyValues.Any(x => x.Key.Equals(key, StringComparison.Ordinal)))
             {
                 // New
-                logger.LogDebug($"- New key/value - {key}={rawGitDataKeyValue.Value}");
+                logger.LogDebug($"     - New key/value - {key}={rawGitDataKeyValue.Value}");
             }
         }
     }

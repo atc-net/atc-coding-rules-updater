@@ -94,7 +94,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     protected Task<AnalyzerProviderBaseRuleData?> ReadFromGithub(
         AnalyzerProviderBaseRuleData data)
     {
-        var rawGitData = HttpClientHelper.GetRawFile(logger, GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json");
+        var rawGitData = HttpClientHelper.GetAsString(logger, GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json");
         return Task.FromResult(string.IsNullOrEmpty(rawGitData)
             ? null
             : JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(rawGitData, AnalyzerProviderSerialization.JsonOptions)!);

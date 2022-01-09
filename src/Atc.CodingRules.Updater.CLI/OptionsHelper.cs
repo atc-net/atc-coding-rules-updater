@@ -6,13 +6,18 @@ public static class OptionsHelper
         DirectoryInfo rootPath,
         string? settingsOptionsPath)
     {
-        var optionsPath = settingsOptionsPath is null || string.IsNullOrEmpty(settingsOptionsPath)
+        var optionsPath = string.IsNullOrEmpty(settingsOptionsPath)
             ? rootPath.FullName
             : settingsOptionsPath;
 
         var fileInfo = optionsPath.EndsWith(".json", StringComparison.Ordinal)
             ? new FileInfo(optionsPath)
             : new FileInfo(Path.Combine(optionsPath, "atc-coding-rules-updater.json"));
+
+        if (!fileInfo.Exists)
+        {
+            return new OptionRoot();
+        }
 
         var options = DeserializeFile(fileInfo);
         options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));

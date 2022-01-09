@@ -7,8 +7,11 @@ namespace Atc.CodingRules.Updater.CLI;
 
 public static class ConfigHelper
 {
-    private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
+    // TODO: Use this "multi-distributions" branch for now.
+    private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/feature/multi-distributions/distribution";
+    //private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
     private const string AtcCodingRulesSuppressionsFileName = "AtcCodingRulesSuppressions.txt";
+
     private const string AtcCodingRulesSuppressionsFileNameAsExcel = "AtcCodingRulesSuppressions.xlsx";
     private const int MaxNumberOfTimesToBuild = 9;
 
@@ -16,9 +19,6 @@ public static class ConfigHelper
         ILogger logger,
         DirectoryInfo rootPath,
         OptionRoot options,
-        bool useTemporarySuppressions,
-        DirectoryInfo? temporarySuppressionsPath,
-        bool temporarySuppressionAsExcel,
         FileInfo? buildFile)
     {
         ArgumentNullException.ThrowIfNull(rootPath);
@@ -29,9 +29,19 @@ public static class ConfigHelper
         HandleEditorConfigFiles(logger, rootPath, options, isFirstTime);
         HandleDirectoryBuildPropsFiles(logger, rootPath, options, isFirstTime);
 
-        if (useTemporarySuppressions)
+        if (!isFirstTime &&
+            options.UseTemporarySuppressions)
         {
-            await HandleTemporarySuppressions(logger, rootPath, buildFile, temporarySuppressionsPath, temporarySuppressionAsExcel);
+            var temporarySuppressionsPath = string.IsNullOrEmpty(options.TemporarySuppressionsPath)
+                ? rootPath
+                : new DirectoryInfo(options.TemporarySuppressionsPath);
+
+            await HandleTemporarySuppressions(
+                logger,
+                rootPath,
+                buildFile,
+                temporarySuppressionsPath,
+                options.TemporarySuppressionAsExcel);
         }
     }
 
@@ -43,38 +53,25 @@ public static class ConfigHelper
     {
         logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
-        EditorConfigHelper.HandleFile(logger, isFirstTime: false, "root", RawCodingRulesDistributionBaseUrl, rootPath, string.Empty);
+        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget}";
+        EditorConfigHelper.HandleFile(logger, isFirstTime, "root", rawCodingRulesDistributionSolutionTargetBaseUrl, rootPath, string.Empty);
 
-        if (options.HasMappingsPaths())
+        foreach (var item in options.Mappings.Sample.Paths)
         {
-            foreach (var item in options.Mappings.Sample.Paths)
-            {
-                var path = new DirectoryInfo(item);
-                EditorConfigHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, path, "sample");
-            }
-
-            foreach (var item in options.Mappings.Src.Paths)
-            {
-                var path = new DirectoryInfo(item);
-                EditorConfigHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, path, "src");
-            }
-
-            foreach (var item in options.Mappings.Test.Paths)
-            {
-                var path = new DirectoryInfo(item);
-                EditorConfigHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, path, "test");
-            }
+            var path = new DirectoryInfo(item);
+            EditorConfigHelper.HandleFile(logger, isFirstTime, "sample", rawCodingRulesDistributionSolutionTargetBaseUrl, path, "sample");
         }
-        else
+
+        foreach (var item in options.Mappings.Src.Paths)
         {
-            var samplePath = new DirectoryInfo(Path.Combine(rootPath.FullName, "sample"));
-            EditorConfigHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, samplePath, "sample");
+            var path = new DirectoryInfo(item);
+            EditorConfigHelper.HandleFile(logger, isFirstTime, "src", rawCodingRulesDistributionSolutionTargetBaseUrl, path, "src");
+        }
 
-            var srcPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "src"));
-            EditorConfigHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, srcPath, "src");
-
-            var testPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "test"));
-            EditorConfigHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, testPath, "test");
+        foreach (var item in options.Mappings.Test.Paths)
+        {
+            var path = new DirectoryInfo(item);
+            EditorConfigHelper.HandleFile(logger, isFirstTime, "test", rawCodingRulesDistributionSolutionTargetBaseUrl, path, "test");
         }
     }
 
@@ -85,39 +82,26 @@ public static class ConfigHelper
         bool isFirstTime)
     {
         logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
+        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget}";
 
-        DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime: false, "root", RawCodingRulesDistributionBaseUrl, rootPath, string.Empty);
+        DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "root", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, rootPath, string.Empty);
 
-        if (options.HasMappingsPaths())
+        foreach (var item in options.Mappings.Sample.Paths)
         {
-            foreach (var item in options.Mappings.Sample.Paths)
-            {
-                var path = new DirectoryInfo(item);
-                DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, path, "sample");
-            }
-
-            foreach (var item in options.Mappings.Src.Paths)
-            {
-                var path = new DirectoryInfo(item);
-                DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, path, "src");
-            }
-
-            foreach (var item in options.Mappings.Test.Paths)
-            {
-                var path = new DirectoryInfo(item);
-                DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, path, "test");
-            }
+            var path = new DirectoryInfo(item);
+            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "sample", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "sample");
         }
-        else
+
+        foreach (var item in options.Mappings.Src.Paths)
         {
-            var samplePath = new DirectoryInfo(Path.Combine(rootPath.FullName, "sample"));
-            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "sample", RawCodingRulesDistributionBaseUrl, samplePath, "sample");
+            var path = new DirectoryInfo(item);
+            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "src", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "src");
+        }
 
-            var srcPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "src"));
-            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "src", RawCodingRulesDistributionBaseUrl, srcPath, "src");
-
-            var testPath = new DirectoryInfo(Path.Combine(rootPath.FullName, "test"));
-            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "test", RawCodingRulesDistributionBaseUrl, testPath, "test");
+        foreach (var item in options.Mappings.Test.Paths)
+        {
+            var path = new DirectoryInfo(item);
+            DirectoryBuildPropsHelper.HandleFile(logger, isFirstTime, "test", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "test");
         }
     }
 
@@ -134,9 +118,10 @@ public static class ConfigHelper
         DirectoryInfo? temporarySuppressionsPath,
         bool temporarySuppressionAsExcel)
     {
+        logger.LogInformation($"{EmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
+
         var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(logger, ProviderCollectingMode.LocalCache);
-        HandlingAnalyzerProviderInformation(logger, analyzerProviderBaseRules);
-        HandlingAnalyzerProviderErrors(logger, analyzerProviderBaseRules);
+
         var rootEditorConfigContent = string.Empty;
 
         var stopwatch = Stopwatch.StartNew();
@@ -248,32 +233,6 @@ public static class ConfigHelper
         }
 
         return false;
-    }
-
-    private static void HandlingAnalyzerProviderInformation(
-        ILogger logger,
-        Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
-    {
-        var rulesCount = 0;
-        foreach (var item in analyzerProviderBaseRules)
-        {
-            rulesCount += item.Rules.Count;
-        }
-
-        logger.LogDebug($"Loaded {analyzerProviderBaseRules.Count} providers with {rulesCount} rules");
-    }
-
-    private static void HandlingAnalyzerProviderErrors(
-        ILogger logger,
-        IEnumerable<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
-    {
-        foreach (var item in analyzerProviderBaseRules)
-        {
-            if (item.ExceptionMessage is not null)
-            {
-                logger.LogError($"AnalyzerProvider-{item.Name} - {item.ExceptionMessage}");
-            }
-        }
     }
 
     private static void DeleteSuppressionsFileInTempPath(

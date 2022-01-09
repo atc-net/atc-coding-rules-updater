@@ -7,12 +7,20 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 public class RootCommandSettings : CommandSettings
 {
     [CommandOption("-r|--outputRootPath <OUTPUTROOTPATH>")]
-    [Description("Path to the root directory")]
+    [Description("Path to the root directory (default current diectory)")]
     public string OutputRootPath { get; init; } = string.Empty;
+
+    [CommandOption("-t|--solutionTarget [SOLUTIONTARGET]")]
+    [Description("Solution target: dotnet5, dotnet6 (default dotnet6)")]
+    public FlagValue<string>? SolutionTarget { get; init; }
 
     [CommandOption("-o|--optionsPath [OPTIONSPATH]")]
     [Description("Path to an optional options json-file")]
     public FlagValue<string>? OptionsPath { get; init; }
+
+    [CommandOption("--useLatestMinorNugetVersion")]
+    [Description("Indicate if nuget packages should by updated to latest minor version (default true)")]
+    public bool? UseLatestMinorNugetVersion { get; init; }
 
     [CommandOption("--useTemporarySuppressions")]
     [Description("Indicate if build process should use temporary suppressions - appends to .editorconfig - unless temporarySuppressionPath is set")]

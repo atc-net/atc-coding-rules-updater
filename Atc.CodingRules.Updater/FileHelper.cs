@@ -1,4 +1,4 @@
-namespace Atc.CodingRules.Updater.CLI;
+namespace Atc.CodingRules.Updater;
 
 public static class FileHelper
 {
@@ -31,17 +31,8 @@ public static class FileHelper
         ArgumentNullException.ThrowIfNull(dataA);
         ArgumentNullException.ThrowIfNull(dataB);
 
-        var l1 = dataA
-            .Replace("\r\n", string.Empty, StringComparison.Ordinal)
-            .Replace("\r", string.Empty, StringComparison.Ordinal)
-            .Replace("\n", string.Empty, StringComparison.Ordinal)
-            .Length;
-
-        var l2 = dataB
-            .Replace("\r\n", string.Empty, StringComparison.Ordinal)
-            .Replace("\r", string.Empty, StringComparison.Ordinal)
-            .Replace("\n", string.Empty, StringComparison.Ordinal)
-            .Length;
+        var l1 = dataA.EnsureEnvironmentNewLines().Length;
+        var l2 = dataB.EnsureEnvironmentNewLines().Length;
 
         return l1.Equals(l2);
     }

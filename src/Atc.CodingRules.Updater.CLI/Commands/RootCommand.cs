@@ -20,9 +20,45 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         ConsoleHelper.WriteHeader();
 
         var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
-        var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
         var optionsPath = GetOptionsPath(settings);
         var options = OptionsHelper.CreateDefault(outputRootPath, optionsPath);
+
+        if (!options.HasMappingsPaths())
+        {
+            options.Mappings.Sample.Paths.Add(Path.Combine(outputRootPath.FullName, "sample"));
+            options.Mappings.Src.Paths.Add(Path.Combine(outputRootPath.FullName, "src"));
+            options.Mappings.Test.Paths.Add(Path.Combine(outputRootPath.FullName, "test"));
+        }
+
+        var solutionTarget = GetSolutionTarget(settings);
+        if (!string.IsNullOrEmpty(solutionTarget))
+        {
+            options.SolutionTarget = solutionTarget;
+        }
+
+        if (settings.UseLatestMinorNugetVersion.HasValue)
+        {
+            options.UseLatestMinorNugetVersion = settings.UseLatestMinorNugetVersion.GetValueOrDefault();
+        }
+
+        if (settings.UseTemporarySuppressions.HasValue)
+        {
+            options.UseTemporarySuppressions = settings.UseTemporarySuppressions.GetValueOrDefault();
+        }
+
+        var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
+        if (temporarySuppressionsPath is not null &&
+            temporarySuppressionsPath.Exists)
+        {
+            options.TemporarySuppressionsPath = temporarySuppressionsPath.FullName;
+        }
+
+        if (settings.TemporarySuppressionAsExcel.HasValue)
+        {
+            options.TemporarySuppressionAsExcel = settings.TemporarySuppressionAsExcel.GetValueOrDefault();
+        }
+
+        var buildFile = GetBuildFile(outputRootPath, settings);
 
         try
         {
@@ -30,10 +66,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
                 logger,
                 outputRootPath,
                 options,
-                settings.UseTemporarySuppressions.GetValueOrDefault(),
-                temporarySuppressionsPath,
-                settings.TemporarySuppressionAsExcel.GetValueOrDefault(),
-                GetBuildFile(outputRootPath, settings));
+                buildFile);
         }
         catch (Exception ex)
         {
@@ -52,6 +85,18 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         if (settings.OptionsPath is not null && settings.OptionsPath.IsSet)
         {
             optionsPath = settings.OptionsPath.Value;
+        }
+
+        return optionsPath;
+    }
+
+    private static string GetSolutionTarget(
+        RootCommandSettings settings)
+    {
+        var optionsPath = string.Empty;
+        if (settings.SolutionTarget is not null && settings.SolutionTarget.IsSet)
+        {
+            optionsPath = settings.SolutionTarget.Value;
         }
 
         return optionsPath;
