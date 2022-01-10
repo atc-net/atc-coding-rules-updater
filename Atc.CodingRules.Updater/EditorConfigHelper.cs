@@ -12,7 +12,6 @@ public static class EditorConfigHelper
 
     public static void HandleFile(
         ILogger logger,
-        bool isFirstTime,
         string area,
         string rawCodingRulesDistribution,
         DirectoryInfo path,

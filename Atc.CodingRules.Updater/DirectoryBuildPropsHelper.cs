@@ -8,7 +8,6 @@ public static class DirectoryBuildPropsHelper
 
     public static void HandleFile(
         ILogger logger,
-        bool isFirstTime,
         string area,
         string rawCodingRulesDistribution,
         bool useLatestMinorNugetVersion,
@@ -65,6 +64,46 @@ public static class DirectoryBuildPropsHelper
         catch (Exception ex)
         {
             logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+        }
+    }
+
+    public static bool HasFileInsertPlaceholderElement(DirectoryInfo path, string elementName, string elementValue)
+    {
+        var file = new FileInfo(Path.Combine(path.FullName, FileNameDirectoryBuildProps));
+        if (!file.Exists)
+        {
+            return false;
+        }
+
+        var fileContent = FileHelper.ReadAllText(file);
+        var searchText = $"<{elementName}><!-- {elementValue} --></{elementName}>";
+        return fileContent.IndexOf(searchText, StringComparison.Ordinal) != -1;
+    }
+
+    public static void UpdateFileInsertPlaceholderElement(
+        ILogger logger,
+        DirectoryInfo path,
+        string elementName,
+        string elementValue,
+        string newElementValue)
+    {
+        var file = new FileInfo(Path.Combine(path.FullName, FileNameDirectoryBuildProps));
+        if (!file.Exists)
+        {
+            return;
+        }
+
+        var fileContent = FileHelper.ReadAllText(file);
+        var searchText = $"<{elementName}><!-- {elementValue} --></{elementName}>";
+        if (fileContent.IndexOf(searchText, StringComparison.Ordinal) != -1)
+        {
+            fileContent = fileContent.Replace(
+                searchText,
+                $"<{elementName}>{newElementValue}</{elementName}>",
+                StringComparison.Ordinal);
+
+            File.WriteAllText(file.FullName, fileContent);
+            logger.LogDebug($"{EmojisConstants.FileUpdated}   {elementName} in file is updated to '{newElementValue}'");
         }
     }
 

@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class RootCommand : AsyncCommand<RootCommandSettings>
@@ -71,6 +73,18 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
                 logger,
                 outputRootPath,
                 options);
+
+            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(outputRootPath, "OrganizationName", "insert organization name here"))
+            {
+                string organizationName = AnsiConsole.Ask<string>("What is the [green]Organization name[/]?");
+                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, outputRootPath, "OrganizationName", "insert organization name here", organizationName);
+            }
+
+            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(outputRootPath, "RepositoryName", "insert repository name here"))
+            {
+                string repositoryName = AnsiConsole.Ask<string>("What is the [green]Repository name[/]?");
+                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, outputRootPath, "RepositoryName", "insert repository name here", repositoryName);
+            }
         }
         catch (Exception ex)
         {
