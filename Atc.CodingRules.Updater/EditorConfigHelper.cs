@@ -34,12 +34,6 @@ public static class EditorConfigHelper
         {
             if (!file.Directory!.Exists)
             {
-                if (!isFirstTime)
-                {
-                    logger.LogTrace($"{EmojisConstants.Skipped}    {descriptionPart} skipped");
-                    return;
-                }
-
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 

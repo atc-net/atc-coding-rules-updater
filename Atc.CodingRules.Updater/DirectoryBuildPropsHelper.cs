@@ -31,12 +31,6 @@ public static class DirectoryBuildPropsHelper
         {
             if (!file.Directory!.Exists)
             {
-                if (!isFirstTime)
-                {
-                    logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
-                    return;
-                }
-
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
