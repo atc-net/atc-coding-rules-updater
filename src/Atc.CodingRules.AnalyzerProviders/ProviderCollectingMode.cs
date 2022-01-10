@@ -4,5 +4,5 @@ public enum ProviderCollectingMode
 {
     LocalCache,
     GitHub,
-    ReCollect,
+    NoCache,
 }

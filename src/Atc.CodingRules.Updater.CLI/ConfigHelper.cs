@@ -19,8 +19,7 @@ public static class ConfigHelper
     public static async Task HandleFiles(
         ILogger logger,
         DirectoryInfo rootPath,
-        OptionRoot options,
-        FileInfo? buildFile)
+        OptionRoot options)
     {
         ArgumentNullException.ThrowIfNull(rootPath);
         ArgumentNullException.ThrowIfNull(options);
@@ -36,6 +35,12 @@ public static class ConfigHelper
             if (!string.IsNullOrEmpty(options.TemporarySuppressionsPath))
             {
                 temporarySuppressionsPath = new DirectoryInfo(options.TemporarySuppressionsPath);
+            }
+
+            FileInfo? buildFile = null;
+            if (!string.IsNullOrEmpty(options.BuildFile))
+            {
+                buildFile = new FileInfo(options.BuildFile);
             }
 
             await HandleTemporarySuppressions(
@@ -125,7 +130,10 @@ public static class ConfigHelper
             return;
         }
 
-        var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(logger, ProviderCollectingMode.LocalCache);
+        var analyzerProviderBaseRules = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(
+            logger,
+            ProviderCollectingMode.LocalCache,
+            logWithAnsiConsoleMarkup: true);
 
         var stopwatch = Stopwatch.StartNew();
         logger.LogTrace("     Collecting build errors");

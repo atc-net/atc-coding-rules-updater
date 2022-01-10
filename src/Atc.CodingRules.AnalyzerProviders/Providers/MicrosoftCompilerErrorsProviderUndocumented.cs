@@ -5,8 +5,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 /// </summary>
 public class MicrosoftCompilerErrorsProviderUndocumented : AnalyzerProviderBase
 {
-    public MicrosoftCompilerErrorsProviderUndocumented(ILogger logger)
-        : base(logger)
+    public MicrosoftCompilerErrorsProviderUndocumented(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
     }
 

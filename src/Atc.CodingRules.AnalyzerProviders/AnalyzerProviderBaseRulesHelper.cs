@@ -4,13 +4,14 @@ public static class AnalyzerProviderBaseRulesHelper
 {
     public static async Task<Collection<AnalyzerProviderBaseRuleData>> GetAnalyzerProviderBaseRules(
         ILogger logger,
-        ProviderCollectingMode providerCollectingMode)
+        ProviderCollectingMode providerCollectingMode,
+        bool logWithAnsiConsoleMarkup)
     {
         var stopwatch = Stopwatch.StartNew();
         logger.LogTrace("     Collecting rules metadata");
 
         var analyzerProviders = new AnalyzerProviderCollector(logger);
-        var analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(providerCollectingMode);
+        var analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(providerCollectingMode, logWithAnsiConsoleMarkup);
 
         stopwatch.Stop();
         logger.LogTrace($"     Collecting rules metadata time: {stopwatch.Elapsed.GetPrettyTime()}");

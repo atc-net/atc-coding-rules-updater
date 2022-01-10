@@ -24,13 +24,17 @@ public static class Program
         var app = CommandAppFactory.CreateWithRootCommand<RootCommand>(serviceCollection);
         app.Configure(config =>
         {
-            config.AddBranch("option-file", optionsFile =>
+            config.AddBranch("options-file", options =>
             {
-                optionsFile.AddCommand<OptionsFileCreateCommand>("create");
-                optionsFile.AddCommand<OptionsFileValidateCommand>("validate");
+                options.AddCommand<OptionsFileCreateCommand>("create");
+                options.AddCommand<OptionsFileValidateCommand>("validate");
             });
 
-            config.AddCommand<CacheCleanupCommand>("cache-cleanup");
+            config.AddBranch("analyzer-providers", optionsFile =>
+            {
+                optionsFile.AddCommand<AnalyzerProvidersCollectCommand>("collect");
+                optionsFile.AddCommand<AnalyzerProvidersCacheCleanupCommand>("cache-cleanup");
+            });
         });
 
         return app.RunAsync(args);

@@ -28,35 +28,36 @@ public class AnalyzerProviderCollector
     }
 
     public async Task<Collection<AnalyzerProviderBaseRuleData>> CollectAllBaseRules(
-        ProviderCollectingMode providerCollectingMode)
+        ProviderCollectingMode providerCollectingMode,
+        bool logWithAnsiConsoleMarkup)
     {
         var data = new Collection<AnalyzerProviderBaseRuleData>();
 
-        var asyncFixerProvider = new AsyncFixerProvider(logger);
+        var asyncFixerProvider = new AsyncFixerProvider(logger, logWithAnsiConsoleMarkup);
         var asyncFixerTask = asyncFixerProvider.CollectBaseRules(providerCollectingMode);
 
-        var asyncifyProvider = new AsyncifyProvider(logger);
+        var asyncifyProvider = new AsyncifyProvider(logger, logWithAnsiConsoleMarkup);
         var asyncifyTask = asyncifyProvider.CollectBaseRules(providerCollectingMode);
 
-        var meziantouProvider = new MeziantouProvider(logger);
+        var meziantouProvider = new MeziantouProvider(logger, logWithAnsiConsoleMarkup);
         var meziantouTask = meziantouProvider.CollectBaseRules(providerCollectingMode);
 
-        var microsoftCodeAnalysisNetAnalyzersProvider = new MicrosoftCodeAnalysisNetAnalyzersProvider(logger);
+        var microsoftCodeAnalysisNetAnalyzersProvider = new MicrosoftCodeAnalysisNetAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
         var microsoftCodeAnalysisNetAnalyzersTask = microsoftCodeAnalysisNetAnalyzersProvider.CollectBaseRules(providerCollectingMode);
 
-        var microsoftCompilerErrorsProvider = new MicrosoftCompilerErrorsProvider(logger);
+        var microsoftCompilerErrorsProvider = new MicrosoftCompilerErrorsProvider(logger, logWithAnsiConsoleMarkup);
         var microsoftCompilerErrorsTask = microsoftCompilerErrorsProvider.CollectBaseRules(providerCollectingMode);
 
-        var microsoftCodeAnalysisNetAnalyzersProviderUndocumented = new MicrosoftCompilerErrorsProviderUndocumented(logger);
-        var microsoftCompilerErrorsUndocumentedTask = microsoftCodeAnalysisNetAnalyzersProviderUndocumented.CollectBaseRules(ProviderCollectingMode.ReCollect);
+        var microsoftCodeAnalysisNetAnalyzersProviderUndocumented = new MicrosoftCompilerErrorsProviderUndocumented(logger, logWithAnsiConsoleMarkup);
+        var microsoftCompilerErrorsUndocumentedTask = microsoftCodeAnalysisNetAnalyzersProviderUndocumented.CollectBaseRules(ProviderCollectingMode.NoCache);
 
-        var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger);
+        var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger, logWithAnsiConsoleMarkup);
         var securityCodeScanVs2019Task = securityCodeScanVs2019Provider.CollectBaseRules(providerCollectingMode);
 
-        var styleCopAnalyzersProvider = new StyleCopAnalyzersProvider(logger);
+        var styleCopAnalyzersProvider = new StyleCopAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
         var styleCopAnalyzersTask = styleCopAnalyzersProvider.CollectBaseRules(providerCollectingMode);
 
-        var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger);
+        var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger, logWithAnsiConsoleMarkup);
         var sonarAnalyzerCSharpTask = sonarAnalyzerCSharpProvider.CollectBaseRules(providerCollectingMode);
 
         await Task.WhenAll(

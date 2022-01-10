@@ -2,8 +2,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class AsyncFixerProvider : AnalyzerProviderBase
 {
-    public AsyncFixerProvider(ILogger logger)
-        : base(logger)
+    public AsyncFixerProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
     }
 

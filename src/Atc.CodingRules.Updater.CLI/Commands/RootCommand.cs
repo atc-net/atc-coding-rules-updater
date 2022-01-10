@@ -60,14 +60,17 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         }
 
         var buildFile = GetBuildFile(outputRootPath, settings);
+        if (!string.IsNullOrEmpty(solutionTarget))
+        {
+            options.BuildFile = buildFile?.FullName;
+        }
 
         try
         {
             await ConfigHelper.HandleFiles(
                 logger,
                 outputRootPath,
-                options,
-                buildFile);
+                options);
         }
         catch (Exception ex)
         {

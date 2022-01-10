@@ -12,6 +12,10 @@ public class OptionRoot
 
     public bool TemporarySuppressionAsExcel { get; set; }
 
+    public ProviderCollectingMode AnalyzerProviderCollectingMode { get; set; } = ProviderCollectingMode.LocalCache;
+
+    public string? BuildFile { get; set; }
+
     public OptionsMappings Mappings { get; set; } = new ();
 
     public bool HasMappingsPaths()

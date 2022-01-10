@@ -1,10 +1,10 @@
 namespace Atc.CodingRules.Updater.CLI.Commands
 {
-    public class CacheCleanupCommand : Command
+    public class AnalyzerProvidersCacheCleanupCommand : Command
     {
-        private readonly ILogger<CacheCleanupCommand> logger;
+        private readonly ILogger<AnalyzerProvidersCacheCleanupCommand> logger;
 
-        public CacheCleanupCommand(ILogger<CacheCleanupCommand> logger) => this.logger = logger;
+        public AnalyzerProvidersCacheCleanupCommand(ILogger<AnalyzerProvidersCacheCleanupCommand> logger) => this.logger = logger;
 
         public override int Execute(CommandContext context)
         {
@@ -12,7 +12,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
 
             try
             {
-                logger.LogInformation("Working on cache cleanup");
+                logger.LogInformation("Working on analyzer providers cache cleanup");
                 AnalyzerProviderBaseRulesHelper.CleanupCache(logger);
             }
             catch (Exception ex)

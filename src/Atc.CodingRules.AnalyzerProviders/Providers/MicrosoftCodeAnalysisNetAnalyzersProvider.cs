@@ -5,8 +5,8 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
     private const int TableColumnId = 0;
     private const int TableColumnCategory = 1;
 
-    public MicrosoftCodeAnalysisNetAnalyzersProvider(ILogger logger)
-        : base(logger)
+    public MicrosoftCodeAnalysisNetAnalyzersProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
     }
 

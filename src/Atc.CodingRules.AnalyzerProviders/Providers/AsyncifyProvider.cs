@@ -2,8 +2,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class AsyncifyProvider : AnalyzerProviderBase
 {
-    public AsyncifyProvider(ILogger logger)
-        : base(logger)
+    public AsyncifyProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
     }
 

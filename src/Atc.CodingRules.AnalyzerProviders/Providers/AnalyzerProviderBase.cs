@@ -4,10 +4,12 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
 {
     private const string GitRawAtcAnalyzerProviderBaseRulesBasePath = "https://raw.githubusercontent.com/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
     private readonly ILogger logger;
+    private readonly bool logWithAnsiConsoleMarkup;
 
-    protected AnalyzerProviderBase(ILogger logger)
+    protected AnalyzerProviderBase(ILogger logger, bool logWithAnsiConsoleMarkup)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.logWithAnsiConsoleMarkup = logWithAnsiConsoleMarkup;
     }
 
     public virtual Uri? DocumentationLink { get; set; }
@@ -17,27 +19,37 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     {
         var data = CreateData();
 
+        var stopwatch = Stopwatch.StartNew();
+        logger.LogTrace($"     [green]{data.Name}[/] collect base rules");
+
         if (providerCollectingMode == ProviderCollectingMode.LocalCache)
         {
             var dataFromTemp = await ReadFromTempFolder(data);
             if (dataFromTemp is not null)
             {
+                StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
+
                 return dataFromTemp;
             }
         }
 
-        if (providerCollectingMode != ProviderCollectingMode.ReCollect)
+        if (providerCollectingMode != ProviderCollectingMode.NoCache)
         {
             var dataFromGithub = await ReadFromGithub(data);
             if (dataFromGithub is not null)
             {
                 await WriteToTempFolder(dataFromGithub);
+
+                StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
+
                 return dataFromGithub;
             }
         }
 
         await ReCollect(data);
         await WriteToTempFolder(data);
+
+        StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
 
         return data;
     }
@@ -118,5 +130,16 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         return Task.FromResult(string.IsNullOrEmpty(rawGitData)
             ? null
             : JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(rawGitData, AnalyzerProviderSerialization.JsonOptions)!);
+    }
+
+    private void StopTheStopwatchAndLog(
+        Stopwatch stopwatch,
+        string providerName,
+        ProviderCollectingMode providerCollectingMode)
+    {
+        stopwatch.Stop();
+        logger.LogTrace(logWithAnsiConsoleMarkup
+            ? $"     [green]{providerName}[/] collect base rules by collecting mode: {providerCollectingMode} - time: [green]{stopwatch.Elapsed.GetPrettyTime()}[/]"
+            : $"     {providerName} collect base rules by collecting mode: {providerCollectingMode} - time: {stopwatch.Elapsed.GetPrettyTime()}");
     }
 }

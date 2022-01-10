@@ -2,8 +2,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
 {
-    public SonarAnalyzerCSharpProvider(ILogger logger)
-        : base(logger)
+    public SonarAnalyzerCSharpProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
     }
 

@@ -5,7 +5,7 @@ public class StyleCopAnalyzersProviderTests
     [Theory]
     [InlineData(ProviderCollectingMode.LocalCache)]
     [InlineData(ProviderCollectingMode.GitHub)]
-    [InlineData(ProviderCollectingMode.ReCollect)]
+    [InlineData(ProviderCollectingMode.NoCache)]
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange

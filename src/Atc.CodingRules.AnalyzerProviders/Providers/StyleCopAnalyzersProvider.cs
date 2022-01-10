@@ -7,8 +7,8 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
     private const int TableColumnTitle = 1;
     private const int TableColumnDescription = 2;
 
-    public StyleCopAnalyzersProvider(ILogger logger)
-        : base(logger)
+    public StyleCopAnalyzersProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
     }
 
