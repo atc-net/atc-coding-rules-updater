@@ -10,6 +10,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         CommandContext context,
         RootCommandSettings settings)
     {
+        ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
         return ExecuteInternalAsync(settings);
     }
@@ -20,8 +21,8 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         ConsoleHelper.WriteHeader();
 
         var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
-        var optionsPath = GetOptionsPath(settings);
-        var options = OptionsHelper.CreateDefault(outputRootPath, optionsPath);
+        var optionsPath = settings.GetOptionsPath();
+        var options = await OptionsHelper.CreateDefault(outputRootPath, optionsPath);
 
         if (!options.HasMappingsPaths())
         {
@@ -76,18 +77,6 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
 
         logger.LogInformation($"{EmojisConstants.Done} Done");
         return ConsoleExitStatusCodes.Success;
-    }
-
-    private static string GetOptionsPath(
-        RootCommandSettings settings)
-    {
-        var optionsPath = string.Empty;
-        if (settings.OptionsPath is not null && settings.OptionsPath.IsSet)
-        {
-            optionsPath = settings.OptionsPath.Value;
-        }
-
-        return optionsPath;
     }
 
     private static string GetSolutionTarget(

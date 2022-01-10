@@ -3,19 +3,11 @@ using Spectre.Console;
 
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
-public class RootCommandSettings : CommandSettings
+public class RootCommandSettings : BaseCommandSettings
 {
-    [CommandOption("-r|--outputRootPath <OUTPUTROOTPATH>")]
-    [Description("Path to the root directory (default current diectory)")]
-    public string OutputRootPath { get; init; } = string.Empty;
-
     [CommandOption("-t|--solutionTarget [SOLUTIONTARGET]")]
     [Description("Solution target: dotnet5, dotnet6 (default dotnet6)")]
     public FlagValue<string>? SolutionTarget { get; init; }
-
-    [CommandOption("-o|--optionsPath [OPTIONSPATH]")]
-    [Description("Path to an optional options json-file")]
-    public FlagValue<string>? OptionsPath { get; init; }
 
     [CommandOption("--useLatestMinorNugetVersion")]
     [Description("Indicate if nuget packages should by updated to latest minor version (default true)")]
@@ -36,10 +28,6 @@ public class RootCommandSettings : CommandSettings
     [CommandOption("--buildFile [BUILDFILE]")]
     [Description("Solution/project file - required when multiple .sln files exists in root path")]
     public FlagValue<string>? BuildFile { get; init; }
-
-    [CommandOption("-v|--verboseMode")]
-    [Description("Use verboseMode for more debug/trace information")]
-    public bool VerboseMode { get; init; }
 
     public override ValidationResult Validate()
     {

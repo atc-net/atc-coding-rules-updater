@@ -24,6 +24,12 @@ public static class Program
         var app = CommandAppFactory.CreateWithRootCommand<RootCommand>(serviceCollection);
         app.Configure(config =>
         {
+            config.AddBranch("option-file", optionsFile =>
+            {
+                optionsFile.AddCommand<OptionsFileCreateCommand>("create");
+                optionsFile.AddCommand<OptionsFileValidateCommand>("validate");
+            });
+
             config.AddCommand<CacheCleanupCommand>("cache-cleanup");
         });
 
@@ -31,9 +37,21 @@ public static class Program
     }
 
     private static string[] SetHelpArgumentIfNeeded(string[] args)
-        => args.Any()
-            ? args
-            : new[] { "-h", };
+    {
+        switch (args.Length)
+        {
+            case 0:
+                return new[] { "-h", };
+            case 2 when args[0].Equals("option-file", StringComparison.OrdinalIgnoreCase) &&
+                        (args[1].Equals("create", StringComparison.OrdinalIgnoreCase) ||
+                         args[1].Equals("validate", StringComparison.OrdinalIgnoreCase)):
+                Array.Resize(ref args, args.Length + 1);
+                args[^1] = "-h";
+                return args;
+            default:
+                return args;
+        }
+    }
 
     private static string[] SetOutputRootPathArgumentIfNeeded(string[] args)
     {
