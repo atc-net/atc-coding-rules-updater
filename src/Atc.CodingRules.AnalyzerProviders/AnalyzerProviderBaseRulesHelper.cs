@@ -26,7 +26,7 @@ public static class AnalyzerProviderBaseRulesHelper
         IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
     {
         var rulesCount = analyzerProviderBaseRules.Sum(x => x.Rules.Count);
-        logger.LogDebug($"     Loaded {analyzerProviderBaseRules.Count} providers with {rulesCount} rules");
+        logger.LogTrace($"     Loaded {analyzerProviderBaseRules.Count} providers with {rulesCount} rules");
     }
 
     private static void LogAnalyzerProviderErrors(
