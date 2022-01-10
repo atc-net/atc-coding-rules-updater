@@ -82,4 +82,34 @@ public class AnalyzerProviderCollector
 
         return data;
     }
+
+    public void CacheCleanup()
+    {
+        var asyncFixerProvider = new AsyncFixerProvider(logger);
+        asyncFixerProvider.Cleanup();
+
+        var asyncifyProvider = new AsyncifyProvider(logger);
+        asyncifyProvider.Cleanup();
+
+        var meziantouProvider = new MeziantouProvider(logger);
+        meziantouProvider.Cleanup();
+
+        var microsoftCodeAnalysisNetAnalyzersProvider = new MicrosoftCodeAnalysisNetAnalyzersProvider(logger);
+        microsoftCodeAnalysisNetAnalyzersProvider.Cleanup();
+
+        var microsoftCompilerErrorsProvider = new MicrosoftCompilerErrorsProvider(logger);
+        microsoftCompilerErrorsProvider.Cleanup();
+
+        var microsoftCodeAnalysisNetAnalyzersProviderUndocumented = new MicrosoftCompilerErrorsProviderUndocumented(logger);
+        microsoftCodeAnalysisNetAnalyzersProviderUndocumented.Cleanup();
+
+        var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger);
+        securityCodeScanVs2019Provider.Cleanup();
+
+        var styleCopAnalyzersProvider = new StyleCopAnalyzersProvider(logger);
+        styleCopAnalyzersProvider.Cleanup();
+
+        var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger);
+        sonarAnalyzerCSharpProvider.Cleanup();
+    }
 }

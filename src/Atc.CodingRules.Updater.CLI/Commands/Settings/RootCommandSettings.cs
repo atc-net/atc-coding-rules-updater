@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using Spectre.Console;
-using Spectre.Console.Cli;
 
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 

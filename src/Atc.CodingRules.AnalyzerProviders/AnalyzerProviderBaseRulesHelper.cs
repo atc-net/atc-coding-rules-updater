@@ -21,6 +21,13 @@ public static class AnalyzerProviderBaseRulesHelper
         return analyzerProviderBaseRules;
     }
 
+    public static void CleanupCache(
+        ILogger logger)
+    {
+        var analyzerProviders = new AnalyzerProviderCollector(logger);
+        analyzerProviders.CacheCleanup();
+    }
+
     private static void LogAnalyzerProviderInformation(
         ILogger logger,
         IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)

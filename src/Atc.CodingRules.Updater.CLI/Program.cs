@@ -21,7 +21,11 @@ public static class Program
 
         var serviceCollection = ServiceCollectionFactory.Create(consoleLoggerConfiguration);
 
-        var app = CommandAppFactory.CreateWithSingleCommand<RootCommand>(serviceCollection);
+        var app = CommandAppFactory.CreateWithRootCommand<RootCommand>(serviceCollection);
+        app.Configure(config =>
+        {
+            config.AddCommand<CacheCleanupCommand>("cache-cleanup");
+        });
 
         return app.RunAsync(args);
     }

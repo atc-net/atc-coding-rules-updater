@@ -42,6 +42,26 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         return data;
     }
 
+    public void Cleanup()
+    {
+        var data = CreateData();
+
+        var tempFolder = Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules");
+        if (!Directory.Exists(tempFolder))
+        {
+            return;
+        }
+
+        var tempFile = Path.Combine(tempFolder, data.Name + ".json");
+        if (!File.Exists(tempFile))
+        {
+            return;
+        }
+
+        File.Delete(tempFile);
+        logger.LogInformation($"File is deleted: {tempFile}");
+    }
+
     protected abstract AnalyzerProviderBaseRuleData CreateData();
 
     protected abstract Task ReCollect(AnalyzerProviderBaseRuleData data);
