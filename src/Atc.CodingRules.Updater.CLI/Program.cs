@@ -26,15 +26,21 @@ public static class Program
         {
             config.AddBranch("options-file", options =>
             {
-                options.AddCommand<OptionsFileCreateCommand>("create");
-                options.AddCommand<OptionsFileValidateCommand>("validate");
+                options
+                    .AddCommand<OptionsFileCreateCommand>("create")
+                    .WithDescription("Create default options file (atc-coding-rules-updater.json) if it doesn't exist");
+                options
+                    .AddCommand<OptionsFileValidateCommand>("validate")
+                    .WithDescription("Validate the options file (atc-coding-rules-updater.json)");
             });
 
             config.AddBranch("analyzer-providers", optionsFile =>
             {
-                optionsFile.AddCommand<AnalyzerProvidersCollectCommand>("collect")
+                optionsFile
+                    .AddCommand<AnalyzerProvidersCollectCommand>("collect")
                     .WithDescription("Collect base rules metadata from all Analyzer providers");
-                optionsFile.AddCommand<AnalyzerProvidersCacheCleanupCommand>("cache-cleanup")
+                optionsFile
+                    .AddCommand<AnalyzerProvidersCacheCleanupCommand>("cache-cleanup")
                     .WithDescription("Cleanup cache from Analyzer providers");
             });
         });
