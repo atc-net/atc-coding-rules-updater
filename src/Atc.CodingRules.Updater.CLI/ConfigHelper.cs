@@ -25,28 +25,35 @@ public static class ConfigHelper
         ArgumentNullException.ThrowIfNull(options);
 
         HandleEditorConfigFiles(logger, rootPath, options);
-        HandleDirectoryBuildPropsFiles(logger, rootPath, options);
 
-        if (options.UseTemporarySuppressions)
+        if (options.SolutionTarget
+            is SupportedSolutionTargetType.DotNetCore
+            or SupportedSolutionTargetType.DotNet5
+            or SupportedSolutionTargetType.DotNet6)
         {
-            DirectoryInfo? temporarySuppressionsPath = null;
-            if (!string.IsNullOrEmpty(options.TemporarySuppressionsPath))
-            {
-                temporarySuppressionsPath = new DirectoryInfo(options.TemporarySuppressionsPath);
-            }
+            HandleDirectoryBuildPropsFiles(logger, rootPath, options);
 
-            FileInfo? buildFile = null;
-            if (!string.IsNullOrEmpty(options.BuildFile))
+            if (options.UseTemporarySuppressions)
             {
-                buildFile = new FileInfo(options.BuildFile);
-            }
+                DirectoryInfo? temporarySuppressionsPath = null;
+                if (!string.IsNullOrEmpty(options.TemporarySuppressionsPath))
+                {
+                    temporarySuppressionsPath = new DirectoryInfo(options.TemporarySuppressionsPath);
+                }
 
-            await HandleTemporarySuppressions(
-                logger,
-                rootPath,
-                buildFile,
-                temporarySuppressionsPath,
-                options.TemporarySuppressionAsExcel);
+                FileInfo? buildFile = null;
+                if (!string.IsNullOrEmpty(options.BuildFile))
+                {
+                    buildFile = new FileInfo(options.BuildFile);
+                }
+
+                await HandleTemporarySuppressions(
+                    logger,
+                    rootPath,
+                    buildFile,
+                    temporarySuppressionsPath,
+                    options.TemporarySuppressionAsExcel);
+            }
         }
     }
 
