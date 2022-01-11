@@ -139,7 +139,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     {
         stopwatch.Stop();
         logger.LogTrace(logWithAnsiConsoleMarkup
-            ? $"     [green]{providerName}[/] collect base rules by collecting mode: {providerCollectingMode} - time: [green]{stopwatch.Elapsed.GetPrettyTime()}[/]"
+            ? $"     [green]{providerName}[/] collect base rules by collecting mode: [green]{providerCollectingMode}[/] - time: [green]{stopwatch.Elapsed.GetPrettyTime()}[/]"
             : $"     {providerName} collect base rules by collecting mode: {providerCollectingMode} - time: {stopwatch.Elapsed.GetPrettyTime()}");
     }
 }
