@@ -88,7 +88,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage()}");
+            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
             return ConsoleExitStatusCodes.Failure;
         }
 

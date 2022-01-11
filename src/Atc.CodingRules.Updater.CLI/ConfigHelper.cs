@@ -48,6 +48,8 @@ public static class ConfigHelper
                     buildFile = new FileInfo(options.BuildFile);
                 }
 
+                ThrowIfConflictingOptionsInCsprojFiles(projectPath, options);
+
                 await HandleTemporarySuppressions(
                     logger,
                     projectPath,
@@ -56,6 +58,29 @@ public static class ConfigHelper
                     options.TemporarySuppressionAsExcel);
             }
         }
+    }
+
+    private static void ThrowIfConflictingOptionsInCsprojFiles(DirectoryInfo projectPath, Options options)
+    {
+        if (options.SolutionTarget != SupportedSolutionTargetType.DotNet5)
+        {
+            return;
+        }
+
+        var fileWithElementEnableNETAnalyzers = DotnetCsProjHelper.SearchAllForElement(projectPath, "EnableNETAnalyzers", "true");
+        if (!fileWithElementEnableNETAnalyzers.Any())
+        {
+            return;
+        }
+
+        var sb = new StringBuilder();
+        sb.AppendLine("EnableNETAnalyzers in .csproj causes build errors, please remove the element from the following files:");
+        foreach (var file in fileWithElementEnableNETAnalyzers)
+        {
+            sb.AppendLine(5, file.FullName);
+        }
+
+        throw new DataException(sb.ToString());
     }
 
     private static void HandleEditorConfigFiles(
