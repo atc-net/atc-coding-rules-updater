@@ -48,7 +48,7 @@ public static class OptionsHelper
         var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (!fileInfo.Exists)
         {
-            return (false, "File do not exist");
+            return (false, "File does not exist");
         }
 
         var options = await DeserializeFile(fileInfo);

@@ -9,15 +9,13 @@ public sealed class ProviderCollectingModeDescriptionAttribute : DescriptionAttr
     {
         get
         {
-            var defaultValue = new Options().AnalyzerProviderCollectingMode;
-            var values = Enum.GetNames(typeof(ProviderCollectingMode))
-                .Select(enumValue => enumValue.Equals(defaultValue.ToString(), StringComparison.Ordinal)
-                    ? $"{enumValue} (default)"
-                    : enumValue)
-                .ToList();
+            var values = new List<string>
+            {
+                ProviderCollectingMode.GitHub.ToString(),
+                ProviderCollectingMode.ReCollect.ToString(),
+            };
 
-            return "Sets the CollectingMode. Valid values are: " +
-                   string.Join(", ", values);
+            return "Update rules. Valid values are: " + string.Join(", ", values);
         }
     }
 }

@@ -5,7 +5,7 @@ public class AsyncFixerProviderTests
     [Theory]
     [InlineData(ProviderCollectingMode.LocalCache)]
     [InlineData(ProviderCollectingMode.GitHub)]
-    [InlineData(ProviderCollectingMode.NoCache)]
+    [InlineData(ProviderCollectingMode.ReCollect)]
     public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
         // Arrange

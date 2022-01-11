@@ -50,8 +50,8 @@ namespace Atc.CodingRules.Updater.CLI.Commands
 
         private static ProviderCollectingMode? GetAnalyzerProviderCollectingMode(
             AnalyzerProvidersCollectCommandSettings settings)
-            => settings.CollectingMode.IsSet
-                ? settings.CollectingMode.Value
+            => settings.UpdateRules.IsSet
+                ? settings.UpdateRules.Value
                 : null;
     }
 }

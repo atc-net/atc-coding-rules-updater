@@ -32,8 +32,10 @@ public static class Program
 
             config.AddBranch("analyzer-providers", optionsFile =>
             {
-                optionsFile.AddCommand<AnalyzerProvidersCollectCommand>("collect");
-                optionsFile.AddCommand<AnalyzerProvidersCacheCleanupCommand>("cache-cleanup");
+                optionsFile.AddCommand<AnalyzerProvidersCollectCommand>("collect")
+                    .WithDescription("Collect base rules metadata from all Analyzer providers");
+                optionsFile.AddCommand<AnalyzerProvidersCacheCleanupCommand>("cache-cleanup")
+                    .WithDescription("Cleanup cache from Analyzer providers");
             });
         });
 

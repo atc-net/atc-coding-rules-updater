@@ -33,7 +33,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
             }
         }
 
-        if (providerCollectingMode != ProviderCollectingMode.NoCache)
+        if (providerCollectingMode != ProviderCollectingMode.ReCollect)
         {
             var dataFromGithub = await ReadFromGithub(data);
             if (dataFromGithub is not null)
