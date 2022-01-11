@@ -8,9 +8,9 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings
         [Description("Path to the root directory (default current diectory)")]
         public string OutputRootPath { get; init; } = string.Empty;
 
-        [CommandOption("-v|--verboseMode")]
-        [Description("Use verboseMode for more debug/trace information")]
-        public bool VerboseMode { get; init; }
+        [CommandOption("-v|--verbose")]
+        [Description("Use verbose for more debug/trace information")]
+        public bool Verbose { get; init; }
 
         [CommandOption("-o|--optionsPath [OPTIONSPATH]")]
         [Description("Path to an optional options json-file")]

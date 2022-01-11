@@ -82,7 +82,7 @@ public static class Program
         ConsoleLoggerConfiguration consoleLoggerConfiguration)
     {
         if (args.Any(x => x.Equals("-v", StringComparison.OrdinalIgnoreCase)) ||
-            args.Any(x => x.Equals("--verboseMode", StringComparison.OrdinalIgnoreCase)))
+            args.Any(x => x.Equals("--verbose", StringComparison.OrdinalIgnoreCase)))
         {
             consoleLoggerConfiguration.MinimumLogLevel = LogLevel.Trace;
         }
