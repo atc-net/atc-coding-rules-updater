@@ -1,6 +1,6 @@
 namespace Atc.CodingRules.Updater
 {
-    public enum SupportedSolutionTargetType
+    public enum SupportedProjectTargetType
     {
         DotNetCore,
         DotNet5,

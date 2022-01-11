@@ -21,14 +21,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands
             ConsoleHelper.WriteHeader();
 
             var projectPath = new DirectoryInfo(settings.ProjectPath);
-            var optionsPath = settings.GetOptionsPath();
-            var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
-
-            var analyzerProviderCollectingMode = GetAnalyzerProviderCollectingMode(settings);
-            if (analyzerProviderCollectingMode is not null)
-            {
-                options.AnalyzerProviderCollectingMode = (ProviderCollectingMode)analyzerProviderCollectingMode;
-            }
+            var options = await GetOptionsFromFileAndUserArguments(settings, projectPath);
 
             try
             {
@@ -46,6 +39,22 @@ namespace Atc.CodingRules.Updater.CLI.Commands
 
             logger.LogInformation($"{EmojisConstants.Done} Done");
             return ConsoleExitStatusCodes.Success;
+        }
+
+        private static async Task<Options> GetOptionsFromFileAndUserArguments(
+            AnalyzerProvidersCollectCommandSettings settings,
+            DirectoryInfo projectPath)
+        {
+            var optionsPath = settings.GetOptionsPath();
+            var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
+
+            var analyzerProviderCollectingMode = GetAnalyzerProviderCollectingMode(settings);
+            if (analyzerProviderCollectingMode is not null)
+            {
+                options.AnalyzerProviderCollectingMode = (ProviderCollectingMode)analyzerProviderCollectingMode;
+            }
+
+            return options;
         }
 
         private static ProviderCollectingMode? GetAnalyzerProviderCollectingMode(

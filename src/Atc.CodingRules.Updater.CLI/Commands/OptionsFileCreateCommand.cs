@@ -17,7 +17,6 @@ namespace Atc.CodingRules.Updater.CLI.Commands
         private async Task<int> ExecuteInternalAsync(
             BaseCommandSettings settings)
         {
-            ArgumentNullException.ThrowIfNull(settings);
             ConsoleHelper.WriteHeader();
 
             var projectPath = new DirectoryInfo(settings.ProjectPath);

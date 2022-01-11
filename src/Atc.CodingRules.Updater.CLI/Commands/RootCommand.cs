@@ -23,49 +23,13 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var optionsPath = settings.GetOptionsPath();
-        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
-        options.Mappings.ResolvePaths(projectPath);
-
-        var solutionTarget = GetSolutionTarget(settings);
-        if (solutionTarget is not null)
-        {
-            options.SolutionTarget = (SupportedSolutionTargetType)solutionTarget;
-        }
-
-        if (settings.UseLatestMinorNugetVersion.HasValue)
-        {
-            options.UseLatestMinorNugetVersion = settings.UseLatestMinorNugetVersion.GetValueOrDefault();
-        }
-
-        if (settings.UseTemporarySuppressions.HasValue)
-        {
-            options.UseTemporarySuppressions = settings.UseTemporarySuppressions.GetValueOrDefault();
-        }
-
-        var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
-        if (temporarySuppressionsPath is not null &&
-            temporarySuppressionsPath.Exists)
-        {
-            options.TemporarySuppressionsPath = temporarySuppressionsPath.FullName;
-        }
-
-        if (settings.TemporarySuppressionAsExcel.HasValue)
-        {
-            options.TemporarySuppressionAsExcel = settings.TemporarySuppressionAsExcel.GetValueOrDefault();
-        }
-
-        var buildFile = GetBuildFile(projectPath, settings);
-        if (buildFile is not null)
-        {
-            options.BuildFile = buildFile.FullName;
-        }
+        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath);
 
         try
         {
             CodingRulesUpdaterVersionHelper.PrintUpdateInfoIfNeeded(logger);
 
-            await ConfigHelper.HandleFiles(
+            await ProjectHelper.HandleFiles(
                 logger,
                 projectPath,
                 options);
@@ -98,11 +62,50 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         return ConsoleExitStatusCodes.Success;
     }
 
-    private static SupportedSolutionTargetType? GetSolutionTarget(
-        RootCommandSettings settings)
-        => settings.SolutionTarget.IsSet
-            ? settings.SolutionTarget.Value
-            : null;
+    private static async Task<Options> GetOptionsFromFileAndUserArguments(
+        RootCommandSettings settings,
+        DirectoryInfo projectPath)
+    {
+        var optionsPath = settings.GetOptionsPath();
+        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
+        options.Mappings.ResolvePaths(projectPath);
+
+        var projectTarget = ProjectCommandSettings.GetProjectTarget(settings);
+        if (projectTarget is not null)
+        {
+            options.ProjectTarget = (SupportedProjectTargetType)projectTarget;
+        }
+
+        if (settings.UseLatestMinorNugetVersion.HasValue)
+        {
+            options.UseLatestMinorNugetVersion = settings.UseLatestMinorNugetVersion.GetValueOrDefault();
+        }
+
+        if (settings.UseTemporarySuppressions.HasValue)
+        {
+            options.UseTemporarySuppressions = settings.UseTemporarySuppressions.GetValueOrDefault();
+        }
+
+        var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
+        if (temporarySuppressionsPath is not null &&
+            temporarySuppressionsPath.Exists)
+        {
+            options.TemporarySuppressionsPath = temporarySuppressionsPath.FullName;
+        }
+
+        if (settings.TemporarySuppressionAsExcel.HasValue)
+        {
+            options.TemporarySuppressionAsExcel = settings.TemporarySuppressionAsExcel.GetValueOrDefault();
+        }
+
+        var buildFile = GetBuildFile(projectPath, settings);
+        if (buildFile is not null)
+        {
+            options.BuildFile = buildFile.FullName;
+        }
+
+        return options;
+    }
 
     private static DirectoryInfo? GetTemporarySuppressionsPath(
         RootCommandSettings settings)

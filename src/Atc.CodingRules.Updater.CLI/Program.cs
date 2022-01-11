@@ -11,7 +11,7 @@ public static class Program
         args = SetProjectPathArgumentIfNeeded(args);
 
         var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
             .Build();
 
         var consoleLoggerConfiguration = new ConsoleLoggerConfiguration();
@@ -33,6 +33,9 @@ public static class Program
                     .AddCommand<OptionsFileValidateCommand>("validate")
                     .WithDescription("Validate the options file (atc-coding-rules-updater.json)");
             });
+
+            config.AddCommand<SanityCheckCommand>("sanity-check")
+                .WithDescription("Sanity check the project files.");
 
             config.AddBranch("analyzer-providers", optionsFile =>
             {

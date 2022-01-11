@@ -3,12 +3,8 @@ using Spectre.Console;
 
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
-public class RootCommandSettings : BaseCommandSettings
+public class RootCommandSettings : ProjectCommandSettings
 {
-    [CommandOption("-t|--solutionTarget [SOLUTIONTARGET]")]
-    [SupportedSolutionTargetTypeDescription]
-    public FlagValue<SupportedSolutionTargetType> SolutionTarget { get; init; } = new FlagValue<SupportedSolutionTargetType>();
-
     [CommandOption("--useLatestMinorNugetVersion")]
     [Description("Indicate if nuget packages should by updated to latest minor version (default true)")]
     public bool? UseLatestMinorNugetVersion { get; init; }

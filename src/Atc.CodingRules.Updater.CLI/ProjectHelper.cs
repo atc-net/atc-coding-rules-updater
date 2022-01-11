@@ -1,12 +1,14 @@
 using System.Drawing;
 using Atc.DotNet;
+using Microsoft.Extensions.Logging.Abstractions;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
+// ReSharper disable InvertIf
 // ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.CodingRules.Updater.CLI;
 
-public static class ConfigHelper
+public static class ProjectHelper
 {
     // TODO: Use this "multi-distributions" branch for now.
     private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/feature/multi-distributions/distribution";
@@ -27,10 +29,10 @@ public static class ConfigHelper
 
         HandleEditorConfigFiles(logger, projectPath, options);
 
-        if (options.SolutionTarget
-            is SupportedSolutionTargetType.DotNetCore
-            or SupportedSolutionTargetType.DotNet5
-            or SupportedSolutionTargetType.DotNet6)
+        if (options.ProjectTarget
+            is SupportedProjectTargetType.DotNetCore
+            or SupportedProjectTargetType.DotNet5
+            or SupportedProjectTargetType.DotNet6)
         {
             HandleDirectoryBuildPropsFiles(logger, projectPath, options);
 
@@ -48,7 +50,7 @@ public static class ConfigHelper
                     buildFile = new FileInfo(options.BuildFile);
                 }
 
-                ThrowIfConflictingOptionsInCsprojFiles(projectPath, options);
+                SanityCheckConflictingOptionsInCsprojFiles(throwIf: true, NullLogger.Instance, projectPath, options);
 
                 await HandleTemporarySuppressions(
                     logger,
@@ -60,29 +62,59 @@ public static class ConfigHelper
         }
     }
 
-    private static void ThrowIfConflictingOptionsInCsprojFiles(
+    public static Task SanityCheckFiles(
+        ILogger logger,
         DirectoryInfo projectPath,
         Options options)
     {
-        if (options.SolutionTarget != SupportedSolutionTargetType.DotNet5)
-        {
-            return;
-        }
+        ArgumentNullException.ThrowIfNull(projectPath);
+        ArgumentNullException.ThrowIfNull(options);
 
-        var fileWithElementEnableNETAnalyzers = DotnetCsProjHelper.SearchAllForElement(projectPath, "EnableNETAnalyzers", "true");
-        if (!fileWithElementEnableNETAnalyzers.Any())
-        {
-            return;
-        }
+        SanityCheckConflictingOptionsInCsprojFiles(throwIf: false, logger, projectPath, options);
 
-        var sb = new StringBuilder();
-        sb.AppendLine("EnableNETAnalyzers in .csproj causes build errors, please remove the element from the following files:");
-        foreach (var file in fileWithElementEnableNETAnalyzers)
-        {
-            sb.AppendLine(5, file.FullName);
-        }
+        return Task.Delay(1);
+    }
 
-        throw new DataException(sb.ToString());
+    private static void SanityCheckConflictingOptionsInCsprojFiles(
+        bool throwIf,
+        ILogger logger,
+        DirectoryInfo projectPath,
+        Options options)
+    {
+        if (options.ProjectTarget == SupportedProjectTargetType.DotNet5)
+        {
+            var fileWithElementEnableNETAnalyzers = DotnetCsProjHelper.SearchAllForElement(projectPath, "EnableNETAnalyzers", "true");
+            if (fileWithElementEnableNETAnalyzers.Any())
+            {
+                var sb = new StringBuilder();
+                const string header = "EnableNETAnalyzers in .csproj causes build errors, please remove the element from the following files:";
+                if (throwIf)
+                {
+                    sb.AppendLine(header);
+                }
+                else
+                {
+                    logger.LogWarning(header);
+                }
+
+                foreach (var file in fileWithElementEnableNETAnalyzers)
+                {
+                    if (throwIf)
+                    {
+                        sb.AppendLine(5, file.FullName);
+                    }
+                    else
+                    {
+                        logger.LogWarning($"     {file.FullName}");
+                    }
+                }
+
+                if (throwIf)
+                {
+                    throw new DataException(sb.ToString());
+                }
+            }
+        }
     }
 
     private static void HandleEditorConfigFiles(
@@ -92,25 +124,25 @@ public static class ConfigHelper
     {
         logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
-        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget.ToStringLowerCase()}";
-        EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionSolutionTargetBaseUrl, projectPath, string.Empty);
+        var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
+        EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty);
 
         foreach (var item in options.Mappings.Sample.Paths)
         {
             var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "sample", rawCodingRulesDistributionSolutionTargetBaseUrl, path, "sample");
+            EditorConfigHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, path, "sample");
         }
 
         foreach (var item in options.Mappings.Src.Paths)
         {
             var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "src", rawCodingRulesDistributionSolutionTargetBaseUrl, path, "src");
+            EditorConfigHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, path, "src");
         }
 
         foreach (var item in options.Mappings.Test.Paths)
         {
             var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "test", rawCodingRulesDistributionSolutionTargetBaseUrl, path, "test");
+            EditorConfigHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, path, "test");
         }
     }
 
@@ -120,26 +152,26 @@ public static class ConfigHelper
         Options options)
     {
         logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
-        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget.ToStringLowerCase()}";
+        var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
 
-        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty);
+        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty);
 
         foreach (var item in options.Mappings.Sample.Paths)
         {
             var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "sample", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "sample");
+            DirectoryBuildPropsHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "sample");
         }
 
         foreach (var item in options.Mappings.Src.Paths)
         {
             var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "src", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "src");
+            DirectoryBuildPropsHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "src");
         }
 
         foreach (var item in options.Mappings.Test.Paths)
         {
             var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "test", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "test");
+            DirectoryBuildPropsHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "test");
         }
     }
 

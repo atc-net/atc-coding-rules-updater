@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Models;
 
 public class Options
 {
-    public SupportedSolutionTargetType SolutionTarget { get; set; } = SupportedSolutionTargetType.DotNet6;
+    public SupportedProjectTargetType ProjectTarget { get; set; } = SupportedProjectTargetType.DotNet6;
 
     public bool UseLatestMinorNugetVersion { get; set; } = true;
 
@@ -22,5 +22,5 @@ public class Options
         => Mappings.HasMappingsPaths();
 
     public override string ToString()
-        => $"{nameof(SolutionTarget)}: {SolutionTarget}, {nameof(UseTemporarySuppressions)}: {UseTemporarySuppressions}, {nameof(TemporarySuppressionsPath)}: {TemporarySuppressionAsExcel}, {nameof(TemporarySuppressionAsExcel)}: {TemporarySuppressionsPath}, {nameof(Mappings)}: ({Mappings})";
+        => $"{nameof(ProjectTarget)}: {ProjectTarget}, {nameof(UseTemporarySuppressions)}: {UseTemporarySuppressions}, {nameof(TemporarySuppressionsPath)}: {TemporarySuppressionAsExcel}, {nameof(TemporarySuppressionAsExcel)}: {TemporarySuppressionsPath}, {nameof(Mappings)}: ({Mappings})";
 }

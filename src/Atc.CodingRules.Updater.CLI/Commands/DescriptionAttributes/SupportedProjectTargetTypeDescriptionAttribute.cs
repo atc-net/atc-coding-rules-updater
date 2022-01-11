@@ -3,20 +3,20 @@ using System.ComponentModel;
 namespace Atc.CodingRules.Updater.CLI.Commands.DescriptionAttributes;
 
 [AttributeUsage(AttributeTargets.All)]
-public sealed class SupportedSolutionTargetTypeDescriptionAttribute : DescriptionAttribute
+public sealed class SupportedProjectTargetTypeDescriptionAttribute : DescriptionAttribute
 {
     public override string Description
     {
         get
         {
-            var defaultValue = new Options().SolutionTarget;
-            var values = Enum.GetNames(typeof(SupportedSolutionTargetType))
+            var defaultValue = new Options().ProjectTarget;
+            var values = Enum.GetNames(typeof(SupportedProjectTargetType))
                 .Select(enumValue => enumValue.Equals(defaultValue.ToString(), StringComparison.Ordinal)
                     ? $"{enumValue} (default)"
                     : enumValue)
                 .ToList();
 
-            return "Sets the SolutionTarget. Valid values are: " +
+            return "Sets the ProjectTarget. Valid values are: " +
                    string.Join(", ", values);
         }
     }
