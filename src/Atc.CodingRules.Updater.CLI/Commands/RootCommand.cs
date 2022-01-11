@@ -63,6 +63,8 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
 
         try
         {
+            CodingRulesUpdaterVersionHelper.PrintUpdateInfoIfNeeded(logger);
+
             await ConfigHelper.HandleFiles(
                 logger,
                 projectPath,
