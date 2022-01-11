@@ -132,6 +132,7 @@ public static class EditorConfigHelper
         lines.Add("# suppressions one by one to the relevant");
         lines.Add("# 'Custom - Code Analyzers Rules' section.");
         lines.Add(SectionDivider);
+        lines.Add("[*.cs]");
         foreach (var (analyzerName, suppressionLines) in suppressionLinesPrAnalyzer)
         {
             lines.Add($"{Environment.NewLine}# {analyzerName}");
