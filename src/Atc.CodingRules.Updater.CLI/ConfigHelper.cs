@@ -426,8 +426,8 @@ public static class ConfigHelper
                 {
                     var tabs = CalculateTabIndentationForSuppressionLine(rule.Code.Length);
                     var suppressionLine = string.IsNullOrEmpty(rule.Category)
-                        ? $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")} - {rule.Title} - {rule.Link}"
-                        : $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")} - Category: '{rule.Category}' - {rule.Title} - {rule.Link}";
+                        ? $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")}{rule.TitleAndLink}"
+                        : $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")} - Category: '{rule.Category}'{rule.TitleAndLink}";
                     suppressionLines.Add(Tuple.Create(analyzerProvider.Name, suppressionLine));
                     handledCodes.Add(code);
                 }
