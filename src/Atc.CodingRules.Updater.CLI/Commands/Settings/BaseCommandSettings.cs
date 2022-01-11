@@ -4,9 +4,9 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings
 {
     public class BaseCommandSettings : CommandSettings
     {
-        [CommandOption("-r|--outputRootPath <OUTPUTROOTPATH>")]
-        [Description("Path to the root directory (default current diectory)")]
-        public string OutputRootPath { get; init; } = string.Empty;
+        [CommandOption("-p|--projectPath <PROJECTPATH>")]
+        [Description("Path to the project directory (default current diectory)")]
+        public string ProjectPath { get; init; } = string.Empty;
 
         [CommandOption("-v|--verbose")]
         [Description("Use verbose for more debug/trace information")]

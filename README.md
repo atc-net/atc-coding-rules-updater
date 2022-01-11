@@ -145,7 +145,7 @@ or
 }
 ```
 
-**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--outputRootPath` /  `-r`), then it will automatically be found and used.
+**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--projectPath` /  `-p`), then it will automatically be found and used.
 
 ## CLI Tool Usage from powershell
 

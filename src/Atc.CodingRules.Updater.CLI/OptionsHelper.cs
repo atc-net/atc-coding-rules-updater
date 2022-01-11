@@ -4,16 +4,16 @@ namespace Atc.CodingRules.Updater.CLI;
 public static class OptionsHelper
 {
     public static async Task<Options> CreateDefault(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {
-        var fileInfo = GetOptionsFile(rootPath, settingsOptionsPath);
+        var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (!fileInfo.Exists)
         {
             return CreateDefaultOptions();
         }
 
-        var optionsPath = GetOptionsPath(rootPath, settingsOptionsPath);
+        var optionsPath = GetOptionsPath(projectPath, settingsOptionsPath);
         var options = await DeserializeFile(fileInfo);
         if (options is null)
         {
@@ -25,10 +25,10 @@ public static class OptionsHelper
     }
 
     public static async Task<(bool, string)> CreateOptionsFile(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {
-        var fileInfo = GetOptionsFile(rootPath, settingsOptionsPath);
+        var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (fileInfo.Exists)
         {
             return (false, "File already exist");
@@ -42,10 +42,10 @@ public static class OptionsHelper
     }
 
     public static async Task<(bool isSuccessful, string error)> ValidateOptionsFile(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {
-        var fileInfo = GetOptionsFile(rootPath, settingsOptionsPath);
+        var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (!fileInfo.Exists)
         {
             return (false, "File do not exist");
@@ -67,10 +67,10 @@ public static class OptionsHelper
     }
 
     private static FileInfo GetOptionsFile(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {
-        var optionsPath = GetOptionsPath(rootPath, settingsOptionsPath);
+        var optionsPath = GetOptionsPath(projectPath, settingsOptionsPath);
 
         return optionsPath.EndsWith(".json", StringComparison.Ordinal)
             ? new FileInfo(optionsPath)
@@ -78,10 +78,10 @@ public static class OptionsHelper
     }
 
     private static string GetOptionsPath(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         string? settingsOptionsPath)
         => string.IsNullOrEmpty(settingsOptionsPath)
-            ? rootPath.FullName
+            ? projectPath.FullName
             : settingsOptionsPath;
 
     private static async Task<Options?> DeserializeFile(

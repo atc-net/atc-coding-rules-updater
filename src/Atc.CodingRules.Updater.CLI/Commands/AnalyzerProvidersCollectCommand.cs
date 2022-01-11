@@ -20,9 +20,9 @@ namespace Atc.CodingRules.Updater.CLI.Commands
         {
             ConsoleHelper.WriteHeader();
 
-            var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
+            var projectPath = new DirectoryInfo(settings.ProjectPath);
             var optionsPath = settings.GetOptionsPath();
-            var options = await OptionsHelper.CreateDefault(outputRootPath, optionsPath);
+            var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
 
             var analyzerProviderCollectingMode = GetAnalyzerProviderCollectingMode(settings);
             if (analyzerProviderCollectingMode is not null)

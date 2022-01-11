@@ -37,8 +37,8 @@ public class RootCommandSettings : BaseCommandSettings
             return validationResult;
         }
 
-        return string.IsNullOrEmpty(OutputRootPath)
-            ? ValidationResult.Error("OutputRootPath is missing.")
+        return string.IsNullOrEmpty(ProjectPath)
+            ? ValidationResult.Error("OrojectPath is missing.")
             : ValidationResult.Success();
     }
 }

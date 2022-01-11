@@ -22,9 +22,9 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
     {
         ConsoleHelper.WriteHeader();
 
-        var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
+        var projectPath = new DirectoryInfo(settings.ProjectPath);
         var optionsPath = settings.GetOptionsPath();
-        var options = await OptionsHelper.CreateDefault(outputRootPath, optionsPath);
+        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
 
         var solutionTarget = GetSolutionTarget(settings);
         if (solutionTarget is not null)
@@ -54,7 +54,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
             options.TemporarySuppressionAsExcel = settings.TemporarySuppressionAsExcel.GetValueOrDefault();
         }
 
-        var buildFile = GetBuildFile(outputRootPath, settings);
+        var buildFile = GetBuildFile(projectPath, settings);
         if (buildFile is not null)
         {
             options.BuildFile = buildFile.FullName;
@@ -64,19 +64,19 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         {
             await ConfigHelper.HandleFiles(
                 logger,
-                outputRootPath,
+                projectPath,
                 options);
 
-            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(outputRootPath, "OrganizationName", "insert organization name here"))
+            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "OrganizationName", "insert organization name here"))
             {
                 string organizationName = AnsiConsole.Ask<string>("What is the [green]Organization name[/]?");
-                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, outputRootPath, "OrganizationName", "insert organization name here", organizationName);
+                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "OrganizationName", "insert organization name here", organizationName);
             }
 
-            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(outputRootPath, "RepositoryName", "insert repository name here"))
+            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "RepositoryName", "insert repository name here"))
             {
                 string repositoryName = AnsiConsole.Ask<string>("What is the [green]Repository name[/]?");
-                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, outputRootPath, "RepositoryName", "insert repository name here", repositoryName);
+                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "RepositoryName", "insert repository name here", repositoryName);
             }
         }
         catch (Exception ex)
@@ -110,7 +110,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
     }
 
     private static FileInfo? GetBuildFile(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         RootCommandSettings settings)
     {
         var buildFile = string.Empty;
@@ -123,7 +123,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         {
             return buildFile.Contains(':', StringComparison.Ordinal)
                 ? new FileInfo(buildFile)
-                : new FileInfo(Path.Combine(rootPath.FullName, buildFile));
+                : new FileInfo(Path.Combine(projectPath.FullName, buildFile));
         }
 
         return null;

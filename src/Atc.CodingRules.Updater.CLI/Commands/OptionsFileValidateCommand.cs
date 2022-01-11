@@ -21,12 +21,12 @@ namespace Atc.CodingRules.Updater.CLI.Commands
             ArgumentNullException.ThrowIfNull(settings);
             ConsoleHelper.WriteHeader();
 
-            var outputRootPath = new DirectoryInfo(settings.OutputRootPath);
+            var projectPath = new DirectoryInfo(settings.ProjectPath);
             var optionsPath = settings.GetOptionsPath();
 
             try
             {
-                (bool isSuccessful, string error) = await OptionsHelper.ValidateOptionsFile(outputRootPath, optionsPath);
+                (bool isSuccessful, string error) = await OptionsHelper.ValidateOptionsFile(projectPath, optionsPath);
                 if (isSuccessful)
                 {
                     logger.LogInformation("The options file is valid");

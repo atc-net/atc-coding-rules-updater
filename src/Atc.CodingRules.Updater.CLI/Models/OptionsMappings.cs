@@ -1,4 +1,5 @@
 // ReSharper disable InvertIf
+// ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.CodingRules.Updater.CLI.Models;
 
 public class OptionsMappings
@@ -15,9 +16,9 @@ public class OptionsMappings
         Test.Paths.Count > 0;
 
     public void ResolvePaths(
-        DirectoryInfo rootPath)
+        DirectoryInfo projectPath)
     {
-        ArgumentNullException.ThrowIfNull(rootPath);
+        ArgumentNullException.ThrowIfNull(projectPath);
 
         if (!HasMappingsPaths())
         {
@@ -26,7 +27,7 @@ public class OptionsMappings
 
         for (var i = 0; i < Sample.Paths.Count; i++)
         {
-            if (TryResolvePathIfNeeded(rootPath, Sample.Paths[i], out var newPath))
+            if (TryResolvePathIfNeeded(projectPath, Sample.Paths[i], out var newPath))
             {
                 Sample.Paths[i] = newPath;
             }
@@ -34,7 +35,7 @@ public class OptionsMappings
 
         for (var i = 0; i < Src.Paths.Count; i++)
         {
-            if (TryResolvePathIfNeeded(rootPath, Src.Paths[i], out var newPath))
+            if (TryResolvePathIfNeeded(projectPath, Src.Paths[i], out var newPath))
             {
                 Src.Paths[i] = newPath;
             }
@@ -42,7 +43,7 @@ public class OptionsMappings
 
         for (var i = 0; i < Test.Paths.Count; i++)
         {
-            if (TryResolvePathIfNeeded(rootPath, Test.Paths[i], out var newPath))
+            if (TryResolvePathIfNeeded(projectPath, Test.Paths[i], out var newPath))
             {
                 Test.Paths[i] = newPath;
             }
@@ -53,7 +54,7 @@ public class OptionsMappings
         => $"{nameof(Sample)}: ({Sample}), {nameof(Src)}: ({Src}), {nameof(Test)}: ({Test})";
 
     private static bool TryResolvePathIfNeeded(
-        DirectoryInfo rootPath,
+        DirectoryInfo projectPath,
         string orgPath,
         out string newPath)
     {
@@ -63,21 +64,21 @@ public class OptionsMappings
         {
             if (orgPath.IndexOfAny(new[] { '.', '/', '\\' }) == -1)
             {
-                newPath = Path.Combine(rootPath.FullName, orgPath);
+                newPath = Path.Combine(projectPath.FullName, orgPath);
                 return true;
             }
 
             if (orgPath.StartsWith("./", StringComparison.Ordinal))
             {
                 var s = orgPath.Substring(2).Replace("/", "\\", StringComparison.Ordinal);
-                newPath = Path.Combine(rootPath.FullName, s);
+                newPath = Path.Combine(projectPath.FullName, s);
                 return true;
             }
 
             if (orgPath.IndexOfAny(new[] { '/', '\\' }) != -1)
             {
                 var s = orgPath.Replace("/", "\\", StringComparison.Ordinal);
-                newPath = Path.Combine(rootPath.FullName, s);
+                newPath = Path.Combine(projectPath.FullName, s);
                 return true;
             }
         }
@@ -85,7 +86,7 @@ public class OptionsMappings
         if (orgPath.StartsWith("\\", StringComparison.Ordinal))
         {
             var s = orgPath.Substring(1).Replace("/", "\\", StringComparison.Ordinal);
-            newPath = Path.Combine(rootPath.FullName, s);
+            newPath = Path.Combine(projectPath.FullName, s);
             return true;
         }
 

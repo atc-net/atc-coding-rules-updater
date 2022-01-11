@@ -8,7 +8,7 @@ public static class Program
     public static Task<int> Main(string[] args)
     {
         args = SetHelpArgumentIfNeeded(args);
-        args = SetOutputRootPathArgumentIfNeeded(args);
+        args = SetProjectPathArgumentIfNeeded(args);
 
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -57,7 +57,7 @@ public static class Program
         }
     }
 
-    private static string[] SetOutputRootPathArgumentIfNeeded(string[] args)
+    private static string[] SetProjectPathArgumentIfNeeded(string[] args)
     {
         var dot = args.FirstOrDefault(x => x.Equals(".", StringComparison.Ordinal));
         if (string.IsNullOrEmpty(dot))
