@@ -57,7 +57,7 @@ public static class ConfigHelper
     {
         logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
-        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget}";
+        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget.ToStringLowerCase()}";
         EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionSolutionTargetBaseUrl, rootPath, string.Empty);
 
         foreach (var item in options.Mappings.Sample.Paths)
@@ -85,7 +85,7 @@ public static class ConfigHelper
         Options options)
     {
         logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
-        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget}";
+        var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget.ToStringLowerCase()}";
 
         DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionSolutionTargetBaseUrl, options.UseLatestMinorNugetVersion, rootPath, string.Empty);
 
