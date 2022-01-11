@@ -6,6 +6,40 @@ public static class AtcApiNugetClientHelper
     private static readonly ConcurrentDictionary<string, Version> Cache = new (StringComparer.Ordinal);
 
     public static Version? GetLatestVersionForPackageId(
+        string packageId,
+        CancellationToken cancellationToken = default)
+    {
+        var cacheValue = Cache.GetValueOrDefault(packageId);
+        if (cacheValue is not null)
+        {
+            return cacheValue;
+        }
+
+        try
+        {
+            var response = string.Empty;
+            TaskHelper.RunSync(async () =>
+            {
+                using var client = new HttpClient();
+                response = await client.GetStringAsync($"{BaseAddress}/package?packageId={packageId}", cancellationToken);
+            });
+
+            if (string.IsNullOrEmpty(response) ||
+                !Version.TryParse(response, out var version))
+            {
+                return null;
+            }
+
+            Cache.GetOrAdd(packageId, version);
+            return version;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public static Version? GetLatestVersionForPackageId(
         ILogger logger,
         string packageId,
         CancellationToken cancellationToken = default)
