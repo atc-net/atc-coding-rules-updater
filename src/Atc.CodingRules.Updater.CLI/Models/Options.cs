@@ -1,8 +1,8 @@
 namespace Atc.CodingRules.Updater.CLI.Models;
 
-public class OptionRoot
+public class Options
 {
-    public string SolutionTarget { get; set; } = "dotnet6";
+    public SupportedSolutionTargetType SolutionTarget { get; set; } = SupportedSolutionTargetType.DotNet6;
 
     public bool UseLatestMinorNugetVersion { get; set; } = true;
 

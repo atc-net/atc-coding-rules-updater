@@ -3,21 +3,21 @@ namespace Atc.CodingRules.Updater.CLI;
 
 public static class OptionsHelper
 {
-    public static async Task<OptionRoot> CreateDefault(
+    public static async Task<Options> CreateDefault(
         DirectoryInfo rootPath,
         string? settingsOptionsPath)
     {
         var fileInfo = GetOptionsFile(rootPath, settingsOptionsPath);
         if (!fileInfo.Exists)
         {
-            return new OptionRoot();
+            return CreateDefaultOptions();
         }
 
         var optionsPath = GetOptionsPath(rootPath, settingsOptionsPath);
         var options = await DeserializeFile(fileInfo);
         if (options is null)
         {
-            return new OptionRoot();
+            return CreateDefaultOptions();
         }
 
         options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));
@@ -34,11 +34,7 @@ public static class OptionsHelper
             return (false, "File already exist");
         }
 
-        var options = new OptionRoot();
-        options.Mappings.Sample.Paths.Add(Path.Combine(rootPath.FullName, "sample"));
-        options.Mappings.Src.Paths.Add(Path.Combine(rootPath.FullName, "src"));
-        options.Mappings.Test.Paths.Add(Path.Combine(rootPath.FullName, "test"));
-
+        var options = CreateDefaultOptions();
         var serializeOptions = JsonSerializerOptionsFactory.Create();
         var json = JsonSerializer.Serialize(options, serializeOptions);
         await File.WriteAllTextAsync(fileInfo.FullName, json, Encoding.UTF8);
@@ -61,6 +57,15 @@ public static class OptionsHelper
             : (true, string.Empty);
     }
 
+    private static Options CreateDefaultOptions()
+    {
+        var options = new Options();
+        options.Mappings.Sample.Paths.Add("sample");
+        options.Mappings.Src.Paths.Add("src");
+        options.Mappings.Test.Paths.Add("test");
+        return options;
+    }
+
     private static FileInfo GetOptionsFile(
         DirectoryInfo rootPath,
         string? settingsOptionsPath)
@@ -79,12 +84,12 @@ public static class OptionsHelper
             ? rootPath.FullName
             : settingsOptionsPath;
 
-    private static async Task<OptionRoot?> DeserializeFile(
+    private static async Task<Options?> DeserializeFile(
         FileInfo fileInfo)
     {
         var serializeOptions = JsonSerializerOptionsFactory.Create();
         using var stream = new StreamReader(fileInfo.FullName);
         var json = await stream.ReadToEndAsync();
-        return JsonSerializer.Deserialize<OptionRoot>(json, serializeOptions);
+        return JsonSerializer.Deserialize<Options>(json, serializeOptions);
     }
 }

@@ -19,7 +19,7 @@ public static class ConfigHelper
     public static async Task HandleFiles(
         ILogger logger,
         DirectoryInfo rootPath,
-        OptionRoot options)
+        Options options)
     {
         ArgumentNullException.ThrowIfNull(rootPath);
         ArgumentNullException.ThrowIfNull(options);
@@ -53,7 +53,7 @@ public static class ConfigHelper
     private static void HandleEditorConfigFiles(
         ILogger logger,
         DirectoryInfo rootPath,
-        OptionRoot options)
+        Options options)
     {
         logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
@@ -82,7 +82,7 @@ public static class ConfigHelper
     private static void HandleDirectoryBuildPropsFiles(
         ILogger logger,
         DirectoryInfo rootPath,
-        OptionRoot options)
+        Options options)
     {
         logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionSolutionTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.SolutionTarget}";

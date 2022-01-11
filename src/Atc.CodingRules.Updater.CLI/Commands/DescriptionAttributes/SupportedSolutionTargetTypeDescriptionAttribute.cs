@@ -3,20 +3,20 @@ using System.ComponentModel;
 namespace Atc.CodingRules.Updater.CLI.Commands.DescriptionAttributes;
 
 [AttributeUsage(AttributeTargets.All)]
-public sealed class ProviderCollectingModeDescriptionAttribute : DescriptionAttribute
+public sealed class SupportedSolutionTargetTypeDescriptionAttribute : DescriptionAttribute
 {
     public override string Description
     {
         get
         {
-            var defaultValue = new Options().AnalyzerProviderCollectingMode;
-            var values = Enum.GetNames(typeof(ProviderCollectingMode))
+            var defaultValue = new Options().SolutionTarget;
+            var values = Enum.GetNames(typeof(SupportedSolutionTargetType))
                 .Select(enumValue => enumValue.Equals(defaultValue.ToString(), StringComparison.Ordinal)
                     ? $"{enumValue} (default)"
                     : enumValue)
                 .ToList();
 
-            return "Sets the CollectingMode. Valid values are: " +
+            return "Sets the SolutionTarget. Valid values are: " +
                    string.Join(", ", values);
         }
     }

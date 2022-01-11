@@ -6,8 +6,8 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 public class RootCommandSettings : BaseCommandSettings
 {
     [CommandOption("-t|--solutionTarget [SOLUTIONTARGET]")]
-    [Description("Solution target: dotnet5, dotnet6 (default dotnet6)")]
-    public FlagValue<string>? SolutionTarget { get; init; }
+    [SupportedSolutionTargetTypeDescription]
+    public FlagValue<SupportedSolutionTargetType> SolutionTarget { get; init; } = new FlagValue<SupportedSolutionTargetType>();
 
     [CommandOption("--useLatestMinorNugetVersion")]
     [Description("Indicate if nuget packages should by updated to latest minor version (default true)")]

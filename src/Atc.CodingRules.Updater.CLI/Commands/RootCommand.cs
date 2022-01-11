@@ -26,17 +26,10 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         var optionsPath = settings.GetOptionsPath();
         var options = await OptionsHelper.CreateDefault(outputRootPath, optionsPath);
 
-        if (!options.HasMappingsPaths())
-        {
-            options.Mappings.Sample.Paths.Add(Path.Combine(outputRootPath.FullName, "sample"));
-            options.Mappings.Src.Paths.Add(Path.Combine(outputRootPath.FullName, "src"));
-            options.Mappings.Test.Paths.Add(Path.Combine(outputRootPath.FullName, "test"));
-        }
-
         var solutionTarget = GetSolutionTarget(settings);
-        if (!string.IsNullOrEmpty(solutionTarget))
+        if (solutionTarget is not null)
         {
-            options.SolutionTarget = solutionTarget;
+            options.SolutionTarget = (SupportedSolutionTargetType)solutionTarget;
         }
 
         if (settings.UseLatestMinorNugetVersion.HasValue)
@@ -62,9 +55,9 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         }
 
         var buildFile = GetBuildFile(outputRootPath, settings);
-        if (!string.IsNullOrEmpty(solutionTarget))
+        if (buildFile is not null)
         {
-            options.BuildFile = buildFile?.FullName;
+            options.BuildFile = buildFile.FullName;
         }
 
         try
@@ -96,17 +89,11 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         return ConsoleExitStatusCodes.Success;
     }
 
-    private static string GetSolutionTarget(
+    private static SupportedSolutionTargetType? GetSolutionTarget(
         RootCommandSettings settings)
-    {
-        var optionsPath = string.Empty;
-        if (settings.SolutionTarget is not null && settings.SolutionTarget.IsSet)
-        {
-            optionsPath = settings.SolutionTarget.Value;
-        }
-
-        return optionsPath;
-    }
+        => settings.SolutionTarget.IsSet
+            ? settings.SolutionTarget.Value
+            : null;
 
     private static DirectoryInfo? GetTemporarySuppressionsPath(
         RootCommandSettings settings)
