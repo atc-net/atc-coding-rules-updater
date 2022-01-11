@@ -2,8 +2,8 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings
 {
     public class AnalyzerProvidersCollectCommandSettings : BaseCommandSettings
     {
-        [CommandOption("--updateRules [UPDATERULES]")]
+        [CommandOption("--fetchMode [FETCHMODE]")]
         [ProviderCollectingModeDescription]
-        public FlagValue<ProviderCollectingMode> UpdateRules { get; init; } = new FlagValue<ProviderCollectingMode>();
+        public FlagValue<ProviderCollectingMode> FetchMode { get; init; } = new FlagValue<ProviderCollectingMode>();
     }
 }
