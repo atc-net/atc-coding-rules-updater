@@ -60,7 +60,9 @@ public static class ConfigHelper
         }
     }
 
-    private static void ThrowIfConflictingOptionsInCsprojFiles(DirectoryInfo projectPath, Options options)
+    private static void ThrowIfConflictingOptionsInCsprojFiles(
+        DirectoryInfo projectPath,
+        Options options)
     {
         if (options.SolutionTarget != SupportedSolutionTargetType.DotNet5)
         {
