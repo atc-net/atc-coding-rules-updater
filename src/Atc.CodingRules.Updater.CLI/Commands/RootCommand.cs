@@ -25,6 +25,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         var projectPath = new DirectoryInfo(settings.ProjectPath);
         var optionsPath = settings.GetOptionsPath();
         var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
+        options.Mappings.ResolvePaths(projectPath);
 
         var solutionTarget = GetSolutionTarget(settings);
         if (solutionTarget is not null)
