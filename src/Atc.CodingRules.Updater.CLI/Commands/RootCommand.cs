@@ -70,13 +70,19 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
 
             if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "OrganizationName", "insert organization name here"))
             {
-                string organizationName = AnsiConsole.Ask<string>("What is the [green]Organization name[/]?");
+                var organizationName = settings.OrganizationName is not null && settings.OrganizationName.IsSet
+                    ? settings.OrganizationName.Value
+                    : AnsiConsole.Ask<string>("What is the [green]Organization name[/]?");
+
                 DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "OrganizationName", "insert organization name here", organizationName);
             }
 
             if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "RepositoryName", "insert repository name here"))
             {
-                string repositoryName = AnsiConsole.Ask<string>("What is the [green]Repository name[/]?");
+                var repositoryName = settings.RepositoryName is not null && settings.RepositoryName.IsSet
+                    ? settings.RepositoryName.Value
+                    : AnsiConsole.Ask<string>("What is the [green]Repository name[/]?");
+
                 DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "RepositoryName", "insert repository name here", repositoryName);
             }
         }

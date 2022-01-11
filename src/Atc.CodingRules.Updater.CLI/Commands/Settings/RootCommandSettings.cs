@@ -29,6 +29,14 @@ public class RootCommandSettings : BaseCommandSettings
     [Description("Solution/project file - required when multiple .sln files exists in root path")]
     public FlagValue<string>? BuildFile { get; init; }
 
+    [CommandOption("--organizationName [ORGANIZATIONNAME]")]
+    [Description("Optional: Specify the name of your organization for the Directory.Build.Props file")]
+    public FlagValue<string>? OrganizationName { get; init; }
+
+    [CommandOption("--repositoryName [REPOSITORYNAME]")]
+    [Description("Optional: Specify the name of your repository for the Directory.Build.Props file")]
+    public FlagValue<string>? RepositoryName { get; init; }
+
     public override ValidationResult Validate()
     {
         var validationResult = base.Validate();
@@ -38,7 +46,7 @@ public class RootCommandSettings : BaseCommandSettings
         }
 
         return string.IsNullOrEmpty(ProjectPath)
-            ? ValidationResult.Error("OrojectPath is missing.")
+            ? ValidationResult.Error("ProjectPath is missing.")
             : ValidationResult.Success();
     }
 }
