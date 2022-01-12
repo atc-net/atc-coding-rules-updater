@@ -1,3 +1,5 @@
+using Atc.CodingRules.Updater.CLI.Extensions;
+
 [assembly: CLSCompliant(false)]
 
 namespace Atc.CodingRules.Updater.CLI;
@@ -22,44 +24,7 @@ public static class Program
         var serviceCollection = ServiceCollectionFactory.Create(consoleLoggerConfiguration);
 
         var app = CommandAppFactory.CreateWithRootCommand<RootCommand>(serviceCollection);
-        app.Configure(config =>
-        {
-            config.AddExample(new[] { @"-p c:\temp\MyProject" });
-            config.AddExample(new[] { @"-p c:\temp\MyProject --projectTarget DotNetCore --useTemporarySuppressions -v" });
-            config.AddExample(new[] { @"-p c:\temp\MyProject --projectTarget DotNetCore --useTemporarySuppressions -v --organizationName MyCompany --repositoryName MyRepo" });
-
-            config.AddBranch("options-file", options =>
-            {
-                options.SetDescription("Commands for the options file 'atc-coding-rules-updater.json'");
-                options
-                    .AddCommand<OptionsFileCreateCommand>("create")
-                    .WithDescription("Create default options file 'atc-coding-rules-updater.json' if it doesn't exist")
-                    .WithExample(new[] { @"options-file create -p c:\temp\MyProject" });
-                options
-                    .AddCommand<OptionsFileValidateCommand>("validate")
-                    .WithDescription("Validate the options file 'atc-coding-rules-updater.json'")
-                    .WithExample(new[] { @"options-file -p c:\temp\MyProject" });
-            });
-
-            config.AddCommand<SanityCheckCommand>("sanity-check")
-                .WithDescription("Sanity check the project files.")
-                .WithExample(new[] { @"sanity-check -p c:\temp\MyProject" })
-                .WithExample(new[] { @"sanity-check -p c:\temp\MyProject --projectTarget DotNetCore -v" });
-
-            config.AddBranch("analyzer-providers", options =>
-            {
-                options.SetDescription("Commands for analyzer providers");
-                options
-                    .AddCommand<AnalyzerProvidersCollectCommand>("collect")
-                    .WithDescription("Collect base rules metadata from all Analyzer providers")
-                    .WithExample(new[] { @"analyzer-providers collect -p c:\temp\MyProject" })
-                    .WithExample(new[] { @"analyzer-providers collect -p c:\temp\MyProject -fetchMode ReCollect -v" });
-                options
-                    .AddCommand<AnalyzerProvidersCacheCleanupCommand>("cache-cleanup")
-                    .WithDescription("Cleanup cache from Analyzer providers")
-                    .WithExample(new[] { "analyzer-providers cache-cleanup" });
-            });
-        });
+        app.ConfigureCommands();
 
         return app.RunAsync(args);
     }
