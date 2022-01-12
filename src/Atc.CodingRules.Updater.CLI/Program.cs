@@ -51,6 +51,15 @@ public static class Program
         var dot = args.FirstOrDefault(x => x.Equals(".", StringComparison.Ordinal));
         if (string.IsNullOrEmpty(dot))
         {
+            if (args.Length == 1 &&
+                (args[0].Equals("version", StringComparison.OrdinalIgnoreCase) ||
+                 args[0].Equals("--version", StringComparison.OrdinalIgnoreCase)))
+            {
+                // Since -p|--projectPath is required from RootCommand,
+                // a default projectPath is appended to args
+                return new[] { "version", "-p", Environment.CurrentDirectory };
+            }
+
             return args;
         }
 

@@ -12,6 +12,9 @@ namespace Atc.CodingRules.Updater.CLI.Extensions
                 config.AddExample(new[] { @"-p c:\temp\MyProject --projectTarget DotNetCore --useTemporarySuppressions -v" });
                 config.AddExample(new[] { @"-p c:\temp\MyProject --projectTarget DotNetCore --useTemporarySuppressions -v --organizationName MyCompany --repositoryName MyRepo" });
 
+                config.AddCommand<VersionCommand>("version")
+                    .WithDescription("Display version for the ATC-Coding-Rules-Updater");
+
                 config.AddCommand<SanityCheckCommand>("sanity-check")
                     .WithDescription("Sanity check the project files.")
                     .WithExample(new[] { @"sanity-check -p c:\temp\MyProject" })

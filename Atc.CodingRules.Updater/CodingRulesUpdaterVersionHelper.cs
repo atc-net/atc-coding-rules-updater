@@ -30,8 +30,8 @@ namespace Atc.CodingRules.Updater
                 return;
             }
 
-            var currentVersion = CodingRulesUpdaterVersionHelper.GetCurrentVersion();
-            var latestVersion = CodingRulesUpdaterVersionHelper.GetLatestVersion()!;
+            var currentVersion = GetCurrentVersion();
+            var latestVersion = GetLatestVersion()!;
             logger.LogWarning($"Version {latestVersion} of ATC-Coding-Rules-Updater is available!");
             logger.LogWarning($"You are running version {currentVersion}");
             logger.LogWarning(string.Empty);

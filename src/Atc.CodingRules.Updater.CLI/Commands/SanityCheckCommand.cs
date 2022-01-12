@@ -2,9 +2,9 @@ namespace Atc.CodingRules.Updater.CLI.Commands
 {
     public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
     {
-        private readonly ILogger<ProjectCommandSettings> logger;
+        private readonly ILogger<SanityCheckCommand> logger;
 
-        public SanityCheckCommand(ILogger<ProjectCommandSettings> logger) => this.logger = logger;
+        public SanityCheckCommand(ILogger<SanityCheckCommand> logger) => this.logger = logger;
 
         public override Task<int> ExecuteAsync(
             CommandContext context,
