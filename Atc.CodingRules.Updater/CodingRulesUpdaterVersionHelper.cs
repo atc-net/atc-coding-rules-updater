@@ -22,7 +22,8 @@ namespace Atc.CodingRules.Updater
             return latestVersion is null || !latestVersion.GreaterThan(currentVersion);
         }
 
-        public static void PrintUpdateInfoIfNeeded(ILogger logger)
+        public static void PrintUpdateInfoIfNeeded(
+            ILogger logger)
         {
             if (IsLatestVersion())
             {
@@ -32,9 +33,9 @@ namespace Atc.CodingRules.Updater
             var currentVersion = CodingRulesUpdaterVersionHelper.GetCurrentVersion();
             var latestVersion = CodingRulesUpdaterVersionHelper.GetLatestVersion()!;
             logger.LogWarning($"Version {latestVersion} of ATC-Coding-Rules-Updater is available!");
-            logger.LogWarning($"Your are running version {currentVersion}");
+            logger.LogWarning($"You are running version {currentVersion}");
             logger.LogWarning(string.Empty);
-            logger.LogWarning("To update run:");
+            logger.LogWarning("To update run the following command:");
             logger.LogWarning("   dotnet tool update --global atc-coding-rules-updater");
             logger.LogWarning(string.Empty);
         }
