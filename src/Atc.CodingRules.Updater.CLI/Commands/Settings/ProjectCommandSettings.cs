@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings
 {
     public class ProjectCommandSettings : BaseCommandSettings
     {
-        [CommandOption("-t|--projectTarget [PROJECTTARGET]")]
+        [CommandOption($"{CommandConstants.ArgumentShortProjectTarget}|{CommandConstants.ArgumentLongProjectTarget} [PROJECTTARGET]")]
         [SupportedProjectTargetTypeDescription]
         public FlagValue<SupportedProjectTargetType> ProjectTarget { get; init; } = new FlagValue<SupportedProjectTargetType>();
 

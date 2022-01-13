@@ -2,142 +2,44 @@ using Spectre.Console;
 
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class RootCommand : AsyncCommand<RootCommandSettings>
+public class RootCommand : Command<RootCommandSettings>
 {
     private readonly ILogger<RootCommand> logger;
 
     public RootCommand(ILogger<RootCommand> logger) => this.logger = logger;
 
-    public override Task<int> ExecuteAsync(
+    public override int Execute(
         CommandContext context,
         RootCommandSettings settings)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings);
-    }
 
-    private async Task<int> ExecuteInternalAsync(
-        RootCommandSettings settings)
-    {
-        ConsoleHelper.WriteHeader();
-
-        var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath);
-
-        try
+        if (IsOptionValueTrue(settings.Version))
         {
-            CodingRulesUpdaterVersionHelper.PrintUpdateInfoIfNeeded(logger);
-
-            await ProjectHelper.HandleFiles(
-                logger,
-                projectPath,
-                options);
-
-            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "OrganizationName", "insert organization name here"))
-            {
-                var organizationName = settings.OrganizationName is not null && settings.OrganizationName.IsSet
-                    ? settings.OrganizationName.Value
-                    : AnsiConsole.Ask<string>("What is the [green]Organization name[/]?");
-
-                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "OrganizationName", "insert organization name here", organizationName);
-            }
-
-            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "RepositoryName", "insert repository name here"))
-            {
-                var repositoryName = settings.RepositoryName is not null && settings.RepositoryName.IsSet
-                    ? settings.RepositoryName.Value
-                    : AnsiConsole.Ask<string>("What is the [green]Repository name[/]?");
-
-                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "RepositoryName", "insert repository name here", repositoryName);
-            }
-        }
-        catch (Exception ex)
-        {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
-            return ConsoleExitStatusCodes.Failure;
+            HandleVersionOption();
         }
 
-        logger.LogInformation($"{EmojisConstants.Done} Done");
         return ConsoleExitStatusCodes.Success;
     }
 
-    private static async Task<Options> GetOptionsFromFileAndUserArguments(
-        RootCommandSettings settings,
-        DirectoryInfo projectPath)
+    private static bool IsOptionValueTrue(bool? value)
+        => value is not null && value.Value;
+
+    [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
+    private static void HandleVersionOption()
     {
-        var optionsPath = settings.GetOptionsPath();
-        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
-        options.Mappings.ResolvePaths(projectPath);
-
-        var projectTarget = ProjectCommandSettings.GetProjectTarget(settings);
-        if (projectTarget is not null)
+        System.Console.WriteLine(CodingRulesUpdaterVersionHelper.GetCurrentVersion().ToString());
+        if (CodingRulesUpdaterVersionHelper.IsLatestVersion())
         {
-            options.ProjectTarget = (SupportedProjectTargetType)projectTarget;
+            return;
         }
 
-        if (settings.UseLatestMinorNugetVersion.HasValue)
-        {
-            options.UseLatestMinorNugetVersion = settings.UseLatestMinorNugetVersion.GetValueOrDefault();
-        }
-
-        if (settings.UseTemporarySuppressions.HasValue)
-        {
-            options.UseTemporarySuppressions = settings.UseTemporarySuppressions.GetValueOrDefault();
-        }
-
-        var temporarySuppressionsPath = GetTemporarySuppressionsPath(settings);
-        if (temporarySuppressionsPath is not null &&
-            temporarySuppressionsPath.Exists)
-        {
-            options.TemporarySuppressionsPath = temporarySuppressionsPath.FullName;
-        }
-
-        if (settings.TemporarySuppressionAsExcel.HasValue)
-        {
-            options.TemporarySuppressionAsExcel = settings.TemporarySuppressionAsExcel.GetValueOrDefault();
-        }
-
-        var buildFile = GetBuildFile(projectPath, settings);
-        if (buildFile is not null)
-        {
-            options.BuildFile = buildFile.FullName;
-        }
-
-        return options;
-    }
-
-    private static DirectoryInfo? GetTemporarySuppressionsPath(
-        RootCommandSettings settings)
-    {
-        var temporarySuppressionsPath = string.Empty;
-        if (settings.TemporarySuppressionsPath is not null && settings.TemporarySuppressionsPath.IsSet)
-        {
-            temporarySuppressionsPath = settings.TemporarySuppressionsPath.Value;
-        }
-
-        return !string.IsNullOrEmpty(temporarySuppressionsPath)
-            ? new DirectoryInfo(temporarySuppressionsPath)
-            : null;
-    }
-
-    private static FileInfo? GetBuildFile(
-        DirectoryInfo projectPath,
-        RootCommandSettings settings)
-    {
-        var buildFile = string.Empty;
-        if (settings.BuildFile is not null && settings.BuildFile.IsSet)
-        {
-            buildFile = settings.BuildFile.Value;
-        }
-
-        if (!string.IsNullOrEmpty(buildFile))
-        {
-            return buildFile.Contains(':', StringComparison.Ordinal)
-                ? new FileInfo(buildFile)
-                : new FileInfo(Path.Combine(projectPath.FullName, buildFile));
-        }
-
-        return null;
+        var latestVersion = CodingRulesUpdaterVersionHelper.GetLatestVersion()!;
+        System.Console.WriteLine(string.Empty);
+        System.Console.WriteLine($"Version {latestVersion} of ATC-Coding-Rules-Updater is available!");
+        System.Console.WriteLine(string.Empty);
+        System.Console.WriteLine("To update run the following command:");
+        System.Console.WriteLine("   dotnet tool update --global atc-coding-rules-updater");
     }
 }

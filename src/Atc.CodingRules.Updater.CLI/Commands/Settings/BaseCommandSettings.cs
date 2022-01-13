@@ -1,20 +1,34 @@
 using System.ComponentModel;
+using Spectre.Console;
 
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings
 {
     public class BaseCommandSettings : CommandSettings
     {
-        [CommandOption("-p|--projectPath <PROJECTPATH>")]
+        [CommandOption($"{CommandConstants.ArgumentShortProjectPath}|{CommandConstants.ArgumentLongProjectPath} <PROJECTPATH>")]
         [Description("Path to the project directory (default current diectory)")]
         public string ProjectPath { get; init; } = string.Empty;
 
-        [CommandOption("-v|--verbose")]
+        [CommandOption($"{CommandConstants.ArgumentShortVerbose}|{CommandConstants.ArgumentLongVerbose} ")]
         [Description("Use verbose for more debug/trace information")]
         public bool Verbose { get; init; }
 
-        [CommandOption("-o|--optionsPath [OPTIONSPATH]")]
+        [CommandOption($"{CommandConstants.ArgumentShortOptionsPath}|{CommandConstants.ArgumentLongOptionsTarget} [OPTIONSPATH]")]
         [Description("Path to an optional options json-file")]
         public FlagValue<string>? OptionsPath { get; init; }
+
+        public override ValidationResult Validate()
+        {
+            var validationResult = base.Validate();
+            if (!validationResult.Successful)
+            {
+                return validationResult;
+            }
+
+            return string.IsNullOrEmpty(ProjectPath)
+                ? ValidationResult.Error("ProjectPath is missing.")
+                : ValidationResult.Success();
+        }
 
         internal string GetOptionsPath()
         {
