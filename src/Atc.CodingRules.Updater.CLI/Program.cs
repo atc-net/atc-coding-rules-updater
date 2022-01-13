@@ -32,11 +32,6 @@ public static class Program
 
     private static string[] SetProjectPathFromDotArgumentIfNeeded(string[] args)
     {
-        if (args.Any())
-        {
-            return args;
-        }
-
         if (!args.Contains("."))
         {
             return args;
@@ -61,6 +56,16 @@ public static class Program
             }
         }
 
+        if (!newArgs.Contains(CommandConstants.NameRun) &&
+            !newArgs.Contains(CommandConstants.NameSanityCheck) &&
+            !newArgs.Contains(CommandConstants.NameOptionsFile) &&
+            !newArgs.Contains(CommandConstants.NameAnalyzerProviders) &&
+            (newArgs.Contains(CommandConstants.ArgumentShortProjectPath) ||
+             newArgs.Contains(CommandConstants.ArgumentLongProjectPath)))
+        {
+            newArgs.Insert(0, CommandConstants.NameRun);
+        }
+
         return newArgs.ToArray();
     }
 
@@ -69,6 +74,12 @@ public static class Program
         if (args.Length == 0)
         {
             return new[] { CommandConstants.ArgumentShortHelp, };
+        }
+
+        if (args.Contains(CommandConstants.NameAnalyzerProviders) &&
+            args.Contains(CommandConstants.NameAnalyzerProvidersCleanupCache))
+        {
+            return args;
         }
 
         if (!(args.Contains(CommandConstants.ArgumentShortProjectPath) ||
@@ -87,8 +98,7 @@ public static class Program
             }
 
             if (args.Contains(CommandConstants.NameAnalyzerProviders) &&
-                (args.Contains(CommandConstants.NameAnalyzerProvidersCollect) ||
-                 args.Contains(CommandConstants.NameAnalyzerProvidersCleanupCache)))
+                args.Contains(CommandConstants.NameAnalyzerProvidersCollect))
             {
                 return new[] { CommandConstants.NameAnalyzerProviders, CommandConstants.ArgumentShortHelp, };
             }

@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
-public class RootCommandSettings : CommandSettings
+public class RootCommandSettings : BaseCommandSettings
 {
     [CommandOption(CommandConstants.ArgumentLongVersion)]
     [Description("Display version")]

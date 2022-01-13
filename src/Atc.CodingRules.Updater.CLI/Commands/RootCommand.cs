@@ -1,30 +1,27 @@
-using Spectre.Console;
-
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class RootCommand : Command<RootCommandSettings>
+public class RootCommand : AsyncCommand<RootCommandSettings>
 {
-    private readonly ILogger<RootCommand> logger;
-
-    public RootCommand(ILogger<RootCommand> logger) => this.logger = logger;
-
-    public override int Execute(
+    public override Task<int> ExecuteAsync(
         CommandContext context,
         RootCommandSettings settings)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
+        return ExecuteInternalAsync(settings);
+    }
 
-        if (IsOptionValueTrue(settings.Version))
+    private static async Task<int> ExecuteInternalAsync(
+        RootCommandSettings settings)
+    {
+        if (settings.IsOptionValueTrue(settings.Version))
         {
             HandleVersionOption();
         }
 
+        await Task.Delay(1);
         return ConsoleExitStatusCodes.Success;
     }
-
-    private static bool IsOptionValueTrue(bool? value)
-        => value is not null && value.Value;
 
     [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
     private static void HandleVersionOption()

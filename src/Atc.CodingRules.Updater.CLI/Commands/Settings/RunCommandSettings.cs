@@ -1,5 +1,6 @@
 using System.ComponentModel;
 
+// ReSharper disable StringLiteralTypo
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
 public class RunCommandSettings : ProjectCommandSettings
