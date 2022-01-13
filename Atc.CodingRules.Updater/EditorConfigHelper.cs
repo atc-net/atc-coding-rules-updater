@@ -1,6 +1,7 @@
 // ReSharper disable InvertIf
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
 // ReSharper disable SuggestBaseTypeForParameter
+// ReSharper disable ReplaceSubstringWithRangeIndexer
 namespace Atc.CodingRules.Updater;
 
 public static class EditorConfigHelper
@@ -152,7 +153,11 @@ public static class EditorConfigHelper
         string rawFileAtcData)
     {
         var rawFileCustomData = ExtractCustomDataWithoutCustomRulesHeader(rawFileData);
-        var data = rawGitData + Environment.NewLine + rawFileCustomData;
+        var data = rawGitData + rawFileCustomData;
+        if (data.EndsWith(Environment.NewLine, StringComparison.Ordinal))
+        {
+            data = data.Substring(0, data.Length - Environment.NewLine.Length);
+        }
 
         File.WriteAllText(file.FullName, data);
         logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} files merged");
@@ -191,11 +196,22 @@ public static class EditorConfigHelper
         var sb = new StringBuilder();
         var addLines = false;
 
-        foreach (var line in lines)
+        for (var index = 0; index < lines.Length; index++)
         {
+            var line = lines[index];
             if (addLines)
             {
-                if (!SectionDivider.Equals(line, StringComparison.Ordinal))
+                if (SectionDivider.Equals(line, StringComparison.Ordinal))
+                {
+                    if (index == 0 ||
+                        index + 1 == lines.Length ||
+                        (!CustomSectionHeader.Equals(lines[index + 1], StringComparison.Ordinal) &&
+                         !CustomSectionHeader.Equals(lines[index - 1], StringComparison.Ordinal)))
+                    {
+                        sb.AppendLine(line);
+                    }
+                }
+                else
                 {
                     sb.AppendLine(line);
                 }
