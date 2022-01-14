@@ -1,6 +1,5 @@
 using System.Drawing;
 using Atc.DotNet;
-using Microsoft.Extensions.Logging.Abstractions;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
@@ -27,6 +26,12 @@ public static class ProjectHelper
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
 
+        ProjectSanityCheckHelper.CheckFiles(
+            throwIf: true,
+            logger,
+            projectPath,
+            options.ProjectTarget);
+
         HandleEditorConfigFiles(logger, projectPath, options);
 
         if (options.ProjectTarget
@@ -50,8 +55,6 @@ public static class ProjectHelper
                     buildFile = new FileInfo(options.BuildFile);
                 }
 
-                SanityCheckConflictingOptionsInCsprojFiles(throwIf: true, NullLogger.Instance, projectPath, options);
-
                 await HandleTemporarySuppressions(
                     logger,
                     projectPath,
@@ -70,51 +73,13 @@ public static class ProjectHelper
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
 
-        SanityCheckConflictingOptionsInCsprojFiles(throwIf: false, logger, projectPath, options);
+        ProjectSanityCheckHelper.CheckFiles(
+            throwIf: false,
+            logger,
+            projectPath,
+            options.ProjectTarget);
 
         return Task.Delay(1);
-    }
-
-    private static void SanityCheckConflictingOptionsInCsprojFiles(
-        bool throwIf,
-        ILogger logger,
-        DirectoryInfo projectPath,
-        Options options)
-    {
-        if (options.ProjectTarget == SupportedProjectTargetType.DotNet5)
-        {
-            var fileWithElementEnableNETAnalyzers = DotnetCsProjHelper.SearchAllForElement(projectPath, "EnableNETAnalyzers", "true");
-            if (fileWithElementEnableNETAnalyzers.Any())
-            {
-                var sb = new StringBuilder();
-                const string header = "EnableNETAnalyzers in .csproj causes build errors, please remove the element from the following files:";
-                if (throwIf)
-                {
-                    sb.AppendLine(header);
-                }
-                else
-                {
-                    logger.LogWarning(header);
-                }
-
-                foreach (var file in fileWithElementEnableNETAnalyzers)
-                {
-                    if (throwIf)
-                    {
-                        sb.AppendLine(5, file.FullName);
-                    }
-                    else
-                    {
-                        logger.LogWarning($"     {file.FullName}");
-                    }
-                }
-
-                if (throwIf)
-                {
-                    throw new DataException(sb.ToString());
-                }
-            }
-        }
     }
 
     private static void HandleEditorConfigFiles(
@@ -262,7 +227,7 @@ public static class ProjectHelper
         else
         {
             var totalSuppressions = suppressionLinesPrAnalyzer.Sum(x => x.Item2.Count);
-            logger.LogInformation($"{EmojisConstants.FileUpdated}   [yellow]/[/]{EditorConfigHelper.FileNameEditorConfig} is updated with {totalSuppressions} suppressions");
+            logger.LogInformation($"{EmojisConstants.FileUpdated}   [yellow]/[/]{EditorConfigHelper.FileName} is updated with {totalSuppressions} suppressions");
         }
 
         stopwatch.Stop();

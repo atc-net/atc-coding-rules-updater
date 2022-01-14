@@ -4,7 +4,21 @@ namespace Atc.CodingRules.Updater;
 
 public static class DirectoryBuildPropsHelper
 {
-    public const string FileNameDirectoryBuildProps = "Directory.Build.props";
+    public const string FileName = "Directory.Build.props";
+
+    public static Collection<FileInfo> SearchAllForElement(
+        DirectoryInfo projectPath,
+        string elementName,
+        string? elementValue = null,
+        SearchOption searchOption = SearchOption.AllDirectories,
+        StringComparison stringComparison = StringComparison.Ordinal)
+        => FileHelper.SearchAllForElement(
+            projectPath,
+            FileName,
+            elementName,
+            elementValue,
+            searchOption,
+            stringComparison);
 
     public static void HandleFile(
         ILogger logger,
@@ -17,14 +31,14 @@ public static class DirectoryBuildPropsHelper
         ArgumentNullException.ThrowIfNull(path);
 
         var descriptionPart = string.IsNullOrEmpty(urlPart)
-            ? $"[yellow]/[/]{FileNameDirectoryBuildProps}"
-            : $"[yellow]{urlPart}/[/]{FileNameDirectoryBuildProps}";
+            ? $"[yellow]/[/]{FileName}"
+            : $"[yellow]{urlPart}/[/]{FileName}";
 
-        var file = new FileInfo(Path.Combine(path.FullName, FileNameDirectoryBuildProps));
+        var file = new FileInfo(Path.Combine(path.FullName, FileName));
 
         var rawGitUrl = string.IsNullOrEmpty(urlPart)
-            ? $"{rawCodingRulesDistribution}/{FileNameDirectoryBuildProps}"
-            : $"{rawCodingRulesDistribution}/{urlPart}/{FileNameDirectoryBuildProps}";
+            ? $"{rawCodingRulesDistribution}/{FileName}"
+            : $"{rawCodingRulesDistribution}/{urlPart}/{FileName}";
 
         try
         {
@@ -69,7 +83,7 @@ public static class DirectoryBuildPropsHelper
 
     public static bool HasFileInsertPlaceholderElement(DirectoryInfo path, string elementName, string elementValue)
     {
-        var file = new FileInfo(Path.Combine(path.FullName, FileNameDirectoryBuildProps));
+        var file = new FileInfo(Path.Combine(path.FullName, FileName));
         if (!file.Exists)
         {
             return false;
@@ -87,7 +101,7 @@ public static class DirectoryBuildPropsHelper
         string elementValue,
         string newElementValue)
     {
-        var file = new FileInfo(Path.Combine(path.FullName, FileNameDirectoryBuildProps));
+        var file = new FileInfo(Path.Combine(path.FullName, FileName));
         if (!file.Exists)
         {
             return;

@@ -4,6 +4,34 @@ public static class FileHelper
 {
     public static readonly string[] LineBreaks = { "\r\n", "\r", "\n" };
 
+    public static Collection<FileInfo> SearchAllForElement(
+        DirectoryInfo projectPath,
+        string searchPattern,
+        string elementName,
+        string? elementValue = null,
+        SearchOption searchOption = SearchOption.AllDirectories,
+        StringComparison stringComparison = StringComparison.Ordinal)
+    {
+        var result = new Collection<FileInfo>();
+        var files = Directory.GetFiles(projectPath.FullName, searchPattern, searchOption);
+        foreach (var file in files)
+        {
+            var fileContent = File.ReadAllText(file);
+            var searchText = $"<{elementName}";
+            if (elementValue is not null)
+            {
+                searchText = $"<{elementName}>{elementValue}</{elementName}>";
+            }
+
+            if (fileContent.IndexOf(searchText, stringComparison) != -1)
+            {
+                result.Add(new FileInfo(file));
+            }
+        }
+
+        return result;
+    }
+
     public static string ReadAllText(
         FileInfo file)
     {
