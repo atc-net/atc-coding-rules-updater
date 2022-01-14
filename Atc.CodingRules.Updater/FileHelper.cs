@@ -12,6 +12,8 @@ public static class FileHelper
         SearchOption searchOption = SearchOption.AllDirectories,
         StringComparison stringComparison = StringComparison.Ordinal)
     {
+        ArgumentNullException.ThrowIfNull(projectPath);
+
         var result = new Collection<FileInfo>();
         var files = Directory.GetFiles(projectPath.FullName, searchPattern, searchOption);
         foreach (var file in files)
@@ -48,6 +50,8 @@ public static class FileHelper
         string rawGitData,
         string descriptionPart)
     {
+        ArgumentNullException.ThrowIfNull(file);
+
         File.WriteAllText(file.FullName, rawGitData);
         logger.LogInformation($"{EmojisConstants.FileCreated}    {descriptionPart} created");
     }

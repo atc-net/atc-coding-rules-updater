@@ -23,8 +23,9 @@ public static class HttpClientHelper
                 var stopwatch = Stopwatch.StartNew();
                 logger.LogTrace($"     Download from: {url}");
 
+                var uri = new Uri(url);
                 using var client = new HttpClient();
-                response = await client.GetStringAsync(url, cancellationToken);
+                response = await client.GetStringAsync(uri, cancellationToken);
 
                 stopwatch.Stop();
                 logger.LogTrace($"     Download time: {stopwatch.Elapsed.GetPrettyTime()}");

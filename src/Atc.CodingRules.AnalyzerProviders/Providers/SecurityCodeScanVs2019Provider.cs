@@ -17,18 +17,20 @@ public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
         var headers3 = htmlDoc.DocumentNode.SelectNodes("//h3").ToList();
 
-        foreach (var item in headers3)
+        foreach (var item in headers3.Select(x => x.InnerText))
         {
-            if (!item.InnerText.Contains("SCS", StringComparison.Ordinal))
+            if (!item.Contains("SCS", StringComparison.Ordinal))
             {
                 continue;
             }
 
-            var sa = item.InnerText.Split(" - ");
+            var sa = item.Split(" - ");
             if (sa.Length != 2)
             {
                 continue;

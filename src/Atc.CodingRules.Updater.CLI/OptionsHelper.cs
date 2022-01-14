@@ -7,6 +7,8 @@ public static class OptionsHelper
         DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {
+        ArgumentNullException.ThrowIfNull(projectPath);
+
         var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (!fileInfo.Exists)
         {

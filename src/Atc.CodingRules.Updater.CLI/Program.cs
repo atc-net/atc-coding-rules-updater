@@ -32,7 +32,7 @@ public static class Program
 
     private static string[] SetProjectPathFromDotArgumentIfNeeded(string[] args)
     {
-        if (!args.Contains("."))
+        if (!args.Contains(".", StringComparer.Ordinal))
         {
             return args;
         }
@@ -42,8 +42,8 @@ public static class Program
         {
             if (".".Equals(s, StringComparison.Ordinal))
             {
-                if (!(newArgs.Contains(CommandConstants.ArgumentShortProjectPath) ||
-                      newArgs.Contains(CommandConstants.ArgumentLongProjectPath)))
+                if (!(newArgs.Contains(CommandConstants.ArgumentShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+                      newArgs.Contains(CommandConstants.ArgumentLongProjectPath, StringComparer.OrdinalIgnoreCase)))
                 {
                     newArgs.Add(CommandConstants.ArgumentShortProjectPath);
                 }
@@ -56,12 +56,12 @@ public static class Program
             }
         }
 
-        if (!newArgs.Contains(CommandConstants.NameRun) &&
-            !newArgs.Contains(CommandConstants.NameSanityCheck) &&
-            !newArgs.Contains(CommandConstants.NameOptionsFile) &&
-            !newArgs.Contains(CommandConstants.NameAnalyzerProviders) &&
-            (newArgs.Contains(CommandConstants.ArgumentShortProjectPath) ||
-             newArgs.Contains(CommandConstants.ArgumentLongProjectPath)))
+        if (!newArgs.Contains(CommandConstants.NameRun, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(CommandConstants.NameSanityCheck, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(CommandConstants.NameAnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
+            (newArgs.Contains(CommandConstants.ArgumentShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+             newArgs.Contains(CommandConstants.ArgumentLongProjectPath, StringComparer.OrdinalIgnoreCase)))
         {
             newArgs.Insert(0, CommandConstants.NameRun);
         }
@@ -76,34 +76,34 @@ public static class Program
             return new[] { CommandConstants.ArgumentShortHelp, };
         }
 
-        if (args.Contains(CommandConstants.NameAnalyzerProviders) &&
-            args.Contains(CommandConstants.NameAnalyzerProvidersCleanupCache))
+        if (args.Contains(CommandConstants.NameAnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
+            args.Contains(CommandConstants.NameAnalyzerProvidersCleanupCache, StringComparer.OrdinalIgnoreCase))
         {
             return args;
         }
 
-        if (!(args.Contains(CommandConstants.ArgumentShortProjectPath) ||
-              args.Contains(CommandConstants.ArgumentLongProjectPath)))
+        if (!(args.Contains(CommandConstants.ArgumentShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+              args.Contains(CommandConstants.ArgumentLongProjectPath, StringComparer.OrdinalIgnoreCase)))
         {
-            if (args.Contains(CommandConstants.NameSanityCheck))
+            if (args.Contains(CommandConstants.NameSanityCheck, StringComparer.OrdinalIgnoreCase))
             {
                 return new[] { CommandConstants.NameSanityCheck, CommandConstants.ArgumentShortHelp, };
             }
 
-            if (args.Contains(CommandConstants.NameOptionsFile) &&
-                (args.Contains(CommandConstants.NameOptionsFileCreate) ||
-                 args.Contains(CommandConstants.NameOptionsFileValidate)))
+            if (args.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
+                (args.Contains(CommandConstants.NameOptionsFileCreate, StringComparer.OrdinalIgnoreCase) ||
+                 args.Contains(CommandConstants.NameOptionsFileValidate, StringComparer.OrdinalIgnoreCase)))
             {
                 return new[] { CommandConstants.NameOptionsFile, CommandConstants.ArgumentShortHelp, };
             }
 
-            if (args.Contains(CommandConstants.NameAnalyzerProviders) &&
-                args.Contains(CommandConstants.NameAnalyzerProvidersCollect))
+            if (args.Contains(CommandConstants.NameAnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
+                args.Contains(CommandConstants.NameAnalyzerProvidersCollect, StringComparer.OrdinalIgnoreCase))
             {
                 return new[] { CommandConstants.NameAnalyzerProviders, CommandConstants.ArgumentShortHelp, };
             }
 
-            if (args.Contains(CommandConstants.NameRun))
+            if (args.Contains(CommandConstants.NameRun, StringComparer.OrdinalIgnoreCase))
             {
                 return new[] { CommandConstants.NameRun, CommandConstants.ArgumentShortHelp, };
             }

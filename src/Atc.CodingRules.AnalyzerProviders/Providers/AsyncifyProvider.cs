@@ -2,6 +2,9 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class AsyncifyProvider : AnalyzerProviderBase
 {
+    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
+    private const string GitRawAnalyzerProviderBaseRulesBasePath = "https://raw.githubusercontent.com/hvanbakel/Asyncify-CSharp/master/Asyncify/Asyncify/Resources.resx";
+
     public AsyncifyProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
         : base(logger, logWithAnsiConsoleMarkup)
     {
@@ -14,11 +17,15 @@ public class AsyncifyProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new (Name);
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync("https://raw.githubusercontent.com/hvanbakel/Asyncify-CSharp/master/Asyncify/Asyncify/Resources.resx").ConfigureAwait(false);
+        var htmlDoc = await web.LoadFromWebAsync(GitRawAnalyzerProviderBaseRulesBasePath).ConfigureAwait(false);
 
         var xml = new XmlDocument();
         xml.LoadXml(htmlDoc.Text);
@@ -51,7 +58,7 @@ public class AsyncifyProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var code = nameAttribute.Value;
+            var code = nameAttribute.Value.ToUpperInvariant();
 
             if (nameAttribute.Value.EndsWith("Title", StringComparison.Ordinal))
             {
@@ -70,7 +77,7 @@ public class AsyncifyProvider : AnalyzerProviderBase
                 descriptions.Add(Tuple.Create(code, description));
             }
 
-            if (!codes.Contains(code))
+            if (!codes.Contains(code, StringComparer.Ordinal))
             {
                 codes.Add(code);
             }

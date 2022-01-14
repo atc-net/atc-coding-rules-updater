@@ -13,6 +13,7 @@ public class AnalyzerProviderBaseRuleData
 
     public string Name { get; set; } = string.Empty;
 
+    [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
     public ICollection<Rule> Rules { get; set; } = new List<Rule>();
 
     public string? ExceptionMessage { get; set; }

@@ -1,6 +1,6 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.4
-# Updated: 20-12-2020
+# Version: 1.0.7
+# Updated: 18-06-2021
 # Location: Root
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
@@ -45,7 +45,6 @@ indent_size = 2
 
 # Markdown Files
 [*.md]
-trim_trailing_whitespace = false
 
 # Web Files
 [*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue}]
@@ -55,9 +54,10 @@ indent_size = 2
 [*.{cmd,bat}]
 end_of_line = crlf
 
-# Bash Files
-[*.sh]
+# Shell scripts/files
+[*.{sh,ps1}]
 end_of_line = lf
+indent_size = 2
 
 # Makefiles
 [Makefile]
@@ -252,6 +252,7 @@ csharp_space_between_square_brackets = false
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#wrap-options
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
+csharp_style_namespace_declarations = file_scoped:suggestion
 
 ##########################################
 # .NET Naming Conventions
@@ -433,17 +434,28 @@ dotnet_naming_rule.parameters_rule.severity             = warning
 
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
+dotnet_diagnostic.MA0003.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0003.md
+dotnet_diagnostic.MA0004.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0004.md
+dotnet_diagnostic.MA0006.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0006.md
 dotnet_diagnostic.MA0016.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0016.md
 dotnet_diagnostic.MA0025.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0025.md
 dotnet_diagnostic.MA0026.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0026.md
+dotnet_diagnostic.MA0028.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0028.md
+dotnet_diagnostic.MA0048.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0048.md
 
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1014.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1014.md
+dotnet_diagnostic.CA1068.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1068.md
+dotnet_diagnostic.CA1707.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1707.md
+dotnet_diagnostic.CA2007.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
+dotnet_diagnostic.IDE0058.severity = none           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/IDE0058.md
 
 
-# Microsoft - Threading
-# https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
+# Microsoft - Compiler Errors
+# https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/
+dotnet_diagnostic.CS4014.severity = error          # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCompilerErrors/CS4014.md
 
 
 # SecurityCodeScan
@@ -454,12 +466,20 @@ dotnet_diagnostic.MA0026.severity = suggestion      # https://github.com/atc-net
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
 dotnet_diagnostic.SA1009.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1009.md
 dotnet_diagnostic.SA1101.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1101.md
+dotnet_diagnostic.SA1122.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1122.md
+dotnet_diagnostic.SA1133.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1133.md
 dotnet_diagnostic.SA1200.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1200.md
+dotnet_diagnostic.SA1201.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1201.md
+dotnet_diagnostic.SA1202.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1202.md
+dotnet_diagnostic.SA1204.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1204.md
 dotnet_diagnostic.SA1413.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1413.md
 dotnet_diagnostic.SA1600.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1600.md
 dotnet_diagnostic.SA1602.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1602.md
 dotnet_diagnostic.SA1604.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1604.md
+dotnet_diagnostic.SA1623.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1623.md
+dotnet_diagnostic.SA1629.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1629.md
 dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1633.md
+dotnet_diagnostic.SA1649.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1649.md
 
 
 # SonarAnalyzer.CSharp
@@ -471,28 +491,9 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 # Custom - Code Analyzers Rules
 ##########################################
 
-dotnet_diagnostic.CA2227.severity = none            # for now
+dotnet_diagnostic.CA1031.severity = none            # Do not catch general exception types
+dotnet_diagnostic.CA1054.severity = none            # URI parameters should not be strings
+dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
+dotnet_diagnostic.CA2254.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 
-dotnet_diagnostic.CA1014.severity = none            # for now
-dotnet_diagnostic.CA1031.severity = none            # for now
-dotnet_diagnostic.CA1054.severity = none            # for now
-dotnet_diagnostic.CA1062.severity = none            # for now
-dotnet_diagnostic.CA1305.severity = none            # for now
-dotnet_diagnostic.CA1801.severity = none            # for now
-dotnet_diagnostic.CA1848.severity = none            # for now
-dotnet_diagnostic.CA2007.severity = none            # for now
-dotnet_diagnostic.CA2234.severity = none            # for now
-dotnet_diagnostic.CA2254.severity = none            # for now
-
-dotnet_diagnostic.MA0002.severity = none            # for now
-dotnet_diagnostic.MA0004.severity = none            # for now
-dotnet_diagnostic.MA0011.severity = none            # for now
-dotnet_diagnostic.MA0016.severity = none            # for now
-dotnet_diagnostic.MA0028.severity = none            # for now
-dotnet_diagnostic.MA0051.severity = none            # for now
-
-dotnet_diagnostic.CS8603.severity = none            # for now
-
-dotnet_diagnostic.S1075.severity = none             # for now
-dotnet_diagnostic.S3267.severity = none             # for now
-dotnet_diagnostic.S4457.severity = none             # for now
+dotnet_diagnostic.MA0016.severity = none            # Prefer return collection abstraction instead of implementation

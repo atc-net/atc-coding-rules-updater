@@ -18,10 +18,11 @@ public static class AtcApiNugetClientHelper
         try
         {
             var response = string.Empty;
+            var uri = new Uri($"{BaseAddress}/package?packageId={packageId}");
             TaskHelper.RunSync(async () =>
             {
                 using var client = new HttpClient();
-                response = await client.GetStringAsync($"{BaseAddress}/package?packageId={packageId}", cancellationToken);
+                response = await client.GetStringAsync(uri, cancellationToken);
             });
 
             if (string.IsNullOrEmpty(response) ||
@@ -53,13 +54,14 @@ public static class AtcApiNugetClientHelper
         try
         {
             var response = string.Empty;
+            var uri = new Uri($"{BaseAddress}/package?packageId={packageId}");
             TaskHelper.RunSync(async () =>
             {
                 var stopwatch = Stopwatch.StartNew();
                 logger.LogTrace($"     Get newest version for:  {packageId}");
 
                 using var client = new HttpClient();
-                response = await client.GetStringAsync($"{BaseAddress}/package?packageId={packageId}", cancellationToken);
+                response = await client.GetStringAsync(uri, cancellationToken);
 
                 stopwatch.Stop();
                 logger.LogTrace($"     Get newest version time: {stopwatch.Elapsed.GetPrettyTime()}");

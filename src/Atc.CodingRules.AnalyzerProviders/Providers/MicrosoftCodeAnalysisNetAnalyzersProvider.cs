@@ -20,6 +20,8 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
         if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())

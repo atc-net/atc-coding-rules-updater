@@ -22,6 +22,8 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
         var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();

@@ -16,10 +16,13 @@ public class MicrosoftCompilerErrorsProviderUndocumented : AnalyzerProviderBase
         => new (Name);
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override async Task<AnalyzerProviderBaseRuleData> ReCollect(
         AnalyzerProviderBaseRuleData data)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var list = new List<Tuple<string, string>>
         {
             Tuple.Create("CS1998", "Async method lacks 'await' operators and will run synchronously."),

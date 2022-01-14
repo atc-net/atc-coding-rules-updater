@@ -2,6 +2,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public abstract class AnalyzerProviderBase : IAnalyzerProvider
 {
+    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
     private const string GitRawAtcAnalyzerProviderBaseRulesBasePath = "https://raw.githubusercontent.com/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
     private readonly ILogger logger;
     private readonly bool logWithAnsiConsoleMarkup;
@@ -81,6 +82,8 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     protected static async Task<AnalyzerProviderBaseRuleData?> ReadFromTempFolder(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var tempFolder = Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules");
         if (!Directory.Exists(tempFolder))
         {
@@ -101,6 +104,8 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     protected static Task WriteToTempFolder(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         if (!string.IsNullOrEmpty(data.ExceptionMessage))
         {
             return Task.CompletedTask;
@@ -126,6 +131,8 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     protected Task<AnalyzerProviderBaseRuleData?> ReadFromGithub(
         AnalyzerProviderBaseRuleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var rawGitData = HttpClientHelper.GetAsString(logger, GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json");
         return Task.FromResult(string.IsNullOrEmpty(rawGitData)
             ? null

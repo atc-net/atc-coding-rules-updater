@@ -81,8 +81,13 @@ public static class DirectoryBuildPropsHelper
         }
     }
 
-    public static bool HasFileInsertPlaceholderElement(DirectoryInfo path, string elementName, string elementValue)
+    public static bool HasFileInsertPlaceholderElement(
+        DirectoryInfo path,
+        string elementName,
+        string elementValue)
     {
+        ArgumentNullException.ThrowIfNull(path);
+
         var file = new FileInfo(Path.Combine(path.FullName, FileName));
         if (!file.Exists)
         {
@@ -101,6 +106,8 @@ public static class DirectoryBuildPropsHelper
         string elementValue,
         string newElementValue)
     {
+        ArgumentNullException.ThrowIfNull(path);
+
         var file = new FileInfo(Path.Combine(path.FullName, FileName));
         if (!file.Exists)
         {

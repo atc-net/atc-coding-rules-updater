@@ -87,15 +87,15 @@ public static class ProjectSanityCheckHelper
             logger.LogWarning(header);
         }
 
-        foreach (var file in foundFiles)
+        foreach (var fileFullName in foundFiles.Select(x => x.FullName))
         {
             if (throwIf)
             {
-                sb.AppendLine(5, file.FullName);
+                sb.AppendLine(5, fileFullName);
             }
             else
             {
-                logger.LogWarning($"     {file.FullName}");
+                logger.LogWarning($"     {fileFullName}");
             }
         }
 
@@ -144,15 +144,15 @@ public static class ProjectSanityCheckHelper
             logger.LogWarning(header);
         }
 
-        foreach (var file in foundFiles)
+        foreach (var fileFullName in foundFiles.Select(x => x.FullName))
         {
             if (throwIf)
             {
-                sb.AppendLine(5, file.FullName);
+                sb.AppendLine(5, fileFullName);
             }
             else
             {
-                logger.LogWarning($"     {file.FullName}");
+                logger.LogWarning($"     {fileFullName}");
             }
         }
 
