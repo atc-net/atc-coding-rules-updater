@@ -10,6 +10,8 @@ public static class Program
 {
     public static Task<int> Main(string[] args)
     {
+        ArgumentNullException.ThrowIfNull(args);
+
         args = SetProjectPathFromDotArgumentIfNeeded(args);
         args = SetHelpArgumentIfNeeded(args);
 

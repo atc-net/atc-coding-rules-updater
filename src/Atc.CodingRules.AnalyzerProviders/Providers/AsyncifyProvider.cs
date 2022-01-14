@@ -18,7 +18,6 @@ public class AsyncifyProvider : AnalyzerProviderBase
         => new (Name);
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
@@ -85,13 +84,13 @@ public class AsyncifyProvider : AnalyzerProviderBase
 
         foreach (var code in codes)
         {
-            var title = titles.FirstOrDefault(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
+            var title = titles.First(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
             if (title is null)
             {
                 continue;
             }
 
-            var description = descriptions.FirstOrDefault(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
+            var description = descriptions.First(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
             var link = this.DocumentationLink!.AbsoluteUri;
 
             data.Rules.Add(
