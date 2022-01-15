@@ -491,9 +491,15 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 # Custom - Code Analyzers Rules
 ##########################################
 
+dotnet_diagnostic.IDE0057.severity = none           # Substring can be simplified
+
 dotnet_diagnostic.CA1031.severity = none            # Do not catch general exception types
 dotnet_diagnostic.CA1054.severity = none            # URI parameters should not be strings
 dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
+dotnet_diagnostic.CA2007.severity = none            # Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2254.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 
+dotnet_diagnostic.MA0004.severity = none            # Use Task.ConfigureAwait(false) as the current SynchronizationContext is not needed
 dotnet_diagnostic.MA0016.severity = none            # Prefer return collection abstraction instead of implementation
+dotnet_diagnostic.MA0075.severity = none            # Do not use implicit culture-sensitive ToString
+dotnet_diagnostic.MA0076.severity = none            # Do not use implicit culture-sensitive ToString in interpolated strings
