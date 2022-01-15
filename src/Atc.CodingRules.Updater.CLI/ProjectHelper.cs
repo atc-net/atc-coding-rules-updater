@@ -195,6 +195,11 @@ public static class ProjectHelper
             logger.LogError($"{EmojisConstants.Error} {ex.Message}");
             return;
         }
+        catch (IOException ex)
+        {
+            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            return;
+        }
 
         var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
         if (!suppressionLinesPrAnalyzer.Any())
