@@ -7,4 +7,4 @@ currentPath=$(pwd)
 jsonPath="$currentPath/atc-coding-rules-updater.json"
 
 echo "Running atc-coding-rules-updater to fetch updated rulesets and configurations"
-atc-coding-rules-updater -r "$currentPath" --optionsPath "$jsonPath" -v true
+atc-coding-rules-updater run -p "$currentPath" --optionsPath "$jsonPath" -v true
