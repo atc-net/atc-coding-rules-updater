@@ -5,6 +5,15 @@ This repository contains the CLI tool, which can be used to maintain the `coding
 * Read more about [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
 * Master rule files are located [here](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
 
+## <span style="color:yellow">Breaking changes</span>
+
+### Version 1.x to 2.x
+
+```powershell
+ * options: -r | --rootPath has changes to -p | --projectPath
+ * to update anything, a "run" command has been introduces
+ ```
+
 ## Status
 
 ### General Project Info
@@ -40,7 +49,7 @@ The Atc.CodingRules.Updater.CLI library is available through a cross platform co
 
 ### Requirements
 
-* .NET Core 3.1 runtime
+* .NET 6 runtime
 
 ### Installation
 
@@ -71,8 +80,101 @@ dotnet tool update --global atc-coding-rules-updater
 
 Since the tool is published as a .NET Core Tool, it can be launched from anywhere using any shell or command-line interface by calling **atc-coding-rules-updater**. The help information is displayed when providing the `--help` argument to **atc-coding-rules-updater**
 
+#### Option <span style="color:yellow">--help</span>
 ```powershell
 atc-coding-rules-updater --help
+
+
+USAGE:
+    atc-coding-rules-updater.exe [OPTIONS]
+
+OPTIONS:
+    -h, --help       Prints help information
+    -v, --verbose    Use verbose for more debug/trace information
+        --version    Display version
+
+COMMANDS:
+    run                   Update the project folder with ATC coding rules and configurations
+    sanity-check          Sanity check the project files
+    options-file          Commands for the options file 'atc-coding-rules-updater.json'
+    analyzer-providers    Commands for analyzer providers
+```
+
+#### Command <span style="color:yellow">run</span>
+```powershell
+USAGE:
+    atc-coding-rules-updater.exe run [OPTIONS]
+
+EXAMPLES:
+    atc-coding-rules-updater.exe .         (equivalent to 'run -p [CurrentFolder]')
+    atc-coding-rules-updater.exe run .     (equivalent to 'run -p [CurrentFolder]')
+    atc-coding-rules-updater.exe run -p .  (equivalent to 'run -p [CurrentFolder]')
+    atc-coding-rules-updater.exe run -p c:\temp\MyProject
+    atc-coding-rules-updater.exe run -p c:\temp\MyProject -t DotNetCore --useTemporarySuppressions  --organizationName
+MyCompany  --repositoryName MyRepo -v
+
+OPTIONS:
+    -h, --help                                                   Prints help information
+    -v, --verbose                                                Use verbose for more debug/trace information
+    -p, --projectPath <PROJECTPATH>                              Path to the project directory (default current
+                                                                 diectory)
+    -o, --optionsPath [OPTIONSPATH]                              Path to an optional options json-file
+    -t, --projectTarget [PROJECTTARGET]                          Sets the ProjectTarget. Valid values are: DotNetCore,
+                                                                 DotNet5, DotNet6 (default)
+        --useLatestMinorNugetVersion                             Indicate if nuget packages should by updated to latest
+                                                                 minor version (default true)
+        --useTemporarySuppressions                               Indicate if build process should use temporary
+                                                                 suppressions - appends to .editorconfig - unless
+                                                                 temporarySuppressionPath is set
+        --temporarySuppressionPath [TEMPORARYSUPPRESSIONPATH]    Optional path to temporary suppressions file - if not
+                                                                 set .editorconfig file is used
+        --temporarySuppressionAsExcel                            Indicate if temporary suppressions file should be saved
+                                                                 as Excel (.xlsx)
+        --buildFile [BUILDFILE]                                  Solution/project file - required when multiple .sln
+                                                                 files exists in root path
+        --organizationName [ORGANIZATIONNAME]                    Optional: Specify the name of your organization for the
+                                                                 Directory.Build.Props file
+        --repositoryName [REPOSITORYNAME]                        Optional: Specify the name of your repository for the
+                                                                 Directory.Build.Props file
+```
+
+#### Command <span style="color:yellow">sanity-check</span>
+```powershell
+USAGE:
+    atc-coding-rules-updater.exe sanity-check [OPTIONS]
+
+EXAMPLES:
+    atc-coding-rules-updater.exe sanity-check .         (equivalent to 'sanity-check -p [CurrentFolder]')
+    atc-coding-rules-updater.exe sanity-check -p c:\temp\MyProject
+    atc-coding-rules-updater.exe sanity-check -p c:\temp\MyProject -t DotNetCore -v
+
+OPTIONS:
+    -h, --help                             Prints help information
+    -v, --verbose                          Use verbose for more debug/trace information
+    -p, --projectPath <PROJECTPATH>        Path to the project directory (default current diectory)
+    -o, --optionsPath [OPTIONSPATH]        Path to an optional options json-file
+    -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6
+                                           (default)
+```
+
+#### Command <span style="color:yellow">options-file</span>
+```powershell
+USAGE:
+    atc-coding-rules-updater.exe options-file [OPTIONS] <COMMAND>
+
+EXAMPLES:
+    atc-coding-rules-updater.exe options-file create .       (equivalent to 'options-file create -p [CurrentFolder]')
+    atc-coding-rules-updater.exe options-file create -p .    (equivalent to 'options-file create -p [CurrentFolder]')
+    atc-coding-rules-updater.exe options-file create -p c:\temp\MyProject
+    atc-coding-rules-updater.exe options-file validate .     (equivalent to 'options-file validate -p [CurrentFolder]')
+    atc-coding-rules-updater.exe options-file validate -p c:\temp\MyProject
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    create      Create default options file 'atc-coding-rules-updater.json' if it doesn't exist
+    validate    Validate the options file 'atc-coding-rules-updater.json'
 ```
 
 ### Example
@@ -80,53 +182,53 @@ atc-coding-rules-updater --help
 Having a project folder in c:\code\MyProject where the .sln file for C# projects exists in the root, run the following command
 
 ```powershell
-atc-coding-rules-updater -r c:\code\MyProject -v
+atc-coding-rules-updater run -p c:\code\MyProject -v
 ```
 
 Running the command above produces the following output
 
 ```powershell
-        ___  ______  _____        ___          __                                 __        __
-       / _ |/_  __/ / ___/ ____  / _ \ __ __  / / ___   ___      __ __   ___  ___/ / ___ _ / /_ ___   ____
-      / __ | / /   / /__  /___/ / , _// // / / / / -_) (_-<     / // /  / _ \/ _  / / _ `// __// -_) / __/
-     /_/ |_|/_/    \___/       /_/|_| \_,_/ /_/  \__/ /___/     \_,_/  / .__/\_,_/  \_,_/ \__/ \__/ /_/
-                                                                      /_/
-
-FileUpdate # Information: common.props updated - Remember to change CompanyName in the file
-FileUpdate # Debug: code-analysis.props updated
-FileUpdate # Debug: .editorconfig updated
-FileUpdate # Debug: src/.editorconfig updated
-FileUpdate # Debug: src/Directory.Build.props updated
-FileUpdate # Debug: test/.editorconfig updated
-FileUpdate # Debug: test/Directory.Build.props updated
-FileUpdate # Debug: sample/.editorconfig updated
-FileUpdate # Debug: sample/Directory.Build.props updated
-
-Update is OK.
+  ____            _                                      _           _
+ |  _ \   _   _  | |   ___   ___     _   _   _ __     __| |   __ _  | |_    ___   _ __
+ | |_) | | | | | | |  / _ \ / __|   | | | | | '_ \   / _` |  / _` | | __|  / _ \ | '__|
+ |  _ <  | |_| | | | |  __/ \__ \   | |_| | | |_) | | (_| | | (_| | | |_  |  __/ | |
+ |_| \_\  \__,_| |_|  \___| |___/    \__,_| | .__/   \__,_|  \__,_|  \__|  \___| |_|
+                                            |_|
+🐭 Working on EditorConfig files
+🟢   /.editorconfig files merged
+🟢   sample/.editorconfig created
+🟢   src/.editorconfig created
+🟢   test/.editorconfig created
+🔨 Working on Directory.Build.props files
+🟢   /Directory.Build.props created
+🟢   sample/Directory.Build.props created
+🟢   src/Directory.Build.props created
+🟢   test/Directory.Build.props created
+✅ Done
 ```
 
 ## Options file schema / example
 
 The tool has an optional options parameter, which can be used to control the paths for persisting the .editorconfigs and props files. This can be applied as follows `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
 
-### atc-coding-rules-updater.json example
+### atc-coding-rules-updater.json example 1
 
 ```json
 {
-    "Mappings": {
-        "Sample": {
-            "Paths": [
+    "mappings": {
+        "sample": {
+            "paths": [
                 "C:\\Temp\\MyProject\\sample1",
                 "C:\\Temp\\MyProject\\sample2"
             ]
         },
-        "Src": {
-            "Paths": [
+        "src": {
+            "paths": [
                 "C:\\Temp\\MyProject\\src"
             ]
         },
-        "Test": {
-            "Paths": [
+        "test": {
+            "paths": [
                 "C:\\Temp\\MyProject\\test"
             ]
         }
@@ -134,18 +236,47 @@ The tool has an optional options parameter, which can be used to control the pat
 }
 ```
 
-or
+### atc-coding-rules-updater.json example 2
 
 ```json
 {
-    "Mappings": {
-        "Src": { "Paths": [ "source" ] },
-        "Test": { "Paths": [ "tests" ] }
+    "mappings": {
+        "src": { "paths": [ "source" ] },
+        "test": { "paths": [ "tests" ] }
     }
 }
 ```
 
-**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--projectPath` /  `-p`), then it will automatically be found and used.
+### atc-coding-rules-updater.json default
+
+```json
+{
+  "projectTarget": "DotNet6",
+  "useLatestMinorNugetVersion": true,
+  "useTemporarySuppressions": false,
+  "temporarySuppressionAsExcel": false,
+  "analyzerProviderCollectingMode": "LocalCache",
+  "mappings": {
+    "sample": {
+      "paths": [
+        "sample"
+      ]
+    },
+    "src": {
+      "paths": [
+        "src"
+      ]
+    },
+    "test": {
+      "paths": [
+        "test"
+      ]
+    }
+  }
+}
+```
+
+**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--projectPath` /  `-p`), then it will automatically be found and used. Other given arguments will then override.
 
 ## CLI Tool Usage from powershell
 
@@ -172,9 +303,9 @@ In scenario A we have root where `src` and `test` destination is defined as:
 
 ```json
 {
-    "Mappings": {
-        "Src": { "Paths": [ "src" ] },
-        "Test": { "Paths": [ "test" ] }
+    "mappings": {
+        "src": { "paths": [ "src" ] },
+        "test": { "paths": [ "test" ] }
     }
 }
 ```
@@ -193,13 +324,13 @@ In this scenario we have root where `src` and `test` destination is defined as:
 
 ```json
 {
-    "Mappings": {
-        "Src": { "Paths": [
+    "mappings": {
+        "src": { "paths": [
             "MyDemo.Gui",
             "MyDemo.SharedContracts",
             "MyDemo.WebApi"
             ] },
-        "Test": { "Paths": [
+        "test": { "paths": [
             "MyDemo.Gui.Tests",
             "MyDemo.SharedContracts.Tests",
             "MyDemo.WebApi.Tests"
