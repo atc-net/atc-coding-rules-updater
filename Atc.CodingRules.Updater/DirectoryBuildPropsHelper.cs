@@ -146,7 +146,7 @@ public static class DirectoryBuildPropsHelper
         }
 
         File.WriteAllText(file.FullName, fileContent);
-        logger.LogDebug($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
+        logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
     }
 
     private static string EnsureLatestPackageReferencesVersion(
