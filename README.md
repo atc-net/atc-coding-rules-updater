@@ -5,7 +5,7 @@ This repository contains the CLI tool, which can be used to maintain the `coding
 * Read more about [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
 * Master rule files are located [here](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
 
-## <span style="color:yellow">Breaking changes</span>
+## <p style="color:#ff9900">Breaking changes</p>
 
 ### Version 1.x to 2.x
 
