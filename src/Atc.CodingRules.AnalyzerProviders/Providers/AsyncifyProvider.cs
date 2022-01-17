@@ -57,7 +57,7 @@ public class AsyncifyProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var code = nameAttribute.Value.ToUpperInvariant();
+            var code = nameAttribute.Value;
 
             if (nameAttribute.Value.EndsWith("Title", StringComparison.Ordinal))
             {
