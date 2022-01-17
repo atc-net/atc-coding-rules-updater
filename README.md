@@ -1,47 +1,20 @@
+[![NuGet Version](https://img.shields.io/nuget/v/atc-coding-rules-updater.svg?logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/atc-coding-rules-updater)
+
 # ATC.Net Coding rules updater
 
-This repository contains the CLI tool, which can be used to maintain the `coding-rules` in a project, where [atc-coding-rules](https://github.com/atc-net/atc-coding-rules) have been utilized.
+This repository contains a CLI tool, which can be used to maintain `coding-rules` in a project, where [atc-coding-rules](https://github.com/atc-net/atc-coding-rules) has been utilized.
 
-* Read more about [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
-* Master rule files are located [here](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
+* Read about [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
+* Master rule files [information](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
 
-## <p style="color:#ff9900">Breaking changes</p>
+## Breaking changes
 
-### Version 1.x to 2.x
+![](https://img.shields.io/static/v1?color=ff9900&style=for-the-badge&label=&message=Breaking%20changes%20From%20Version%201.x%20to%202.x)
 
 ```powershell
- * options: -r | --rootPath has changes to -p | --projectPath
- * to update anything, a "run" command has been introduces
+ * Options Parameter Change: -r | --rootPath has changed to -p | --projectPath
+ * CLI Tool now requires the "run" command to update rule-files
  ```
-
-## Status
-
-### General Project Info
-
-[![Github top language](https://img.shields.io/github/languages/top/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
-[![Github stars](https://img.shields.io/github/stars/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
-[![Github forks](https://img.shields.io/github/forks/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
-[![Github size](https://img.shields.io/github/repo-size/atc-net/atc-coding-rules-updater)](https://github.com/atc-net/atc-coding-rules-updater)
-[![Issues Open](https://img.shields.io/github/issues/atc-net/atc-coding-rules-updater.svg?logo=github)](https://github.com/atc-net/atc-coding-rules-updater/issues)
-
-### Packages
-
-[![Github Version](https://img.shields.io/static/v1?logo=github&color=blue&label=github&message=latest)](https://github.com/orgs/atc-net/packages?repo_name=atc-coding-rules-updater)
-[![NuGet Version](https://img.shields.io/nuget/v/atc-coding-rules-updater.svg?logo=nuget)](https://www.nuget.org/profiles/atc-net)
-
-### Build Status
-
-![Pre-Integration](https://github.com/atc-net/atc-coding-rules-updater/workflows/Pre-Integration/badge.svg)
-![Post-Integration](https://github.com/atc-net/atc-coding-rules-updater/workflows/Post-Integration/badge.svg)
-![Release](https://github.com/atc-net/atc-coding-rules-updater/workflows/Release/badge.svg)
-
-### Code Quality
-
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=security_rating)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=bugs)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atc-coding-rules-updater&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=atc-coding-rules-updater)
 
 ## CLI Tool
 
@@ -401,22 +374,8 @@ If there are multiple solutions (.sln) files in the root folder, the `--buildFil
 --buildFile                 Optional path to solution/project file - required when multiple .sln files exists in root path
 ```
 
-## The workflow setup for this repository
+## How to contribute
 
-[Read more on Git-Flow](docs/GitFlow.md)
+[Contribution Guidelines](https://atc-net.github.io/introduction/about-atc#how-to-contribute)
 
-## Contributing
-
-Please refer to each project's style and contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow. [Read more here](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
-
- 1. **Fork** the repo on GitHub
- 2. **Clone** the project to your own machine
- 3. **Commit** changes to your own branch
- 4. **Push** your work back up to your fork
- 5. Submit a **Pull request** so that we can review your changes
-
-NOTE: Be sure to merge the latest from "upstream" before making a pull request!
-
-## Coding Guidelines
-
-This repository is adapting the [ATC-Coding-Rules](https://github.com/atc-net/atc-coding-rules) which is defined and based on .editorconfig's and a range of Roslyn Analyzers.
+[Coding Guidelines](https://atc-net.github.io/introduction/about-atc#coding-guidelines)
