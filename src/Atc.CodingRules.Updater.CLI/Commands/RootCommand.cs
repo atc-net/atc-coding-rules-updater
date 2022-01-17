@@ -1,52 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using Atc.CodingRules.Updater.CLI.Commands.CommandOptions;
-using Atc.Data.Models;
-using McMaster.Extensions.CommandLineUtils;
+namespace Atc.CodingRules.Updater.CLI.Commands;
 
-namespace Atc.CodingRules.Updater.CLI.Commands
+public class RootCommand : AsyncCommand<RootCommandSettings>
 {
-    public class RootCommand : BaseCommandOptions
+    public override Task<int> ExecuteAsync(
+        CommandContext context,
+        RootCommandSettings settings)
     {
-        private const string RawCodingRulesDistribution = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(settings);
+        return ExecuteInternalAsync(settings);
+    }
 
-        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Can't change it do to interface signature.")]
-        public async Task<int> OnExecute(CommandLineApplication configCmd)
+    private static async Task<int> ExecuteInternalAsync(
+        RootCommandSettings settings)
+    {
+        if (settings.IsOptionValueTrue(settings.Version))
         {
-            if (configCmd is null)
-            {
-                throw new ArgumentNullException(nameof(configCmd));
-            }
-
-            if (CommandLineApplicationHelper.GetHelpMode(configCmd))
-            {
-                ConsoleHelper.WriteHelp(configCmd, "Please specify some options");
-                return ExitStatusCodes.Failure;
-            }
-
-            ConsoleHelper.WriteHeader();
-            var verboseMode = CommandLineApplicationHelper.GetVerboseMode(configCmd);
-            var options = OptionsHelper.CreateDefault(configCmd);
-            var rootPath = CommandLineApplicationHelper.GetRootPath(configCmd);
-            var useTemporarySuppressions = CommandLineApplicationHelper.GetUseTemporarySuppressions(configCmd);
-            var temporarySuppressionsPath = CommandLineApplicationHelper.GetTemporarySuppressionsPath(configCmd);
-            var temporarySuppressionAsExcel = CommandLineApplicationHelper.GetTemporarySuppressionAsExcel(configCmd);
-            var buildFile = CommandLineApplicationHelper.GetBuildFile(configCmd);
-            var logItems = new List<LogKeyValueItem>();
-
-            logItems.AddRange(
-                await ConfigHelper.HandleFiles(
-                    RawCodingRulesDistribution,
-                    rootPath,
-                    options,
-                    useTemporarySuppressions,
-                    temporarySuppressionsPath,
-                    temporarySuppressionAsExcel,
-                    buildFile));
-
-            return ConsoleHelper.WriteLogItemsAndExit(logItems, verboseMode, "Update");
+            HandleVersionOption();
         }
+
+        await Task.Delay(1);
+        return ConsoleExitStatusCodes.Success;
+    }
+
+    [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
+    private static void HandleVersionOption()
+    {
+        System.Console.WriteLine(CodingRulesUpdaterVersionHelper.GetCurrentVersion().ToString());
+        if (CodingRulesUpdaterVersionHelper.IsLatestVersion())
+        {
+            return;
+        }
+
+        var latestVersion = CodingRulesUpdaterVersionHelper.GetLatestVersion()!;
+        System.Console.WriteLine(string.Empty);
+        System.Console.WriteLine($"Version {latestVersion} of ATC-Coding-Rules-Updater is available!");
+        System.Console.WriteLine(string.Empty);
+        System.Console.WriteLine("To update run the following command:");
+        System.Console.WriteLine("   dotnet tool update --global atc-coding-rules-updater");
     }
 }

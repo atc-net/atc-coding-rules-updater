@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>atc-coding-rules-updater</PackageId>
     <PackageTags>coding-rules;rules</PackageTags>
     <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
@@ -13,16 +13,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="1.1.124" />
-    <PackageReference Include="Colorful.Console" Version="1.2.15" />
-    <PackageReference Include="EPPlus" Version="5.7.0" />
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
-    <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Atc" Version="1.1.379" />
+    <PackageReference Include="Atc.Console.Spectre" Version="1.1.379" />
+    <PackageReference Include="EPPlus" Version="5.8.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Atc.CodingRules.Updater\Atc.CodingRules.Updater.csproj" />
     <ProjectReference Include="..\Atc.CodingRules.AnalyzerProviders\Atc.CodingRules.AnalyzerProviders.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,26 +1,24 @@
-using System.Threading.Tasks;
-using Atc.CodingRules.AnalyzerProviders.Providers;
-using Xunit;
+namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers;
 
-namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
+public class SonarAnalyzerCSharpProviderTests
 {
-    public class SonarAnalyzerCSharpProviderTests
+    [Theory]
+    [InlineData(ProviderCollectingMode.LocalCache)]
+    [InlineData(ProviderCollectingMode.GitHub)]
+    [InlineData(ProviderCollectingMode.ReCollect)]
+    public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
-        [Fact]
-        public async Task CollectBaseRules()
-        {
-            // Arrange
-            var provider = new SonarAnalyzerCSharpProvider();
+        // Arrange
+        var provider = new SonarAnalyzerCSharpProvider(NullLogger.Instance);
 
-            // Act
-            var actual = await provider.CollectBaseRules();
+        // Act
+        var actual = await provider.CollectBaseRules(providerCollectingMode);
 
-            // Assert
-            Assert.NotNull(actual);
-            Assert.NotNull(actual.Name);
-            Assert.Equal("SonarAnalyzer.CSharp", actual.Name);
-            Assert.NotNull(actual.Rules);
-            ////Assert.True(actual.Rules.Count >= 409); // Only works locally (and not in github action)
-        }
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Name);
+        Assert.Equal(SonarAnalyzerCSharpProvider.Name, actual.Name);
+        Assert.NotNull(actual.Rules);
+        Assert.True(actual.Rules.Count >= 400);
     }
 }

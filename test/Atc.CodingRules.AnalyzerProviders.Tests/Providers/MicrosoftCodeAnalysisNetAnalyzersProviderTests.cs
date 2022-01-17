@@ -1,26 +1,24 @@
-using System.Threading.Tasks;
-using Atc.CodingRules.AnalyzerProviders.Providers;
-using Xunit;
+namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers;
 
-namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
+public class MicrosoftCodeAnalysisNetAnalyzersProviderTests
 {
-    public class MicrosoftCodeAnalysisNetAnalyzersProviderTests
+    [Theory]
+    [InlineData(ProviderCollectingMode.LocalCache)]
+    [InlineData(ProviderCollectingMode.GitHub)]
+    [InlineData(ProviderCollectingMode.ReCollect)]
+    public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
-        [Fact]
-        public async Task CollectBaseRules()
-        {
-            // Arrange
-            var provider = new MicrosoftCodeAnalysisNetAnalyzersProvider();
+        // Arrange
+        var provider = new MicrosoftCodeAnalysisNetAnalyzersProvider(NullLogger.Instance);
 
-            // Act
-            var actual = await provider.CollectBaseRules();
+        // Act
+        var actual = await provider.CollectBaseRules(providerCollectingMode);
 
-            // Assert
-            Assert.NotNull(actual);
-            Assert.NotNull(actual.Name);
-            Assert.Equal("Microsoft.CodeAnalysis.NetAnalyzers", actual.Name);
-            Assert.NotNull(actual.Rules);
-            Assert.True(actual.Rules.Count >= 252);
-        }
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Name);
+        Assert.Equal(MicrosoftCodeAnalysisNetAnalyzersProvider.Name, actual.Name);
+        Assert.NotNull(actual.Rules);
+        Assert.True(actual.Rules.Count >= 252);
     }
 }

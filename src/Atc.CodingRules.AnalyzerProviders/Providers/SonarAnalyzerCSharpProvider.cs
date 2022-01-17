@@ -1,61 +1,52 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Atc.CodingRules.AnalyzerProviders.Models;
-using HtmlAgilityPack;
+namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
-namespace Atc.CodingRules.AnalyzerProviders.Providers
+public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
 {
-    public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
+    public SonarAnalyzerCSharpProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
+        : base(logger, logWithAnsiConsoleMarkup)
     {
-        public override Uri? DocumentationLink { get; set; } = new Uri("https://rules.sonarsource.com/csharp/", UriKind.Absolute);
+    }
 
-        public override async Task<AnalyzerProviderBaseRuleData> CollectBaseRules()
+    public static string Name => "SonarAnalyzer.CSharp";
+
+    public Uri? RuleLinkBase { get; set; } = new ("https://rules.sonarsource.com/csharp/", UriKind.Absolute);
+
+    public override Uri? DocumentationLink { get; set; } = new ("https://rules.sonarsource.com/page-data/csharp/page-data.json", UriKind.Absolute);
+
+    protected override AnalyzerProviderBaseRuleData CreateData()
+        => new (Name);
+
+    protected override async Task ReCollect(
+        AnalyzerProviderBaseRuleData data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        var web = new HtmlWeb();
+        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
+        var jsonDoc = JsonDocument.Parse(htmlDoc.DocumentNode.InnerText);
+        var jsonDocItems = jsonDoc.RootElement.GetProperty("result").GetProperty("pageContext").GetProperty("rules").EnumerateArray();
+
+        while (jsonDocItems.MoveNext())
         {
-            var data = new AnalyzerProviderBaseRuleData("SonarAnalyzer.CSharp");
+            var jsonElement = jsonDocItems.Current;
+            var ruleKey = jsonElement.GetProperty("ruleKey").GetString();
+            var summary = jsonElement.GetProperty("summary").GetString() ?? string.Empty;
+            var link = RuleLinkBase + ruleKey;
+            var description = jsonElement.GetProperty("description").GetString();
 
-            HtmlDocument? htmlDoc;
-            try
+            if (ruleKey is null)
             {
-                htmlDoc = WebScrapingHelper.GetPage(this.DocumentationLink!, true);
-            }
-            catch (IOException ex)
-            {
-                data.ExceptionMessage = ex.Message;
-                return data;
+                continue;
             }
 
-            WebScrapingHelper.QuitWebDriver();
-            if (htmlDoc is null)
-            {
-                return data;
-            }
+            var rule = new Rule(
+                ruleKey.Replace("RSPEC-", string.Empty, StringComparison.Ordinal),
+                summary,
+                link,
+                category: null,
+                description);
 
-            var listItems = htmlDoc.DocumentNode.SelectNodes("//*//ol[@class='sc-dNLxif dyMlJY']//li").ToList();
-
-            foreach (var node in listItems)
-            {
-                var aHrefNode = node.SelectSingleNode("a");
-                var titleNode = aHrefNode.SelectSingleNode("h3");
-                var categoryNode = aHrefNode.SelectSingleNode("span");
-                var attributeValue = aHrefNode.Attributes["href"];
-
-                var title = titleNode.InnerText;
-                var category = categoryNode.InnerText.Replace("&nbsp;", string.Empty, StringComparison.Ordinal);
-                var code = attributeValue.Value.Replace("/csharp/RSPEC-", string.Empty, StringComparison.Ordinal);
-
-                data.Rules.Add(
-                    new Rule(
-                        $"S{code}",
-                        title,
-                        $"{DocumentationLink}RSPEC-{code}",
-                        category: category));
-            }
-
-            await Task.CompletedTask;
-
-            return data;
+            data.Rules.Add(rule);
         }
     }
 }

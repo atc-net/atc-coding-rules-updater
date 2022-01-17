@@ -1,26 +1,24 @@
-using System.Threading.Tasks;
-using Atc.CodingRules.AnalyzerProviders.Providers;
-using Xunit;
+namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers;
 
-namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers
+public class AsyncFixerProviderTests
 {
-    public class AsyncFixerProviderTests
+    [Theory]
+    [InlineData(ProviderCollectingMode.LocalCache)]
+    [InlineData(ProviderCollectingMode.GitHub)]
+    [InlineData(ProviderCollectingMode.ReCollect)]
+    public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
     {
-        [Fact]
-        public async Task CollectBaseRules()
-        {
-            // Arrange
-            var provider = new AsyncFixerProvider();
+        // Arrange
+        var provider = new AsyncFixerProvider(NullLogger.Instance);
 
-            // Act
-            var actual = await provider.CollectBaseRules();
+        // Act
+        var actual = await provider.CollectBaseRules(providerCollectingMode);
 
-            // Assert
-            Assert.NotNull(actual);
-            Assert.NotNull(actual.Name);
-            Assert.Equal("AsyncFixer", actual.Name);
-            Assert.NotNull(actual.Rules);
-            Assert.True(actual.Rules.Count >= 5);
-        }
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Name);
+        Assert.Equal(AsyncFixerProvider.Name, actual.Name);
+        Assert.NotNull(actual.Rules);
+        Assert.True(actual.Rules.Count >= 5);
     }
 }

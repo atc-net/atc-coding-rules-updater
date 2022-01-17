@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="1.1.379" />
+    <PackageReference Include="Atc.DotNet" Version="1.1.379" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Atc.CodingRules\Atc.CodingRules.csproj" />
+  </ItemGroup>
+
+</Project>
