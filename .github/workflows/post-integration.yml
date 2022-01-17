@@ -74,7 +74,7 @@ jobs:
           git push origin stable
 
       - name: 🗳️ Creating library package for pre-release
-        run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME -p:PackageVersion=${NBGV_NuGetPackageVersion}
+        run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME
 
       - name: 📦 Push packages to GitHub Package Registry
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'atc-coding-rules-updater.'${NBGV_NuGetPackageVersion}'.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
