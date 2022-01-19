@@ -308,7 +308,6 @@ public static class ProjectHelper
         }
     }
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private static Task CreateSuppressionsFileInTempPath(
         ILogger logger,
         DirectoryInfo temporarySuppressionsPath,
@@ -339,60 +338,7 @@ public static class ProjectHelper
             worksheet.Cells[rowNr, 4].Value = "HelpLink";
             rowNr++;
 
-            foreach (var item in suppressionLinesPrAnalyzer)
-            {
-                foreach (var line in item.Item2)
-                {
-                    var sa = line.Split("#");
-                    if (sa.Length != 2)
-                    {
-                        continue;
-                    }
-
-                    var code = sa[0]
-                        .Replace("dotnet_diagnostic.", string.Empty, StringComparison.Ordinal)
-                        .Replace(".severity = none", string.Empty, StringComparison.Ordinal)
-                        .Trim();
-
-                    var occurrenceAsTxt = sa[1]
-                        .Substring(0, sa[1].IndexOf("occurrence", StringComparison.Ordinal))
-                        .Trim();
-
-                    var occurrence = int.Parse(occurrenceAsTxt, NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo);
-
-                    var afterOccurrence = sa[1]
-                        .Substring(sa[1].IndexOf("occurrence", StringComparison.Ordinal))
-                        .Replace("occurrences", string.Empty, StringComparison.Ordinal)
-                        .Replace("occurrence", string.Empty, StringComparison.Ordinal)
-                        .Trim();
-
-                    string message;
-                    var helpLink = string.Empty;
-                    if (afterOccurrence.Length > 0)
-                    {
-                        var indexOfHttp = afterOccurrence.LastIndexOf("- http", StringComparison.Ordinal);
-                        if (indexOfHttp != -1)
-                        {
-                            message = afterOccurrence.Substring(2, indexOfHttp - 2).Trim();
-                            helpLink = afterOccurrence.Substring(indexOfHttp + 2).Trim();
-                        }
-                        else
-                        {
-                            message = afterOccurrence;
-                        }
-                    }
-                    else
-                    {
-                        message = "Unknown";
-                    }
-
-                    worksheet.Cells[rowNr, 1].Value = code;
-                    worksheet.Cells[rowNr, 2].Value = occurrence;
-                    worksheet.Cells[rowNr, 3].Value = message;
-                    worksheet.Cells[rowNr, 4].Value = helpLink;
-                    rowNr++;
-                }
-            }
+            rowNr = AddSuppressionLinesToWorksheet(worksheet, suppressionLinesPrAnalyzer, rowNr);
 
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             worksheet.Cells["A1:D1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -405,6 +351,79 @@ public static class ProjectHelper
             return excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
         }
 
+        var suppressionsText = CreateSuppressionsText(suppressionLinesPrAnalyzer);
+
+        logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+
+        return File.WriteAllTextAsync(temporarySuppressionsFile, suppressionsText, Encoding.UTF8);
+    }
+
+    private static int AddSuppressionLinesToWorksheet(
+        ExcelWorksheet worksheet,
+        IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer,
+        int rowNr)
+    {
+        foreach (var item in suppressionLinesPrAnalyzer)
+        {
+            foreach (var line in item.Item2)
+            {
+                var sa = line.Split("#");
+                if (sa.Length != 2)
+                {
+                    continue;
+                }
+
+                var code = sa[0]
+                    .Replace("dotnet_diagnostic.", string.Empty, StringComparison.Ordinal)
+                    .Replace(".severity = none", string.Empty, StringComparison.Ordinal)
+                    .Trim();
+
+                var occurrenceAsTxt = sa[1]
+                    .Substring(0, sa[1].IndexOf("occurrence", StringComparison.Ordinal))
+                    .Trim();
+
+                var occurrence = int.Parse(occurrenceAsTxt, NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo);
+
+                var afterOccurrence = sa[1]
+                    .Substring(sa[1].IndexOf("occurrence", StringComparison.Ordinal))
+                    .Replace("occurrences", string.Empty, StringComparison.Ordinal)
+                    .Replace("occurrence", string.Empty, StringComparison.Ordinal)
+                    .Trim();
+
+                string message;
+                var helpLink = string.Empty;
+                if (afterOccurrence.Length > 0)
+                {
+                    var indexOfHttp = afterOccurrence.LastIndexOf("- http", StringComparison.Ordinal);
+                    if (indexOfHttp != -1)
+                    {
+                        message = afterOccurrence.Substring(2, indexOfHttp - 2).Trim();
+                        helpLink = afterOccurrence.Substring(indexOfHttp + 2).Trim();
+                    }
+                    else
+                    {
+                        message = afterOccurrence;
+                    }
+                }
+                else
+                {
+                    message = "Unknown";
+                }
+
+                worksheet.Cells[rowNr, 1].Value = code;
+                worksheet.Cells[rowNr, 2].Value = occurrence;
+                worksheet.Cells[rowNr, 3].Value = message;
+                worksheet.Cells[rowNr, 4].Value = helpLink;
+                rowNr++;
+            }
+        }
+
+        return rowNr;
+    }
+
+    private static string CreateSuppressionsText(
+        IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer)
+    {
         var sb = new StringBuilder();
         sb.AppendLine(GlobalizationConstants.EnglishCultureInfo, $"{EditorConfigHelper.AutogeneratedCustomSectionHeaderPrefix} {DateTime.Now:F}");
         foreach (var (analyzerName, suppressionLines) in suppressionLinesPrAnalyzer)
@@ -417,9 +436,7 @@ public static class ProjectHelper
             }
         }
 
-        logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
-
-        return File.WriteAllTextAsync(temporarySuppressionsFile, sb.ToString(), Encoding.UTF8);
+        return sb.ToString();
     }
 
     private static List<Tuple<string, List<string>>> GetSuppressionLines(

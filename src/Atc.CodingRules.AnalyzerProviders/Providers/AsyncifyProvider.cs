@@ -17,7 +17,6 @@ public class AsyncifyProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new (Name);
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
@@ -38,6 +37,16 @@ public class AsyncifyProvider : AnalyzerProviderBase
         var codes = new List<string>();
         var titles = new List<Tuple<string, string>>();
         var descriptions = new List<Tuple<string, string>>();
+        ExtractCodesAndTitlesAndDescriptionsFromDataNodes(dataNodes, titles, descriptions, codes);
+        CollectCodesAndTitlesAndDescriptionsToRules(data, codes, titles, descriptions);
+    }
+
+    private static void ExtractCodesAndTitlesAndDescriptionsFromDataNodes(
+        XmlNodeList dataNodes,
+        ICollection<Tuple<string, string>> titles,
+        ICollection<Tuple<string, string>> descriptions,
+        ICollection<string> codes)
+    {
         foreach (var dataNode in dataNodes)
         {
             if (dataNode is not XmlElement xmlElement)
@@ -81,7 +90,14 @@ public class AsyncifyProvider : AnalyzerProviderBase
                 codes.Add(code);
             }
         }
+    }
 
+    private void CollectCodesAndTitlesAndDescriptionsToRules(
+        AnalyzerProviderBaseRuleData data,
+        List<string> codes,
+        IReadOnlyCollection<Tuple<string, string>> titles,
+        IReadOnlyCollection<Tuple<string, string>> descriptions)
+    {
         foreach (var code in codes)
         {
             var title = titles.First(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
