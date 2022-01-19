@@ -194,9 +194,8 @@ public static class DirectoryBuildPropsHelper
                 {
                     var latestVersion = AtcApiNugetClientHelper.GetLatestVersionForPackageId(logger, item.PackageId, CancellationToken.None);
 
-                    // TODO: Change GreaterThan to GreaterThan-Without-Major
                     if (latestVersion is not null &&
-                        latestVersion.GreaterThan(version))
+                        latestVersion.GreaterThan(version, significantParts: 4, startingPart: 2))
                     {
                         result.Add(
                             new DotnetNugetPackage(
