@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules.AnalyzerPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules", "src\Atc.CodingRules\Atc.CodingRules.csproj", "{85273D86-2477-41FA-A55A-10B912334C88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.CodingRules.Updater", "Atc.CodingRules.Updater\Atc.CodingRules.Updater.csproj", "{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.CodingRules.Updater", "src\Atc.CodingRules.Updater\Atc.CodingRules.Updater.csproj", "{5AF6DB00-AED6-44D6-8F60-7734D118C5FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

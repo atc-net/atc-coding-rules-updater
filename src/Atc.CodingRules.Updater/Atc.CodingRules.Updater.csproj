@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Atc.CodingRules\Atc.CodingRules.csproj" />
+    <ProjectReference Include="..\Atc.CodingRules\Atc.CodingRules.csproj" />
   </ItemGroup>
 
 </Project>
