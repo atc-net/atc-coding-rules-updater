@@ -22,7 +22,7 @@ The Atc.CodingRules.Updater.CLI library is available through a cross platform co
 
 ### Requirements
 
-* .NET 6 runtime
+* [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 
 ### Installation
 
