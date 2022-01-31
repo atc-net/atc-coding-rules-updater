@@ -1,6 +1,6 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class OptionsFileCreateCommand : AsyncCommand<ProjectBaseCommandSettings>
+public class OptionsFileCreateCommand : AsyncCommand<ProjectCommandSettings>
 {
     private readonly ILogger<OptionsFileCreateCommand> logger;
 
@@ -8,23 +8,22 @@ public class OptionsFileCreateCommand : AsyncCommand<ProjectBaseCommandSettings>
 
     public override Task<int> ExecuteAsync(
         CommandContext context,
-        ProjectBaseCommandSettings settings)
+        ProjectCommandSettings settings)
     {
         ArgumentNullException.ThrowIfNull(settings);
         return ExecuteInternalAsync(settings);
     }
 
     private async Task<int> ExecuteInternalAsync(
-        ProjectBaseCommandSettings settings)
+        ProjectCommandSettings settings)
     {
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var optionsPath = settings.GetOptionsPath();
 
         try
         {
-            (bool isSuccessful, string error) = await OptionsHelper.CreateOptionsFile(projectPath, optionsPath);
+            (bool isSuccessful, string error) = await OptionsHelper.CreateOptionsFile(projectPath, settings);
             if (isSuccessful)
             {
                 logger.LogInformation("The options file is created");

@@ -139,6 +139,7 @@ EXAMPLES:
     atc-coding-rules-updater.exe options-file create .       (equivalent to 'options-file create -p [CurrentFolder]')
     atc-coding-rules-updater.exe options-file create -p .    (equivalent to 'options-file create -p [CurrentFolder]')
     atc-coding-rules-updater.exe options-file create -p c:\temp\MyProject
+    atc-coding-rules-updater.exe options-file create -p c:\temp\MyProject -t DotNet5
     atc-coding-rules-updater.exe options-file validate .     (equivalent to 'options-file validate -p [CurrentFolder]')
     atc-coding-rules-updater.exe options-file validate -p c:\temp\MyProject
 

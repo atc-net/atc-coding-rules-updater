@@ -28,15 +28,22 @@ public static class OptionsHelper
 
     public static async Task<(bool, string)> CreateOptionsFile(
         DirectoryInfo projectPath,
-        string? settingsOptionsPath)
+        ProjectCommandSettings settings)
     {
-        var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
+        ArgumentNullException.ThrowIfNull(settings);
+
+        var fileInfo = GetOptionsFile(projectPath, settings.GetOptionsPath());
         if (fileInfo.Exists)
         {
             return (false, "File already exist");
         }
 
         var options = CreateDefaultOptions();
+        if (settings.ProjectTarget.IsSet)
+        {
+            options.ProjectTarget = settings.ProjectTarget.Value;
+        }
+
         var serializeOptions = JsonSerializerOptionsFactory.Create();
         var json = JsonSerializer.Serialize(options, serializeOptions);
         await File.WriteAllTextAsync(fileInfo.FullName, json, Encoding.UTF8);
