@@ -231,11 +231,6 @@ The tool has an optional options parameter, which can be used to control the pat
   "temporarySuppressionAsExcel": false,
   "analyzerProviderCollectingMode": "LocalCache",
   "mappings": {
-    "sample": {
-      "paths": [
-        "sample"
-      ]
-    },
     "src": {
       "paths": [
         "src"

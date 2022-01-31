@@ -12,14 +12,14 @@ public static class OptionsHelper
         var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (!fileInfo.Exists)
         {
-            return CreateDefaultOptions();
+            return CreateDefaultOptions(projectPath);
         }
 
         var optionsPath = GetOptionsPath(projectPath, settingsOptionsPath);
         var options = await DeserializeFile(fileInfo);
         if (options is null)
         {
-            return CreateDefaultOptions();
+            return CreateDefaultOptions(projectPath);
         }
 
         options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));
@@ -30,6 +30,7 @@ public static class OptionsHelper
         DirectoryInfo projectPath,
         ProjectCommandSettings settings)
     {
+        ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(settings);
 
         var fileInfo = GetOptionsFile(projectPath, settings.GetOptionsPath());
@@ -38,7 +39,7 @@ public static class OptionsHelper
             return (false, "File already exist");
         }
 
-        var options = CreateDefaultOptions();
+        var options = CreateDefaultOptions(projectPath);
         if (settings.ProjectTarget.IsSet)
         {
             options.ProjectTarget = settings.ProjectTarget.Value;
@@ -66,12 +67,24 @@ public static class OptionsHelper
             : (true, string.Empty);
     }
 
-    private static Options CreateDefaultOptions()
+    private static Options CreateDefaultOptions(
+        DirectoryInfo projectPath)
     {
         var options = new Options();
-        options.Mappings.Sample.Paths.Add("sample");
-        options.Mappings.Src.Paths.Add("src");
-        options.Mappings.Test.Paths.Add("test");
+        var directories = projectPath.GetDirectories();
+
+        var sampleName = directories.FirstOrDefault(x => x.Name.Equals("sample", StringComparison.OrdinalIgnoreCase))?.Name;
+        if (sampleName is not null)
+        {
+            options.Mappings.Sample.Paths.Add(sampleName);
+        }
+
+        var srcName = directories.FirstOrDefault(x => x.Name.Equals("src", StringComparison.OrdinalIgnoreCase))?.Name ?? "src";
+        options.Mappings.Src.Paths.Add(srcName);
+
+        var testName = directories.FirstOrDefault(x => x.Name.Equals("test", StringComparison.OrdinalIgnoreCase))?.Name ?? "test";
+        options.Mappings.Test.Paths.Add(testName);
+
         return options;
     }
 
