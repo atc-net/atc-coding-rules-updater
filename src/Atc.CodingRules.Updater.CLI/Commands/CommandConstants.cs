@@ -14,6 +14,7 @@ internal static class CommandConstants
     public const string ArgumentShortProjectTarget = "-t";
     public const string ArgumentLongProjectTarget = "--projectTarget";
     public const string ArgumentLongUseLatestMinorNugetVersion = "--useLatestMinorNugetVersion";
+    public const string ArgumentShortUseTemporarySuppressions = "-s";
     public const string ArgumentLongUseTemporarySuppressions = "--useTemporarySuppressions";
     public const string ArgumentLongTemporarySuppressionPath = "--temporarySuppressionPath";
     public const string ArgumentLongTemporarySuppressionAsExcel = "--temporarySuppressionAsExcel";
