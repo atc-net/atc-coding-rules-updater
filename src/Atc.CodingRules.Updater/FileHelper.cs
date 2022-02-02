@@ -47,12 +47,12 @@ public static class FileHelper
     public static void CreateFile(
         ILogger logger,
         FileInfo file,
-        string rawGitData,
+        string fileContent,
         string descriptionPart)
     {
         ArgumentNullException.ThrowIfNull(file);
 
-        File.WriteAllText(file.FullName, rawGitData);
+        File.WriteAllText(file.FullName, fileContent);
         logger.LogInformation($"{EmojisConstants.FileCreated}    {descriptionPart} created");
     }
 
