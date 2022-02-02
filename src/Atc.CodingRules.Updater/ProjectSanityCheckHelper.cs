@@ -134,7 +134,7 @@ public static class ProjectSanityCheckHelper
         }
 
         var sb = new StringBuilder();
-        var header = $"TargetFramework '{targetFramework}' in .csproj can causes build errors when /Directory.Build.Props has ImplicitUsings enabled, please manuel upgrade the following files:";
+        var header = $"TargetFramework '{targetFramework}' in .csproj can causes build errors when /Directory.Build.Props has ImplicitUsings enabled, please manually upgrade the following files:";
         if (throwIf)
         {
             sb.AppendLine(header);
