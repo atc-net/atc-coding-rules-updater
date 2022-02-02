@@ -190,7 +190,7 @@ public static class EditorConfigHelper
         logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} files merged");
 
         var customLines = contentFileCustomParts
-            .FirstOrDefault(x => x.Item1.Equals(CustomSectionHeaderCodeAnalyzersRulesSuffix, StringComparison.Ordinal))
+            .Find(x => x.Item1.Equals(CustomSectionHeaderCodeAnalyzersRulesSuffix, StringComparison.Ordinal))
             ?.Item2;
 
         if (customLines is not null)

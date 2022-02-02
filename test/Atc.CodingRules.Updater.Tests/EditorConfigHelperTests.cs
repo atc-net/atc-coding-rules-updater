@@ -98,7 +98,6 @@ public class EditorConfigHelperTests
         logger.Entries
             .Should().HaveCount(1)
             .And.Subject.Should().Contain(x => x.Message.Contains("log-description-part nothing to update"));
-
     }
 
     [Fact]
