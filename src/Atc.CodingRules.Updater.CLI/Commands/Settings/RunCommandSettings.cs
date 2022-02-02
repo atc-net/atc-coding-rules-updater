@@ -9,7 +9,7 @@ public class RunCommandSettings : ProjectCommandSettings
     [Description("Indicate if nuget packages should by updated to latest minor version (default true)")]
     public bool? UseLatestMinorNugetVersion { get; init; }
 
-    [CommandOption(CommandConstants.ArgumentLongUseTemporarySuppressions)]
+    [CommandOption($"{CommandConstants.ArgumentShortUseTemporarySuppressions}|{CommandConstants.ArgumentLongUseTemporarySuppressions}")]
     [Description("Indicate if build process should use temporary suppressions - appends to .editorconfig - unless temporarySuppressionPath is set")]
     public bool? UseTemporarySuppressions { get; init; }
 
