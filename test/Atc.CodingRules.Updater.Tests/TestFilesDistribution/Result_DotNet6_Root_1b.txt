@@ -503,4 +503,4 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 # Custom - Code Analyzers Rules
 ##########################################
 [*.{cs,csx,cake}]
-dotnet_diagnostic.SA1200.severity = error           # ??
+dotnet_diagnostic.SA1200.severity = error           # [Justification description]
