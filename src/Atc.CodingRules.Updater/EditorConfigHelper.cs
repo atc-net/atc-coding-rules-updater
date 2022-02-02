@@ -40,7 +40,7 @@ public static class EditorConfigHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl);
+            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl).TrimEndForEmptyLines();
             var contentFile = FileHelper.ReadAllText(file);
 
             HandleFile(logger, area, contentGit, contentFile, descriptionPart, file);
@@ -264,7 +264,10 @@ public static class EditorConfigHelper
             }
         }
 
-        var newContentFile = sbNewContentFile.ToString();
+        var newContentFile = sbNewContentFile
+            .ToString()
+            .TrimEndForEmptyLines();
+
         return newContentFile;
     }
 
