@@ -38,7 +38,7 @@ A successful installation will output something like
 
 ```powershell
 The tool can be invoked by the following command: atc-coding-rules-updater
-Tool 'atc-coding-rules-updater' (version '1.0.xxx') was successfully installed.`
+Tool 'atc-coding-rules-updater' (version '2.0.xxx') was successfully installed.`
 ```
 
 ### Update
