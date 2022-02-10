@@ -9,7 +9,6 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>atc-coding-rules-updater</AssemblyName>
     <PackAsTool>true</PackAsTool>
-    <IncludeSymbols>false</IncludeSymbols>
   </PropertyGroup>
 
   <ItemGroup>

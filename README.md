@@ -38,7 +38,7 @@ A successful installation will output something like
 
 ```powershell
 The tool can be invoked by the following command: atc-coding-rules-updater
-Tool 'atc-coding-rules-updater' (version '1.0.xxx') was successfully installed.`
+Tool 'atc-coding-rules-updater' (version '2.0.xxx') was successfully installed.`
 ```
 
 ### Update
@@ -51,7 +51,7 @@ dotnet tool update --global atc-coding-rules-updater
 
 ### Usage
 
-Since the tool is published as a .NET Core Tool, it can be launched from anywhere using any shell or command-line interface by calling **atc-coding-rules-updater**. The help information is displayed when providing the `--help` argument to **atc-coding-rules-updater**
+Since the tool is published as a .NET Tool, it can be launched from anywhere using any shell or command-line interface by calling **atc-coding-rules-updater**. The help information is displayed when providing the `--help` argument to **atc-coding-rules-updater**
 
 #### Option <span style="color:yellow">--help</span>
 ```powershell
