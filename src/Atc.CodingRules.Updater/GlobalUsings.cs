@@ -7,5 +7,6 @@ global using System.Text;
 global using Atc.CodingRules.Updater.Models;
 global using Atc.Data.Models;
 global using Atc.DotNet;
+global using Atc.Helpers;
 
 global using Microsoft.Extensions.Logging;

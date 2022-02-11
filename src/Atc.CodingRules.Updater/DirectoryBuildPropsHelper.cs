@@ -69,7 +69,7 @@ public static class DirectoryBuildPropsHelper
             if (FileHelper.IsFileDataLengthEqual(contentGit, contentFile) &&
                 contentGit.Equals(contentFile, StringComparison.Ordinal))
             {
-                logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
+                logger.LogInformation($"{Console.Spectre.EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
                 return;
             }
 
@@ -77,7 +77,7 @@ public static class DirectoryBuildPropsHelper
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {area} - {ex.Message}");
         }
     }
 
@@ -124,7 +124,7 @@ public static class DirectoryBuildPropsHelper
                 StringComparison.Ordinal);
 
             File.WriteAllText(file.FullName, fileContent);
-            logger.LogDebug($"{EmojisConstants.FileUpdated}   {elementName} in file is updated to '{newElementValue}'");
+            logger.LogDebug($"{Console.Spectre.EmojisConstants.FileUpdated}   {elementName} in file is updated to '{newElementValue}'");
         }
     }
 
@@ -146,7 +146,7 @@ public static class DirectoryBuildPropsHelper
         }
 
         File.WriteAllText(file.FullName, fileContent);
-        logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
+        logger.LogInformation($"{Console.Spectre.EmojisConstants.FileUpdated}   {descriptionPart} updated");
     }
 
     private static string EnsureLatestPackageReferencesVersion(

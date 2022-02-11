@@ -38,11 +38,11 @@ public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSetting
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage()}");
+            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.GetMessage()}");
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Done} Done");
+        logger.LogInformation($"{Console.Spectre.EmojisConstants.Done} Done");
         return ConsoleExitStatusCodes.Success;
     }
 }

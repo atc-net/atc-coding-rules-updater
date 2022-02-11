@@ -53,7 +53,7 @@ public static class FileHelper
         ArgumentNullException.ThrowIfNull(file);
 
         File.WriteAllText(file.FullName, fileContent);
-        logger.LogInformation($"{EmojisConstants.FileCreated}    {descriptionPart} created");
+        logger.LogInformation($"{Console.Spectre.EmojisConstants.FileCreated}    {descriptionPart} created");
     }
 
     public static bool IsFileDataLengthEqual(

@@ -1,4 +1,3 @@
-using System.Drawing;
 using Atc.DotNet;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -190,12 +189,12 @@ public static class ProjectHelper
         }
         catch (DataException ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
             return;
         }
         catch (IOException ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
             return;
         }
 
@@ -232,7 +231,7 @@ public static class ProjectHelper
         else
         {
             var totalSuppressions = suppressionLinesPrAnalyzer.Sum(x => x.Item2.Count);
-            logger.LogInformation($"{EmojisConstants.FileUpdated}   [yellow]/[/]{EditorConfigHelper.FileName} is updated with {totalSuppressions} suppressions");
+            logger.LogInformation($"{Console.Spectre.EmojisConstants.FileUpdated}   [yellow]/[/]{EditorConfigHelper.FileName} is updated with {totalSuppressions} suppressions");
         }
 
         stopwatch.Stop();
@@ -276,7 +275,7 @@ public static class ProjectHelper
         }
         catch (DataException ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
             return false;
         }
 
@@ -320,7 +319,7 @@ public static class ProjectHelper
 
         if (temporarySuppressionAsExcel)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
             using var excelPackage = new ExcelPackage();
 
@@ -342,20 +341,20 @@ public static class ProjectHelper
 
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             worksheet.Cells["A1:D1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A1:D1"].Style.Fill.BackgroundColor.SetColor(Color.CornflowerBlue);
+            worksheet.Cells["A1:D1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
             worksheet.Cells["B2:B" + rowNr].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.View.FreezePanes(2, 1);
 
-            logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+            logger.LogDebug($"{Console.Spectre.EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
 
             return excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
         }
 
         var suppressionsText = CreateSuppressionsText(suppressionLinesPrAnalyzer);
 
-        logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+        logger.LogDebug($"{Console.Spectre.EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
 
-        return File.WriteAllTextAsync(temporarySuppressionsFile, suppressionsText, Encoding.UTF8);
+        return Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
     }
 
     private static int AddSuppressionLinesToWorksheet(

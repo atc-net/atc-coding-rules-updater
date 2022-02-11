@@ -1,5 +1,3 @@
-using Spectre.Console;
-
 // ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
@@ -55,11 +53,11 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Done} Done");
+        logger.LogInformation($"{Console.Spectre.EmojisConstants.Done} Done");
         return ConsoleExitStatusCodes.Success;
     }
 

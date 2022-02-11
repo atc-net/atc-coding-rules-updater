@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
 public class RootCommandSettings : BaseCommandSettings

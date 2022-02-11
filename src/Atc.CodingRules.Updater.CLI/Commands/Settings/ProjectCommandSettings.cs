@@ -3,7 +3,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
 public class ProjectCommandSettings : ProjectBaseCommandSettings
 {
-    [CommandOption($"{CommandConstants.ArgumentShortProjectTarget}|{CommandConstants.ArgumentLongProjectTarget} [PROJECTTARGET]")]
+    [CommandOption($"{ArgumentCommandConstants.ShortProjectTarget}|{ArgumentCommandConstants.LongProjectTarget} [PROJECTTARGET]")]
     [SupportedProjectTargetTypeDescription]
     public FlagValue<SupportedProjectTargetType> ProjectTarget { get; init; } = new FlagValue<SupportedProjectTargetType>();
 
