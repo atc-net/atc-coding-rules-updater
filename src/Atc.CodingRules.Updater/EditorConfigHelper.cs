@@ -33,6 +33,8 @@ public static class EditorConfigHelper
             ? $"{rawCodingRulesDistribution}/{FileName}"
             : $"{rawCodingRulesDistribution}/{urlPart}/{FileName}";
 
+        var displayName = rawGitUrl.Replace(Constants.GitRawContentUrl, Constants.GitHubPrefix, StringComparison.Ordinal);
+
         try
         {
             if (!file.Directory!.Exists)
@@ -40,7 +42,7 @@ public static class EditorConfigHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl).TrimEndForEmptyLines();
+            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl, displayName).TrimEndForEmptyLines();
             var contentFile = FileHelper.ReadAllText(file);
 
             HandleFile(logger, area, contentGit, contentFile, descriptionPart, file);

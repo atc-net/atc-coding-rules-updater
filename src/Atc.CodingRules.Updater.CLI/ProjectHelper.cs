@@ -8,8 +8,7 @@ namespace Atc.CodingRules.Updater.CLI;
 
 public static class ProjectHelper
 {
-    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
-    private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
+    private const string RawCodingRulesDistributionBaseUrl = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules/main/distribution";
     private const string AtcCodingRulesSuppressionsFileName = "AtcCodingRulesSuppressions.txt";
 
     private const string AtcCodingRulesSuppressionsFileNameAsExcel = "AtcCodingRulesSuppressions.xlsx";

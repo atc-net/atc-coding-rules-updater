@@ -40,6 +40,8 @@ public static class DirectoryBuildPropsHelper
             ? $"{rawCodingRulesDistribution}/{FileName}"
             : $"{rawCodingRulesDistribution}/{urlPart}/{FileName}";
 
+        var displayName = rawGitUrl.Replace(Constants.GitRawContentUrl, Constants.GitHubPrefix, StringComparison.Ordinal);
+
         try
         {
             if (!file.Directory!.Exists)
@@ -47,7 +49,7 @@ public static class DirectoryBuildPropsHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl);
+            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl, displayName);
             if (useLatestMinorNugetVersion)
             {
                 contentGit = EnsureLatestPackageReferencesVersion(logger, contentGit, LogCategoryType.Trace);

@@ -2,8 +2,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public abstract class AnalyzerProviderBase : IAnalyzerProvider
 {
-    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
-    private const string GitRawAtcAnalyzerProviderBaseRulesBasePath = "https://raw.githubusercontent.com/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
+    private const string GitRawAtcAnalyzerProviderBaseRulesBasePath = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
     private readonly ILogger logger;
     private readonly bool logWithAnsiConsoleMarkup;
 
@@ -133,7 +132,12 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var rawGitData = HttpClientHelper.GetAsString(logger, GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json");
+        var url = GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json";
+        var displayName = url.Replace(Constants.GitRawContentUrl, Constants.GitHubPrefix, StringComparison.Ordinal);
+        var rawGitData = HttpClientHelper.GetAsString(
+            logger,
+            url,
+            displayName);
         return Task.FromResult(string.IsNullOrEmpty(rawGitData)
             ? null
             : JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(rawGitData, AnalyzerProviderSerialization.JsonOptions)!);
