@@ -2,7 +2,12 @@ namespace Atc.CodingRules.Updater;
 
 public static class FileHelper
 {
-    public static readonly string[] LineBreaks = { "\r\n", "\r", "\n" };
+    [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "OK.")]
+    public static string[] LineBreaks => Helpers.FileHelper.LineBreaks;
+
+    public static string ReadAllText(FileInfo file) => Helpers.FileHelper.ReadAllText(file);
+
+    public static Task WriteAllTextAsync(FileInfo file, string content) => Helpers.FileHelper.WriteAllTextAsync(file, content);
 
     public static Collection<FileInfo> SearchAllForElement(
         DirectoryInfo projectPath,
@@ -34,16 +39,6 @@ public static class FileHelper
         return result;
     }
 
-    public static string ReadAllText(
-        FileInfo file)
-    {
-        ArgumentNullException.ThrowIfNull(file);
-
-        return file.Exists
-            ? File.ReadAllText(file.FullName)
-            : string.Empty;
-    }
-
     public static void CreateFile(
         ILogger logger,
         FileInfo file,
@@ -53,7 +48,7 @@ public static class FileHelper
         ArgumentNullException.ThrowIfNull(file);
 
         File.WriteAllText(file.FullName, fileContent);
-        logger.LogInformation($"{EmojisConstants.FileCreated}    {descriptionPart} created");
+        logger.LogInformation($"{EmojisConstants.FileCreated}   {descriptionPart} created");
     }
 
     public static bool IsFileDataLengthEqual(

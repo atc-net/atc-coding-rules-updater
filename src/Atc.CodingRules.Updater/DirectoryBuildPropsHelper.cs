@@ -31,14 +31,16 @@ public static class DirectoryBuildPropsHelper
         ArgumentNullException.ThrowIfNull(path);
 
         var descriptionPart = string.IsNullOrEmpty(urlPart)
-            ? $"[yellow]/[/]{FileName}"
-            : $"[yellow]{urlPart}/[/]{FileName}";
+            ? $"[yellow]root: [/]{FileName}"
+            : $"[yellow]{urlPart}: [/]{FileName}";
 
         var file = new FileInfo(Path.Combine(path.FullName, FileName));
 
         var rawGitUrl = string.IsNullOrEmpty(urlPart)
             ? $"{rawCodingRulesDistribution}/{FileName}"
             : $"{rawCodingRulesDistribution}/{urlPart}/{FileName}";
+
+        var displayName = rawGitUrl.Replace(Constants.GitRawContentUrl, Constants.GitHubPrefix, StringComparison.Ordinal);
 
         try
         {
@@ -47,7 +49,7 @@ public static class DirectoryBuildPropsHelper
                 Directory.CreateDirectory(file.Directory.FullName);
             }
 
-            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl);
+            var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl, displayName);
             if (useLatestMinorNugetVersion)
             {
                 contentGit = EnsureLatestPackageReferencesVersion(logger, contentGit, LogCategoryType.Trace);
@@ -69,7 +71,7 @@ public static class DirectoryBuildPropsHelper
             if (FileHelper.IsFileDataLengthEqual(contentGit, contentFile) &&
                 contentGit.Equals(contentFile, StringComparison.Ordinal))
             {
-                logger.LogInformation($"{EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
+                logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
                 return;
             }
 
@@ -78,6 +80,7 @@ public static class DirectoryBuildPropsHelper
         catch (Exception ex)
         {
             logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+            throw;
         }
     }
 
@@ -162,7 +165,7 @@ public static class DirectoryBuildPropsHelper
                 $"<PackageReference Include=\"{item.PackageId}\" Version=\"{item.NewestVersion}\"",
                 StringComparison.Ordinal);
 
-            var logMessage = $"{EmojisConstants.PackageReference}   PackageReference {item.PackageId} @ {item.Version} => {item.NewestVersion}";
+            var logMessage = $"{AppEmojisConstants.PackageReference}   PackageReference {item.PackageId} @ {item.Version} => {item.NewestVersion}";
             switch (logCategoryType)
             {
                 case LogCategoryType.Debug:

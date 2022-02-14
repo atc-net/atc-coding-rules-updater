@@ -1,16 +1,13 @@
-using System.ComponentModel;
-using Spectre.Console;
-
 // ReSharper disable StringLiteralTypo
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
 public class ProjectBaseCommandSettings : BaseCommandSettings
 {
-    [CommandOption($"{CommandConstants.ArgumentShortProjectPath}|{CommandConstants.ArgumentLongProjectPath} <PROJECTPATH>")]
+    [CommandOption($"{ArgumentCommandConstants.ShortProjectPath}|{ArgumentCommandConstants.LongProjectPath} <PROJECTPATH>")]
     [Description("Path to the project directory (default current diectory)")]
     public string ProjectPath { get; init; } = string.Empty;
 
-    [CommandOption($"{CommandConstants.ArgumentShortOptionsPath}|{CommandConstants.ArgumentLongOptionsTarget} [OPTIONSPATH]")]
+    [CommandOption($"{ArgumentCommandConstants.ShortOptionsPath}|{ArgumentCommandConstants.LongOptionsTarget} [OPTIONSPATH]")]
     [Description("Path to an optional options json-file")]
     public FlagValue<string>? OptionsPath { get; init; }
 

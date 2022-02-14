@@ -1,4 +1,3 @@
-using System.Drawing;
 using Atc.DotNet;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -9,8 +8,7 @@ namespace Atc.CodingRules.Updater.CLI;
 
 public static class ProjectHelper
 {
-    [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
-    private const string RawCodingRulesDistributionBaseUrl = "https://raw.githubusercontent.com/atc-net/atc-coding-rules/main/distribution";
+    private const string RawCodingRulesDistributionBaseUrl = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules/main/distribution";
     private const string AtcCodingRulesSuppressionsFileName = "AtcCodingRulesSuppressions.txt";
 
     private const string AtcCodingRulesSuppressionsFileNameAsExcel = "AtcCodingRulesSuppressions.xlsx";
@@ -86,7 +84,7 @@ public static class ProjectHelper
         DirectoryInfo projectPath,
         Options options)
     {
-        logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
+        logger.LogInformation($"{AppEmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
         EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty);
@@ -115,7 +113,7 @@ public static class ProjectHelper
         DirectoryInfo projectPath,
         Options options)
     {
-        logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
+        logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
 
         DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty);
@@ -147,7 +145,7 @@ public static class ProjectHelper
         DirectoryInfo? temporarySuppressionsPath,
         bool temporarySuppressionAsExcel)
     {
-        logger.LogInformation($"{EmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
+        logger.LogInformation($"{AppEmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
 
         if (!FileHelper.ContainsSolutionOrProjectFile(projectPath) &&
             !FileHelper.IsSolutionOrProjectFile(buildFile))
@@ -320,7 +318,7 @@ public static class ProjectHelper
 
         if (temporarySuppressionAsExcel)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
             using var excelPackage = new ExcelPackage();
 
@@ -342,7 +340,7 @@ public static class ProjectHelper
 
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             worksheet.Cells["A1:D1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A1:D1"].Style.Fill.BackgroundColor.SetColor(Color.CornflowerBlue);
+            worksheet.Cells["A1:D1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
             worksheet.Cells["B2:B" + rowNr].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.View.FreezePanes(2, 1);
 
@@ -355,7 +353,7 @@ public static class ProjectHelper
 
         logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
 
-        return File.WriteAllTextAsync(temporarySuppressionsFile, suppressionsText, Encoding.UTF8);
+        return Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
     }
 
     private static int AddSuppressionLinesToWorksheet(

@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="1.1.385" />
-    <PackageReference Include="Atc.Console.Spectre" Version="1.1.385" />
-    <PackageReference Include="EPPlus" Version="5.8.5" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Atc" Version="2.0.55" />
+    <PackageReference Include="Atc.Console.Spectre" Version="2.0.55" />
+    <PackageReference Include="EPPlus" Version="5.8.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

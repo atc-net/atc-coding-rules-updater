@@ -16,7 +16,7 @@ public static class OptionsHelper
         }
 
         var optionsPath = GetOptionsPath(projectPath, settingsOptionsPath);
-        var options = await DeserializeFile(fileInfo);
+        var options = await FileHelper<Options>.ReadJsonFileAndDeserializeAsync(fileInfo);
         if (options is null)
         {
             return CreateDefaultOptions(projectPath);
@@ -45,9 +45,7 @@ public static class OptionsHelper
             options.ProjectTarget = settings.ProjectTarget.Value;
         }
 
-        var serializeOptions = JsonSerializerOptionsFactory.Create();
-        var json = JsonSerializer.Serialize(options, serializeOptions);
-        await File.WriteAllTextAsync(fileInfo.FullName, json, Encoding.UTF8);
+        await FileHelper<Options>.WriteModelToJsonFileAsync(fileInfo, options);
         return (true, string.Empty);
     }
 
@@ -61,7 +59,7 @@ public static class OptionsHelper
             return (false, "File does not exist");
         }
 
-        var options = await DeserializeFile(fileInfo);
+        var options = await FileHelper<Options>.ReadJsonFileAndDeserializeAsync(fileInfo);
         return options is null
             ? (false, "File is invalid")
             : (true, string.Empty);
@@ -105,13 +103,4 @@ public static class OptionsHelper
         => string.IsNullOrEmpty(settingsOptionsPath)
             ? projectPath.FullName
             : settingsOptionsPath;
-
-    private static async Task<Options?> DeserializeFile(
-        FileInfo fileInfo)
-    {
-        var serializeOptions = JsonSerializerOptionsFactory.Create();
-        using var stream = new StreamReader(fileInfo.FullName);
-        var json = await stream.ReadToEndAsync();
-        return JsonSerializer.Deserialize<Options>(json, serializeOptions);
-    }
 }
