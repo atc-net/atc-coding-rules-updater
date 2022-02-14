@@ -8,8 +8,6 @@ public static class Program
 {
     public static Task<int> Main(string[] args)
     {
-        args = new[] { "run", "-p", @"C:\Temp\sletmig", "-v" };
-
         ArgumentNullException.ThrowIfNull(args);
 
         args = SetProjectPathFromDotArgumentIfNeeded(args);
