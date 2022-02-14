@@ -16,7 +16,14 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
     {
         if (settings.IsOptionValueTrue(settings.Version))
         {
-            HandleVersionOption();
+            try
+            {
+                HandleVersionOption();
+            }
+            catch
+            {
+                return ConsoleExitStatusCodes.Failure;
+            }
         }
 
         await Task.Delay(1);
@@ -26,7 +33,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
     [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
     private static void HandleVersionOption()
     {
-        System.Console.WriteLine(CodingRulesUpdaterVersionHelper.GetCurrentVersion().ToString());
+        System.Console.WriteLine(CliHelper.GetCurrentVersion().ToString());
         if (CodingRulesUpdaterVersionHelper.IsLatestVersion())
         {
             return;

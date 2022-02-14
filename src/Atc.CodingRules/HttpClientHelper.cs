@@ -7,6 +7,7 @@ public static class HttpClientHelper
     public static string GetAsString(
         ILogger logger,
         string url,
+        string displayName,
         CancellationToken cancellationToken = default)
     {
         var cacheValue = Cache.GetValueOrDefault(url);
@@ -15,13 +16,18 @@ public static class HttpClientHelper
             return cacheValue;
         }
 
+        if (string.IsNullOrEmpty(displayName))
+        {
+            displayName = url;
+        }
+
         try
         {
             var response = string.Empty;
             TaskHelper.RunSync(async () =>
             {
                 var stopwatch = Stopwatch.StartNew();
-                logger.LogTrace($"     Download from: {url}");
+                logger.LogTrace($"     Download from: [link={url}]{displayName}[/]");
 
                 var uri = new Uri(url);
                 using var client = new HttpClient();

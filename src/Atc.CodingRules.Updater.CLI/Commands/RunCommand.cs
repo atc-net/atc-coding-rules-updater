@@ -1,5 +1,3 @@
-using Spectre.Console;
-
 // ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.CodingRules.Updater.CLI.Commands;
 

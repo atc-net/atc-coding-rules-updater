@@ -1,5 +1,3 @@
-using Atc.CodingRules.Updater.CLI.Extensions;
-
 [assembly: CLSCompliant(false)]
 
 // ReSharper disable InvertIf
@@ -22,7 +20,7 @@ public static class Program
         var consoleLoggerConfiguration = new ConsoleLoggerConfiguration();
         configuration.GetRequiredSection("ConsoleLogger").Bind(consoleLoggerConfiguration);
 
-        SetMinimumLogLevelIfNeeded(args, consoleLoggerConfiguration);
+        ProgramCsHelper.SetMinimumLogLevelIfNeeded(args, consoleLoggerConfiguration);
 
         var serviceCollection = ServiceCollectionFactory.Create(consoleLoggerConfiguration);
 
@@ -44,10 +42,10 @@ public static class Program
         {
             if (".".Equals(s, StringComparison.Ordinal))
             {
-                if (!(newArgs.Contains(CommandConstants.ArgumentShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
-                      newArgs.Contains(CommandConstants.ArgumentLongProjectPath, StringComparer.OrdinalIgnoreCase)))
+                if (!(newArgs.Contains(ArgumentCommandConstants.ShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+                      newArgs.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
                 {
-                    newArgs.Add(CommandConstants.ArgumentShortProjectPath);
+                    newArgs.Add(ArgumentCommandConstants.ShortProjectPath);
                 }
 
                 newArgs.Add(Environment.CurrentDirectory);
@@ -58,14 +56,14 @@ public static class Program
             }
         }
 
-        if (!newArgs.Contains(CommandConstants.NameRun, StringComparer.OrdinalIgnoreCase) &&
-            !newArgs.Contains(CommandConstants.NameSanityCheck, StringComparer.OrdinalIgnoreCase) &&
-            !newArgs.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
-            !newArgs.Contains(CommandConstants.NameAnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
-            (newArgs.Contains(CommandConstants.ArgumentShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
-             newArgs.Contains(CommandConstants.ArgumentLongProjectPath, StringComparer.OrdinalIgnoreCase)))
+        if (!newArgs.Contains(NameCommandConstants.Run, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(NameCommandConstants.SanityCheck, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(NameCommandConstants.OptionsFile, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
+            (newArgs.Contains(ArgumentCommandConstants.ShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+             newArgs.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
         {
-            newArgs.Insert(0, CommandConstants.NameRun);
+            newArgs.Insert(0, NameCommandConstants.Run);
         }
 
         return newArgs.ToArray();
@@ -75,53 +73,42 @@ public static class Program
     {
         if (args.Length == 0)
         {
-            return new[] { CommandConstants.ArgumentShortHelp, };
+            return new[] { CommandConstants.ArgumentShortHelp };
         }
 
-        if (args.Contains(CommandConstants.NameAnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
-            args.Contains(CommandConstants.NameAnalyzerProvidersCleanupCache, StringComparer.OrdinalIgnoreCase))
+        if (args.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
+            args.Contains(NameCommandConstants.AnalyzerProvidersCleanupCache, StringComparer.OrdinalIgnoreCase))
         {
             return args;
         }
 
-        if (!(args.Contains(CommandConstants.ArgumentShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
-              args.Contains(CommandConstants.ArgumentLongProjectPath, StringComparer.OrdinalIgnoreCase)))
+        if (!(args.Contains(ArgumentCommandConstants.ShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+              args.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
         {
-            if (args.Contains(CommandConstants.NameSanityCheck, StringComparer.OrdinalIgnoreCase))
+            if (args.Contains(NameCommandConstants.SanityCheck, StringComparer.OrdinalIgnoreCase))
             {
-                return new[] { CommandConstants.NameSanityCheck, CommandConstants.ArgumentShortHelp, };
+                return new[] { NameCommandConstants.SanityCheck, CommandConstants.ArgumentShortHelp };
             }
 
-            if (args.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
-                (args.Contains(CommandConstants.NameOptionsFileCreate, StringComparer.OrdinalIgnoreCase) ||
-                 args.Contains(CommandConstants.NameOptionsFileValidate, StringComparer.OrdinalIgnoreCase)))
+            if (args.Contains(NameCommandConstants.OptionsFile, StringComparer.OrdinalIgnoreCase) &&
+                (args.Contains(NameCommandConstants.OptionsFileCreate, StringComparer.OrdinalIgnoreCase) ||
+                 args.Contains(NameCommandConstants.OptionsFileValidate, StringComparer.OrdinalIgnoreCase)))
             {
-                return new[] { CommandConstants.NameOptionsFile, CommandConstants.ArgumentShortHelp, };
+                return new[] { NameCommandConstants.OptionsFile, CommandConstants.ArgumentShortHelp };
             }
 
-            if (args.Contains(CommandConstants.NameAnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
-                args.Contains(CommandConstants.NameAnalyzerProvidersCollect, StringComparer.OrdinalIgnoreCase))
+            if (args.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
+                args.Contains(NameCommandConstants.AnalyzerProvidersCollect, StringComparer.OrdinalIgnoreCase))
             {
-                return new[] { CommandConstants.NameAnalyzerProviders, CommandConstants.ArgumentShortHelp, };
+                return new[] { NameCommandConstants.AnalyzerProviders, CommandConstants.ArgumentShortHelp };
             }
 
-            if (args.Contains(CommandConstants.NameRun, StringComparer.OrdinalIgnoreCase))
+            if (args.Contains(NameCommandConstants.Run, StringComparer.OrdinalIgnoreCase))
             {
-                return new[] { CommandConstants.NameRun, CommandConstants.ArgumentShortHelp, };
+                return new[] { NameCommandConstants.Run, CommandConstants.ArgumentShortHelp };
             }
         }
 
         return args;
-    }
-
-    private static void SetMinimumLogLevelIfNeeded(
-        string[] args,
-        ConsoleLoggerConfiguration consoleLoggerConfiguration)
-    {
-        if (args.Any(x => x.Equals(CommandConstants.ArgumentShortVerbose, StringComparison.OrdinalIgnoreCase)) ||
-            args.Any(x => x.Equals(CommandConstants.ArgumentLongVerbose, StringComparison.OrdinalIgnoreCase)))
-        {
-            consoleLoggerConfiguration.MinimumLogLevel = LogLevel.Trace;
-        }
     }
 }
