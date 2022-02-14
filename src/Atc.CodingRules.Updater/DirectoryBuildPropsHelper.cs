@@ -80,6 +80,7 @@ public static class DirectoryBuildPropsHelper
         catch (Exception ex)
         {
             logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+            throw;
         }
     }
 

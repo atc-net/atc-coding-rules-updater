@@ -50,6 +50,7 @@ public static class EditorConfigHelper
         catch (Exception ex)
         {
             logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+            throw;
         }
     }
 
@@ -92,6 +93,7 @@ public static class EditorConfigHelper
         catch (Exception ex)
         {
             logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+            throw;
         }
     }
 
