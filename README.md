@@ -169,15 +169,15 @@ Running the command above produces the following output
  |_| \_\  \__,_| |_|  \___| |___/    \__,_| | .__/   \__,_|  \__,_|  \__|  \___| |_|
                                             |_|
 🐭 Working on EditorConfig files
-🟢   /.editorconfig files merged
-🟢   sample/.editorconfig created
-🟢   src/.editorconfig created
-🟢   test/.editorconfig created
+🟢   root: .editorconfig files merged
+🟢   sample: .editorconfig created
+🟢   src: .editorconfig created
+🟢   test: .editorconfig created
 🔨 Working on Directory.Build.props files
-🟢   /Directory.Build.props created
-🟢   sample/Directory.Build.props created
-🟢   src/Directory.Build.props created
-🟢   test/Directory.Build.props created
+🟢   root: Directory.Build.props created
+🟢   sample: Directory.Build.props created
+🟢   src: Directory.Build.props created
+🟢   test: Directory.Build.props created
 ✅ Done
 ```
 

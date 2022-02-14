@@ -85,7 +85,7 @@ public static class ProjectHelper
         DirectoryInfo projectPath,
         Options options)
     {
-        logger.LogInformation($"{EmojisConstants.AreaEditorConfig} Working on EditorConfig files");
+        logger.LogInformation($"{AppEmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
         EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty);
@@ -114,7 +114,7 @@ public static class ProjectHelper
         DirectoryInfo projectPath,
         Options options)
     {
-        logger.LogInformation($"{EmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
+        logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
 
         DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty);
@@ -146,7 +146,7 @@ public static class ProjectHelper
         DirectoryInfo? temporarySuppressionsPath,
         bool temporarySuppressionAsExcel)
     {
-        logger.LogInformation($"{EmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
+        logger.LogInformation($"{AppEmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
 
         if (!FileHelper.ContainsSolutionOrProjectFile(projectPath) &&
             !FileHelper.IsSolutionOrProjectFile(buildFile))
@@ -189,12 +189,12 @@ public static class ProjectHelper
         }
         catch (DataException ex)
         {
-            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
             return;
         }
         catch (IOException ex)
         {
-            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
             return;
         }
 
@@ -231,7 +231,7 @@ public static class ProjectHelper
         else
         {
             var totalSuppressions = suppressionLinesPrAnalyzer.Sum(x => x.Item2.Count);
-            logger.LogInformation($"{Console.Spectre.EmojisConstants.FileUpdated}   [yellow]/[/]{EditorConfigHelper.FileName} is updated with {totalSuppressions} suppressions");
+            logger.LogInformation($"{EmojisConstants.FileUpdated}   [yellow]/[/]{EditorConfigHelper.FileName} is updated with {totalSuppressions} suppressions");
         }
 
         stopwatch.Stop();
@@ -275,7 +275,7 @@ public static class ProjectHelper
         }
         catch (DataException ex)
         {
-            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
             return false;
         }
 
@@ -345,14 +345,14 @@ public static class ProjectHelper
             worksheet.Cells["B2:B" + rowNr].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.View.FreezePanes(2, 1);
 
-            logger.LogDebug($"{Console.Spectre.EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+            logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
 
             return excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
         }
 
         var suppressionsText = CreateSuppressionsText(suppressionLinesPrAnalyzer);
 
-        logger.LogDebug($"{Console.Spectre.EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+        logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
 
         return Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
     }

@@ -45,9 +45,7 @@ public static class OptionsHelper
             options.ProjectTarget = settings.ProjectTarget.Value;
         }
 
-        var serializeOptions = JsonSerializerOptionsFactory.Create();
-        var json = JsonSerializer.Serialize(options, serializeOptions);
-        await Helpers.FileHelper.WriteAllTextAsync(fileInfo, json);
+        await FileHelper<Options>.WriteModelToJsonFileAsync(fileInfo, options);
         return (true, string.Empty);
     }
 

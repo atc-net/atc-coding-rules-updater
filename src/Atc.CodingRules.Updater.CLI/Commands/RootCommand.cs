@@ -16,7 +16,14 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
     {
         if (settings.IsOptionValueTrue(settings.Version))
         {
-            HandleVersionOption();
+            try
+            {
+                HandleVersionOption();
+            }
+            catch
+            {
+                return ConsoleExitStatusCodes.Failure;
+            }
         }
 
         await Task.Delay(1);

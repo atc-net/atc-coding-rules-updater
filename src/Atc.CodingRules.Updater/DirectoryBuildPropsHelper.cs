@@ -31,8 +31,8 @@ public static class DirectoryBuildPropsHelper
         ArgumentNullException.ThrowIfNull(path);
 
         var descriptionPart = string.IsNullOrEmpty(urlPart)
-            ? $"[yellow]/[/]{FileName}"
-            : $"[yellow]{urlPart}/[/]{FileName}";
+            ? $"[yellow]root: [/]{FileName}"
+            : $"[yellow]{urlPart}: [/]{FileName}";
 
         var file = new FileInfo(Path.Combine(path.FullName, FileName));
 
@@ -69,7 +69,7 @@ public static class DirectoryBuildPropsHelper
             if (FileHelper.IsFileDataLengthEqual(contentGit, contentFile) &&
                 contentGit.Equals(contentFile, StringComparison.Ordinal))
             {
-                logger.LogInformation($"{Console.Spectre.EmojisConstants.FileNotUpdated}    {descriptionPart} nothing to update");
+                logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
                 return;
             }
 
@@ -77,7 +77,7 @@ public static class DirectoryBuildPropsHelper
         }
         catch (Exception ex)
         {
-            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {area} - {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
         }
     }
 
@@ -124,7 +124,7 @@ public static class DirectoryBuildPropsHelper
                 StringComparison.Ordinal);
 
             File.WriteAllText(file.FullName, fileContent);
-            logger.LogDebug($"{Console.Spectre.EmojisConstants.FileUpdated}   {elementName} in file is updated to '{newElementValue}'");
+            logger.LogDebug($"{EmojisConstants.FileUpdated}   {elementName} in file is updated to '{newElementValue}'");
         }
     }
 
@@ -146,7 +146,7 @@ public static class DirectoryBuildPropsHelper
         }
 
         File.WriteAllText(file.FullName, fileContent);
-        logger.LogInformation($"{Console.Spectre.EmojisConstants.FileUpdated}   {descriptionPart} updated");
+        logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
     }
 
     private static string EnsureLatestPackageReferencesVersion(
@@ -162,7 +162,7 @@ public static class DirectoryBuildPropsHelper
                 $"<PackageReference Include=\"{item.PackageId}\" Version=\"{item.NewestVersion}\"",
                 StringComparison.Ordinal);
 
-            var logMessage = $"{EmojisConstants.PackageReference}   PackageReference {item.PackageId} @ {item.Version} => {item.NewestVersion}";
+            var logMessage = $"{AppEmojisConstants.PackageReference}   PackageReference {item.PackageId} @ {item.Version} => {item.NewestVersion}";
             switch (logCategoryType)
             {
                 case LogCategoryType.Debug:

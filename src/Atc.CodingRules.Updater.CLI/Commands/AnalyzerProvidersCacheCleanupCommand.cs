@@ -17,11 +17,11 @@ public class AnalyzerProvidersCacheCleanupCommand : Command
         }
         catch (Exception ex)
         {
-            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.GetMessage()}");
+            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage()}");
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{Console.Spectre.EmojisConstants.Done} Done");
+        logger.LogInformation($"{EmojisConstants.Done} Done");
         return ConsoleExitStatusCodes.Success;
     }
 }

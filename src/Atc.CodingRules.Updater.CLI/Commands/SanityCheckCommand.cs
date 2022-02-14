@@ -29,11 +29,11 @@ public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
         }
         catch (Exception ex)
         {
-            logger.LogError($"{Console.Spectre.EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{Console.Spectre.EmojisConstants.Done} Done");
+        logger.LogInformation($"{EmojisConstants.Done} Done");
         return ConsoleExitStatusCodes.Success;
     }
 
