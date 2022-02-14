@@ -39,7 +39,7 @@ public class OptionsFileCreateCommand : AsyncCommand<ProjectCommandSettings>
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Done} Done");
+        logger.LogInformation($"{EmojisConstants.Success} Done");
         return ConsoleExitStatusCodes.Success;
     }
 }

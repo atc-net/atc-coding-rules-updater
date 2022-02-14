@@ -57,7 +57,7 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Done} Done");
+        logger.LogInformation($"{EmojisConstants.Success} Done");
         return ConsoleExitStatusCodes.Success;
     }
 
