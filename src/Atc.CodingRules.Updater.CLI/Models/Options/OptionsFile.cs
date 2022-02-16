@@ -1,7 +1,6 @@
-namespace Atc.CodingRules.Updater.CLI.Models;
+namespace Atc.CodingRules.Updater.CLI.Models.Options;
 
-[SuppressMessage("Naming", "CA1724:Type names should not match namespaces", Justification = "OK.")]
-public class Options
+public class OptionsFile
 {
     public SupportedProjectTargetType ProjectTarget { get; set; } = SupportedProjectTargetType.DotNet6;
 

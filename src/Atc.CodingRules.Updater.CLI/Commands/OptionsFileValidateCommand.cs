@@ -18,7 +18,6 @@ public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSetting
     private async Task<int> ExecuteInternalAsync(
         ProjectBaseCommandSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(settings);
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);

@@ -12,7 +12,7 @@ public static class CommandAppExtensions
 
             ConfigureSanityCheckCommand(config);
 
-            config.AddBranch(NameCommandConstants.OptionsFile, ConfigureOptionsFileCommands());
+            config.AddBranch(CommandConstants.NameOptionsFile, ConfigureOptionsFileCommands());
 
             config.AddBranch(NameCommandConstants.AnalyzerProviders, ConfigureAnalyzerProvidersCommands());
         });
@@ -57,14 +57,14 @@ public static class CommandAppExtensions
             node.SetDescription("Commands for the options file 'atc-coding-rules-updater.json'");
 
             node
-                .AddCommand<OptionsFileCreateCommand>(NameCommandConstants.OptionsFileCreate)
+                .AddCommand<OptionsFileCreateCommand>(CommandConstants.NameOptionsFileCreate)
                 .WithDescription("Create default options file 'atc-coding-rules-updater.json' if it doesn't exist")
                 .WithExample(new[] { CreateArgumentCommandsOptionsFileWithCreate(), ".", CreateEquivalentToOptionsFileCreate(6), })
                 .WithExample(new[] { CreateArgumentCommandsOptionsFileWithCreate(), CreateArgumentProjectPathWithDot(), CreateEquivalentToOptionsFileCreate(3), })
                 .WithExample(new[] { CreateArgumentCommandsOptionsFileWithCreate(), CreateArgumentProjectPathWithTestFolder(), });
 
             node
-                .AddCommand<OptionsFileValidateCommand>(NameCommandConstants.OptionsFileValidate)
+                .AddCommand<OptionsFileValidateCommand>(CommandConstants.NameOptionsFileValidate)
                 .WithDescription("Validate the options file 'atc-coding-rules-updater.json'")
                 .WithExample(new[] { CreateArgumentCommandsOptionsFileWithValidate(), ".", CreateEquivalentToOptionsFileValidate(4), })
                 .WithExample(new[] { CreateArgumentCommandsOptionsFileWithValidate(), CreateArgumentProjectPathWithTestFolder() });
@@ -96,23 +96,32 @@ public static class CommandAppExtensions
                 .WithExample(new[] { CreateArgumentCommandsAnalyzerProvidersWithCleanupCache() });
         };
 
-    private static string CreateArgumentProjectPathWithDot() => $"{ArgumentCommandConstants.ShortProjectPath} .";
+    private static string CreateArgumentProjectPathWithDot()
+        => $"{ArgumentCommandConstants.ShortProjectPath} .";
 
-    private static string CreateArgumentProjectPathWithCurrentFolder() => $"{ArgumentCommandConstants.ShortProjectPath} [CurrentFolder]";
+    private static string CreateArgumentProjectPathWithCurrentFolder()
+        => $"{ArgumentCommandConstants.ShortProjectPath} [CurrentFolder]";
 
-    private static string CreateArgumentProjectPathWithTestFolder() => @$"{ArgumentCommandConstants.ShortProjectPath} c:\temp\MyProject";
+    private static string CreateArgumentProjectPathWithTestFolder()
+        => @$"{ArgumentCommandConstants.ShortProjectPath} c:\temp\MyProject";
 
-    private static string CreateArgumentProjectTarget(SupportedProjectTargetType targetType) => @$"{ArgumentCommandConstants.ShortProjectTarget} {targetType}";
+    private static string CreateArgumentProjectTarget(SupportedProjectTargetType targetType)
+        => @$"{ArgumentCommandConstants.ShortProjectTarget} {targetType}";
 
-    private static string CreateArgumentFetchMode(ProviderCollectingMode collectingMode) => @$"{ArgumentCommandConstants.LongFetchMode} {collectingMode}";
+    private static string CreateArgumentFetchMode(ProviderCollectingMode collectingMode)
+        => @$"{ArgumentCommandConstants.LongFetchMode} {collectingMode}";
 
-    private static string CreateArgumentCommandsAnalyzerProvidersWithCollect() => $"{NameCommandConstants.AnalyzerProviders} {NameCommandConstants.AnalyzerProvidersCollect}";
+    private static string CreateArgumentCommandsAnalyzerProvidersWithCollect()
+        => $"{NameCommandConstants.AnalyzerProviders} {NameCommandConstants.AnalyzerProvidersCollect}";
 
-    private static string CreateArgumentCommandsOptionsFileWithCreate() => $"{NameCommandConstants.OptionsFile} {NameCommandConstants.OptionsFileCreate}";
+    private static string CreateArgumentCommandsOptionsFileWithCreate()
+        => $"{CommandConstants.NameOptionsFile} {CommandConstants.NameOptionsFileCreate}";
 
-    private static string CreateArgumentCommandsOptionsFileWithValidate() => $"{NameCommandConstants.OptionsFile} {NameCommandConstants.OptionsFileValidate}";
+    private static string CreateArgumentCommandsOptionsFileWithValidate()
+        => $"{CommandConstants.NameOptionsFile} {CommandConstants.NameOptionsFileValidate}";
 
-    private static string CreateArgumentCommandsAnalyzerProvidersWithCleanupCache() => $"{NameCommandConstants.AnalyzerProviders} {NameCommandConstants.AnalyzerProvidersCleanupCache}";
+    private static string CreateArgumentCommandsAnalyzerProvidersWithCleanupCache()
+        => $"{NameCommandConstants.AnalyzerProviders} {NameCommandConstants.AnalyzerProvidersCleanupCache}";
 
     private static string CreateEquivalentToRun(int indentSpaces)
         => PrefixSpaces(indentSpaces, $"(equivalent to '{NameCommandConstants.Run} {CreateArgumentProjectPathWithCurrentFolder()}')");

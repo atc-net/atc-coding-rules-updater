@@ -58,7 +58,7 @@ public static class Program
 
         if (!newArgs.Contains(NameCommandConstants.Run, StringComparer.OrdinalIgnoreCase) &&
             !newArgs.Contains(NameCommandConstants.SanityCheck, StringComparer.OrdinalIgnoreCase) &&
-            !newArgs.Contains(NameCommandConstants.OptionsFile, StringComparer.OrdinalIgnoreCase) &&
+            !newArgs.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
             !newArgs.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
             (newArgs.Contains(ArgumentCommandConstants.ShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
              newArgs.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
@@ -90,11 +90,11 @@ public static class Program
                 return new[] { NameCommandConstants.SanityCheck, CommandConstants.ArgumentShortHelp };
             }
 
-            if (args.Contains(NameCommandConstants.OptionsFile, StringComparer.OrdinalIgnoreCase) &&
-                (args.Contains(NameCommandConstants.OptionsFileCreate, StringComparer.OrdinalIgnoreCase) ||
-                 args.Contains(NameCommandConstants.OptionsFileValidate, StringComparer.OrdinalIgnoreCase)))
+            if (args.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
+                (args.Contains(CommandConstants.NameOptionsFileCreate, StringComparer.OrdinalIgnoreCase) ||
+                 args.Contains(CommandConstants.NameOptionsFileValidate, StringComparer.OrdinalIgnoreCase)))
             {
-                return new[] { NameCommandConstants.OptionsFile, CommandConstants.ArgumentShortHelp };
+                return new[] { CommandConstants.NameOptionsFile, CommandConstants.ArgumentShortHelp };
             }
 
             if (args.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&

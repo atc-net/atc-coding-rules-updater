@@ -1,6 +1,6 @@
 // ReSharper disable InvertIf
 // ReSharper disable SuggestBaseTypeForParameter
-namespace Atc.CodingRules.Updater.CLI.Models;
+namespace Atc.CodingRules.Updater.CLI.Models.Options;
 
 public class OptionsMappings
 {

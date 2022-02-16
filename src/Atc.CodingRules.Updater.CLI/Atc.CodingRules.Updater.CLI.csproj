@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>atc-coding-rules-updater</AssemblyName>
     <PackAsTool>true</PackAsTool>
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

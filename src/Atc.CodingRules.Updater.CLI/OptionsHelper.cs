@@ -1,9 +1,12 @@
 // ReSharper disable SuggestBaseTypeForParameter
+
+using Atc.CodingRules.Updater.CLI.Models.Options;
+
 namespace Atc.CodingRules.Updater.CLI;
 
 public static class OptionsHelper
 {
-    public static async Task<Options> CreateDefault(
+    public static async Task<OptionsFile> CreateDefault(
         DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {
@@ -16,7 +19,7 @@ public static class OptionsHelper
         }
 
         var optionsPath = GetOptionsPath(projectPath, settingsOptionsPath);
-        var options = await FileHelper<Options>.ReadJsonFileAndDeserializeAsync(fileInfo);
+        var options = await FileHelper<OptionsFile>.ReadJsonFileAndDeserializeAsync(fileInfo);
         if (options is null)
         {
             return CreateDefaultOptions(projectPath);
@@ -45,7 +48,7 @@ public static class OptionsHelper
             options.ProjectTarget = settings.ProjectTarget.Value;
         }
 
-        await FileHelper<Options>.WriteModelToJsonFileAsync(fileInfo, options);
+        await FileHelper<OptionsFile>.WriteModelToJsonFileAsync(fileInfo, options);
         return (true, string.Empty);
     }
 
@@ -59,16 +62,16 @@ public static class OptionsHelper
             return (false, "File does not exist");
         }
 
-        var options = await FileHelper<Options>.ReadJsonFileAndDeserializeAsync(fileInfo);
+        var options = await FileHelper<OptionsFile>.ReadJsonFileAndDeserializeAsync(fileInfo);
         return options is null
             ? (false, "File is invalid")
             : (true, string.Empty);
     }
 
-    private static Options CreateDefaultOptions(
+    private static OptionsFile CreateDefaultOptions(
         DirectoryInfo projectPath)
     {
-        var options = new Options();
+        var options = new OptionsFile();
         var directories = projectPath.GetDirectories();
 
         var sampleName = directories.FirstOrDefault(x => x.Name.Equals("sample", StringComparison.OrdinalIgnoreCase))?.Name;

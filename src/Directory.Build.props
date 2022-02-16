@@ -25,7 +25,7 @@
     <!-- Creates a regular package and a symbols package -->
     <IncludeSymbols>true</IncludeSymbols>
     <!-- Creates symbol package in the new .snupkg format -->
-    <!-- <SymbolPackageFormat>snupkg</SymbolPackageFormat> --> <!-- TODO: If enabled: NU5017: Cannot create a package that has no dependencies nor content. -->
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!--
       Instruct the build system to embed project source files that are not tracked by the source control
       or imported from a source package to the generated PDB.
