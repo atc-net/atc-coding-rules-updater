@@ -147,7 +147,7 @@ OPTIONS:
     -h, --help    Prints help information
 
 COMMANDS:
-    create      Create default options file 'atc-coding-rules-updater.json' if it doesn't exist
+    create      Create default options file 'atc-coding-rules-updater.json' if it doesn´t exist
     validate    Validate the options file 'atc-coding-rules-updater.json'
 ```
 
@@ -164,7 +164,7 @@ Running the command above produces the following output
 ```powershell
   ____            _                                      _           _
  |  _ \   _   _  | |   ___   ___     _   _   _ __     __| |   __ _  | |_    ___   _ __
- | |_) | | | | | | |  / _ \ / __|   | | | | | '_ \   / _` |  / _` | | __|  / _ \ | '__|
+ | |_) | | | | | | |  / _ \ / __|   | | | | | `_ \   / _` |  / _` | | __|  / _ \ | `__|
  |  _ <  | |_| | | | |  __/ \__ \   | |_| | | |_) | | (_| | | (_| | | |_  |  __/ | |
  |_| \_\  \__,_| |_|  \___| |___/    \__,_| | .__/   \__,_|  \__,_|  \__|  \___| |_|
                                             |_|

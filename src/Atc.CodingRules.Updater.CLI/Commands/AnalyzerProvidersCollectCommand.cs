@@ -1,3 +1,5 @@
+using Atc.CodingRules.Updater.CLI.Models.Options;
+
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class AnalyzerProvidersCollectCommand : AsyncCommand<AnalyzerProvidersCollectCommandSettings>
@@ -41,7 +43,7 @@ public class AnalyzerProvidersCollectCommand : AsyncCommand<AnalyzerProvidersCol
         return ConsoleExitStatusCodes.Success;
     }
 
-    private static async Task<Options> GetOptionsFromFileAndUserArguments(
+    private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         AnalyzerProvidersCollectCommandSettings settings,
         DirectoryInfo projectPath)
     {

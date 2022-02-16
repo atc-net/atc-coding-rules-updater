@@ -1,3 +1,4 @@
+using Atc.CodingRules.Updater.CLI.Models.Options;
 using Atc.DotNet;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -18,7 +19,7 @@ public static class ProjectHelper
     public static async Task HandleFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        Options options)
+        OptionsFile options)
     {
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
@@ -65,7 +66,7 @@ public static class ProjectHelper
     public static Task SanityCheckFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        Options options)
+        OptionsFile options)
     {
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
@@ -82,7 +83,7 @@ public static class ProjectHelper
     private static void HandleEditorConfigFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        Options options)
+        OptionsFile options)
     {
         logger.LogInformation($"{AppEmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
@@ -111,7 +112,7 @@ public static class ProjectHelper
     private static void HandleDirectoryBuildPropsFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        Options options)
+        OptionsFile options)
     {
         logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
@@ -344,14 +345,14 @@ public static class ProjectHelper
             worksheet.Cells["B2:B" + rowNr].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.View.FreezePanes(2, 1);
 
-            logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+            logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile} updated");
 
             return excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
         }
 
         var suppressionsText = CreateSuppressionsText(suppressionLinesPrAnalyzer);
 
-        logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile}");
+        logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile} updated");
 
         return Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
     }

@@ -1,4 +1,7 @@
 // ReSharper disable SuggestBaseTypeForParameter
+
+using Atc.CodingRules.Updater.CLI.Models.Options;
+
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class RunCommand : AsyncCommand<RunCommandSettings>
@@ -61,7 +64,7 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
         return ConsoleExitStatusCodes.Success;
     }
 
-    private static async Task<Options> GetOptionsFromFileAndUserArguments(
+    private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         RunCommandSettings settings,
         DirectoryInfo projectPath)
     {

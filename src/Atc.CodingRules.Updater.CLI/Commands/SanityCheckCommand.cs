@@ -1,3 +1,5 @@
+using Atc.CodingRules.Updater.CLI.Models.Options;
+
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
@@ -37,7 +39,7 @@ public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
         return ConsoleExitStatusCodes.Success;
     }
 
-    private static async Task<Options> GetOptionsFromFileAndUserArguments(
+    private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         ProjectCommandSettings settings,
         DirectoryInfo projectPath)
     {

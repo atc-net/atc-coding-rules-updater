@@ -6,7 +6,6 @@ global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Text;
-global using System.Text.Json;
 
 global using Atc.CodingRules.AnalyzerProviders;
 global using Atc.CodingRules.AnalyzerProviders.Models;
@@ -14,14 +13,12 @@ global using Atc.CodingRules.Updater.CLI.Commands;
 global using Atc.CodingRules.Updater.CLI.Commands.DescriptionAttributes;
 global using Atc.CodingRules.Updater.CLI.Commands.Settings;
 global using Atc.CodingRules.Updater.CLI.Extensions;
-global using Atc.CodingRules.Updater.CLI.Models;
 global using Atc.Console.Spectre;
 global using Atc.Console.Spectre.CommandSettings;
 global using Atc.Console.Spectre.Factories;
 global using Atc.Console.Spectre.Helpers;
 global using Atc.Console.Spectre.Logging;
 global using Atc.Helpers;
-global using Atc.Serialization;
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;

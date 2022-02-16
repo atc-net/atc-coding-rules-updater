@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Atc.CodingRules.Updater.CLI.Models.Options;
 
 namespace Atc.CodingRules.Updater.CLI.Commands.DescriptionAttributes;
 
@@ -9,7 +10,7 @@ public sealed class SupportedProjectTargetTypeDescriptionAttribute : Description
     {
         get
         {
-            var defaultValue = new Options().ProjectTarget;
+            var defaultValue = new OptionsFile().ProjectTarget;
             var values = Enum.GetNames(typeof(SupportedProjectTargetType))
                 .Select(enumValue => enumValue.Equals(defaultValue.ToString(), StringComparison.Ordinal)
                     ? $"{enumValue} (default)"
