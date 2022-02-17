@@ -13,6 +13,7 @@ global using Atc.CodingRules.Updater.CLI.Commands;
 global using Atc.CodingRules.Updater.CLI.Commands.DescriptionAttributes;
 global using Atc.CodingRules.Updater.CLI.Commands.Settings;
 global using Atc.CodingRules.Updater.CLI.Extensions;
+global using Atc.CodingRules.Updater.CLI.Models.Options;
 global using Atc.Console.Spectre;
 global using Atc.Console.Spectre.CommandSettings;
 global using Atc.Console.Spectre.Factories;
