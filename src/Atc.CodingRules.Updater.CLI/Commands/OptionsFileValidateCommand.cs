@@ -15,6 +15,7 @@ public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSetting
         return ExecuteInternalAsync(settings);
     }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
         ProjectBaseCommandSettings settings)
     {

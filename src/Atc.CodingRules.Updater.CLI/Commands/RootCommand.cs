@@ -1,5 +1,7 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
+[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
+[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
 public class RootCommand : AsyncCommand<RootCommandSettings>
 {
     public override Task<int> ExecuteAsync(
@@ -14,6 +16,12 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
     private static async Task<int> ExecuteInternalAsync(
         RootCommandSettings settings)
     {
+        if (!NetworkInformationHelper.HasConnection())
+        {
+            System.Console.WriteLine("This tool requires internet connection!");
+            return ConsoleExitStatusCodes.Failure;
+        }
+
         if (settings.IsOptionValueTrue(settings.Version))
         {
             try
@@ -30,7 +38,6 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         return ConsoleExitStatusCodes.Success;
     }
 
-    [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
     private static void HandleVersionOption()
     {
         System.Console.WriteLine(CliHelper.GetCurrentVersion().ToString());

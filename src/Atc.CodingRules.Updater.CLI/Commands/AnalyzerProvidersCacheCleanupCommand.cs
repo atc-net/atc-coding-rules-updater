@@ -1,5 +1,6 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
+[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 public class AnalyzerProvidersCacheCleanupCommand : Command
 {
     private readonly ILogger<AnalyzerProvidersCacheCleanupCommand> logger;

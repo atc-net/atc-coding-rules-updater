@@ -1,9 +1,7 @@
 // ReSharper disable SuggestBaseTypeForParameter
-
-using Atc.CodingRules.Updater.CLI.Models.Options;
-
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
+[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
 public class RunCommand : AsyncCommand<RunCommandSettings>
 {
     private readonly ILogger<RunCommand> logger;
@@ -19,9 +17,16 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
         return ExecuteInternalAsync(settings);
     }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
         RunCommandSettings settings)
     {
+        if (!NetworkInformationHelper.HasConnection())
+        {
+            System.Console.WriteLine("This tool requires internet connection!");
+            return ConsoleExitStatusCodes.Failure;
+        }
+
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
