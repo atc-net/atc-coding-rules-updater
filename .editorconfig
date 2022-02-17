@@ -505,7 +505,6 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 
 dotnet_diagnostic.IDE0057.severity = none           # Substring can be simplified
 
-dotnet_diagnostic.CA1031.severity = none            # Do not catch general exception types
 dotnet_diagnostic.CA1054.severity = none            # URI parameters should not be strings
 dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 dotnet_diagnostic.CA2007.severity = none            # Consider calling ConfigureAwait on the awaited task
