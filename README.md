@@ -1,6 +1,6 @@
 [![NuGet Version](https://img.shields.io/nuget/v/atc-coding-rules-updater.svg?logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/atc-coding-rules-updater)
 
-# ATC.Net Coding rules updater
+# ATC-NET Coding rules updater
 
 This repository contains a CLI tool, which can be used to maintain `coding-rules` in a project, where [atc-coding-rules](https://github.com/atc-net/atc-coding-rules) has been utilized.
 
