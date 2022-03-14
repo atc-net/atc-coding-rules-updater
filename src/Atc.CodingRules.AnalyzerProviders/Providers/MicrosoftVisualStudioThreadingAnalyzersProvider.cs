@@ -6,8 +6,12 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
     private const int TableColumnCategory = 2;
     private const int TableColumnTitle = 1;
 
-    public MicrosoftVisualStudioThreadingAnalyzersProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
-        : base(logger, logWithAnsiConsoleMarkup)
+    public MicrosoftVisualStudioThreadingAnalyzersProvider(
+        ILogger logger,
+        bool logWithAnsiConsoleMarkup = false)
+        : base(
+            logger,
+            logWithAnsiConsoleMarkup)
     {
     }
 

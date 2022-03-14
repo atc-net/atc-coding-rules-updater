@@ -6,8 +6,12 @@ public class MeziantouProvider : AnalyzerProviderBase
     private const int TableColumnCategory = 1;
     private const int TableColumnTitle = 2;
 
-    public MeziantouProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
-        : base(logger, logWithAnsiConsoleMarkup)
+    public MeziantouProvider(
+        ILogger logger,
+        bool logWithAnsiConsoleMarkup = false)
+        : base(
+            logger,
+            logWithAnsiConsoleMarkup)
     {
     }
 

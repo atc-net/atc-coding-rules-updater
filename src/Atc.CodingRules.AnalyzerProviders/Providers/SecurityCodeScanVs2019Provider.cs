@@ -2,8 +2,12 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
 {
-    public SecurityCodeScanVs2019Provider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
-        : base(logger, logWithAnsiConsoleMarkup)
+    public SecurityCodeScanVs2019Provider(
+        ILogger logger,
+        bool logWithAnsiConsoleMarkup = false)
+        : base(
+            logger,
+            logWithAnsiConsoleMarkup)
     {
     }
 

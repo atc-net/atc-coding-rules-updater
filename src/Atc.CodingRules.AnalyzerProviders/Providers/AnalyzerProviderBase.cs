@@ -8,7 +8,9 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     private readonly ILogger logger;
     private readonly bool logWithAnsiConsoleMarkup;
 
-    protected AnalyzerProviderBase(ILogger logger, bool logWithAnsiConsoleMarkup)
+    protected AnalyzerProviderBase(
+        ILogger logger,
+        bool logWithAnsiConsoleMarkup)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.logWithAnsiConsoleMarkup = logWithAnsiConsoleMarkup;
