@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public abstract class AnalyzerProviderBase : IAnalyzerProvider
@@ -134,13 +136,25 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
 
         var url = GitRawAtcAnalyzerProviderBaseRulesBasePath + data.Name + ".json";
         var displayName = url.Replace(Constants.GitRawContentUrl, Constants.GitHubPrefix, StringComparison.Ordinal);
-        var rawGitData = HttpClientHelper.GetAsString(
-            logger,
-            url,
-            displayName);
-        return Task.FromResult(string.IsNullOrEmpty(rawGitData)
-            ? null
-            : JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(rawGitData, AnalyzerProviderSerialization.JsonOptions)!);
+        try
+        {
+            var rawGitData = HttpClientHelper.GetAsString(
+                logger,
+                url,
+                displayName);
+            return Task.FromResult(string.IsNullOrEmpty(rawGitData)
+                ? null
+                : JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(rawGitData, AnalyzerProviderSerialization.JsonOptions)!);
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return Task.FromResult<AnalyzerProviderBaseRuleData?>(null);
+            }
+
+            throw;
+        }
     }
 
     private void StopTheStopwatchAndLog(
