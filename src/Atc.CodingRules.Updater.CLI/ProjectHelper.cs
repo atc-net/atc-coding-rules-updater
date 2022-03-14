@@ -284,15 +284,15 @@ public static class ProjectHelper
                 "     ");
 
             hasFoundNewErrors = buildResultNextRun.Count > 0;
-            foreach (var item in buildResultNextRun)
+            foreach (var (key, value) in buildResultNextRun)
             {
-                if (buildResult.ContainsKey(item.Key))
+                if (buildResult.ContainsKey(key))
                 {
-                    buildResult[item.Key] = buildResult[item.Key] + item.Value;
+                    buildResult[key] += value;
                 }
                 else
                 {
-                    buildResult.Add(item.Key, item.Value);
+                    buildResult.Add(key, value);
                 }
             }
         }
@@ -495,8 +495,8 @@ public static class ProjectHelper
                 {
                     var tabs = CalculateTabIndentationForSuppressionLine(rule.Code.Length);
                     var suppressionLine = string.IsNullOrEmpty(rule.Category)
-                        ? $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")}{rule.TitleAndLink}"
-                        : $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")} - Category: '{rule.Category}'{rule.TitleAndLink}";
+                        ? $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")}{rule.TitleAndLink}"
+                        : $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")} - Category: '{rule.Category}'{rule.TitleAndLink}";
                     suppressionLines.Add(Tuple.Create(analyzerProvider.Name, suppressionLine));
                     handledCodes.Add(code);
                 }
@@ -517,7 +517,7 @@ public static class ProjectHelper
             }
 
             var tabs = CalculateTabIndentationForSuppressionLine(code.Length);
-            var suppressionLine = $"dotnet_diagnostic.{code}.severity = none{tabs}# {count.Pluralize("occurrence")}";
+            var suppressionLine = $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")}";
             suppressionLines.Add(Tuple.Create("Unknown", suppressionLine));
         }
     }
@@ -527,21 +527,14 @@ public static class ProjectHelper
     {
         var tabs = codeLength switch
         {
-            2 => "\t\t\t\t\t",
-            3 => "\t\t\t\t",
-            4 => "\t\t\t\t",
-            5 => "\t\t\t\t",
-            6 => "\t\t\t",
-            7 => "\t\t\t",
-            8 => "\t\t\t",
-            9 => "\t\t\t",
-            10 => "\t\t\t",
-            11 => "\t\t",
-            12 => "\t\t",
-            13 => "\t\t",
-            14 => "\t\t",
-            15 => "\t",
-            _ => "\t\t\t"
+            1 => "\t\t\t",
+            2 => "\t\t\t",
+            3 => "\t\t\t",
+            4 => "\t\t",
+            5 => "\t\t",
+            6 => "\t\t",
+            7 => "\t\t",
+            _ => "\t"
         };
 
         return tabs;
