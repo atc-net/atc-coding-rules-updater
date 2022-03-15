@@ -53,7 +53,7 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
 
             var code = aHrefNode.InnerText;
             var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
-            var link = aHrefNode.Attributes["href"].Value;
+            var link = "https://github.com/" + aHrefNode.Attributes["href"].Value;
             var category = cells[TableColumnCategory].InnerText;
 
             data.Rules.Add(
