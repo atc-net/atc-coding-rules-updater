@@ -14,7 +14,7 @@ public class WpfAnalyzersProvider : AnalyzerProviderBase
     {
     }
 
-    public static string Name => "WpfAnalyzersProvider";
+    public static string Name => "WpfAnalyzers";
 
     public override Uri? DocumentationLink { get; set; } = new ("https://github.com/DotNetAnalyzers/WpfAnalyzers", UriKind.Absolute);
 
