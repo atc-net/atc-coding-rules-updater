@@ -19,14 +19,19 @@ public class AnalyzerProviderCollector
             MicrosoftCodeAnalysisNetAnalyzersProvider.Name,
             MicrosoftCompilerErrorsProvider.Name,
             MicrosoftCompilerErrorsProviderUndocumented.Name,
+            MicrosoftVisualStudioThreadingAnalyzersProvider.Name,
+            NSubstituteAnalyzersProvider.Name,
             SecurityCodeScanVs2019Provider.Name,
             StyleCopAnalyzersProvider.Name,
             SonarAnalyzerCSharpProvider.Name,
+            WpfAnalyzersProvider.Name,
+            XunitProvider.Name,
         };
 
         return list.ToArray();
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public async Task<Collection<AnalyzerProviderBaseRuleData>> CollectAllBaseRules(
         ProviderCollectingMode providerCollectingMode,
         bool logWithAnsiConsoleMarkup)
@@ -51,6 +56,12 @@ public class AnalyzerProviderCollector
         var microsoftCodeAnalysisNetAnalyzersProviderUndocumented = new MicrosoftCompilerErrorsProviderUndocumented(logger, logWithAnsiConsoleMarkup);
         var microsoftCompilerErrorsUndocumentedTask = microsoftCodeAnalysisNetAnalyzersProviderUndocumented.CollectBaseRules(ProviderCollectingMode.ReCollect);
 
+        var microsoftVisualStudioThreadingAnalyzersProvider = new MicrosoftVisualStudioThreadingAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
+        var microsoftVisualStudioThreadingAnalyzersProviderTask = microsoftVisualStudioThreadingAnalyzersProvider.CollectBaseRules(ProviderCollectingMode.ReCollect);
+
+        var nSubstituteAnalyzersProvider = new NSubstituteAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
+        var nSubstituteAnalyzersProviderTask = nSubstituteAnalyzersProvider.CollectBaseRules(ProviderCollectingMode.ReCollect);
+
         var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger, logWithAnsiConsoleMarkup);
         var securityCodeScanVs2019Task = securityCodeScanVs2019Provider.CollectBaseRules(providerCollectingMode);
 
@@ -60,6 +71,12 @@ public class AnalyzerProviderCollector
         var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger, logWithAnsiConsoleMarkup);
         var sonarAnalyzerCSharpTask = sonarAnalyzerCSharpProvider.CollectBaseRules(providerCollectingMode);
 
+        var wpfAnalyzersProvider = new WpfAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
+        var wpfAnalyzersProviderTask = wpfAnalyzersProvider.CollectBaseRules(providerCollectingMode);
+
+        var xunitProvider = new XunitProvider(logger, logWithAnsiConsoleMarkup);
+        var xunitProviderTask = xunitProvider.CollectBaseRules(providerCollectingMode);
+
         await Task.WhenAll(
             asyncFixerTask,
             asyncifyTask,
@@ -67,9 +84,13 @@ public class AnalyzerProviderCollector
             microsoftCodeAnalysisNetAnalyzersTask,
             microsoftCompilerErrorsTask,
             microsoftCompilerErrorsUndocumentedTask,
+            microsoftVisualStudioThreadingAnalyzersProviderTask,
+            nSubstituteAnalyzersProviderTask,
             securityCodeScanVs2019Task,
             styleCopAnalyzersTask,
-            sonarAnalyzerCSharpTask);
+            sonarAnalyzerCSharpTask,
+            wpfAnalyzersProviderTask,
+            xunitProviderTask);
 
         data.Add(await asyncFixerTask);
         data.Add(await asyncifyTask);
@@ -77,9 +98,13 @@ public class AnalyzerProviderCollector
         data.Add(await microsoftCodeAnalysisNetAnalyzersTask);
         data.Add(await microsoftCompilerErrorsTask);
         data.Add(await microsoftCompilerErrorsUndocumentedTask);
+        data.Add(await microsoftVisualStudioThreadingAnalyzersProviderTask);
+        data.Add(await nSubstituteAnalyzersProviderTask);
         data.Add(await securityCodeScanVs2019Task);
         data.Add(await styleCopAnalyzersTask);
         data.Add(await sonarAnalyzerCSharpTask);
+        data.Add(await wpfAnalyzersProviderTask);
+        data.Add(await xunitProviderTask);
 
         return data;
     }
@@ -104,6 +129,12 @@ public class AnalyzerProviderCollector
         var microsoftCodeAnalysisNetAnalyzersProviderUndocumented = new MicrosoftCompilerErrorsProviderUndocumented(logger);
         microsoftCodeAnalysisNetAnalyzersProviderUndocumented.Cleanup();
 
+        var microsoftVisualStudioThreadingAnalyzersProvider = new MicrosoftVisualStudioThreadingAnalyzersProvider(logger);
+        microsoftVisualStudioThreadingAnalyzersProvider.Cleanup();
+
+        var nSubstituteAnalyzersProvider = new NSubstituteAnalyzersProvider(logger);
+        nSubstituteAnalyzersProvider.Cleanup();
+
         var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger);
         securityCodeScanVs2019Provider.Cleanup();
 
@@ -112,5 +143,11 @@ public class AnalyzerProviderCollector
 
         var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger);
         sonarAnalyzerCSharpProvider.Cleanup();
+
+        var wpfAnalyzersProvider = new WpfAnalyzersProvider(logger);
+        wpfAnalyzersProvider.Cleanup();
+
+        var xunitProvider = new XunitProvider(logger);
+        xunitProvider.Cleanup();
     }
 }

@@ -5,8 +5,12 @@ public class AsyncifyProvider : AnalyzerProviderBase
     [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
     private const string GitRawAnalyzerProviderBaseRulesBasePath = "https://raw.githubusercontent.com/hvanbakel/Asyncify-CSharp/master/Asyncify/Asyncify/Resources.resx";
 
-    public AsyncifyProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
-        : base(logger, logWithAnsiConsoleMarkup)
+    public AsyncifyProvider(
+        ILogger logger,
+        bool logWithAnsiConsoleMarkup = false)
+        : base(
+            logger,
+            logWithAnsiConsoleMarkup)
     {
     }
 

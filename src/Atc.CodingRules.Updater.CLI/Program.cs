@@ -42,8 +42,8 @@ public static class Program
         {
             if (".".Equals(s, StringComparison.Ordinal))
             {
-                if (!(newArgs.Contains(ArgumentCommandConstants.ShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
-                      newArgs.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
+                if (!(args.Contains(ArgumentCommandConstants.ShortProjectPath, StringComparer.OrdinalIgnoreCase) ||
+                      args.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
                 {
                     newArgs.Add(ArgumentCommandConstants.ShortProjectPath);
                 }
@@ -64,6 +64,12 @@ public static class Program
              newArgs.Contains(ArgumentCommandConstants.LongProjectPath, StringComparer.OrdinalIgnoreCase)))
         {
             newArgs.Insert(0, NameCommandConstants.Run);
+        }
+
+        if (!newArgs.Contains(CommandConstants.ArgumentShortVerbose, StringComparer.OrdinalIgnoreCase) ||
+            !newArgs.Contains(CommandConstants.ArgumentLongVerbose, StringComparer.OrdinalIgnoreCase))
+        {
+            newArgs.Add(CommandConstants.ArgumentShortVerbose);
         }
 
         return newArgs.ToArray();

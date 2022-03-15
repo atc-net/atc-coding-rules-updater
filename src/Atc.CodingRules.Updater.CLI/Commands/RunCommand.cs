@@ -21,7 +21,7 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
     private async Task<int> ExecuteInternalAsync(
         RunCommandSettings settings)
     {
-        if (!NetworkInformationHelper.HasConnection())
+        if (!NetworkInformationHelper.HasHttpConnection())
         {
             System.Console.WriteLine("This tool requires internet connection!");
             return ConsoleExitStatusCodes.Failure;

@@ -5,31 +5,36 @@
       "Code": "AsyncFixer01",
       "Title": "Unnecessary async/await usage",
       "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer01unnecessary-asyncawait-usage",
-      "Description": "There are some async methods where there is no need to use async/await keywords. It is important to detect this kind of misuse because adding the async modifier comes at a price. AsyncFixer automatically removes async/await keywords from those methods."
+      "Description": "There are some async methods where there is no need to use async/await keywords. It is important to detect this kind of misuse because adding the async modifier comes at a price. AsyncFixer automatically removes async/await keywords from those methods.",
+      "TitleAndLink": " - Unnecessary async/await usage - https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer01unnecessary-asyncawait-usage"
     },
     {
       "Code": "AsyncFixer02",
       "Title": "Long-running or blocking operations inside an async method",
       "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer02long-running-or-blocking-operations-inside-an-async-method",
-      "Description": "Developers use some potentially long-running or blocking operations inside async methods even though there are corresponding asynchronous versions of these methods in .NET or third-party libraries. Some examples for such operations: Task.Wait(), Task.Result, StreamReader.ReadToEnd(), Thread.Sleep(), etc."
+      "Description": "Developers use some potentially long-running or blocking operations inside async methods even though there are corresponding asynchronous versions of these methods in .NET or third-party libraries. Some examples for such operations: Task.Wait(), Task.Result, StreamReader.ReadToEnd(), Thread.Sleep(), etc.",
+      "TitleAndLink": " - Long-running or blocking operations inside an async method - https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer02long-running-or-blocking-operations-inside-an-async-method"
     },
     {
       "Code": "AsyncFixer03",
       "Title": "Fire-and-forget async-void methods and delegates",
       "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer03fire-and-forget-async-void-methods-and-delegates",
-      "Description": "Some async methods and delegates are fire-and-forget, which return void. Unless a method is only called as an event handler, it must be awaitable. Otherwise, it is a code smell because it complicates control flow and makes error detection/correction difficult. Unhandled exceptions in those async-void methods and delegates will crash the process as well."
+      "Description": "Some async methods and delegates are fire-and-forget, which return void. Unless a method is only called as an event handler, it must be awaitable. Otherwise, it is a code smell because it complicates control flow and makes error detection/correction difficult. Unhandled exceptions in those async-void methods and delegates will crash the process as well.",
+      "TitleAndLink": " - Fire-and-forget async-void methods and delegates - https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer03fire-and-forget-async-void-methods-and-delegates"
     },
     {
       "Code": "AsyncFixer04",
       "Title": "Fire-and-forget async call inside an using block",
       "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer04fire-and-forget-async-call-inside-an-using-block",
-      "Description": "Inside a using block, developers insert a fire-and-forget async call which uses a disposable object as a parameter or target object. It can cause potential exceptions or wrong results."
+      "Description": "Inside a using block, developers insert a fire-and-forget async call which uses a disposable object as a parameter or target object. It can cause potential exceptions or wrong results.",
+      "TitleAndLink": " - Fire-and-forget async call inside an using block - https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer04fire-and-forget-async-call-inside-an-using-block"
     },
     {
       "Code": "AsyncFixer05",
       "Title": "Downcasting from a nested task to an outer task.",
       "Link": "https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer05downcasting-from-a-nested-task-to-an-outer-task",
-      "Description": "Downcasting from a nested task to a task or awaiting a nested task is dangerous. There is no way to wait for and get the result of the child task. This usually occurs when mixing async/await keywords with the old threading APIs such as TaskFactory.StartNew."
+      "Description": "Downcasting from a nested task to a task or awaiting a nested task is dangerous. There is no way to wait for and get the result of the child task. This usually occurs when mixing async/await keywords with the old threading APIs such as TaskFactory.StartNew.",
+      "TitleAndLink": " - Downcasting from a nested task to an outer task. - https://github.com/semihokur/AsyncFixer/blob/main/README.md#user-content-asyncfixer05downcasting-from-a-nested-task-to-an-outer-task"
     }
   ]
 }

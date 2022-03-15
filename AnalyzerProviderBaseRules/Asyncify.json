@@ -5,13 +5,15 @@
       "Code": "AsyncifyInvocation",
       "Title": "Invocation",
       "Link": "https://github.com/hvanbakel/Asyncify-CSharp",
-      "Description": "This invocation could benefit from the use of Task async."
+      "Description": "This invocation could benefit from the use of Task async.",
+      "TitleAndLink": " - Invocation - https://github.com/hvanbakel/Asyncify-CSharp"
     },
     {
       "Code": "AsyncifyVariableAccess",
       "Title": "Variable access",
       "Link": "https://github.com/hvanbakel/Asyncify-CSharp",
-      "Description": "This variable access could benefit from the use of Task async."
+      "Description": "This variable access could benefit from the use of Task async.",
+      "TitleAndLink": " - Variable access - https://github.com/hvanbakel/Asyncify-CSharp"
     }
   ]
 }

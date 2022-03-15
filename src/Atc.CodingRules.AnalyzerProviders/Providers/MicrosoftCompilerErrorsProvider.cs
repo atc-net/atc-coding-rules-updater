@@ -2,8 +2,12 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
 {
-    public MicrosoftCompilerErrorsProvider(ILogger logger, bool logWithAnsiConsoleMarkup = false)
-        : base(logger, logWithAnsiConsoleMarkup)
+    public MicrosoftCompilerErrorsProvider(
+        ILogger logger,
+        bool logWithAnsiConsoleMarkup = false)
+        : base(
+            logger,
+            logWithAnsiConsoleMarkup)
     {
     }
 

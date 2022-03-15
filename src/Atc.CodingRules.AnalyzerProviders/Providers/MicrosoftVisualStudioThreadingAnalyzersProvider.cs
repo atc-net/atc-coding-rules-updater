@@ -1,12 +1,12 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
-public class MeziantouProvider : AnalyzerProviderBase
+public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;
-    private const int TableColumnCategory = 1;
-    private const int TableColumnTitle = 2;
+    private const int TableColumnCategory = 2;
+    private const int TableColumnTitle = 1;
 
-    public MeziantouProvider(
+    public MicrosoftVisualStudioThreadingAnalyzersProvider(
         ILogger logger,
         bool logWithAnsiConsoleMarkup = false)
         : base(
@@ -15,9 +15,9 @@ public class MeziantouProvider : AnalyzerProviderBase
     {
     }
 
-    public static string Name => "Meziantou.Analyzer";
+    public static string Name => "Microsoft.VisualStudio.Threading.Analyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/index.md", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new (Name);
@@ -53,7 +53,7 @@ public class MeziantouProvider : AnalyzerProviderBase
 
             var code = aHrefNode.InnerText;
             var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
-            var link = aHrefNode.Attributes["href"].Value;
+            var link = "https://github.com/" + aHrefNode.Attributes["href"].Value;
             var category = cells[TableColumnCategory].InnerText;
 
             data.Rules.Add(

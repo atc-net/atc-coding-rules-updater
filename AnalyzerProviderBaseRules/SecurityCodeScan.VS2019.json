@@ -4,157 +4,188 @@
     {
       "Code": "SCS0001",
       "Title": "Command Injection",
-      "Link": "https://security-code-scan.github.io#SCS0001"
+      "Link": "https://security-code-scan.github.io#SCS0001",
+      "TitleAndLink": " - Command Injection - https://security-code-scan.github.io#SCS0001"
     },
     {
       "Code": "SCS0002",
       "Title": "SQL Injection",
-      "Link": "https://security-code-scan.github.io#SCS0002"
+      "Link": "https://security-code-scan.github.io#SCS0002",
+      "TitleAndLink": " - SQL Injection - https://security-code-scan.github.io#SCS0002"
     },
     {
       "Code": "SCS0003",
       "Title": "XPath Injection",
-      "Link": "https://security-code-scan.github.io#SCS0003"
+      "Link": "https://security-code-scan.github.io#SCS0003",
+      "TitleAndLink": " - XPath Injection - https://security-code-scan.github.io#SCS0003"
     },
     {
       "Code": "SCS0007",
       "Title": "XML eXternal Entity Injection (XXE)",
-      "Link": "https://security-code-scan.github.io#SCS0007"
+      "Link": "https://security-code-scan.github.io#SCS0007",
+      "TitleAndLink": " - XML eXternal Entity Injection (XXE) - https://security-code-scan.github.io#SCS0007"
     },
     {
       "Code": "SCS0018",
       "Title": "Path Traversal",
-      "Link": "https://security-code-scan.github.io#SCS0018"
+      "Link": "https://security-code-scan.github.io#SCS0018",
+      "TitleAndLink": " - Path Traversal - https://security-code-scan.github.io#SCS0018"
     },
     {
       "Code": "SCS0029",
       "Title": "Cross-Site Scripting (XSS)",
-      "Link": "https://security-code-scan.github.io#SCS0029"
+      "Link": "https://security-code-scan.github.io#SCS0029",
+      "TitleAndLink": " - Cross-Site Scripting (XSS) - https://security-code-scan.github.io#SCS0029"
     },
     {
       "Code": "SCS0026",
       "Title": "LDAP Distinguished Name Injection",
-      "Link": "https://security-code-scan.github.io#SCS0026"
+      "Link": "https://security-code-scan.github.io#SCS0026",
+      "TitleAndLink": " - LDAP Distinguished Name Injection - https://security-code-scan.github.io#SCS0026"
     },
     {
       "Code": "SCS0031",
       "Title": "LDAP Filter Injection",
-      "Link": "https://security-code-scan.github.io#SCS0031"
+      "Link": "https://security-code-scan.github.io#SCS0031",
+      "TitleAndLink": " - LDAP Filter Injection - https://security-code-scan.github.io#SCS0031"
     },
     {
       "Code": "SCS0004",
       "Title": "Certificate Validation Disabled",
-      "Link": "https://security-code-scan.github.io#SCS0004"
+      "Link": "https://security-code-scan.github.io#SCS0004",
+      "TitleAndLink": " - Certificate Validation Disabled - https://security-code-scan.github.io#SCS0004"
     },
     {
       "Code": "SCS0005",
       "Title": "Weak Random Number Generator",
-      "Link": "https://security-code-scan.github.io#SCS0005"
+      "Link": "https://security-code-scan.github.io#SCS0005",
+      "TitleAndLink": " - Weak Random Number Generator - https://security-code-scan.github.io#SCS0005"
     },
     {
       "Code": "SCS0006",
       "Title": "Weak hashing function",
-      "Link": "https://security-code-scan.github.io#SCS0006"
+      "Link": "https://security-code-scan.github.io#SCS0006",
+      "TitleAndLink": " - Weak hashing function - https://security-code-scan.github.io#SCS0006"
     },
     {
       "Code": "SCS0010",
       "Title": "Weak cipher algorithm",
-      "Link": "https://security-code-scan.github.io#SCS0010"
+      "Link": "https://security-code-scan.github.io#SCS0010",
+      "TitleAndLink": " - Weak cipher algorithm - https://security-code-scan.github.io#SCS0010"
     },
     {
       "Code": "SCS0013",
       "Title": "Potential usage of weak CipherMode mode",
-      "Link": "https://security-code-scan.github.io#SCS0013"
+      "Link": "https://security-code-scan.github.io#SCS0013",
+      "TitleAndLink": " - Potential usage of weak CipherMode mode - https://security-code-scan.github.io#SCS0013"
     },
     {
       "Code": "SCS0008",
       "Title": "Cookie Without SSL Flag",
-      "Link": "https://security-code-scan.github.io#SCS0008"
+      "Link": "https://security-code-scan.github.io#SCS0008",
+      "TitleAndLink": " - Cookie Without SSL Flag - https://security-code-scan.github.io#SCS0008"
     },
     {
       "Code": "SCS0009",
       "Title": "Cookie Without HttpOnly Flag",
-      "Link": "https://security-code-scan.github.io#SCS0009"
+      "Link": "https://security-code-scan.github.io#SCS0009",
+      "TitleAndLink": " - Cookie Without HttpOnly Flag - https://security-code-scan.github.io#SCS0009"
     },
     {
       "Code": "SCS0023",
       "Title": "View State Not Encrypted",
-      "Link": "https://security-code-scan.github.io#SCS0023"
+      "Link": "https://security-code-scan.github.io#SCS0023",
+      "TitleAndLink": " - View State Not Encrypted - https://security-code-scan.github.io#SCS0023"
     },
     {
       "Code": "SCS0024",
       "Title": "View State MAC Disabled",
-      "Link": "https://security-code-scan.github.io#SCS0024"
+      "Link": "https://security-code-scan.github.io#SCS0024",
+      "TitleAndLink": " - View State MAC Disabled - https://security-code-scan.github.io#SCS0024"
     },
     {
       "Code": "SCS0017",
       "Title": "Request Validation Disabled (Attribute)",
-      "Link": "https://security-code-scan.github.io#SCS0017"
+      "Link": "https://security-code-scan.github.io#SCS0017",
+      "TitleAndLink": " - Request Validation Disabled (Attribute) - https://security-code-scan.github.io#SCS0017"
     },
     {
       "Code": "SCS0021",
       "Title": "Request Validation Disabled (Configuration File)",
-      "Link": "https://security-code-scan.github.io#SCS0021"
+      "Link": "https://security-code-scan.github.io#SCS0021",
+      "TitleAndLink": " - Request Validation Disabled (Configuration File) - https://security-code-scan.github.io#SCS0021"
     },
     {
       "Code": "SCS0030",
       "Title": "Request validation is enabled only for pages (Configuration File)",
-      "Link": "https://security-code-scan.github.io#SCS0030"
+      "Link": "https://security-code-scan.github.io#SCS0030",
+      "TitleAndLink": " - Request validation is enabled only for pages (Configuration File) - https://security-code-scan.github.io#SCS0030"
     },
     {
       "Code": "SCS0015",
       "Title": "Hardcoded Password",
-      "Link": "https://security-code-scan.github.io#SCS0015"
+      "Link": "https://security-code-scan.github.io#SCS0015",
+      "TitleAndLink": " - Hardcoded Password - https://security-code-scan.github.io#SCS0015"
     },
     {
       "Code": "SCS0034",
       "Title": "Password RequiredLength Not Set",
-      "Link": "https://security-code-scan.github.io#SCS0034"
+      "Link": "https://security-code-scan.github.io#SCS0034",
+      "TitleAndLink": " - Password RequiredLength Not Set - https://security-code-scan.github.io#SCS0034"
     },
     {
       "Code": "SCS0032",
       "Title": "Password RequiredLength Too Small",
-      "Link": "https://security-code-scan.github.io#SCS0032"
+      "Link": "https://security-code-scan.github.io#SCS0032",
+      "TitleAndLink": " - Password RequiredLength Too Small - https://security-code-scan.github.io#SCS0032"
     },
     {
       "Code": "SCS0033",
       "Title": "Password Complexity",
-      "Link": "https://security-code-scan.github.io#SCS0033"
+      "Link": "https://security-code-scan.github.io#SCS0033",
+      "TitleAndLink": " - Password Complexity - https://security-code-scan.github.io#SCS0033"
     },
     {
       "Code": "SCS0011",
       "Title": "Unsafe XSLT setting used",
-      "Link": "https://security-code-scan.github.io#SCS0011"
+      "Link": "https://security-code-scan.github.io#SCS0011",
+      "TitleAndLink": " - Unsafe XSLT setting used - https://security-code-scan.github.io#SCS0011"
     },
     {
       "Code": "SCS0012",
       "Title": "Controller method is potentially vulnerable to authorization bypass",
-      "Link": "https://security-code-scan.github.io#SCS0012"
+      "Link": "https://security-code-scan.github.io#SCS0012",
+      "TitleAndLink": " - Controller method is potentially vulnerable to authorization bypass - https://security-code-scan.github.io#SCS0012"
     },
     {
       "Code": "SCS0016",
       "Title": "Cross-Site Request Forgery (CSRF)",
-      "Link": "https://security-code-scan.github.io#SCS0016"
+      "Link": "https://security-code-scan.github.io#SCS0016",
+      "TitleAndLink": " - Cross-Site Request Forgery (CSRF) - https://security-code-scan.github.io#SCS0016"
     },
     {
       "Code": "SCS0019",
       "Title": "OutputCache Conflict",
-      "Link": "https://security-code-scan.github.io#SCS0019"
+      "Link": "https://security-code-scan.github.io#SCS0019",
+      "TitleAndLink": " - OutputCache Conflict - https://security-code-scan.github.io#SCS0019"
     },
     {
       "Code": "SCS0022",
       "Title": "Event Validation Disabled",
-      "Link": "https://security-code-scan.github.io#SCS0022"
+      "Link": "https://security-code-scan.github.io#SCS0022",
+      "TitleAndLink": " - Event Validation Disabled - https://security-code-scan.github.io#SCS0022"
     },
     {
       "Code": "SCS0027",
       "Title": "Open Redirect",
-      "Link": "https://security-code-scan.github.io#SCS0027"
+      "Link": "https://security-code-scan.github.io#SCS0027",
+      "TitleAndLink": " - Open Redirect - https://security-code-scan.github.io#SCS0027"
     },
     {
       "Code": "SCS0028",
       "Title": "Insecure Deserialization",
-      "Link": "https://security-code-scan.github.io#SCS0028"
+      "Link": "https://security-code-scan.github.io#SCS0028",
+      "TitleAndLink": " - Insecure Deserialization - https://security-code-scan.github.io#SCS0028"
     }
   ]
 }
