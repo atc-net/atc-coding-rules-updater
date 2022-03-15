@@ -23,11 +23,13 @@ public class AnalyzerProviderCollector
             SecurityCodeScanVs2019Provider.Name,
             StyleCopAnalyzersProvider.Name,
             SonarAnalyzerCSharpProvider.Name,
+            WpfAnalyzersProvider.Name,
         };
 
         return list.ToArray();
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public async Task<Collection<AnalyzerProviderBaseRuleData>> CollectAllBaseRules(
         ProviderCollectingMode providerCollectingMode,
         bool logWithAnsiConsoleMarkup)
@@ -64,6 +66,9 @@ public class AnalyzerProviderCollector
         var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger, logWithAnsiConsoleMarkup);
         var sonarAnalyzerCSharpTask = sonarAnalyzerCSharpProvider.CollectBaseRules(providerCollectingMode);
 
+        var wpfAnalyzersProvider = new WpfAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
+        var wpfAnalyzersProviderTask = wpfAnalyzersProvider.CollectBaseRules(providerCollectingMode);
+
         await Task.WhenAll(
             asyncFixerTask,
             asyncifyTask,
@@ -74,7 +79,8 @@ public class AnalyzerProviderCollector
             microsoftVisualStudioThreadingAnalyzersProviderTask,
             securityCodeScanVs2019Task,
             styleCopAnalyzersTask,
-            sonarAnalyzerCSharpTask);
+            sonarAnalyzerCSharpTask,
+            wpfAnalyzersProviderTask);
 
         data.Add(await asyncFixerTask);
         data.Add(await asyncifyTask);
@@ -86,6 +92,7 @@ public class AnalyzerProviderCollector
         data.Add(await securityCodeScanVs2019Task);
         data.Add(await styleCopAnalyzersTask);
         data.Add(await sonarAnalyzerCSharpTask);
+        data.Add(await wpfAnalyzersProviderTask);
 
         return data;
     }
@@ -121,5 +128,8 @@ public class AnalyzerProviderCollector
 
         var sonarAnalyzerCSharpProvider = new SonarAnalyzerCSharpProvider(logger);
         sonarAnalyzerCSharpProvider.Cleanup();
+
+        var wpfAnalyzersProvider = new WpfAnalyzersProvider(logger);
+        wpfAnalyzersProvider.Cleanup();
     }
 }
