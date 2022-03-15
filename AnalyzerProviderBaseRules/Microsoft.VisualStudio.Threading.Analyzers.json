@@ -4,163 +4,163 @@
     {
       "Code": "VSTHRD001",
       "Title": "Avoid legacy thread switching methods",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD001.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD001.md",
       "Category": "Critical",
-      "TitleAndLink": " - Avoid legacy thread switching methods - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD001.md"
+      "TitleAndLink": " - Avoid legacy thread switching methods - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD001.md"
     },
     {
       "Code": "VSTHRD002",
       "Title": "Avoid problematic synchronous waits",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD002.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD002.md",
       "Category": "Critical",
-      "TitleAndLink": " - Avoid problematic synchronous waits - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD002.md"
+      "TitleAndLink": " - Avoid problematic synchronous waits - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD002.md"
     },
     {
       "Code": "VSTHRD003",
       "Title": "Avoid awaiting foreign Tasks",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD003.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD003.md",
       "Category": "Critical",
-      "TitleAndLink": " - Avoid awaiting foreign Tasks - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD003.md"
+      "TitleAndLink": " - Avoid awaiting foreign Tasks - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD003.md"
     },
     {
       "Code": "VSTHRD004",
       "Title": "Await SwitchToMainThreadAsync",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD004.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD004.md",
       "Category": "Critical",
-      "TitleAndLink": " - Await SwitchToMainThreadAsync - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD004.md"
+      "TitleAndLink": " - Await SwitchToMainThreadAsync - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD004.md"
     },
     {
       "Code": "VSTHRD010",
       "Title": "Invoke single-threaded types on Main thread",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD010.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD010.md",
       "Category": "Critical",
-      "TitleAndLink": " - Invoke single-threaded types on Main thread - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD010.md"
+      "TitleAndLink": " - Invoke single-threaded types on Main thread - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD010.md"
     },
     {
       "Code": "VSTHRD011",
       "Title": "Use AsyncLazy<T>",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD011.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD011.md",
       "Category": "Critical",
-      "TitleAndLink": " - Use AsyncLazy<T> - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD011.md"
+      "TitleAndLink": " - Use AsyncLazy<T> - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD011.md"
     },
     {
       "Code": "VSTHRD012",
       "Title": "Provide JoinableTaskFactory where allowed",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD012.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD012.md",
       "Category": "Critical",
-      "TitleAndLink": " - Provide JoinableTaskFactory where allowed - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD012.md"
+      "TitleAndLink": " - Provide JoinableTaskFactory where allowed - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD012.md"
     },
     {
       "Code": "VSTHRD100",
       "Title": "Avoid async void methods",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD100.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD100.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Avoid async void methods - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD100.md"
+      "TitleAndLink": " - Avoid async void methods - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD100.md"
     },
     {
       "Code": "VSTHRD101",
       "Title": "Avoid unsupported async delegates",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD101.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD101.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Avoid unsupported async delegates - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD101.md"
+      "TitleAndLink": " - Avoid unsupported async delegates - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD101.md"
     },
     {
       "Code": "VSTHRD102",
       "Title": "Implement internal logic asynchronously",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD102.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD102.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Implement internal logic asynchronously - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD102.md"
+      "TitleAndLink": " - Implement internal logic asynchronously - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD102.md"
     },
     {
       "Code": "VSTHRD103",
       "Title": "Call async methods when in an async method",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD103.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD103.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Call async methods when in an async method - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD103.md"
+      "TitleAndLink": " - Call async methods when in an async method - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD103.md"
     },
     {
       "Code": "VSTHRD104",
       "Title": "Offer async option",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD104.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD104.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Offer async option - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD104.md"
+      "TitleAndLink": " - Offer async option - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD104.md"
     },
     {
       "Code": "VSTHRD105",
       "Title": "Avoid method overloads that assume TaskScheduler.Current",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD105.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD105.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Avoid method overloads that assume TaskScheduler.Current - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD105.md"
+      "TitleAndLink": " - Avoid method overloads that assume TaskScheduler.Current - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD105.md"
     },
     {
       "Code": "VSTHRD106",
       "Title": "Use InvokeAsync to raise async events",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD106.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD106.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Use InvokeAsync to raise async events - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD106.md"
+      "TitleAndLink": " - Use InvokeAsync to raise async events - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD106.md"
     },
     {
       "Code": "VSTHRD107",
       "Title": "Await Task within using expression",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD107.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD107.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Await Task within using expression - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD107.md"
+      "TitleAndLink": " - Await Task within using expression - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD107.md"
     },
     {
       "Code": "VSTHRD108",
       "Title": "Assert thread affinity unconditionally",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD108.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD108.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Assert thread affinity unconditionally - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD108.md"
+      "TitleAndLink": " - Assert thread affinity unconditionally - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD108.md"
     },
     {
       "Code": "VSTHRD109",
       "Title": "Switch instead of assert in async methods",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD109.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD109.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Switch instead of assert in async methods - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD109.md"
+      "TitleAndLink": " - Switch instead of assert in async methods - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD109.md"
     },
     {
       "Code": "VSTHRD110",
       "Title": "Observe result of async calls",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD110.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD110.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Observe result of async calls - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD110.md"
+      "TitleAndLink": " - Observe result of async calls - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD110.md"
     },
     {
       "Code": "VSTHRD111",
       "Title": "Use .ConfigureAwait(bool)",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD111.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD111.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Use .ConfigureAwait(bool) - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD111.md"
+      "TitleAndLink": " - Use .ConfigureAwait(bool) - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD111.md"
     },
     {
       "Code": "VSTHRD112",
       "Title": "Implement System.IAsyncDisposable",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD112.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD112.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Implement System.IAsyncDisposable - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD112.md"
+      "TitleAndLink": " - Implement System.IAsyncDisposable - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD112.md"
     },
     {
       "Code": "VSTHRD113",
       "Title": "Check for System.IAsyncDisposable",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD113.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD113.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Check for System.IAsyncDisposable - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD113.md"
+      "TitleAndLink": " - Check for System.IAsyncDisposable - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD113.md"
     },
     {
       "Code": "VSTHRD114",
       "Title": "Avoid returning null from a Task-returning method.",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD114.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD114.md",
       "Category": "Advisory",
-      "TitleAndLink": " - Avoid returning null from a Task-returning method. - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD114.md"
+      "TitleAndLink": " - Avoid returning null from a Task-returning method. - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD114.md"
     },
     {
       "Code": "VSTHRD200",
       "Title": "Use Async naming convention",
-      "Link": "/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD200.md",
+      "Link": "https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD200.md",
       "Category": "Guideline",
-      "TitleAndLink": " - Use Async naming convention - /microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD200.md"
+      "TitleAndLink": " - Use Async naming convention - https://github.com//microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD200.md"
     }
   ]
 }

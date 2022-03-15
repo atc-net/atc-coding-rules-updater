@@ -1,0 +1,180 @@
+{
+  "Name": "NSubstitute.Analyzers",
+  "Rules": [
+    {
+      "Code": "NS1000",
+      "Title": "Substituting for non-virtual member of a class.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1000.md",
+      "Category": "Non-substitutable member",
+      "TitleAndLink": " - Substituting for non-virtual member of a class. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1000.md"
+    },
+    {
+      "Code": "NS1001",
+      "Title": "Checking received calls for non-virtual member of a class.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1001.md",
+      "Category": "Non-substitutable member",
+      "TitleAndLink": " - Checking received calls for non-virtual member of a class. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1001.md"
+    },
+    {
+      "Code": "NS1002",
+      "Title": "Substituting for non-virtual member of a class.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1002.md",
+      "Category": "Non-substitutable member",
+      "TitleAndLink": " - Substituting for non-virtual member of a class. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1002.md"
+    },
+    {
+      "Code": "NS1003",
+      "Title": "Substituting for an internal member of a class without proxies having visibility into internal members.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1003.md",
+      "Category": "Non-substitutable member",
+      "TitleAndLink": " - Substituting for an internal member of a class without proxies having visibility into internal members. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1003.md"
+    },
+    {
+      "Code": "NS1004",
+      "Title": "Argument matcher used with a non-virtual member of a class.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1004.md",
+      "Category": "Non-substitutable member",
+      "TitleAndLink": " - Argument matcher used with a non-virtual member of a class. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1004.md"
+    },
+    {
+      "Code": "NS1005",
+      "Title": "Checking call order for non-virtual member of a class.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1005.md",
+      "Category": "Non-substitutable member",
+      "TitleAndLink": " - Checking call order for non-virtual member of a class. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS1005.md"
+    },
+    {
+      "Code": "NS2000",
+      "Title": "Substitute.ForPartsOf used with interface or delegate.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2000.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - Substitute.ForPartsOf used with interface or delegate. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2000.md"
+    },
+    {
+      "Code": "NS2001",
+      "Title": "NSubstitute used with class which does not expose public or protected constructor.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2001.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - NSubstitute used with class which does not expose public or protected constructor. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2001.md"
+    },
+    {
+      "Code": "NS2002",
+      "Title": "NSubstitute used with class which does not expose parameterless constructor.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2002.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - NSubstitute used with class which does not expose parameterless constructor. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2002.md"
+    },
+    {
+      "Code": "NS2003",
+      "Title": "NSubstitute used with internal type.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2003.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - NSubstitute used with internal type. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2003.md"
+    },
+    {
+      "Code": "NS2004",
+      "Title": "Substituting for type by passing wrong constructor arguments.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2004.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - Substituting for type by passing wrong constructor arguments. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2004.md"
+    },
+    {
+      "Code": "NS2005",
+      "Title": "Substituting for multiple classes.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2005.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - Substituting for multiple classes. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2005.md"
+    },
+    {
+      "Code": "NS2006",
+      "Title": "Substituting for interface and passing arguments.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2006.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - Substituting for interface and passing arguments. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2006.md"
+    },
+    {
+      "Code": "NS2007",
+      "Title": "Substituting for delegate and passing arguments.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2007.md",
+      "Category": "Substitute creation",
+      "TitleAndLink": " - Substituting for delegate and passing arguments. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS2007.md"
+    },
+    {
+      "Code": "NS3000",
+      "Title": "Accessing call arguments out of the bounds of method arguments.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3000.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Accessing call arguments out of the bounds of method arguments. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3000.md"
+    },
+    {
+      "Code": "NS3001",
+      "Title": "Casting call argument at given position to different type than type specified in a method.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3001.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Casting call argument at given position to different type than type specified in a method. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3001.md"
+    },
+    {
+      "Code": "NS3002",
+      "Title": "Accessing call argument by type which is not present in invocation.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3002.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Accessing call argument by type which is not present in invocation. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3002.md"
+    },
+    {
+      "Code": "NS3003",
+      "Title": "Accessing call argument by type which is used multiple times in invocation.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3003.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Accessing call argument by type which is used multiple times in invocation. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3003.md"
+    },
+    {
+      "Code": "NS3004",
+      "Title": "Assigning call argument with type which is not the same as method argument type.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3004.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Assigning call argument with type which is not the same as method argument type. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3004.md"
+    },
+    {
+      "Code": "NS3005",
+      "Title": "Assigning call argument which is not ref nor out argument.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3005.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Assigning call argument which is not ref nor out argument. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3005.md"
+    },
+    {
+      "Code": "NS3006",
+      "Title": "Conflicting assignments to out/ref arguments.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3006.md",
+      "Category": "Argument specification",
+      "TitleAndLink": " - Conflicting assignments to out/ref arguments. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS3006.md"
+    },
+    {
+      "Code": "NS4000",
+      "Title": "Calling substitute from within Returns block.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS4000.md",
+      "Category": "Call configuration",
+      "TitleAndLink": " - Calling substitute from within Returns block. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS4000.md"
+    },
+    {
+      "Code": "NS5000",
+      "Title": "Checking received calls without specifying member.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS5000.md",
+      "Category": "Usage",
+      "TitleAndLink": " - Checking received calls without specifying member. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS5000.md"
+    },
+    {
+      "Code": "NS5001",
+      "Title": "Usage of received-like method in Received.InOrder callback.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS5001.md",
+      "Category": "Usage",
+      "TitleAndLink": " - Usage of received-like method in Received.InOrder callback. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS5001.md"
+    },
+    {
+      "Code": "NS5002",
+      "Title": "Usage of async callback in Received.InOrder method.",
+      "Link": "https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS5002.md",
+      "Category": "Usage",
+      "TitleAndLink": " - Usage of async callback in Received.InOrder method. - https://github.com//nsubstitute/NSubstitute.Analyzers/blob/master/documentation/rules/NS5002.md"
+    }
+  ]
+}
