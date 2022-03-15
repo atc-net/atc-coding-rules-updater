@@ -20,6 +20,7 @@ public class AnalyzerProviderCollector
             MicrosoftCompilerErrorsProvider.Name,
             MicrosoftCompilerErrorsProviderUndocumented.Name,
             MicrosoftVisualStudioThreadingAnalyzersProvider.Name,
+            NSubstituteAnalyzersProvider.Name,
             SecurityCodeScanVs2019Provider.Name,
             StyleCopAnalyzersProvider.Name,
             SonarAnalyzerCSharpProvider.Name,
@@ -57,6 +58,9 @@ public class AnalyzerProviderCollector
         var microsoftVisualStudioThreadingAnalyzersProvider = new MicrosoftVisualStudioThreadingAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
         var microsoftVisualStudioThreadingAnalyzersProviderTask = microsoftVisualStudioThreadingAnalyzersProvider.CollectBaseRules(ProviderCollectingMode.ReCollect);
 
+        var nSubstituteAnalyzersProvider = new NSubstituteAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
+        var nSubstituteAnalyzersProviderTask = nSubstituteAnalyzersProvider.CollectBaseRules(ProviderCollectingMode.ReCollect);
+
         var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger, logWithAnsiConsoleMarkup);
         var securityCodeScanVs2019Task = securityCodeScanVs2019Provider.CollectBaseRules(providerCollectingMode);
 
@@ -77,6 +81,7 @@ public class AnalyzerProviderCollector
             microsoftCompilerErrorsTask,
             microsoftCompilerErrorsUndocumentedTask,
             microsoftVisualStudioThreadingAnalyzersProviderTask,
+            nSubstituteAnalyzersProviderTask,
             securityCodeScanVs2019Task,
             styleCopAnalyzersTask,
             sonarAnalyzerCSharpTask,
@@ -89,6 +94,7 @@ public class AnalyzerProviderCollector
         data.Add(await microsoftCompilerErrorsTask);
         data.Add(await microsoftCompilerErrorsUndocumentedTask);
         data.Add(await microsoftVisualStudioThreadingAnalyzersProviderTask);
+        data.Add(await nSubstituteAnalyzersProviderTask);
         data.Add(await securityCodeScanVs2019Task);
         data.Add(await styleCopAnalyzersTask);
         data.Add(await sonarAnalyzerCSharpTask);
@@ -119,6 +125,9 @@ public class AnalyzerProviderCollector
 
         var microsoftVisualStudioThreadingAnalyzersProvider = new MicrosoftVisualStudioThreadingAnalyzersProvider(logger);
         microsoftVisualStudioThreadingAnalyzersProvider.Cleanup();
+
+        var nSubstituteAnalyzersProvider = new NSubstituteAnalyzersProvider(logger);
+        nSubstituteAnalyzersProvider.Cleanup();
 
         var securityCodeScanVs2019Provider = new SecurityCodeScanVs2019Provider(logger);
         securityCodeScanVs2019Provider.Cleanup();
