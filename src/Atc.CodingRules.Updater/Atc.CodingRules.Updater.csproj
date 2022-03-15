@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.69" />
-    <PackageReference Include="Atc.DotNet" Version="2.0.69" />
-    <PackageReference Include="Atc.Console.Spectre" Version="2.0.69" />
+    <PackageReference Include="Atc" Version="2.0.95" />
+    <PackageReference Include="Atc.DotNet" Version="2.0.95" />
+    <PackageReference Include="Atc.Console.Spectre" Version="2.0.95" />
   </ItemGroup>
 
   <ItemGroup>
