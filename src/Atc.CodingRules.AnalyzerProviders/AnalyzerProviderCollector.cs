@@ -25,6 +25,7 @@ public class AnalyzerProviderCollector
             StyleCopAnalyzersProvider.Name,
             SonarAnalyzerCSharpProvider.Name,
             WpfAnalyzersProvider.Name,
+            XunitProvider.Name,
         };
 
         return list.ToArray();
@@ -73,6 +74,9 @@ public class AnalyzerProviderCollector
         var wpfAnalyzersProvider = new WpfAnalyzersProvider(logger, logWithAnsiConsoleMarkup);
         var wpfAnalyzersProviderTask = wpfAnalyzersProvider.CollectBaseRules(providerCollectingMode);
 
+        var xunitProvider = new XunitProvider(logger, logWithAnsiConsoleMarkup);
+        var xunitProviderTask = xunitProvider.CollectBaseRules(providerCollectingMode);
+
         await Task.WhenAll(
             asyncFixerTask,
             asyncifyTask,
@@ -85,7 +89,8 @@ public class AnalyzerProviderCollector
             securityCodeScanVs2019Task,
             styleCopAnalyzersTask,
             sonarAnalyzerCSharpTask,
-            wpfAnalyzersProviderTask);
+            wpfAnalyzersProviderTask,
+            xunitProviderTask);
 
         data.Add(await asyncFixerTask);
         data.Add(await asyncifyTask);
@@ -99,6 +104,7 @@ public class AnalyzerProviderCollector
         data.Add(await styleCopAnalyzersTask);
         data.Add(await sonarAnalyzerCSharpTask);
         data.Add(await wpfAnalyzersProviderTask);
+        data.Add(await xunitProviderTask);
 
         return data;
     }
@@ -140,5 +146,8 @@ public class AnalyzerProviderCollector
 
         var wpfAnalyzersProvider = new WpfAnalyzersProvider(logger);
         wpfAnalyzersProvider.Cleanup();
+
+        var xunitProvider = new XunitProvider(logger);
+        xunitProvider.Cleanup();
     }
 }

@@ -1,0 +1,355 @@
+{
+  "Name": "xUnit.net",
+  "Rules": [
+    {
+      "Code": "xUnit1000",
+      "Title": "Test classes must be public",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1000",
+      "Category": "Usage",
+      "TitleAndLink": " - Test classes must be public - https://xunit.net/xunit.analyzers/rules/xUnit1000"
+    },
+    {
+      "Code": "xUnit1001",
+      "Title": "Fact methods cannot have parameters",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1001",
+      "Category": "Usage",
+      "TitleAndLink": " - Fact methods cannot have parameters - https://xunit.net/xunit.analyzers/rules/xUnit1001"
+    },
+    {
+      "Code": "xUnit1002",
+      "Title": "Test methods cannot have multiple Fact or Theory attributes",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1002",
+      "Category": "Usage",
+      "TitleAndLink": " - Test methods cannot have multiple Fact or Theory attributes - https://xunit.net/xunit.analyzers/rules/xUnit1002"
+    },
+    {
+      "Code": "xUnit1003",
+      "Title": "Theory methods must have test data",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1003",
+      "Category": "Usage",
+      "TitleAndLink": " - Theory methods must have test data - https://xunit.net/xunit.analyzers/rules/xUnit1003"
+    },
+    {
+      "Code": "xUnit1004",
+      "Title": "Test methods should not be skipped",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1004",
+      "Category": "Usage",
+      "TitleAndLink": " - Test methods should not be skipped - https://xunit.net/xunit.analyzers/rules/xUnit1004"
+    },
+    {
+      "Code": "xUnit1005",
+      "Title": "Fact methods should not have test data",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1005",
+      "Category": "Usage",
+      "TitleAndLink": " - Fact methods should not have test data - https://xunit.net/xunit.analyzers/rules/xUnit1005"
+    },
+    {
+      "Code": "xUnit1006",
+      "Title": "Theory methods should have parameters",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1006",
+      "Category": "Usage",
+      "TitleAndLink": " - Theory methods should have parameters - https://xunit.net/xunit.analyzers/rules/xUnit1006"
+    },
+    {
+      "Code": "xUnit1007",
+      "Title": "ClassData must point at a valid class",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1007",
+      "Category": "Usage",
+      "TitleAndLink": " - ClassData must point at a valid class - https://xunit.net/xunit.analyzers/rules/xUnit1007"
+    },
+    {
+      "Code": "xUnit1008",
+      "Title": "Test data attribute should only be used on a Theory",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1008",
+      "Category": "Usage",
+      "TitleAndLink": " - Test data attribute should only be used on a Theory - https://xunit.net/xunit.analyzers/rules/xUnit1008"
+    },
+    {
+      "Code": "xUnit1009",
+      "Title": "InlineData values must match the number of method parameters",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1009",
+      "Category": "Usage",
+      "TitleAndLink": " - InlineData values must match the number of method parameters - https://xunit.net/xunit.analyzers/rules/xUnit1009"
+    },
+    {
+      "Code": "xUnit1010",
+      "Title": "The value is not convertible to the method parameter type",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1010",
+      "Category": "Usage",
+      "TitleAndLink": " - The value is not convertible to the method parameter type - https://xunit.net/xunit.analyzers/rules/xUnit1010"
+    },
+    {
+      "Code": "xUnit1011",
+      "Title": "There is no matching method parameter",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1011",
+      "Category": "Usage",
+      "TitleAndLink": " - There is no matching method parameter - https://xunit.net/xunit.analyzers/rules/xUnit1011"
+    },
+    {
+      "Code": "xUnit1012",
+      "Title": "Null should not be used for value type parameters",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1012",
+      "Category": "Usage",
+      "TitleAndLink": " - Null should not be used for value type parameters - https://xunit.net/xunit.analyzers/rules/xUnit1012"
+    },
+    {
+      "Code": "xUnit1013",
+      "Title": "Public method should be marked as test",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1013",
+      "Category": "Usage",
+      "TitleAndLink": " - Public method should be marked as test - https://xunit.net/xunit.analyzers/rules/xUnit1013"
+    },
+    {
+      "Code": "xUnit1014",
+      "Title": "MemberData should use nameof operator for member name",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1014",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData should use nameof operator for member name - https://xunit.net/xunit.analyzers/rules/xUnit1014"
+    },
+    {
+      "Code": "xUnit1015",
+      "Title": "MemberData must reference an existing member",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1015",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData must reference an existing member - https://xunit.net/xunit.analyzers/rules/xUnit1015"
+    },
+    {
+      "Code": "xUnit1016",
+      "Title": "MemberData must reference a public member",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1016",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData must reference a public member - https://xunit.net/xunit.analyzers/rules/xUnit1016"
+    },
+    {
+      "Code": "xUnit1017",
+      "Title": "MemberData must reference a static member",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1017",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData must reference a static member - https://xunit.net/xunit.analyzers/rules/xUnit1017"
+    },
+    {
+      "Code": "xUnit1018",
+      "Title": "MemberData must reference a valid member kind",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1018",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData must reference a valid member kind - https://xunit.net/xunit.analyzers/rules/xUnit1018"
+    },
+    {
+      "Code": "xUnit1019",
+      "Title": "MemberData must reference a member providing a valid data type",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1019",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData must reference a member providing a valid data type - https://xunit.net/xunit.analyzers/rules/xUnit1019"
+    },
+    {
+      "Code": "xUnit1020",
+      "Title": "MemberData must reference a property with a getter",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1020",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData must reference a property with a getter - https://xunit.net/xunit.analyzers/rules/xUnit1020"
+    },
+    {
+      "Code": "xUnit1021",
+      "Title": "MemberData should not have parameters if the referenced member is not a method",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1021",
+      "Category": "Usage",
+      "TitleAndLink": " - MemberData should not have parameters if the referenced member is not a method - https://xunit.net/xunit.analyzers/rules/xUnit1021"
+    },
+    {
+      "Code": "xUnit1022",
+      "Title": "Theory methods cannot have a parameter array",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1022",
+      "Category": "Usage",
+      "TitleAndLink": " - Theory methods cannot have a parameter array - https://xunit.net/xunit.analyzers/rules/xUnit1022"
+    },
+    {
+      "Code": "xUnit1023",
+      "Title": "Theory methods cannot have default parameter values",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1023",
+      "Category": "Usage",
+      "TitleAndLink": " - Theory methods cannot have default parameter values - https://xunit.net/xunit.analyzers/rules/xUnit1023"
+    },
+    {
+      "Code": "xUnit1024",
+      "Title": "Test methods cannot have overloads",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1024",
+      "Category": "Usage",
+      "TitleAndLink": " - Test methods cannot have overloads - https://xunit.net/xunit.analyzers/rules/xUnit1024"
+    },
+    {
+      "Code": "xUnit1025",
+      "Title": "InlineData should be unique within the Theory it belongs to",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1025",
+      "Category": "Usage",
+      "TitleAndLink": " - InlineData should be unique within the Theory it belongs to - https://xunit.net/xunit.analyzers/rules/xUnit1025"
+    },
+    {
+      "Code": "xUnit1026",
+      "Title": "Theory methods should use all of their parameters",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1026",
+      "Category": "Usage",
+      "TitleAndLink": " - Theory methods should use all of their parameters - https://xunit.net/xunit.analyzers/rules/xUnit1026"
+    },
+    {
+      "Code": "xUnit1027",
+      "Title": "Collection definition classes must be public",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit1027",
+      "Category": "Usage",
+      "TitleAndLink": " - Collection definition classes must be public - https://xunit.net/xunit.analyzers/rules/xUnit1027"
+    },
+    {
+      "Code": "xUnit2000",
+      "Title": "Constants and literals should be the expected argument",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2000",
+      "Category": "Assertions",
+      "TitleAndLink": " - Constants and literals should be the expected argument - https://xunit.net/xunit.analyzers/rules/xUnit2000"
+    },
+    {
+      "Code": "xUnit2001",
+      "Title": "Do not use invalid equality check",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2001",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use invalid equality check - https://xunit.net/xunit.analyzers/rules/xUnit2001"
+    },
+    {
+      "Code": "xUnit2002",
+      "Title": "Do not use null check on value type",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2002",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use null check on value type - https://xunit.net/xunit.analyzers/rules/xUnit2002"
+    },
+    {
+      "Code": "xUnit2003",
+      "Title": "Do not use equality check to test for null value",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2003",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use equality check to test for null value - https://xunit.net/xunit.analyzers/rules/xUnit2003"
+    },
+    {
+      "Code": "xUnit2004",
+      "Title": "Do not use equality check to test for boolean conditions",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2004",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use equality check to test for boolean conditions - https://xunit.net/xunit.analyzers/rules/xUnit2004"
+    },
+    {
+      "Code": "xUnit2005",
+      "Title": "Do not use identity check on value type",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2005",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use identity check on value type - https://xunit.net/xunit.analyzers/rules/xUnit2005"
+    },
+    {
+      "Code": "xUnit2006",
+      "Title": "Do not use invalid string equality check",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2006",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use invalid string equality check - https://xunit.net/xunit.analyzers/rules/xUnit2006"
+    },
+    {
+      "Code": "xUnit2007",
+      "Title": "Do not use typeof expression to check the type",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2007",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use typeof expression to check the type - https://xunit.net/xunit.analyzers/rules/xUnit2007"
+    },
+    {
+      "Code": "xUnit2008",
+      "Title": "Do not use boolean check to match on regular expressions",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2008",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use boolean check to match on regular expressions - https://xunit.net/xunit.analyzers/rules/xUnit2008"
+    },
+    {
+      "Code": "xUnit2009",
+      "Title": "Do not use boolean check to check for substrings",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2009",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use boolean check to check for substrings - https://xunit.net/xunit.analyzers/rules/xUnit2009"
+    },
+    {
+      "Code": "xUnit2010",
+      "Title": "Do not use boolean check to check for string equality",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2010",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use boolean check to check for string equality - https://xunit.net/xunit.analyzers/rules/xUnit2010"
+    },
+    {
+      "Code": "xUnit2011",
+      "Title": "Do not use empty collection check",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2011",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use empty collection check - https://xunit.net/xunit.analyzers/rules/xUnit2011"
+    },
+    {
+      "Code": "xUnit2012",
+      "Title": "Do not use Enumerable.Any() to check if a value exists in a collection",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2012",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use Enumerable.Any() to check if a value exists in a collection - https://xunit.net/xunit.analyzers/rules/xUnit2012"
+    },
+    {
+      "Code": "xUnit2013",
+      "Title": "Do not use equality check to check for collection size.",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2013",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use equality check to check for collection size. - https://xunit.net/xunit.analyzers/rules/xUnit2013"
+    },
+    {
+      "Code": "xUnit2014",
+      "Title": "Do not use throws check to check for asynchronously thrown exception",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2014",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use throws check to check for asynchronously thrown exception - https://xunit.net/xunit.analyzers/rules/xUnit2014"
+    },
+    {
+      "Code": "xUnit2015",
+      "Title": "Do not use typeof expression to check the exception type",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2015",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use typeof expression to check the exception type - https://xunit.net/xunit.analyzers/rules/xUnit2015"
+    },
+    {
+      "Code": "xUnit2016",
+      "Title": "Keep precision in the allowed range when asserting equality of doubles or decimals.",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2016",
+      "Category": "Assertions",
+      "TitleAndLink": " - Keep precision in the allowed range when asserting equality of doubles or decimals. - https://xunit.net/xunit.analyzers/rules/xUnit2016"
+    },
+    {
+      "Code": "xUnit2017",
+      "Title": "Do not use Contains() to check if a value exists in a collection",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2017",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use Contains() to check if a value exists in a collection - https://xunit.net/xunit.analyzers/rules/xUnit2017"
+    },
+    {
+      "Code": "xUnit2018",
+      "Title": "Do not compare an object's exact type to an abstract class or interface",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2018",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not compare an object's exact type to an abstract class or interface - https://xunit.net/xunit.analyzers/rules/xUnit2018"
+    },
+    {
+      "Code": "xUnit2019",
+      "Title": "Do not use obsolete throws check to check for asynchronously thrown exception",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit2019",
+      "Category": "Assertions",
+      "TitleAndLink": " - Do not use obsolete throws check to check for asynchronously thrown exception - https://xunit.net/xunit.analyzers/rules/xUnit2019"
+    },
+    {
+      "Code": "xUnit3000",
+      "Title": "Test case classes must derive directly or indirectly from Xunit.LongLivedMarshalByRefObject",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit3000",
+      "Category": "Extensibility",
+      "TitleAndLink": " - Test case classes must derive directly or indirectly from Xunit.LongLivedMarshalByRefObject - https://xunit.net/xunit.analyzers/rules/xUnit3000"
+    },
+    {
+      "Code": "xUnit3001",
+      "Title": "Classes that implement Xunit.Abstractions.IXunitSerializable must have a public parameterless constructor",
+      "Link": "https://xunit.net/xunit.analyzers/rules/xUnit3001",
+      "Category": "Extensibility",
+      "TitleAndLink": " - Classes that implement Xunit.Abstractions.IXunitSerializable must have a public parameterless constructor - https://xunit.net/xunit.analyzers/rules/xUnit3001"
+    }
+  ]
+}
