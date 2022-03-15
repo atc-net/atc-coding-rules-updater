@@ -1,0 +1,491 @@
+{
+  "Name": "WpfAnalyzersProvider",
+  "Rules": [
+    {
+      "Code": "WPF0001",
+      "Title": "Backing field for a DependencyProperty should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0001.md",
+      "TitleAndLink": " - Backing field for a DependencyProperty should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0001.md"
+    },
+    {
+      "Code": "WPF0002",
+      "Title": "Backing field for a DependencyPropertyKey should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0002.md",
+      "TitleAndLink": " - Backing field for a DependencyPropertyKey should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0002.md"
+    },
+    {
+      "Code": "WPF0003",
+      "Title": "CLR property for a DependencyProperty should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0003.md",
+      "TitleAndLink": " - CLR property for a DependencyProperty should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0003.md"
+    },
+    {
+      "Code": "WPF0004",
+      "Title": "CLR method for a DependencyProperty must match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0004.md",
+      "TitleAndLink": " - CLR method for a DependencyProperty must match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0004.md"
+    },
+    {
+      "Code": "WPF0005",
+      "Title": "Name of PropertyChangedCallback should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0005.md",
+      "TitleAndLink": " - Name of PropertyChangedCallback should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0005.md"
+    },
+    {
+      "Code": "WPF0006",
+      "Title": "Name of CoerceValueCallback should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0006.md",
+      "TitleAndLink": " - Name of CoerceValueCallback should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0006.md"
+    },
+    {
+      "Code": "WPF0007",
+      "Title": "Name of ValidateValueCallback should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0007.md",
+      "TitleAndLink": " - Name of ValidateValueCallback should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0007.md"
+    },
+    {
+      "Code": "WPF0008",
+      "Title": "[DependsOn(target)] must exist",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0008.md",
+      "TitleAndLink": " - [DependsOn(target)] must exist - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0008.md"
+    },
+    {
+      "Code": "WPF0010",
+      "Title": "Default value type must match registered type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0010.md",
+      "TitleAndLink": " - Default value type must match registered type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0010.md"
+    },
+    {
+      "Code": "WPF0011",
+      "Title": "Containing type should be used as registered owner",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0011.md",
+      "TitleAndLink": " - Containing type should be used as registered owner - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0011.md"
+    },
+    {
+      "Code": "WPF0012",
+      "Title": "CLR property type should match registered type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0012.md",
+      "TitleAndLink": " - CLR property type should match registered type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0012.md"
+    },
+    {
+      "Code": "WPF0013",
+      "Title": "CLR accessor for attached property must match registered type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0013.md",
+      "TitleAndLink": " - CLR accessor for attached property must match registered type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0013.md"
+    },
+    {
+      "Code": "WPF0014",
+      "Title": "SetValue must use registered type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0014.md",
+      "TitleAndLink": " - SetValue must use registered type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0014.md"
+    },
+    {
+      "Code": "WPF0015",
+      "Title": "Registered owner type must inherit DependencyObject",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0015.md",
+      "TitleAndLink": " - Registered owner type must inherit DependencyObject - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0015.md"
+    },
+    {
+      "Code": "WPF0016",
+      "Title": "Default value is shared reference type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0016.md",
+      "TitleAndLink": " - Default value is shared reference type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0016.md"
+    },
+    {
+      "Code": "WPF0017",
+      "Title": "Metadata must be of same type or super type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0017.md",
+      "TitleAndLink": " - Metadata must be of same type or super type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0017.md"
+    },
+    {
+      "Code": "WPF0018",
+      "Title": "Use containing type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0018.md",
+      "TitleAndLink": " - Use containing type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0018.md"
+    },
+    {
+      "Code": "WPF0019",
+      "Title": "Cast sender to correct type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0019.md",
+      "TitleAndLink": " - Cast sender to correct type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0019.md"
+    },
+    {
+      "Code": "WPF0020",
+      "Title": "Cast value to correct type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0020.md",
+      "TitleAndLink": " - Cast value to correct type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0020.md"
+    },
+    {
+      "Code": "WPF0021",
+      "Title": "Cast sender to containing type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0021.md",
+      "TitleAndLink": " - Cast sender to containing type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0021.md"
+    },
+    {
+      "Code": "WPF0022",
+      "Title": "Cast value to correct type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0022.md",
+      "TitleAndLink": " - Cast value to correct type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0022.md"
+    },
+    {
+      "Code": "WPF0023",
+      "Title": "The callback is trivial, convert to lambda",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0023.md",
+      "TitleAndLink": " - The callback is trivial, convert to lambda - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0023.md"
+    },
+    {
+      "Code": "WPF0024",
+      "Title": "Parameter type should be nullable",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0024.md",
+      "TitleAndLink": " - Parameter type should be nullable - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0024.md"
+    },
+    {
+      "Code": "WPF0030",
+      "Title": "Backing field for a DependencyProperty should be static and readonly",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0030.md",
+      "TitleAndLink": " - Backing field for a DependencyProperty should be static and readonly - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0030.md"
+    },
+    {
+      "Code": "WPF0031",
+      "Title": "DependencyPropertyKey member must be declared before DependencyProperty member",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0031.md",
+      "TitleAndLink": " - DependencyPropertyKey member must be declared before DependencyProperty member - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0031.md"
+    },
+    {
+      "Code": "WPF0032",
+      "Title": "Use same dependency property in get and set",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0032.md",
+      "TitleAndLink": " - Use same dependency property in get and set - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0032.md"
+    },
+    {
+      "Code": "WPF0033",
+      "Title": "Add [AttachedPropertyBrowsableForType]",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0033.md",
+      "TitleAndLink": " - Add [AttachedPropertyBrowsableForType] - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0033.md"
+    },
+    {
+      "Code": "WPF0034",
+      "Title": "Use correct argument for [AttachedPropertyBrowsableForType]",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0034.md",
+      "TitleAndLink": " - Use correct argument for [AttachedPropertyBrowsableForType] - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0034.md"
+    },
+    {
+      "Code": "WPF0035",
+      "Title": "Use SetValue in setter",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0035.md",
+      "TitleAndLink": " - Use SetValue in setter - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0035.md"
+    },
+    {
+      "Code": "WPF0036",
+      "Title": "Avoid side effects in CLR accessors",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0036.md",
+      "TitleAndLink": " - Avoid side effects in CLR accessors - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0036.md"
+    },
+    {
+      "Code": "WPF0040",
+      "Title": "A readonly DependencyProperty must be set with DependencyPropertyKey",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0040.md",
+      "TitleAndLink": " - A readonly DependencyProperty must be set with DependencyPropertyKey - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0040.md"
+    },
+    {
+      "Code": "WPF0041",
+      "Title": "Set mutable dependency properties using SetCurrentValue",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0041.md",
+      "TitleAndLink": " - Set mutable dependency properties using SetCurrentValue - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0041.md"
+    },
+    {
+      "Code": "WPF0042",
+      "Title": "Avoid side effects in CLR accessors",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0042.md",
+      "TitleAndLink": " - Avoid side effects in CLR accessors - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0042.md"
+    },
+    {
+      "Code": "WPF0043",
+      "Title": "Don't set DataContext and Style using SetCurrentValue",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0043.md",
+      "TitleAndLink": " - Don't set DataContext and Style using SetCurrentValue - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0043.md"
+    },
+    {
+      "Code": "WPF0050",
+      "Title": "XmlnsPrefix must map to the same url as XmlnsDefinition",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0050.md",
+      "TitleAndLink": " - XmlnsPrefix must map to the same url as XmlnsDefinition - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0050.md"
+    },
+    {
+      "Code": "WPF0051",
+      "Title": "XmlnsDefinition must map to existing namespace",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0051.md",
+      "TitleAndLink": " - XmlnsDefinition must map to existing namespace - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0051.md"
+    },
+    {
+      "Code": "WPF0052",
+      "Title": "XmlnsDefinitions does not map all namespaces with public types",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0052.md",
+      "TitleAndLink": " - XmlnsDefinitions does not map all namespaces with public types - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0052.md"
+    },
+    {
+      "Code": "WPF0060",
+      "Title": "Backing member for DependencyProperty should have standard documentation text",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0060.md",
+      "TitleAndLink": " - Backing member for DependencyProperty should have standard documentation text - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0060.md"
+    },
+    {
+      "Code": "WPF0061",
+      "Title": "Accessor method for attached property should have standard documentation text",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0061.md",
+      "TitleAndLink": " - Accessor method for attached property should have standard documentation text - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0061.md"
+    },
+    {
+      "Code": "WPF0062",
+      "Title": "Property changed callback should have standard documentation text",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0062.md",
+      "TitleAndLink": " - Property changed callback should have standard documentation text - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0062.md"
+    },
+    {
+      "Code": "WPF0070",
+      "Title": "Add default field to converter",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0070.md",
+      "TitleAndLink": " - Add default field to converter - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0070.md"
+    },
+    {
+      "Code": "WPF0071",
+      "Title": "Add ValueConversion attribute",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0071.md",
+      "TitleAndLink": " - Add ValueConversion attribute - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0071.md"
+    },
+    {
+      "Code": "WPF0072",
+      "Title": "ValueConversion must use correct types",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0072.md",
+      "TitleAndLink": " - ValueConversion must use correct types - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0072.md"
+    },
+    {
+      "Code": "WPF0073",
+      "Title": "Add ValueConversion attribute (unknown types)",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0073.md",
+      "TitleAndLink": " - Add ValueConversion attribute (unknown types) - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0073.md"
+    },
+    {
+      "Code": "WPF0074",
+      "Title": "Use containing type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0074.md",
+      "TitleAndLink": " - Use containing type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0074.md"
+    },
+    {
+      "Code": "WPF0080",
+      "Title": "Add MarkupExtensionReturnType attribute",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0080.md",
+      "TitleAndLink": " - Add MarkupExtensionReturnType attribute - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0080.md"
+    },
+    {
+      "Code": "WPF0081",
+      "Title": "MarkupExtensionReturnType must use correct return type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0081.md",
+      "TitleAndLink": " - MarkupExtensionReturnType must use correct return type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0081.md"
+    },
+    {
+      "Code": "WPF0082",
+      "Title": "[ConstructorArgument] must match",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0082.md",
+      "TitleAndLink": " - [ConstructorArgument] must match - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0082.md"
+    },
+    {
+      "Code": "WPF0083",
+      "Title": "Add [ConstructorArgument]",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0083.md",
+      "TitleAndLink": " - Add [ConstructorArgument] - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0083.md"
+    },
+    {
+      "Code": "WPF0084",
+      "Title": "Target of [XamlSetMarkupExtension] should exist and have correct signature",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0084.md",
+      "TitleAndLink": " - Target of [XamlSetMarkupExtension] should exist and have correct signature - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0084.md"
+    },
+    {
+      "Code": "WPF0085",
+      "Title": "Target of [XamlSetTypeConverter] should exist and have correct signature",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0085.md",
+      "TitleAndLink": " - Target of [XamlSetTypeConverter] should exist and have correct signature - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0085.md"
+    },
+    {
+      "Code": "WPF0090",
+      "Title": "Name the invoked method OnEventName",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0090.md",
+      "TitleAndLink": " - Name the invoked method OnEventName - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0090.md"
+    },
+    {
+      "Code": "WPF0091",
+      "Title": "Name the invoked method OnEventName",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0091.md",
+      "TitleAndLink": " - Name the invoked method OnEventName - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0091.md"
+    },
+    {
+      "Code": "WPF0100",
+      "Title": "Backing field for a RoutedEvent should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0100.md",
+      "TitleAndLink": " - Backing field for a RoutedEvent should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0100.md"
+    },
+    {
+      "Code": "WPF0101",
+      "Title": "Containing type should be used as registered owner",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0101.md",
+      "TitleAndLink": " - Containing type should be used as registered owner - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0101.md"
+    },
+    {
+      "Code": "WPF0102",
+      "Title": "Name of the event should match registered name",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0102.md",
+      "TitleAndLink": " - Name of the event should match registered name - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0102.md"
+    },
+    {
+      "Code": "WPF0103",
+      "Title": "Use same event in add and remove",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0103.md",
+      "TitleAndLink": " - Use same event in add and remove - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0103.md"
+    },
+    {
+      "Code": "WPF0104",
+      "Title": "Call AddHandler in add",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0104.md",
+      "TitleAndLink": " - Call AddHandler in add - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0104.md"
+    },
+    {
+      "Code": "WPF0105",
+      "Title": "Call RemoveHandler in remove",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0105.md",
+      "TitleAndLink": " - Call RemoveHandler in remove - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0105.md"
+    },
+    {
+      "Code": "WPF0106",
+      "Title": "Use the registered handler type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0106.md",
+      "TitleAndLink": " - Use the registered handler type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0106.md"
+    },
+    {
+      "Code": "WPF0107",
+      "Title": "Backing member for a RoutedEvent should be static and readonly",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0107.md",
+      "TitleAndLink": " - Backing member for a RoutedEvent should be static and readonly - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0107.md"
+    },
+    {
+      "Code": "WPF0108",
+      "Title": "Backing member for RoutedEvent should have standard documentation text",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0108.md",
+      "TitleAndLink": " - Backing member for RoutedEvent should have standard documentation text - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0108.md"
+    },
+    {
+      "Code": "WPF0120",
+      "Title": "Register containing member name as name for routed command",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0120.md",
+      "TitleAndLink": " - Register containing member name as name for routed command - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0120.md"
+    },
+    {
+      "Code": "WPF0121",
+      "Title": "Register containing type as owner for routed command",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0121.md",
+      "TitleAndLink": " - Register containing type as owner for routed command - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0121.md"
+    },
+    {
+      "Code": "WPF0122",
+      "Title": "Register name and owning type for routed command",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0122.md",
+      "TitleAndLink": " - Register name and owning type for routed command - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0122.md"
+    },
+    {
+      "Code": "WPF0123",
+      "Title": "Backing field for a RoutedCommand should be static and readonly",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0123.md",
+      "TitleAndLink": " - Backing field for a RoutedCommand should be static and readonly - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0123.md"
+    },
+    {
+      "Code": "WPF0130",
+      "Title": "Add [TemplatePart] to the type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0130.md",
+      "TitleAndLink": " - Add [TemplatePart] to the type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0130.md"
+    },
+    {
+      "Code": "WPF0131",
+      "Title": "Use correct [TemplatePart] type",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0131.md",
+      "TitleAndLink": " - Use correct [TemplatePart] type - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0131.md"
+    },
+    {
+      "Code": "WPF0132",
+      "Title": "Use PART prefix",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0132.md",
+      "TitleAndLink": " - Use PART prefix - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0132.md"
+    },
+    {
+      "Code": "WPF0133",
+      "Title": "ContentProperty target does not exist",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0133.md",
+      "TitleAndLink": " - ContentProperty target does not exist - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0133.md"
+    },
+    {
+      "Code": "WPF0140",
+      "Title": "Use containing type when creating a ComponentResourceKey",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0140.md",
+      "TitleAndLink": " - Use containing type when creating a ComponentResourceKey - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0140.md"
+    },
+    {
+      "Code": "WPF0141",
+      "Title": "Use containing member as key when creating a ComponentResourceKey",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0141.md",
+      "TitleAndLink": " - Use containing member as key when creating a ComponentResourceKey - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0141.md"
+    },
+    {
+      "Code": "WPF0150",
+      "Title": "Use nameof() instead of literal",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0150.md",
+      "TitleAndLink": " - Use nameof() instead of literal - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0150.md"
+    },
+    {
+      "Code": "WPF0151",
+      "Title": "Use nameof() instead of constant",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0151.md",
+      "TitleAndLink": " - Use nameof() instead of constant - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0151.md"
+    },
+    {
+      "Code": "WPF0170",
+      "Title": "StyleTypedProperty.Property must exist",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0170.md",
+      "TitleAndLink": " - StyleTypedProperty.Property must exist - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0170.md"
+    },
+    {
+      "Code": "WPF0171",
+      "Title": "StyleTypedProperty.Property must specify a property of type Style",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0171.md",
+      "TitleAndLink": " - StyleTypedProperty.Property must specify a property of type Style - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0171.md"
+    },
+    {
+      "Code": "WPF0172",
+      "Title": "StyleTypedProperty.Property must be specified",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0172.md",
+      "TitleAndLink": " - StyleTypedProperty.Property must be specified - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0172.md"
+    },
+    {
+      "Code": "WPF0173",
+      "Title": "StyleTypedProperty.StyleTargetType must be assignable to a type that has a Style property",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0173.md",
+      "TitleAndLink": " - StyleTypedProperty.StyleTargetType must be assignable to a type that has a Style property - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0173.md"
+    },
+    {
+      "Code": "WPF0174",
+      "Title": "StyleTypedProperty.StyleTargetType must be specified",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0174.md",
+      "TitleAndLink": " - StyleTypedProperty.StyleTargetType must be specified - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0174.md"
+    },
+    {
+      "Code": "WPF0175",
+      "Title": "StyleTypedProperty.Property must be specified only once",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0175.md",
+      "TitleAndLink": " - StyleTypedProperty.Property must be specified only once - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0175.md"
+    },
+    {
+      "Code": "WPF0176",
+      "Title": "StyleTypedProperty is missing",
+      "Link": "https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0176.md",
+      "TitleAndLink": " - StyleTypedProperty is missing - https://github.com/DotNetAnalyzers/WpfAnalyzers/tree/master/documentation/WPF0176.md"
+    }
+  ]
+}

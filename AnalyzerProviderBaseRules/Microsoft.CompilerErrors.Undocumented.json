@@ -4,232 +4,278 @@
     {
       "Code": "CS1998",
       "Title": "Async method lacks 'await' operators and will run synchronously.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Async method lacks 'await' operators and will run synchronously."
     },
     {
       "Code": "CS8034",
       "Title": "Unable to load Analyzer assembly.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Unable to load Analyzer assembly."
     },
     {
       "Code": "CS8073",
       "Title": "The result of the expression is always the same since a value of this type is never equal to ‘null’.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The result of the expression is always the same since a value of this type is never equal to ‘null’."
     },
     {
       "Code": "CS8597",
       "Title": "Thrown value may be null.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Thrown value may be null."
     },
     {
       "Code": "CS8600",
       "Title": "Converting null literal or possible null value to non - nullable type.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Converting null literal or possible null value to non - nullable type."
     },
     {
       "Code": "CS8601",
       "Title": "Possible null reference assignment.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Possible null reference assignment."
     },
     {
       "Code": "CS8602",
       "Title": "Dereference of a possibly null reference.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Dereference of a possibly null reference."
     },
     {
       "Code": "CS8603",
       "Title": "Possible null reference return.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Possible null reference return."
     },
     {
       "Code": "CS8604",
       "Title": "Possible null reference argument.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Possible null reference argument."
     },
     {
       "Code": "CS8605",
       "Title": "Unboxing a possibly null value.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Unboxing a possibly null value."
     },
     {
       "Code": "CS8606",
       "Title": "Possible null reference assignment to iteration variable",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Possible null reference assignment to iteration variable"
     },
     {
       "Code": "CS8607",
       "Title": "A possible null value may not be passed to a target marked with the[DisallowNull] attribute",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - A possible null value may not be passed to a target marked with the[DisallowNull] attribute"
     },
     {
       "Code": "CS8608",
       "Title": "Nullability of reference types in type doesn’t match overridden member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type doesn’t match overridden member."
     },
     {
       "Code": "CS8609",
       "Title": "Nullability of reference types in return type doesn’t match overridden member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in return type doesn’t match overridden member."
     },
     {
       "Code": "CS8610",
       "Title": "Nullability of reference types in type of parameter doesn't match overridden member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type of parameter doesn't match overridden member."
     },
     {
       "Code": "CS8611",
       "Title": "Nullability of reference types in type of parameter doesn't match partial method declaration.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type of parameter doesn't match partial method declaration."
     },
     {
       "Code": "CS8612",
       "Title": "Nullability of reference types in type doesn’t match implicitly implemented member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type doesn’t match implicitly implemented member."
     },
     {
       "Code": "CS8613",
       "Title": "Nullability of reference types in return type doesn't match implicitly implemented member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in return type doesn't match implicitly implemented member."
     },
     {
       "Code": "CS8614",
       "Title": "Nullability of reference types in type of parameter doesn’t match implicitly implemented member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type of parameter doesn’t match implicitly implemented member."
     },
     {
       "Code": "CS8615",
       "Title": "Nullability of reference types in type doesn’t match implemented member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type doesn’t match implemented member."
     },
     {
       "Code": "CS8616",
       "Title": "Nullability of reference types in return type doesn’t match implemented member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in return type doesn’t match implemented member."
     },
     {
       "Code": "CS8617",
       "Title": "Nullability of reference types in type of parameter doesn’t match implemented member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type of parameter doesn’t match implemented member."
     },
     {
       "Code": "CS8618",
       "Title": "Non-nullable field is uninitialized. Consider declaring as nullable.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Non-nullable field is uninitialized. Consider declaring as nullable."
     },
     {
       "Code": "CS8619",
       "Title": "Nullability of reference types in value doesn't match target type.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in value doesn't match target type."
     },
     {
       "Code": "CS8620",
       "Title": "Argument cannot be used for parameter due to differences in the nullability of reference types.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Argument cannot be used for parameter due to differences in the nullability of reference types."
     },
     {
       "Code": "CS8621",
       "Title": "Nullability of reference types in return type doesn't match the target delegate.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in return type doesn't match the target delegate."
     },
     {
       "Code": "CS8622",
       "Title": "Nullability of reference types in type of parameter doesn't match the target delegate.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in type of parameter doesn't match the target delegate."
     },
     {
       "Code": "CS8624",
       "Title": "Argument cannot be used as an output for parameter due to differences in the nullability of reference types.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Argument cannot be used as an output for parameter due to differences in the nullability of reference types."
     },
     {
       "Code": "CS8625",
       "Title": "Cannot convert null literal to non-nullable reference type.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Cannot convert null literal to non-nullable reference type."
     },
     {
       "Code": "CS8626",
       "Title": "The ‘as’ operator may produce a null value for a type parameter.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The ‘as’ operator may produce a null value for a type parameter."
     },
     {
       "Code": "CS8629",
       "Title": "Nullable value type may be null.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullable value type may be null."
     },
     {
       "Code": "CS8631",
       "Title": "The type cannot be used as type parameter in the generic type or method.Nullability of type argument doesn’t match constraint type.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The type cannot be used as type parameter in the generic type or method.Nullability of type argument doesn’t match constraint type."
     },
     {
       "Code": "CS8632",
       "Title": "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The annotation for nullable reference types should only be used in code within a '#nullable' annotations context."
     },
     {
       "Code": "CS8633",
       "Title": "Nullability in constraints for type parameter doesn’t match the constraints for type parameter in implicitly implemented interface method’.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability in constraints for type parameter doesn’t match the constraints for type parameter in implicitly implemented interface method’."
     },
     {
       "Code": "CS8634",
       "Title": "The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint."
     },
     {
       "Code": "CS8638",
       "Title": "Conditional access may produce a null value for a type parameter.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Conditional access may produce a null value for a type parameter."
     },
     {
       "Code": "CS8643",
       "Title": "Nullability of reference types in explicit interface specifier doesn’t match interface implemented by the type.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Nullability of reference types in explicit interface specifier doesn’t match interface implemented by the type."
     },
     {
       "Code": "CS8644",
       "Title": "Type does not implement interface member. Nullability of reference types in interface implemented by the base type doesn’t match.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Type does not implement interface member. Nullability of reference types in interface implemented by the base type doesn’t match."
     },
     {
       "Code": "CS8645",
       "Title": "Interface is already listed in the interface list with different nullability of reference types.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Interface is already listed in the interface list with different nullability of reference types."
     },
     {
       "Code": "CS8653",
       "Title": "A default expression introduces a null value for a type parameter.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - A default expression introduces a null value for a type parameter."
     },
     {
       "Code": "CS8654",
       "Title": "A null literal introduces a null value for a type parameter.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - A null literal introduces a null value for a type parameter."
     },
     {
       "Code": "CS8655",
       "Title": "The switch expression does not handle some null inputs.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The switch expression does not handle some null inputs."
     },
     {
       "Code": "CS8667",
       "Title": "Partial method declarations have inconsistent nullability in constraints for type parameter.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Partial method declarations have inconsistent nullability in constraints for type parameter."
     },
     {
       "Code": "CS8670",
       "Title": "Object or collection initializer implicitly dereferences possibly null member.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Object or collection initializer implicitly dereferences possibly null member."
     },
     {
       "Code": "CS8714",
       "Title": "The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint."
     },
     {
       "Code": "CS8762",
       "Title": "Parameter may not have a null value when exiting in some condition.",
-      "Link": ""
+      "Link": "",
+      "TitleAndLink": " - Parameter may not have a null value when exiting in some condition."
     }
   ]
 }
