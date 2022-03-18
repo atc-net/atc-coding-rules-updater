@@ -1,6 +1,7 @@
 name: "ATC-rules-update"
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 jobs:
   atc_check_for_updates:
