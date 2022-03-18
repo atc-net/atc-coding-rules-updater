@@ -7,7 +7,9 @@ jobs:
   atc_check_for_updates:
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
     - name: ⚙ set environment stuff
       shell: bash
       run: |
