@@ -1,0 +1,40 @@
+name: "ATC-rules-update"
+
+on: workflow_dispatch
+
+jobs:
+  atc_check_for_updates:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v2
+    - name: ⚙ set environment stuff
+      shell: bash
+      run: |
+        echo "build: $GITHUB_RUN_ID"
+        builddate=$(date '+%Y-%m-%d')
+        echo "builddate: $builddate"
+        branch_name="atc-coding-rules-updater-pipeline-run-$builddate-build-$GITHUB_RUN_ID"
+        echo $branch_name
+        echo "BRANCH_NAME=$branch_name" >> $GITHUB_ENV
+    - name: '⚙ Install ATC Coding Rules updater'
+      run: dotnet tool install --global atc-coding-rules-updater
+    - name: ♻️ Run ATC Coding Rules updater
+      run: atc-coding-rules-updater run --projectPath . --verbose --projectTarget DotNet6 --useTemporarySuppressions
+    - name: 🐛 Git - show changes
+      shell: bash
+      run: |
+        set -x
+        git status
+        git diff
+        git config --list --show-origin
+    - run: |
+        dotnet build -c Release
+    - name: 💾Create pr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: 'Pipeline ran atc-coding-rules-updater Build: ${{ env.GITHUB_RUN_ID}}'
+        title: ATC Coding Rules Update
+        body: ATC Coding Rules Updater has been auto-run on the project to update dependencies, rules and needed temporary exceptions
+        labels: automated pr
+        branch: ${{ env.BRANCH_NAME }}
+        delete-branch: true
