@@ -32,7 +32,7 @@ jobs:
         git config --list --show-origin
     - run: |
         dotnet build -c Release
-    - name: 💾Create pr
+    - name: 💾Create PR
       uses: peter-evans/create-pull-request@v3
       with:
         commit-message: 'Pipeline ran atc-coding-rules-updater Build: ${{ env.GITHUB_RUN_ID}}'
@@ -41,3 +41,4 @@ jobs:
         labels: automated pr
         branch: ${{ env.BRANCH_NAME }}
         delete-branch: true
+        token: ${{ secrets.PAT_WORKFLOWS }}
