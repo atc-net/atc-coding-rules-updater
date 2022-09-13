@@ -8,7 +8,7 @@ public class AnalyzerProviderBaseRuleData
 
     public AnalyzerProviderBaseRuleData(string name)
     {
-        this.Name = name;
+        Name = name;
     }
 
     public string Name { get; set; } = string.Empty;
