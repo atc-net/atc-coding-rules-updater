@@ -27,9 +27,9 @@ public class ProjectBaseCommandSettings : BaseCommandSettings
     internal string GetOptionsPath()
     {
         var optionsPath = string.Empty;
-        if (this.OptionsPath is not null && this.OptionsPath.IsSet)
+        if (OptionsPath is not null && OptionsPath.IsSet)
         {
-            optionsPath = this.OptionsPath.Value;
+            optionsPath = OptionsPath.Value;
         }
 
         return optionsPath;

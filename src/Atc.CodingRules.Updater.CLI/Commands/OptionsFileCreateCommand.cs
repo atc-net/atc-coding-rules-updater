@@ -24,7 +24,7 @@ public class OptionsFileCreateCommand : AsyncCommand<ProjectCommandSettings>
 
         try
         {
-            (bool isSuccessful, string error) = await OptionsHelper.CreateOptionsFile(projectPath, settings);
+            var (isSuccessful, error) = await OptionsHelper.CreateOptionsFile(projectPath, settings);
             if (isSuccessful)
             {
                 logger.LogInformation("The options file is created");

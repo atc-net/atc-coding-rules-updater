@@ -283,7 +283,7 @@ public static class EditorConfigHelper
         var lines = content.Split(FileHelper.LineBreaks, StringSplitOptions.None);
 
         var sb = new StringBuilder();
-        for (int i = 0; i < lines.Length; i++)
+        for (var i = 0; i < lines.Length; i++)
         {
             var line = lines[i];
             if (line.Equals(SectionDivider, StringComparison.Ordinal) &&
@@ -315,7 +315,7 @@ public static class EditorConfigHelper
 
         var workingOnCustomHeader = string.Empty;
         var workingOnCustomLines = new List<string>();
-        for (int i = 0; i < lines.Length; i++)
+        for (var i = 0; i < lines.Length; i++)
         {
             var line = lines[i];
             if (line.Equals(SectionDivider, StringComparison.Ordinal) &&

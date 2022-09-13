@@ -42,7 +42,7 @@ public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
 
             var code = sa[0];
             var title = sa[1];
-            var link = $"{this.DocumentationLink!.OriginalString}#{code}";
+            var link = $"{DocumentationLink!.OriginalString}#{code}";
 
             data.Rules.Add(
                 new Rule(

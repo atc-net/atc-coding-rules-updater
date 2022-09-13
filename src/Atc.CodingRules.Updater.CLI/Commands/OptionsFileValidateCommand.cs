@@ -26,7 +26,7 @@ public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSetting
 
         try
         {
-            (bool isSuccessful, string error) = await OptionsHelper.ValidateOptionsFile(projectPath, optionsPath);
+            var (isSuccessful, error) = await OptionsHelper.ValidateOptionsFile(projectPath, optionsPath);
             if (isSuccessful)
             {
                 logger.LogInformation("The options file is valid");

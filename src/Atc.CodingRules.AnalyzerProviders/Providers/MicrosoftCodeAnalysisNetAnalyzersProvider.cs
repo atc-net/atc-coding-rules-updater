@@ -68,7 +68,7 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
             var code = sa[0];
             var title = sa[1].Trim();
             var description = HtmlEntity.DeEntitize(cells[TableColumnCategory].InnerText);
-            var link = $"{this.DocumentationLink.OriginalString}/{aHrefNode.Attributes["href"].Value}";
+            var link = $"{DocumentationLink.OriginalString}/{aHrefNode.Attributes["href"].Value}";
 
             data.Rules.Add(
                 new Rule(

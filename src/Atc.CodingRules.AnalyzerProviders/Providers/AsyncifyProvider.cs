@@ -111,7 +111,7 @@ public class AsyncifyProvider : AnalyzerProviderBase
             }
 
             var description = descriptions.First(x => x.Item1.Equals(code, StringComparison.Ordinal))?.Item2;
-            var link = this.DocumentationLink!.AbsoluteUri;
+            var link = DocumentationLink!.AbsoluteUri;
 
             data.Rules.Add(
                 new Rule(

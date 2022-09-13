@@ -13,11 +13,11 @@ public class Rule
         string? category = null,
         string? description = null)
     {
-        this.Code = code;
-        this.Title = title;
-        this.Link = link;
-        this.Category = category;
-        this.Description = description;
+        Code = code;
+        Title = title;
+        Link = link;
+        Category = category;
+        Description = description;
     }
 
     public string Code { get; set; } = string.Empty;
