@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using Atc.CodingRules.Updater.CLI.Models.Options;
-
 namespace Atc.CodingRules.Updater.CLI.Commands.DescriptionAttributes;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Delegate)]
