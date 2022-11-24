@@ -34,7 +34,8 @@ public static class ProjectHelper
         if (options.ProjectTarget
             is SupportedProjectTargetType.DotNetCore
             or SupportedProjectTargetType.DotNet5
-            or SupportedProjectTargetType.DotNet6)
+            or SupportedProjectTargetType.DotNet6
+            or SupportedProjectTargetType.DotNet7)
         {
             HandleDirectoryBuildPropsFiles(logger, projectPath, options);
 
