@@ -17,7 +17,7 @@ public class MicrosoftCompilerErrorsProviderUndocumented : AnalyzerProviderBase
     public static string Name => "Microsoft.CompilerErrors.Undocumented";
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]

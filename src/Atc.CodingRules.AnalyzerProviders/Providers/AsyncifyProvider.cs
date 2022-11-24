@@ -16,10 +16,10 @@ public class AsyncifyProvider : AnalyzerProviderBase
 
     public static string Name => "Asyncify";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/hvanbakel/Asyncify-CSharp", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/hvanbakel/Asyncify-CSharp", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

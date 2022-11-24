@@ -16,7 +16,7 @@ public class OptionsFile
 
     public string? BuildFile { get; set; }
 
-    public OptionsMappings Mappings { get; set; } = new ();
+    public OptionsMappings Mappings { get; set; } = new();
 
     public bool HasMappingsPaths()
         => Mappings.HasMappingsPaths();

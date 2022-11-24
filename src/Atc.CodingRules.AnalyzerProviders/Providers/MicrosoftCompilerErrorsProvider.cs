@@ -13,10 +13,10 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
 
     public static string Name => "Microsoft.CompilerErrors";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

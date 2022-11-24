@@ -13,10 +13,10 @@ public class AsyncFixerProvider : AnalyzerProviderBase
 
     public static string Name => "AsyncFixer";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/semihokur/AsyncFixer/blob/main/README.md", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/semihokur/AsyncFixer/blob/main/README.md", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

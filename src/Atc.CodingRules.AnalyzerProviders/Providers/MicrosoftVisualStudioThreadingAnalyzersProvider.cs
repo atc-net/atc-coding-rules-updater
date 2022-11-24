@@ -17,10 +17,10 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
 
     public static string Name => "Microsoft.VisualStudio.Threading.Analyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/index.md", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/index.md", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

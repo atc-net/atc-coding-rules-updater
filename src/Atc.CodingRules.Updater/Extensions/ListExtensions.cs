@@ -3,7 +3,8 @@ namespace System.Collections;
 
 public static class ListExtensions
 {
-    public static void TrimEndForEmptyValues(this IList<string> values)
+    public static void TrimEndForEmptyValues(
+        this IList<string> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -29,7 +30,8 @@ public static class ListExtensions
         }
     }
 
-    public static string TrimEndForEmptyValuesToString(this IList<string> values)
+    public static string TrimEndForEmptyValuesToString(
+        this IList<string> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -39,6 +41,7 @@ public static class ListExtensions
         }
 
         TrimEndForEmptyValues(values);
+
         return string.Join(Environment.NewLine, values);
     }
 }

@@ -18,10 +18,10 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
 
     public static string Name => "StyleCop.Analyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

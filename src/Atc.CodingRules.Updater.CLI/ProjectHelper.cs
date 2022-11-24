@@ -535,7 +535,7 @@ public static class ProjectHelper
             5 => "\t\t",
             6 => "\t\t",
             7 => "\t\t",
-            _ => "\t"
+            _ => "\t",
         };
 
         return tabs;

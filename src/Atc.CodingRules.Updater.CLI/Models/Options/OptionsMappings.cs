@@ -4,11 +4,11 @@ namespace Atc.CodingRules.Updater.CLI.Models.Options;
 
 public class OptionsMappings
 {
-    public OptionsFolderMappings Sample { get; set; } = new ();
+    public OptionsFolderMappings Sample { get; set; } = new();
 
-    public OptionsFolderMappings Src { get; set; } = new ();
+    public OptionsFolderMappings Src { get; set; } = new();
 
-    public OptionsFolderMappings Test { get; set; } = new ();
+    public OptionsFolderMappings Test { get; set; } = new();
 
     public bool HasMappingsPaths() =>
         Sample.Paths.Count > 0 ||
