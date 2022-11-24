@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <PackageId>atc-coding-rules-updater</PackageId>
     <PackageTags>coding-rules;rules</PackageTags>
     <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
