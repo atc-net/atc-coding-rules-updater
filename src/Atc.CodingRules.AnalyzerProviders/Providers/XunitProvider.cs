@@ -17,10 +17,10 @@ public class XunitProvider : AnalyzerProviderBase
 
     public static string Name => "xUnit.net";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://xunit.net/xunit.analyzers/rules", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://xunit.net/xunit.analyzers/rules", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

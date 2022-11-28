@@ -17,10 +17,10 @@ public class NSubstituteAnalyzersProvider : AnalyzerProviderBase
 
     public static string Name => "NSubstitute.Analyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/nsubstitute/NSubstitute.Analyzers/tree/master/documentation/rules", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/nsubstitute/NSubstitute.Analyzers/tree/master/documentation/rules", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

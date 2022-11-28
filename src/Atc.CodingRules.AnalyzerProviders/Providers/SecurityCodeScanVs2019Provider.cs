@@ -13,10 +13,10 @@ public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
 
     public static string Name => "SecurityCodeScan.VS2019";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://security-code-scan.github.io", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://security-code-scan.github.io", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

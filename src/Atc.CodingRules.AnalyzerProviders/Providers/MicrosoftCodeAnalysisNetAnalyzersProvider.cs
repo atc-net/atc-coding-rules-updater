@@ -16,10 +16,10 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
 
     public static string Name => "Microsoft.CodeAnalysis.NetAnalyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

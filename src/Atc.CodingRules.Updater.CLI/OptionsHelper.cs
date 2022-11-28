@@ -29,7 +29,7 @@ public static class OptionsHelper
         return options;
     }
 
-    public static async Task<(bool, string)> CreateOptionsFile(
+    public static async Task<(bool IsSuccessful, string Error)> CreateOptionsFile(
         DirectoryInfo projectPath,
         ProjectCommandSettings settings)
     {
@@ -52,7 +52,7 @@ public static class OptionsHelper
         return (true, string.Empty);
     }
 
-    public static async Task<(bool isSuccessful, string error)> ValidateOptionsFile(
+    public static async Task<(bool IsSuccessful, string Error)> ValidateOptionsFile(
         DirectoryInfo projectPath,
         string? settingsOptionsPath)
     {

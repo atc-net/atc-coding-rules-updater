@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Models.Options;
 
 public class OptionsFile
 {
-    public SupportedProjectTargetType ProjectTarget { get; set; } = SupportedProjectTargetType.DotNet6;
+    public SupportedProjectTargetType ProjectTarget { get; set; } = SupportedProjectTargetType.DotNet7;
 
     public bool UseLatestMinorNugetVersion { get; set; } = true;
 
@@ -16,7 +16,7 @@ public class OptionsFile
 
     public string? BuildFile { get; set; }
 
-    public OptionsMappings Mappings { get; set; } = new ();
+    public OptionsMappings Mappings { get; set; } = new();
 
     public bool HasMappingsPaths()
         => Mappings.HasMappingsPaths();

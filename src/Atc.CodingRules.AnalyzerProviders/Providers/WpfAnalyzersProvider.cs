@@ -16,10 +16,10 @@ public class WpfAnalyzersProvider : AnalyzerProviderBase
 
     public static string Name => "WpfAnalyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/DotNetAnalyzers/WpfAnalyzers", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/DotNetAnalyzers/WpfAnalyzers", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

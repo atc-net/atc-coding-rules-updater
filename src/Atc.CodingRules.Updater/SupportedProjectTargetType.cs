@@ -5,4 +5,5 @@ public enum SupportedProjectTargetType
     DotNetCore,
     DotNet5,
     DotNet6,
+    DotNet7,
 }

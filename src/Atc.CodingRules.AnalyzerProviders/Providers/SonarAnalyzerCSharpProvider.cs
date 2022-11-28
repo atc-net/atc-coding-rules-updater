@@ -13,12 +13,12 @@ public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
 
     public static string Name => "SonarAnalyzer.CSharp";
 
-    public Uri? RuleLinkBase { get; set; } = new ("https://rules.sonarsource.com/csharp/", UriKind.Absolute);
+    public Uri? RuleLinkBase { get; set; } = new("https://rules.sonarsource.com/csharp/", UriKind.Absolute);
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://rules.sonarsource.com/page-data/csharp/page-data.json", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://rules.sonarsource.com/page-data/csharp/page-data.json", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

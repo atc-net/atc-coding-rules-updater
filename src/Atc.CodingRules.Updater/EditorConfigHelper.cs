@@ -248,7 +248,9 @@ public static class EditorConfigHelper
         }
     }
 
-    private static string BuildNewContentFile(string contentGitBasePart, List<Tuple<string, List<string>>> contentFileCustomParts)
+    private static string BuildNewContentFile(
+        string contentGitBasePart,
+        List<Tuple<string, List<string>>> contentFileCustomParts)
     {
         var sbNewContentFile = new StringBuilder();
         sbNewContentFile.Append(contentGitBasePart);

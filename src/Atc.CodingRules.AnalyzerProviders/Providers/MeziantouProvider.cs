@@ -17,10 +17,10 @@ public class MeziantouProvider : AnalyzerProviderBase
 
     public static string Name => "Meziantou.Analyzer";
 
-    public override Uri? DocumentationLink { get; set; } = new ("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
-        => new (Name);
+        => new(Name);
 
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)

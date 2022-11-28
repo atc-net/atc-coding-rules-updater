@@ -64,20 +64,23 @@ public static class FileHelper
         return l1.Equals(l2);
     }
 
-    public static bool ContainsEditorConfigFile(DirectoryInfo? directory)
+    public static bool ContainsEditorConfigFile(
+        DirectoryInfo? directory)
         => directory is not null &&
            directory.Exists
            && Directory.GetFiles(directory.FullName)
                .Any(x => x.Equals(".editorconfig", StringComparison.OrdinalIgnoreCase));
 
-    public static bool ContainsSolutionOrProjectFile(DirectoryInfo? directory)
+    public static bool ContainsSolutionOrProjectFile(
+        DirectoryInfo? directory)
         => directory is not null &&
            directory.Exists
            && Directory.GetFiles(directory.FullName)
                .Any(x => x.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
                          x.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase));
 
-    public static bool IsSolutionOrProjectFile(FileInfo? file)
+    public static bool IsSolutionOrProjectFile(
+        FileInfo? file)
         => file is not null &&
            file.Exists &&
            (".sln".Equals(file.Extension, StringComparison.OrdinalIgnoreCase) ||
