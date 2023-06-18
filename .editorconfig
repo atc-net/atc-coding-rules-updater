@@ -1,8 +1,8 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
 # Version: 1.0.9
-# Updated: 24-11-2022
+# Updated: 01-02-2022
 # Location: Root
-# Distribution: DotNet7
+# Distribution: DotNet6
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
 ##########################################
@@ -151,10 +151,6 @@ dotnet_style_operator_placement_when_wrapping = end_of_line
 csharp_style_var_for_built_in_types = true                                      # IDE0007 and IDE0008
 csharp_style_var_when_type_is_apparent = true                                   # IDE0007 and IDE0008
 csharp_style_var_elsewhere = true                                               # IDE0007 and IDE0008
-
-# Namespace declaration preferences
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0160-ide0161?view=vs-2022
-csharp_style_namespace_declarations = file_scoped                               # IDE0160 and IDE0161
 
 # Expression-bodied members
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#expression-bodied-members
