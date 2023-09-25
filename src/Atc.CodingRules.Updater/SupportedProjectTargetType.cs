@@ -6,4 +6,5 @@ public enum SupportedProjectTargetType
     DotNet5,
     DotNet6,
     DotNet7,
+    DotNet8,
 }
