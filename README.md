@@ -93,7 +93,7 @@ OPTIONS:
                                                                  diectory)
     -o, --optionsPath [OPTIONSPATH]                              Path to an optional options json-file
     -t, --projectTarget [PROJECTTARGET]                          Sets the ProjectTarget. Valid values are: DotNetCore,
-                                                                 DotNet5, DotNet6, DotNet7 (default)
+                                                                 DotNet5, DotNet6, DotNet7, DotNet8 (default)
         --useLatestMinorNugetVersion                             Indicate if nuget packages should by updated to latest
                                                                  minor version (default true)
         --useTemporarySuppressions                               Indicate if build process should use temporary
@@ -126,7 +126,7 @@ OPTIONS:
     -v, --verbose                          Use verbose for more debug/trace information
     -p, --projectPath <PROJECTPATH>        Path to the project directory (default current diectory)
     -o, --optionsPath [OPTIONSPATH]        Path to an optional options json-file
-    -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7 (default)
+    -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8 (default)
 ```
 
 #### Command <span style="color:yellow">options-file</span>
@@ -224,7 +224,7 @@ The tool has an optional options parameter, which can be used to control the pat
 
 ```json
 {
-  "projectTarget": "DotNet7",
+  "projectTarget": "DotNet8",
   "useLatestMinorNugetVersion": true,
   "useTemporarySuppressions": false,
   "temporarySuppressionAsExcel": false,
