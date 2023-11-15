@@ -37,7 +37,7 @@ public static class EditorConfigHelper
 
         try
         {
-            if (!file.Directory!.Exists)
+            if (!Directory.Exists(file.Directory!.FullName))
             {
                 Directory.CreateDirectory(file.Directory.FullName);
             }

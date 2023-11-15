@@ -90,7 +90,6 @@ public static class FileHelper
         }
 
         return true;
-
     }
 
     public static bool ContainsEditorConfigFile(

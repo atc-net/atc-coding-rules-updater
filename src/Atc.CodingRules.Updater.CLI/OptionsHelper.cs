@@ -25,7 +25,11 @@ public static class OptionsHelper
             return CreateDefaultOptions(projectPath);
         }
 
-        options.Mappings.ResolvePaths(new DirectoryInfo(optionsPath));
+        options.Mappings.ResolvePaths(
+            optionsPath.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)
+                ? new FileInfo(optionsPath).Directory!
+                : new DirectoryInfo(optionsPath));
+
         return options;
     }
 
