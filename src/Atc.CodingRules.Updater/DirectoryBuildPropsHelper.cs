@@ -44,7 +44,7 @@ public static class DirectoryBuildPropsHelper
 
         try
         {
-            if (!file.Directory!.Exists)
+            if (!Directory.Exists(file.Directory!.FullName))
             {
                 Directory.CreateDirectory(file.Directory.FullName);
             }
@@ -68,7 +68,7 @@ public static class DirectoryBuildPropsHelper
                 return;
             }
 
-            if (FileHelper.IsFileDataLengthEqual(contentGit, contentFile) &&
+            if (FileHelper.AreFilesEqual(contentGit, contentFile) &&
                 contentGit.Equals(contentFile, StringComparison.Ordinal))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
@@ -141,7 +141,7 @@ public static class DirectoryBuildPropsHelper
         if (useLatestMinorNugetVersion)
         {
             var newFileContent = EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Debug);
-            if (!FileHelper.IsFileDataLengthEqual(fileContent, newFileContent) ||
+            if (!FileHelper.AreFilesEqual(fileContent, newFileContent) ||
                 !fileContent.Equals(newFileContent, StringComparison.Ordinal))
             {
                 fileContent = newFileContent;
