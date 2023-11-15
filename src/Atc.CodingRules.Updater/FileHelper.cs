@@ -1,3 +1,4 @@
+// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.CodingRules.Updater;
 
 public static class FileHelper
@@ -51,7 +52,7 @@ public static class FileHelper
         logger.LogInformation($"{EmojisConstants.FileCreated}   {descriptionPart} created");
     }
 
-    public static bool IsFileDataLengthEqual(
+    public static bool AreFilesEqual(
         string dataA,
         string dataB)
     {
@@ -61,7 +62,35 @@ public static class FileHelper
         var l1 = dataA.EnsureEnvironmentNewLines().Length;
         var l2 = dataB.EnsureEnvironmentNewLines().Length;
 
-        return l1.Equals(l2);
+        var isSameFileLength = l1.Equals(l2);
+        if (!isSameFileLength)
+        {
+            return false;
+        }
+
+        var headerLinesA = dataA.ToLines().Take(10).ToList();
+        var headerLinesB = dataB.ToLines().Take(10).ToList();
+
+        if (headerLinesA.Find(x => x.StartsWith("# Version", StringComparison.CurrentCultureIgnoreCase)) !=
+            headerLinesB.Find(x => x.StartsWith("# Version", StringComparison.CurrentCultureIgnoreCase)))
+        {
+            return false;
+        }
+
+        if (headerLinesA.Find(x => x.StartsWith("# Updated", StringComparison.CurrentCultureIgnoreCase)) !=
+            headerLinesB.Find(x => x.StartsWith("# Updated", StringComparison.CurrentCultureIgnoreCase)))
+        {
+            return false;
+        }
+
+        if (headerLinesA.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase)) !=
+            headerLinesB.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase)))
+        {
+            return false;
+        }
+
+        return true;
+
     }
 
     public static bool ContainsEditorConfigFile(

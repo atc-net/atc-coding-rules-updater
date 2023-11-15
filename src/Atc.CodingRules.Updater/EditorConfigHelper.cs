@@ -67,7 +67,7 @@ public static class EditorConfigHelper
 
         try
         {
-            if (FileHelper.IsFileDataLengthEqual(contentGit, contentFile))
+            if (FileHelper.AreFilesEqual(contentGit, contentFile))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
                 return;
@@ -82,7 +82,7 @@ public static class EditorConfigHelper
             var contentGitBasePart = ExtractContentBasePart(contentGit);
             var contentFileBasePart = ExtractContentBasePart(contentFile);
 
-            if (FileHelper.IsFileDataLengthEqual(contentGitBasePart, contentFileBasePart))
+            if (FileHelper.AreFilesEqual(contentGitBasePart, contentFileBasePart))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
                 return;
