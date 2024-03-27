@@ -1,6 +1,3 @@
-using System.Reflection;
-using Xunit.Abstractions;
-
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
 namespace Atc.CodingRules.Updater.Tests;
 

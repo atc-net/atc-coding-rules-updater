@@ -1,7 +1,4 @@
 // ReSharper disable SuggestBaseTypeForParameter
-
-using Atc.CodingRules.Updater.CLI.Models.Options;
-
 namespace Atc.CodingRules.Updater.CLI;
 
 public static class OptionsHelper
