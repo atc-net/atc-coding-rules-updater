@@ -2,7 +2,7 @@ name: "ATC-rules-update"
 
 on:
   workflow_dispatch:
-  schedule: 
+  schedule:
   - cron: '0 20 * * 0'
 
 jobs:
