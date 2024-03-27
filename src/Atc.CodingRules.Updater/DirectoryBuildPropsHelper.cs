@@ -99,7 +99,7 @@ public static class DirectoryBuildPropsHelper
 
         var fileContent = FileHelper.ReadAllText(file);
         var searchText = $"<{elementName}><!-- {elementValue} --></{elementName}>";
-        return fileContent.IndexOf(searchText, StringComparison.Ordinal) != -1;
+        return fileContent.Contains(searchText, StringComparison.Ordinal);
     }
 
     public static void UpdateFileInsertPlaceholderElement(
@@ -119,7 +119,7 @@ public static class DirectoryBuildPropsHelper
 
         var fileContent = FileHelper.ReadAllText(file);
         var searchText = $"<{elementName}><!-- {elementValue} --></{elementName}>";
-        if (fileContent.IndexOf(searchText, StringComparison.Ordinal) != -1)
+        if (fileContent.Contains(searchText, StringComparison.Ordinal))
         {
             fileContent = fileContent.Replace(
                 searchText,

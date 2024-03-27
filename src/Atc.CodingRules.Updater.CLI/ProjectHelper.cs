@@ -204,7 +204,7 @@ public static class ProjectHelper
             var errorTypes = buildResult
                 .Where(x => x.Key.StartsWith("MSB", StringComparison.Ordinal))
                 .Select(x => x.Key)
-                .OrderBy(x => x)
+                .OrderBy(x => x, StringComparer.Ordinal)
                 .ToList();
 
             logger.LogWarning($"     MSB-errors ({string.Join(',', errorTypes)}) was found, please correct them manually first and try again.");
@@ -214,7 +214,7 @@ public static class ProjectHelper
             var errorTypes = buildResult
                 .Where(x => x.Key.StartsWith("NU", StringComparison.Ordinal))
                 .Select(x => x.Key)
-                .OrderBy(x => x)
+                .OrderBy(x => x, StringComparer.Ordinal)
                 .ToList();
 
             logger.LogWarning($"     NU-errors ({string.Join(',', errorTypes)}) was found, please correct them manually first and try again.");
@@ -288,13 +288,9 @@ public static class ProjectHelper
             hasFoundNewErrors = buildResultNextRun.Count > 0;
             foreach (var (key, value) in buildResultNextRun)
             {
-                if (buildResult.ContainsKey(key))
+                if (!buildResult.TryAdd(key, value))
                 {
                     buildResult[key] += value;
-                }
-                else
-                {
-                    buildResult.Add(key, value);
                 }
             }
         }
@@ -332,7 +328,7 @@ public static class ProjectHelper
         }
     }
 
-    private static Task CreateSuppressionsFileInTempPath(
+    private static async Task CreateSuppressionsFileInTempPath(
         ILogger logger,
         DirectoryInfo temporarySuppressionsPath,
         bool temporarySuppressionAsExcel,
@@ -371,15 +367,14 @@ public static class ProjectHelper
             worksheet.View.FreezePanes(2, 1);
 
             logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile} updated");
-
-            return excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
+            await excelPackage.SaveAsAsync(new FileInfo(temporarySuppressionsFile));
         }
 
         var suppressionsText = CreateSuppressionsText(suppressionLinesPrAnalyzer);
 
         logger.LogDebug($"{EmojisConstants.FileUpdated}   {temporarySuppressionsFile} updated");
 
-        return Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
+        await Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
     }
 
     private static int AddSuppressionLinesToWorksheet(
@@ -476,7 +471,7 @@ public static class ProjectHelper
         var groupedSuppressionLines = suppressionLines
             .GroupBy(x => x.Item1, StringComparer.Ordinal)
             .Select(group => new { AnalyzerName = group.Key, Values = group.Select(x => x.Item2).ToList() })
-            .OrderBy(x => x.AnalyzerName)
+            .OrderBy(x => x.AnalyzerName, StringComparer.Ordinal)
             .ToList();
 
         return groupedSuppressionLines.Select(x => Tuple.Create(x.AnalyzerName, x.Values)).ToList();
@@ -488,7 +483,7 @@ public static class ProjectHelper
         ICollection<Tuple<string, string>> suppressionLines,
         ICollection<string> handledCodes)
     {
-        foreach (var (code, count) in buildResult.OrderBy(x => x.Key))
+        foreach (var (code, count) in buildResult.OrderBy(x => x.Key, StringComparer.Ordinal))
         {
             foreach (var analyzerProvider in analyzerProviderBaseRules)
             {
@@ -511,7 +506,7 @@ public static class ProjectHelper
         ICollection<Tuple<string, string>> suppressionLines,
         ICollection<string> handledCodes)
     {
-        foreach (var (code, count) in buildResult.OrderBy(x => x.Key))
+        foreach (var (code, count) in buildResult.OrderBy(x => x.Key, StringComparer.Ordinal))
         {
             if (handledCodes.Contains(code, StringComparer.Ordinal))
             {

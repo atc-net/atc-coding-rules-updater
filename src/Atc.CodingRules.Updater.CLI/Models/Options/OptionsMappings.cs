@@ -62,7 +62,7 @@ public class OptionsMappings
         var di = new DirectoryInfo(orgPath);
         if (di.FullName.Contains("Atc.CodingRules.Updater.CLI", StringComparison.Ordinal))
         {
-            if (orgPath.IndexOfAny(new[] { '.', '/', '\\' }) == -1)
+            if (orgPath.IndexOfAny(['.', '/', '\\']) == -1)
             {
                 newPath = Path.Combine(projectPath.FullName, orgPath);
                 return true;
@@ -75,7 +75,7 @@ public class OptionsMappings
                 return true;
             }
 
-            if (orgPath.IndexOfAny(new[] { '/', '\\' }) != -1)
+            if (orgPath.IndexOfAny(['/', '\\']) != -1)
             {
                 var s = orgPath.Replace("/", "\\", StringComparison.Ordinal);
                 newPath = Path.Combine(projectPath.FullName, s);
@@ -83,7 +83,7 @@ public class OptionsMappings
             }
         }
 
-        if (orgPath.StartsWith("\\", StringComparison.Ordinal))
+        if (orgPath.StartsWith('\\'))
         {
             var s = orgPath.Substring(1).Replace("/", "\\", StringComparison.Ordinal);
             newPath = Path.Combine(projectPath.FullName, s);

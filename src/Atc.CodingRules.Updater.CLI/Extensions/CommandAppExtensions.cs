@@ -21,35 +21,33 @@ public static class CommandAppExtensions
     private static void ConfigureRunCommand(IConfigurator config)
         => config.AddCommand<RunCommand>(NameCommandConstants.Run)
             .WithDescription("Update the project folder with ATC coding rules and configurations")
-            .WithExample(new[] { ".", CreateEquivalentToRun(8) })
-            .WithExample(new[] { NameCommandConstants.Run, ".", CreateEquivalentToRun(4), })
-            .WithExample(new[] { NameCommandConstants.Run, CreateArgumentProjectPathWithDot(), CreateEquivalentToRun(1) })
-            .WithExample(new[] { NameCommandConstants.Run, CreateArgumentProjectPathWithTestFolder() })
+            .WithExample([".", CreateEquivalentToRun(8)])
+            .WithExample([NameCommandConstants.Run, ".", CreateEquivalentToRun(4)])
+            .WithExample([NameCommandConstants.Run, CreateArgumentProjectPathWithDot(), CreateEquivalentToRun(1)])
+            .WithExample([NameCommandConstants.Run, CreateArgumentProjectPathWithTestFolder()])
             .WithExample(
-                new[]
-                {
-                    NameCommandConstants.Run,
-                    CreateArgumentProjectPathWithTestFolder(),
-                    CreateArgumentProjectTarget(SupportedProjectTargetType.DotNetCore),
-                    ArgumentCommandConstants.LongUseTemporarySuppressions,
-                    ArgumentCommandConstants.LongOrganizationName, "MyCompany",
-                    ArgumentCommandConstants.LongRepositoryName, "MyRepo",
-                    CommandConstants.ArgumentShortVerbose,
-                });
+            [
+                NameCommandConstants.Run,
+                CreateArgumentProjectPathWithTestFolder(),
+                CreateArgumentProjectTarget(SupportedProjectTargetType.DotNetCore),
+                ArgumentCommandConstants.LongUseTemporarySuppressions,
+                ArgumentCommandConstants.LongOrganizationName, "MyCompany",
+                ArgumentCommandConstants.LongRepositoryName, "MyRepo",
+                CommandConstants.ArgumentShortVerbose
+            ]);
 
     private static void ConfigureSanityCheckCommand(IConfigurator config)
         => config.AddCommand<SanityCheckCommand>(NameCommandConstants.SanityCheck)
             .WithDescription("Sanity check the project files")
-            .WithExample(new[] { NameCommandConstants.SanityCheck, ".", CreateEquivalentToSanityCheck(8) })
-            .WithExample(new[] { NameCommandConstants.SanityCheck, CreateArgumentProjectPathWithTestFolder() })
+            .WithExample([NameCommandConstants.SanityCheck, ".", CreateEquivalentToSanityCheck(8)])
+            .WithExample([NameCommandConstants.SanityCheck, CreateArgumentProjectPathWithTestFolder()])
             .WithExample(
-                new[]
-                {
-                    NameCommandConstants.SanityCheck,
+            [
+                NameCommandConstants.SanityCheck,
                     CreateArgumentProjectPathWithTestFolder(),
                     CreateArgumentProjectTarget(SupportedProjectTargetType.DotNetCore),
-                    CommandConstants.ArgumentShortVerbose,
-                });
+                    CommandConstants.ArgumentShortVerbose
+            ]);
 
     private static Action<IConfigurator<CommandSettings>> ConfigureOptionsFileCommands()
         => node =>
@@ -59,15 +57,15 @@ public static class CommandAppExtensions
             node
                 .AddCommand<OptionsFileCreateCommand>(CommandConstants.NameOptionsFileCreate)
                 .WithDescription("Create default options file 'atc-coding-rules-updater.json' if it doesn't exist")
-                .WithExample(new[] { CreateArgumentCommandsOptionsFileWithCreate(), ".", CreateEquivalentToOptionsFileCreate(6), })
-                .WithExample(new[] { CreateArgumentCommandsOptionsFileWithCreate(), CreateArgumentProjectPathWithDot(), CreateEquivalentToOptionsFileCreate(3), })
-                .WithExample(new[] { CreateArgumentCommandsOptionsFileWithCreate(), CreateArgumentProjectPathWithTestFolder(), });
+                .WithExample([CreateArgumentCommandsOptionsFileWithCreate(), ".", CreateEquivalentToOptionsFileCreate(6)])
+                .WithExample([CreateArgumentCommandsOptionsFileWithCreate(), CreateArgumentProjectPathWithDot(), CreateEquivalentToOptionsFileCreate(3)])
+                .WithExample([CreateArgumentCommandsOptionsFileWithCreate(), CreateArgumentProjectPathWithTestFolder()]);
 
             node
                 .AddCommand<OptionsFileValidateCommand>(CommandConstants.NameOptionsFileValidate)
                 .WithDescription("Validate the options file 'atc-coding-rules-updater.json'")
-                .WithExample(new[] { CreateArgumentCommandsOptionsFileWithValidate(), ".", CreateEquivalentToOptionsFileValidate(4), })
-                .WithExample(new[] { CreateArgumentCommandsOptionsFileWithValidate(), CreateArgumentProjectPathWithTestFolder() });
+                .WithExample([CreateArgumentCommandsOptionsFileWithValidate(), ".", CreateEquivalentToOptionsFileValidate(4)])
+                .WithExample([CreateArgumentCommandsOptionsFileWithValidate(), CreateArgumentProjectPathWithTestFolder()]);
         };
 
     private static Action<IConfigurator<CommandSettings>> ConfigureAnalyzerProvidersCommands()
@@ -78,22 +76,21 @@ public static class CommandAppExtensions
             node
                 .AddCommand<AnalyzerProvidersCollectCommand>(NameCommandConstants.AnalyzerProvidersCollect)
                 .WithDescription("Collect base rules metadata from all Analyzer providers")
-                .WithExample(new[] { CreateArgumentCommandsAnalyzerProvidersWithCollect(), ".", CreateEquivalentToAnalyzerProvidersCollect(6), })
-                .WithExample(new[] { CreateArgumentCommandsAnalyzerProvidersWithCollect(), CreateArgumentProjectPathWithDot(), CreateEquivalentToAnalyzerProvidersCollect(3) })
-                .WithExample(new[] { CreateArgumentCommandsAnalyzerProvidersWithCollect(), CreateArgumentProjectPathWithTestFolder() })
+                .WithExample([CreateArgumentCommandsAnalyzerProvidersWithCollect(), ".", CreateEquivalentToAnalyzerProvidersCollect(6)])
+                .WithExample([CreateArgumentCommandsAnalyzerProvidersWithCollect(), CreateArgumentProjectPathWithDot(), CreateEquivalentToAnalyzerProvidersCollect(3)])
+                .WithExample([CreateArgumentCommandsAnalyzerProvidersWithCollect(), CreateArgumentProjectPathWithTestFolder()])
                 .WithExample(
-                    new[]
-                    {
-                        CreateArgumentCommandsAnalyzerProvidersWithCollect(),
-                        CreateArgumentProjectPathWithTestFolder(),
-                        CreateArgumentFetchMode(ProviderCollectingMode.ReCollect),
-                        CommandConstants.ArgumentShortVerbose,
-                    });
+                [
+                    CreateArgumentCommandsAnalyzerProvidersWithCollect(),
+                    CreateArgumentProjectPathWithTestFolder(),
+                    CreateArgumentFetchMode(ProviderCollectingMode.ReCollect),
+                    CommandConstants.ArgumentShortVerbose
+                ]);
 
             node
                 .AddCommand<AnalyzerProvidersCacheCleanupCommand>(NameCommandConstants.AnalyzerProvidersCleanupCache)
                 .WithDescription("Cleanup cache from Analyzer providers")
-                .WithExample(new[] { CreateArgumentCommandsAnalyzerProvidersWithCleanupCache() });
+                .WithExample([CreateArgumentCommandsAnalyzerProvidersWithCleanupCache()]);
         };
 
     private static string CreateArgumentProjectPathWithDot()
