@@ -7,14 +7,31 @@ This repository contains a CLI tool, which can be used to maintain `coding-rules
 * Read about [atc-coding-rules](https://github.com/atc-net/atc-coding-rules)
 * Master rule files [information](https://github.com/atc-net/atc-coding-rules/tree/main/distribution)
 
-## Breaking changes
-
-![](https://img.shields.io/static/v1?color=ff9900&style=for-the-badge&label=&message=Breaking%20changes%20From%20Version%201.x%20to%202.x)
-
-```powershell
- * Options Parameter Change: -r | --rootPath has changed to -p | --projectPath
- * CLI Tool now requires the "run" command to update rule-files
- ```
+## Table of Contents
+- [ATC-NET Coding rules updater](#atc-net-coding-rules-updater)
+  - [Table of Contents](#table-of-contents)
+  - [CLI Tool](#cli-tool)
+    - [Requirements](#requirements)
+    - [Installation](#installation)
+    - [Update](#update)
+    - [Usage](#usage)
+      - [Option --help](#option---help)
+      - [Command run](#command-run)
+      - [Command sanity-check](#command-sanity-check)
+      - [Command options-file](#command-options-file)
+    - [Example](#example)
+  - [Options file schema / example](#options-file-schema--example)
+    - [atc-coding-rules-updater.json example 1](#atc-coding-rules-updaterjson-example-1)
+    - [atc-coding-rules-updater.json example 2](#atc-coding-rules-updaterjson-example-2)
+    - [atc-coding-rules-updater.json default](#atc-coding-rules-updaterjson-default)
+  - [CLI Tool Usage from powershell](#cli-tool-usage-from-powershell)
+  - [Deep dive in what `atc-coding-rules-updater` actual does and doesn't do](#deep-dive-in-what-atc-coding-rules-updater-actual-does-and-doesnt-do)
+    - [A use case-scenario for coding rules structure setups - Scenario A](#a-use-case-scenario-for-coding-rules-structure-setups---scenario-a)
+    - [A use case-scenario for coding rules structure setups - Scenario B](#a-use-case-scenario-for-coding-rules-structure-setups---scenario-b)
+    - [For both use-case scenarios](#for-both-use-case-scenarios)
+  - [Temporary suppressions](#temporary-suppressions)
+    - [Build](#build)
+  - [How to contribute](#how-to-contribute)
 
 ## CLI Tool
 
@@ -22,7 +39,7 @@ The Atc.CodingRules.Updater.CLI library is available through a cross platform co
 
 ### Requirements
 
-* [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+* [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 ### Installation
 

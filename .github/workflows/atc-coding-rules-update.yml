@@ -2,7 +2,7 @@ name: "ATC-rules-update"
 
 on:
   workflow_dispatch:
-  schedule: 
+  schedule:
   - cron: '0 20 * * 0'
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
     - name: '⚙ Install ATC Coding Rules updater'
       run: dotnet tool install --global atc-coding-rules-updater
     - name: ♻️ Run ATC Coding Rules updater
-      run: atc-coding-rules-updater run --projectPath . --verbose --projectTarget DotNet6 --useTemporarySuppressions
+      run: atc-coding-rules-updater run --projectPath . --verbose --projectTarget DotNet8 --useTemporarySuppressions
     - name: 🐛 Git - show changes
       shell: bash
       run: |

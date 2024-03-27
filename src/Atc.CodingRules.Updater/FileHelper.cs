@@ -31,7 +31,7 @@ public static class FileHelper
                 searchText = $"<{elementName}>{elementValue}</{elementName}>";
             }
 
-            if (fileContent.IndexOf(searchText, stringComparison) != -1)
+            if (fileContent.Contains(searchText, stringComparison))
             {
                 result.Add(new FileInfo(file));
             }

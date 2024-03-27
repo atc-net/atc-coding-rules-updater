@@ -1,5 +1,3 @@
-using Atc.CodingRules.Updater.CLI.Models.Options;
-
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class AnalyzerProvidersCollectCommand : AsyncCommand<AnalyzerProvidersCollectCommandSettings>

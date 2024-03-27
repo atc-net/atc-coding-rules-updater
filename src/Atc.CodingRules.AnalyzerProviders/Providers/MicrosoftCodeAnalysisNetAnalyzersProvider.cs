@@ -58,7 +58,7 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
             var sa = aHrefNode.InnerText.Split(":");
             if (sa.Length != 2)
             {
-                sa = aHrefNode.InnerText.Split(new[] { ' ' }, 2);
+                sa = aHrefNode.InnerText.Split([' '], 2);
                 if (sa.Length != 2)
                 {
                     continue;

@@ -14,12 +14,12 @@ public static class ProjectSanityCheckHelper
         switch (projectTarget)
         {
             case SupportedProjectTargetType.DotNet5:
-                HasEnableNetAnalyzers(throwIf, logger, projectPath, projectTarget);
+                HasEnableNetAnalyzers(throwIf, logger, projectPath, projectTarget); // TODO: XXX
                 break;
             case SupportedProjectTargetType.DotNet6:
             case SupportedProjectTargetType.DotNet7:
             case SupportedProjectTargetType.DotNet8:
-                HasTargetFrameworkAndImplicitUsings(throwIf, logger, projectPath, "netcoreapp3.1");
+                HasTargetFrameworkAndImplicitUsings(throwIf, logger, projectPath, "netcoreapp3.1"); // TODO: XXX
                 break;
         }
     }
