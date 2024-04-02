@@ -391,7 +391,7 @@ public static class ProjectHelper
         ILogger logger,
         DirectoryInfo temporarySuppressionsPath,
         bool temporarySuppressionAsExcel,
-        IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer)
+        IList<Tuple<string, List<string>>> suppressionLinesPrAnalyzer)
     {
         var temporarySuppressionsFile = Path.Join(
             temporarySuppressionsPath.FullName,
@@ -610,5 +610,5 @@ public static class ProjectHelper
         string word,
         string pluralSuffix = "s",
         string singularSuffix = "")
-        => $@"{number} {word}{(number != 1 ? pluralSuffix : singularSuffix)}";
+        => $"{number} {word}{(number != 1 ? pluralSuffix : singularSuffix)}";
 }

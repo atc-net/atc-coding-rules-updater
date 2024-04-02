@@ -27,16 +27,39 @@ public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
 
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
-        var jsonDoc = JsonDocument.Parse(htmlDoc.DocumentNode.InnerText);
-        var jsonDocItems = jsonDoc.RootElement.GetProperty("result").GetProperty("pageContext").GetProperty("rules").EnumerateArray();
 
-        while (jsonDocItems.MoveNext())
+        var dynamicJson = new DynamicJson(htmlDoc.DocumentNode.InnerText);
+        if (dynamicJson.GetValue("result.data.allFile.nodes") is not List<object> nodes)
         {
-            var jsonElement = jsonDocItems.Current;
-            var ruleKey = jsonElement.GetProperty("ruleKey").GetString();
-            var summary = jsonElement.GetProperty("summary").GetString() ?? string.Empty;
+            return;
+        }
+
+        if (nodes[0] is not Dictionary<string, object> node)
+        {
+            return;
+        }
+
+        if (node["childLanguageJson"] is not Dictionary<string, object> childLanguageJson)
+        {
+            return;
+        }
+
+        if (childLanguageJson["rules"] is not List<object> rules)
+        {
+            return;
+        }
+
+        foreach (var ruleObj in rules)
+        {
+            if (ruleObj is not Dictionary<string, object> ruleDict)
+            {
+                continue;
+            }
+
+            var ruleKey = ruleDict["ruleKey"].ToString();
+            var summary = ruleDict["summary"].ToString() ?? string.Empty;
             var link = RuleLinkBase + ruleKey;
-            var description = jsonElement.GetProperty("description").GetString();
+            var description = ruleDict["description"].ToString();
 
             if (ruleKey is null)
             {

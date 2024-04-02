@@ -18,6 +18,7 @@ public class AsyncFixerProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override async Task ReCollect(
         AnalyzerProviderBaseRuleData data)
     {
@@ -25,6 +26,43 @@ public class AsyncFixerProvider : AnalyzerProviderBase
 
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri);
+
+        var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
+        if (embeddedNode is not null)
+        {
+            var dynamicJson = new DynamicJson(embeddedNode.InnerText);
+            if (dynamicJson.GetValue("payload.blob.headerInfo.toc") is List<object> tocObjects)
+            {
+                foreach (var tocObject in tocObjects)
+                {
+                    if (tocObject is not Dictionary<string, object> tocItem)
+                    {
+                        continue;
+                    }
+
+                    if (!tocItem.ContainsKey("text"))
+                    {
+                        continue;
+                    }
+
+                    var sa = tocItem["text"]
+                        .ToString()!
+                        .Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+                    var code = sa[0].Trim();
+                    var title = sa[1].Trim();
+
+                    data.Rules.Add(
+                        new Rule(
+                            code,
+                            title,
+                            link: string.Empty,
+                            description: title));
+                }
+
+                return;
+            }
+        }
 
         var headers3 = htmlDoc.DocumentNode.SelectNodes("//h3").ToList();
 

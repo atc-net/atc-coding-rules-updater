@@ -3,7 +3,6 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 public class XunitProvider : AnalyzerProviderBase
 {
     private const int TableThColumnId = 0;
-    private const int TableTdColumnCategory = 2;
     private const int TableTdColumnTitle = 0;
 
     public XunitProvider(
@@ -56,14 +55,13 @@ public class XunitProvider : AnalyzerProviderBase
             var code = aHrefNode.InnerText.RemoveNewLines().Trim();
             var title = HtmlEntity.DeEntitize(cellsTd[TableTdColumnTitle].InnerText);
             var link = $"{DocumentationLink}/{code}";
-            var category = cellsTd[TableTdColumnCategory].InnerText;
 
             data.Rules.Add(
                 new Rule(
                     code,
                     title,
                     link,
-                    category: category));
+                    category: null));
         }
     }
 }

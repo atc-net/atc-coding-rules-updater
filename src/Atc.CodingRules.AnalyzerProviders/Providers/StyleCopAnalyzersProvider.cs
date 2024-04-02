@@ -30,6 +30,16 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
 
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
+
+        var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
+        if (embeddedNode is not null)
+        {
+            var dynamicJson = new DynamicJson(embeddedNode.InnerText);
+            var html = dynamicJson.GetValue("payload.blob.richText")?.ToString();
+
+            htmlDoc.LoadHtml(html);
+        }
+
         var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
         var articleRuleLinks = articleNode.SelectNodes("//*//strong//a").ToList();
 
@@ -49,6 +59,16 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
         var link = $"https://github.com{item.Attributes["href"].Value}";
         var web = new HtmlWeb();
         var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);
+
+        var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
+        if (embeddedNode is not null)
+        {
+            var dynamicJson = new DynamicJson(embeddedNode.InnerText);
+            var html = dynamicJson.GetValue("payload.blob.richText")?.ToString();
+
+            htmlDoc.LoadHtml(html);
+        }
+
         var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
         var articleTableRows = articleNode.SelectNodes("//*//table[1]//tr").ToList();
         var category = articleNode.Descendants("h3").First().InnerText;
