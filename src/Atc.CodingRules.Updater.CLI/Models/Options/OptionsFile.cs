@@ -18,6 +18,9 @@ public class OptionsFile
 
     public OptionsMappings Mappings { get; set; } = new();
 
+    [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
+    public IList<OptionsProjectFrameworkMapping> ProjectFrameworkMappings { get; set; } = [];
+
     public bool HasMappingsPaths()
         => Mappings.HasMappingsPaths();
 
