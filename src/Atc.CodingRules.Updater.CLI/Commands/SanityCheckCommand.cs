@@ -4,7 +4,9 @@ public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
 {
     private readonly ILogger<SanityCheckCommand> logger;
 
-    public SanityCheckCommand(ILogger<SanityCheckCommand> logger) => this.logger = logger;
+    public SanityCheckCommand(
+        ILogger<SanityCheckCommand> logger)
+        => this.logger = logger;
 
     public override Task<int> ExecuteAsync(
         CommandContext context,

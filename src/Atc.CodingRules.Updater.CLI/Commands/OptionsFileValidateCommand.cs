@@ -4,7 +4,9 @@ public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSetting
 {
     private readonly ILogger<OptionsFileValidateCommand> logger;
 
-    public OptionsFileValidateCommand(ILogger<OptionsFileValidateCommand> logger) => this.logger = logger;
+    public OptionsFileValidateCommand(
+        ILogger<OptionsFileValidateCommand> logger)
+        => this.logger = logger;
 
     public override Task<int> ExecuteAsync(
         CommandContext context,
