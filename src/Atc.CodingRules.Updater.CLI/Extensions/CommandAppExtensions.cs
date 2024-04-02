@@ -33,7 +33,7 @@ public static class CommandAppExtensions
                 ArgumentCommandConstants.LongUseTemporarySuppressions,
                 ArgumentCommandConstants.LongOrganizationName, "MyCompany",
                 ArgumentCommandConstants.LongRepositoryName, "MyRepo",
-                CommandConstants.ArgumentShortVerbose
+                CommandConstants.ArgumentLongVerbose
             ]);
 
     private static void ConfigureSanityCheckCommand(IConfigurator config)
@@ -46,7 +46,7 @@ public static class CommandAppExtensions
                 NameCommandConstants.SanityCheck,
                     CreateArgumentProjectPathWithTestFolder(),
                     CreateArgumentProjectTarget(SupportedProjectTargetType.DotNetCore),
-                    CommandConstants.ArgumentShortVerbose
+                    CommandConstants.ArgumentLongVerbose
             ]);
 
     private static Action<IConfigurator<CommandSettings>> ConfigureOptionsFileCommands()
@@ -84,7 +84,7 @@ public static class CommandAppExtensions
                     CreateArgumentCommandsAnalyzerProvidersWithCollect(),
                     CreateArgumentProjectPathWithTestFolder(),
                     CreateArgumentFetchMode(ProviderCollectingMode.ReCollect),
-                    CommandConstants.ArgumentShortVerbose
+                    CommandConstants.ArgumentLongVerbose
                 ]);
 
             node
