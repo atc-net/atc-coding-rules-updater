@@ -1,7 +1,3 @@
-using Atc.DotNet;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
-
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 // ReSharper disable InvertIf
 // ReSharper disable SuggestBaseTypeForParameter
