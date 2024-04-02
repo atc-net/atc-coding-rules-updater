@@ -1,7 +1,4 @@
-using Atc.DotNet;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
-
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 // ReSharper disable InvertIf
 // ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.CodingRules.Updater.CLI;
@@ -89,6 +86,8 @@ public static class ProjectHelper
         logger.LogInformation($"{AppEmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
+        const string projectFrameworkCodingRulesBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/project-frameworks";
+
         EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty);
 
         foreach (var item in options.Mappings.Sample.Paths)
@@ -108,6 +107,66 @@ public static class ProjectHelper
             var path = new DirectoryInfo(item);
             EditorConfigHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, path, "test");
         }
+
+        // Handle Project specific Frameworks
+        var projectsInProjectPath = DotnetCsProjFileHelper.FindAllInPathAndPredictProjectTypes(projectPath);
+
+        foreach (var (csProjFile, projectType) in projectsInProjectPath)
+        {
+            var projectFrameworkType = DetermineProjectFrameworkType(options, csProjFile, projectType);
+            if (projectFrameworkType == ProjectFrameworkType.None)
+            {
+                continue;
+            }
+
+            EditorConfigHelper.HandleFile(logger, "ProjectFramework", projectFrameworkCodingRulesBaseUrl, csProjFile.Directory!, projectFrameworkType.ToStringLowerCase());
+        }
+    }
+
+    private static ProjectFrameworkType DetermineProjectFrameworkType(
+        OptionsFile options,
+        FileInfo csProjFile,
+        DotnetProjectType projectType)
+    {
+        var projectFrameworkType = ProjectFrameworkType.None;
+
+        var optionsProjectFrameworkMapping = options.ProjectFrameworkMappings.FirstOrDefault(
+            x => x.Name.Equals(
+                Path.GetFileNameWithoutExtension(csProjFile.Name),
+                StringComparison.OrdinalIgnoreCase));
+
+        if (optionsProjectFrameworkMapping is not null)
+        {
+            projectFrameworkType = optionsProjectFrameworkMapping.Type;
+        }
+        else
+        {
+            switch (projectType)
+            {
+                case DotnetProjectType.AzureFunctionApp:
+                    projectFrameworkType = ProjectFrameworkType.AzureFunctions;
+                    break;
+                case DotnetProjectType.BlazorServerApp:
+                case DotnetProjectType.BlazorWAsmApp:
+                    projectFrameworkType = ProjectFrameworkType.Blazor;
+                    break;
+                case DotnetProjectType.MauiApp:
+                    projectFrameworkType = ProjectFrameworkType.Maui;
+                    break;
+                case DotnetProjectType.WinFormApp:
+                    projectFrameworkType = ProjectFrameworkType.WinForms;
+                    break;
+                case DotnetProjectType.WpfApp:
+                case DotnetProjectType.WpfLibrary:
+                    projectFrameworkType = ProjectFrameworkType.Wpf;
+                    break;
+                case DotnetProjectType.WebApi:
+                    projectFrameworkType = ProjectFrameworkType.WebApi;
+                    break;
+            }
+        }
+
+        return projectFrameworkType;
     }
 
     private static void HandleDirectoryBuildPropsFiles(

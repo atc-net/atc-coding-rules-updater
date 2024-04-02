@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public abstract class AnalyzerProviderBase : IAnalyzerProvider

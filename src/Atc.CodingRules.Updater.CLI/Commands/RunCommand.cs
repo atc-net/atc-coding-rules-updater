@@ -6,7 +6,9 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
 {
     private readonly ILogger<RunCommand> logger;
 
-    public RunCommand(ILogger<RunCommand> logger) => this.logger = logger;
+    public RunCommand(
+        ILogger<RunCommand> logger)
+        => this.logger = logger;
 
     public override Task<int> ExecuteAsync(
         CommandContext context,

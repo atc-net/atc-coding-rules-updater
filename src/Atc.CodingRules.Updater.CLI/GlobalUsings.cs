@@ -19,10 +19,12 @@ global using Atc.Console.Spectre.CommandSettings;
 global using Atc.Console.Spectre.Factories;
 global using Atc.Console.Spectre.Helpers;
 global using Atc.Console.Spectre.Logging;
+global using Atc.DotNet;
 global using Atc.Helpers;
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;
-
+global using OfficeOpenXml;
+global using OfficeOpenXml.Style;
 global using Spectre.Console;
 global using Spectre.Console.Cli;

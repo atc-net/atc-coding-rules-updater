@@ -18,9 +18,9 @@ public class OptionsFile
 
     public OptionsMappings Mappings { get; set; } = new();
 
-    public bool HasMappingsPaths()
-        => Mappings.HasMappingsPaths();
+    [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
+    public IList<OptionsProjectFrameworkMapping> ProjectFrameworkMappings { get; set; } = [];
 
     public override string ToString()
-        => $"{nameof(ProjectTarget)}: {ProjectTarget}, {nameof(UseTemporarySuppressions)}: {UseTemporarySuppressions}, {nameof(TemporarySuppressionsPath)}: {TemporarySuppressionAsExcel}, {nameof(TemporarySuppressionAsExcel)}: {TemporarySuppressionsPath}, {nameof(Mappings)}: ({Mappings})";
+        => $"{nameof(ProjectTarget)}: {ProjectTarget}, {nameof(UseTemporarySuppressions)}: {UseTemporarySuppressions}, {nameof(TemporarySuppressionsPath)}: {TemporarySuppressionAsExcel}, {nameof(TemporarySuppressionAsExcel)}: {TemporarySuppressionsPath}, {nameof(Mappings)}: ({Mappings}), {nameof(ProjectFrameworkMappings)}.Count: {ProjectFrameworkMappings.Count}";
 }

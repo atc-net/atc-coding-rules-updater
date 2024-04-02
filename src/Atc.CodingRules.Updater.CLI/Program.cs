@@ -66,20 +66,20 @@ public static class Program
             newArgs.Insert(0, NameCommandConstants.Run);
         }
 
-        if (!newArgs.Contains(CommandConstants.ArgumentShortVerbose, StringComparer.OrdinalIgnoreCase) ||
-            !newArgs.Contains(CommandConstants.ArgumentLongVerbose, StringComparer.OrdinalIgnoreCase))
+        if (!newArgs.Contains(CommandConstants.ArgumentLongVerbose, StringComparer.OrdinalIgnoreCase))
         {
-            newArgs.Add(CommandConstants.ArgumentShortVerbose);
+            newArgs.Add(CommandConstants.ArgumentLongVerbose);
         }
 
-        return newArgs.ToArray();
+        return [.. newArgs];
     }
 
-    private static string[] SetHelpArgumentIfNeeded(string[] args)
+    private static string[] SetHelpArgumentIfNeeded(
+        string[] args)
     {
         if (args.Length == 0)
         {
-            return new[] { CommandConstants.ArgumentShortHelp };
+            return [CommandConstants.ArgumentShortHelp];
         }
 
         if (args.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
@@ -93,25 +93,25 @@ public static class Program
         {
             if (args.Contains(NameCommandConstants.SanityCheck, StringComparer.OrdinalIgnoreCase))
             {
-                return new[] { NameCommandConstants.SanityCheck, CommandConstants.ArgumentShortHelp };
+                return [NameCommandConstants.SanityCheck, CommandConstants.ArgumentShortHelp];
             }
 
             if (args.Contains(CommandConstants.NameOptionsFile, StringComparer.OrdinalIgnoreCase) &&
                 (args.Contains(CommandConstants.NameOptionsFileCreate, StringComparer.OrdinalIgnoreCase) ||
                  args.Contains(CommandConstants.NameOptionsFileValidate, StringComparer.OrdinalIgnoreCase)))
             {
-                return new[] { CommandConstants.NameOptionsFile, CommandConstants.ArgumentShortHelp };
+                return [CommandConstants.NameOptionsFile, CommandConstants.ArgumentShortHelp];
             }
 
             if (args.Contains(NameCommandConstants.AnalyzerProviders, StringComparer.OrdinalIgnoreCase) &&
                 args.Contains(NameCommandConstants.AnalyzerProvidersCollect, StringComparer.OrdinalIgnoreCase))
             {
-                return new[] { NameCommandConstants.AnalyzerProviders, CommandConstants.ArgumentShortHelp };
+                return [NameCommandConstants.AnalyzerProviders, CommandConstants.ArgumentShortHelp];
             }
 
             if (args.Contains(NameCommandConstants.Run, StringComparer.OrdinalIgnoreCase))
             {
-                return new[] { NameCommandConstants.Run, CommandConstants.ArgumentShortHelp };
+                return [NameCommandConstants.Run, CommandConstants.ArgumentShortHelp];
             }
         }
 

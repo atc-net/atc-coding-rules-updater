@@ -23,6 +23,7 @@ This repository contains a CLI tool, which can be used to maintain `coding-rules
   - [Options file schema / example](#options-file-schema--example)
     - [atc-coding-rules-updater.json example 1](#atc-coding-rules-updaterjson-example-1)
     - [atc-coding-rules-updater.json example 2](#atc-coding-rules-updaterjson-example-2)
+    - [atc-coding-rules-updater.json example 3](#atc-coding-rules-updaterjson-example-3)
     - [atc-coding-rules-updater.json default](#atc-coding-rules-updaterjson-default)
   - [CLI Tool Usage from powershell](#cli-tool-usage-from-powershell)
   - [Deep dive in what `atc-coding-rules-updater` actual does and doesn't do](#deep-dive-in-what-atc-coding-rules-updater-actual-does-and-doesnt-do)
@@ -80,8 +81,8 @@ USAGE:
 
 OPTIONS:
     -h, --help       Prints help information
-    -v, --verbose    Use verbose for more debug/trace information
-        --version    Display version
+        --verbose    Use verbose for more debug/trace information
+    -v, --version    Display version
 
 COMMANDS:
     run                   Update the project folder with ATC coding rules and configurations
@@ -101,11 +102,11 @@ EXAMPLES:
     atc-coding-rules-updater.exe run -p .  (equivalent to 'run -p [CurrentFolder]')
     atc-coding-rules-updater.exe run -p c:\temp\MyProject
     atc-coding-rules-updater.exe run -p c:\temp\MyProject -t DotNetCore --useTemporarySuppressions  --organizationName
-MyCompany  --repositoryName MyRepo -v
+MyCompany  --repositoryName MyRepo --verbose
 
 OPTIONS:
     -h, --help                                                   Prints help information
-    -v, --verbose                                                Use verbose for more debug/trace information
+        --verbose                                                Use verbose for more debug/trace information
     -p, --projectPath <PROJECTPATH>                              Path to the project directory (default current
                                                                  diectory)
     -o, --optionsPath [OPTIONSPATH]                              Path to an optional options json-file
@@ -136,11 +137,11 @@ USAGE:
 EXAMPLES:
     atc-coding-rules-updater.exe sanity-check .         (equivalent to 'sanity-check -p [CurrentFolder]')
     atc-coding-rules-updater.exe sanity-check -p c:\temp\MyProject
-    atc-coding-rules-updater.exe sanity-check -p c:\temp\MyProject -t DotNetCore -v
+    atc-coding-rules-updater.exe sanity-check -p c:\temp\MyProject -t DotNetCore --verbose
 
 OPTIONS:
     -h, --help                             Prints help information
-    -v, --verbose                          Use verbose for more debug/trace information
+        --verbose                          Use verbose for more debug/trace information
     -p, --projectPath <PROJECTPATH>        Path to the project directory (default current diectory)
     -o, --optionsPath [OPTIONSPATH]        Path to an optional options json-file
     -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8 (default)
@@ -172,7 +173,7 @@ COMMANDS:
 Having a project folder in c:\code\MyProject where the .sln file for C# projects exists in the root, run the following command
 
 ```powershell
-atc-coding-rules-updater run -p c:\code\MyProject -v
+atc-coding-rules-updater run -p c:\code\MyProject --verbose
 ```
 
 Running the command above produces the following output
@@ -200,6 +201,8 @@ Running the command above produces the following output
 ## Options file schema / example
 
 The tool has an optional options parameter, which can be used to control the paths for persisting the .editorconfigs and props files. This can be applied as follows `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
+
+By default the atc-coding-rules-updater will detect projects in the solution and try to fetch the matching project specific rules and supply an .editorconfig in those projects. This mapping can however be over-ruled as seen in [atc-coding-rules-updater.json example 3](#atc-coding-rules-updaterjson-example-3)
 
 ### atc-coding-rules-updater.json example 1
 
@@ -237,6 +240,29 @@ The tool has an optional options parameter, which can be used to control the pat
 }
 ```
 
+### atc-coding-rules-updater.json example 3
+
+In this example a project framework mapping has been added. The entry is mapped using the CsProj fileName and the specific ProjectFrameworkType. Currently the supported values for project framework type are [defined here](/src/Atc.CodingRules.Updater/ProjectFrameworkType.cs)
+
+By specifying this mapping it will over-rule the automatic detection of the project framework type.
+
+```json
+{
+    "projectTarget": "DotNet8",
+    "mappings": {
+        "sample": { "paths": [ "sample" ] },
+        "src": { "paths": [ "src" ] },
+        "test": { "paths": [ "test" ] }
+    },
+    "projectFrameworkMappings": [
+    {
+      "name": "HelloWorldWpf",
+      "type": "Wpf"
+    }
+  ]
+}
+```
+
 ### atc-coding-rules-updater.json default
 
 ```json
@@ -257,7 +283,8 @@ The tool has an optional options parameter, which can be used to control the pat
         "test"
       ]
     }
-  }
+  },
+  "projectFrameworkMappings": []
 }
 ```
 

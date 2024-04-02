@@ -4,7 +4,9 @@ public class OptionsFileCreateCommand : AsyncCommand<ProjectCommandSettings>
 {
     private readonly ILogger<OptionsFileCreateCommand> logger;
 
-    public OptionsFileCreateCommand(ILogger<OptionsFileCreateCommand> logger) => this.logger = logger;
+    public OptionsFileCreateCommand(
+        ILogger<OptionsFileCreateCommand> logger)
+        => this.logger = logger;
 
     public override Task<int> ExecuteAsync(
         CommandContext context,
