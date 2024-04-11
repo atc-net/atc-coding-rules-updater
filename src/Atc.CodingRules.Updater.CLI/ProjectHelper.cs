@@ -119,7 +119,12 @@ public static class ProjectHelper
                 continue;
             }
 
-            EditorConfigHelper.HandleFile(logger, "ProjectFramework", projectFrameworkCodingRulesBaseUrl, csProjFile.Directory!, projectFrameworkType.ToStringLowerCase());
+            EditorConfigHelper.HandleFile(
+                logger,
+                "ProjectFramework",
+                projectFrameworkCodingRulesBaseUrl,
+                csProjFile.Directory!,
+                projectFrameworkType.ToStringLowerCase());
         }
     }
 
@@ -141,29 +146,17 @@ public static class ProjectHelper
         }
         else
         {
-            switch (projectType)
+            projectFrameworkType = projectType switch
             {
-                case DotnetProjectType.AzureFunctionApp:
-                    projectFrameworkType = ProjectFrameworkType.AzureFunctions;
-                    break;
-                case DotnetProjectType.BlazorServerApp:
-                case DotnetProjectType.BlazorWAsmApp:
-                    projectFrameworkType = ProjectFrameworkType.Blazor;
-                    break;
-                case DotnetProjectType.MauiApp:
-                    projectFrameworkType = ProjectFrameworkType.Maui;
-                    break;
-                case DotnetProjectType.WinFormApp:
-                    projectFrameworkType = ProjectFrameworkType.WinForms;
-                    break;
-                case DotnetProjectType.WpfApp:
-                case DotnetProjectType.WpfLibrary:
-                    projectFrameworkType = ProjectFrameworkType.Wpf;
-                    break;
-                case DotnetProjectType.WebApi:
-                    projectFrameworkType = ProjectFrameworkType.WebApi;
-                    break;
-            }
+                DotnetProjectType.AzureFunctionApp => ProjectFrameworkType.AzureFunctions,
+                DotnetProjectType.BlazorServerApp or DotnetProjectType.BlazorWAsmApp => ProjectFrameworkType.Blazor,
+                DotnetProjectType.CliApp => ProjectFrameworkType.Cli,
+                DotnetProjectType.MauiApp => ProjectFrameworkType.Maui,
+                DotnetProjectType.WinFormApp => ProjectFrameworkType.WinForms,
+                DotnetProjectType.WpfApp or DotnetProjectType.WpfLibrary => ProjectFrameworkType.Wpf,
+                DotnetProjectType.WebApi => ProjectFrameworkType.WebApi,
+                _ => projectFrameworkType,
+            };
         }
 
         return projectFrameworkType;
