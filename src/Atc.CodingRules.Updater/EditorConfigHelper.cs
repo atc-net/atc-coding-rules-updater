@@ -333,7 +333,7 @@ public static class EditorConfigHelper
                     }
 
                     workingOnCustomHeader = nextLine.Substring(CustomSectionHeaderPrefix.Length).Trim();
-                    workingOnCustomLines = new List<string>();
+                    workingOnCustomLines = [];
                 }
             }
 

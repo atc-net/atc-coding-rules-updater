@@ -140,24 +140,17 @@ public static class ProjectHelper
                 Path.GetFileNameWithoutExtension(csProjFile.Name),
                 StringComparison.OrdinalIgnoreCase));
 
-        if (optionsProjectFrameworkMapping is not null)
+        projectFrameworkType = optionsProjectFrameworkMapping?.Type ?? projectType switch
         {
-            projectFrameworkType = optionsProjectFrameworkMapping.Type;
-        }
-        else
-        {
-            projectFrameworkType = projectType switch
-            {
-                DotnetProjectType.AzureFunctionApp => ProjectFrameworkType.AzureFunctions,
-                DotnetProjectType.BlazorServerApp or DotnetProjectType.BlazorWAsmApp => ProjectFrameworkType.Blazor,
-                DotnetProjectType.CliApp => ProjectFrameworkType.Cli,
-                DotnetProjectType.MauiApp => ProjectFrameworkType.Maui,
-                DotnetProjectType.WinFormApp => ProjectFrameworkType.WinForms,
-                DotnetProjectType.WpfApp or DotnetProjectType.WpfLibrary => ProjectFrameworkType.Wpf,
-                DotnetProjectType.WebApi => ProjectFrameworkType.WebApi,
-                _ => projectFrameworkType,
-            };
-        }
+            DotnetProjectType.AzureFunctionApp => ProjectFrameworkType.AzureFunctions,
+            DotnetProjectType.BlazorServerApp or DotnetProjectType.BlazorWAsmApp => ProjectFrameworkType.Blazor,
+            DotnetProjectType.CliApp => ProjectFrameworkType.Cli,
+            DotnetProjectType.MauiApp => ProjectFrameworkType.Maui,
+            DotnetProjectType.WinFormApp => ProjectFrameworkType.WinForms,
+            DotnetProjectType.WpfApp or DotnetProjectType.WpfLibrary => ProjectFrameworkType.Wpf,
+            DotnetProjectType.WebApi => ProjectFrameworkType.WebApi,
+            _ => projectFrameworkType,
+        };
 
         return projectFrameworkType;
     }

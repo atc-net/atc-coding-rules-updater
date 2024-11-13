@@ -4,7 +4,7 @@ namespace System;
 
 public static class StringExtensions
 {
-    private static readonly string[] LineBreaks = { "\r\n", "\r", "\n" };
+    private static readonly string[] LineBreaks = ["\r\n", "\r", "\n"];
 
     public static string TrimEndForEmptyLines(
         this string value)
@@ -25,7 +25,7 @@ public static class StringExtensions
     public static Collection<KeyValueItem> GetKeyValues(
         this string value)
         => string.IsNullOrEmpty(value)
-            ? new Collection<KeyValueItem>()
+            ? []
             : value
                 .Split(LineBreaks, StringSplitOptions.RemoveEmptyEntries)
                 .GetKeyValues();
