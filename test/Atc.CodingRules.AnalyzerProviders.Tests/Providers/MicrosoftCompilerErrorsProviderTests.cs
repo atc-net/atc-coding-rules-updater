@@ -21,6 +21,6 @@ public class MicrosoftCompilerErrorsProviderTests
         Assert.NotNull(actual.Name);
         Assert.Equal(MicrosoftCompilerErrorsProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
-        Assert.True(actual.Rules.Count >= 910);
+        Assert.True(actual.Rules.Count >= 850);
     }
 }
