@@ -14,14 +14,11 @@ public class ProjectBaseCommandSettings : BaseCommandSettings
     public override ValidationResult Validate()
     {
         var validationResult = base.Validate();
-        if (!validationResult.Successful)
-        {
-            return validationResult;
-        }
-
-        return string.IsNullOrEmpty(ProjectPath)
-            ? ValidationResult.Error("ProjectPath is missing.")
-            : ValidationResult.Success();
+        return !validationResult.Successful
+            ? validationResult
+            : string.IsNullOrEmpty(ProjectPath)
+                ? ValidationResult.Error("ProjectPath is missing.")
+                : ValidationResult.Success();
     }
 
     internal string GetOptionsPath()

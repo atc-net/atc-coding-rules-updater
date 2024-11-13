@@ -19,6 +19,7 @@ public static class ProjectSanityCheckHelper
             case SupportedProjectTargetType.DotNet6:
             case SupportedProjectTargetType.DotNet7:
             case SupportedProjectTargetType.DotNet8:
+            case SupportedProjectTargetType.DotNet9:
                 HasTargetFrameworkAndImplicitUsings(throwIf, logger, projectPath, "netcoreapp3.1");
                 break;
         }

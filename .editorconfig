@@ -516,11 +516,20 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 # Custom - Code Analyzers Rules
 ##########################################
 
+dotnet_diagnostic.IDE0010.severity = suggestion     # Populate switch
+dotnet_diagnostic.IDE0021.severity = suggestion     # Use expression body for constructor
+dotnet_diagnostic.IDE0046.severity = suggestion     # If statement can be simplified
+dotnet_diagnostic.IDE0055.severity = none           # Fix formatting
 dotnet_diagnostic.IDE0057.severity = none           # Substring can be simplified
+dotnet_diagnostic.IDE0072.severity = suggestion     # Populate switch
+dotnet_diagnostic.IDE0130.severity = suggestion     # Namespace does not match folder structure
+dotnet_diagnostic.IDE0290.severity = none			# Use primary constructor
+dotnet_diagnostic.IDE0305.severity = suggestion     # Collection initialization can be simplified
 
 dotnet_diagnostic.SA1010.severity = none            #
 
 dotnet_diagnostic.CA1054.severity = none            # URI parameters should not be strings
+dotnet_diagnostic.CA1515.severity = suggestion      # Because an application's API isn't typically referenced from outside the assembly, types can be made internal (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515)
 dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 dotnet_diagnostic.CA1859.severity = none            #
 dotnet_diagnostic.CA1860.severity = none            #
@@ -536,6 +545,7 @@ dotnet_diagnostic.S1172.severity = none             # False positive
 dotnet_diagnostic.S2589.severity = none             #
 dotnet_diagnostic.S2629.severity = none             #
 dotnet_diagnostic.S3267.severity = none             #
+dotnet_diagnostic.S3358.severity = none             #
 dotnet_diagnostic.S3878.severity = none             #
 dotnet_diagnostic.S4457.severity = none             # Split this method into two, one handling parameters check and the other handling the asynchronous code
 dotnet_diagnostic.S6602.severity = none             #

@@ -140,13 +140,10 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
             buildFile = settings.BuildFile.Value;
         }
 
-        if (!string.IsNullOrEmpty(buildFile))
-        {
-            return buildFile.Contains(':', StringComparison.Ordinal)
+        return !string.IsNullOrEmpty(buildFile)
+            ? buildFile.Contains(':', StringComparison.Ordinal)
                 ? new FileInfo(buildFile)
-                : new FileInfo(Path.Combine(projectPath.FullName, buildFile));
-        }
-
-        return null;
+                : new FileInfo(Path.Combine(projectPath.FullName, buildFile))
+            : null;
     }
 }

@@ -3,8 +3,9 @@ namespace Atc.CodingRules.Updater;
 public enum SupportedProjectTargetType
 {
     DotNetCore,
-    DotNet5,
-    DotNet6,
-    DotNet7,
-    DotNet8,
+    DotNet5, // STS
+    DotNet6, // LTS
+    DotNet7, // STS
+    DotNet8, // LTS
+    DotNet9, // STS
 }

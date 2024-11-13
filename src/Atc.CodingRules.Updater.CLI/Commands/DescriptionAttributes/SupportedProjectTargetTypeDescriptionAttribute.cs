@@ -8,7 +8,7 @@ public sealed class SupportedProjectTargetTypeDescriptionAttribute : Description
         get
         {
             var defaultValue = new OptionsFile().ProjectTarget;
-            var values = Enum.GetNames(typeof(SupportedProjectTargetType))
+            var values = Enum.GetNames<SupportedProjectTargetType>()
                 .Select(enumValue => enumValue.Equals(defaultValue.ToString(), StringComparison.Ordinal)
                     ? $"{enumValue} (default)"
                     : enumValue)

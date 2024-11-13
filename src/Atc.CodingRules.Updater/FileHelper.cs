@@ -1,4 +1,3 @@
-// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.CodingRules.Updater;
 
 public static class FileHelper
@@ -83,13 +82,8 @@ public static class FileHelper
             return false;
         }
 
-        if (headerLinesA.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase)) !=
-            headerLinesB.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase)))
-        {
-            return false;
-        }
-
-        return true;
+        return headerLinesA.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase)) ==
+               headerLinesB.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase));
     }
 
     public static bool ContainsEditorConfigFile(
