@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Docs/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Src/">
+    <Project Path="src/Atc.CodingRules.AnalyzerProviders/Atc.CodingRules.AnalyzerProviders.csproj" />
+    <Project Path="src/Atc.CodingRules.Updater.CLI/Atc.CodingRules.Updater.CLI.csproj" />
+    <Project Path="src/Atc.CodingRules.Updater/Atc.CodingRules.Updater.csproj" />
+    <Project Path="src/Atc.CodingRules/Atc.CodingRules.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="test/Atc.CodingRules.AnalyzerProviders.Tests/Atc.CodingRules.AnalyzerProviders.Tests.csproj" />
+    <Project Path="test/Atc.CodingRules.Updater.Tests/Atc.CodingRules.Updater.Tests.csproj" />
+  </Folder>
+</Solution>
