@@ -18,14 +18,18 @@ public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
-        var headers3 = htmlDoc.DocumentNode.SelectNodes("//h3").ToList();
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
+            .ConfigureAwait(false);
+
+        var headers3 = htmlDoc.DocumentNode
+            .SelectNodes("//h3")
+            .ToList();
 
         foreach (var item in headers3.Select(x => x.InnerText))
         {

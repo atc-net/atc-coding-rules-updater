@@ -21,15 +21,19 @@ public class WpfAnalyzersProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
-        var articleTableRows = articleNode.SelectNodes("//*//table[1]//tr").ToList();
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
+            .ConfigureAwait(false);
+
+        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
+        var articleTableRows = articleNode
+            .SelectNodes("//*//table[1]//tr")
+            .ToList();
 
         foreach (var row in articleTableRows)
         {
@@ -38,7 +42,10 @@ public class WpfAnalyzersProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var cells = row.SelectNodes("td").ToList();
+            var cells = row
+                .SelectNodes("td")
+                .ToList();
+
             if (cells.Count <= 0)
             {
                 continue;

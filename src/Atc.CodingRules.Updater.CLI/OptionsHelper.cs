@@ -5,7 +5,8 @@ public static class OptionsHelper
 {
     public static async Task<OptionsFile> CreateDefault(
         DirectoryInfo projectPath,
-        string? settingsOptionsPath)
+        string? settingsOptionsPath,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(projectPath);
 
@@ -16,7 +17,7 @@ public static class OptionsHelper
         }
 
         var optionsPath = GetOptionsPath(projectPath, settingsOptionsPath);
-        var options = await FileHelper<OptionsFile>.ReadJsonFileAndDeserializeAsync(fileInfo);
+        var options = await FileHelper<OptionsFile>.ReadJsonFileToModelAsync(fileInfo, cancellationToken);
         if (options is null)
         {
             return CreateDefaultOptions(projectPath);
@@ -32,7 +33,8 @@ public static class OptionsHelper
 
     public static async Task<(bool IsSuccessful, string Error)> CreateOptionsFile(
         DirectoryInfo projectPath,
-        ProjectCommandSettings settings)
+        ProjectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(settings);
@@ -49,13 +51,14 @@ public static class OptionsHelper
             options.ProjectTarget = settings.ProjectTarget.Value;
         }
 
-        await FileHelper<OptionsFile>.WriteModelToJsonFileAsync(fileInfo, options);
+        await FileHelper<OptionsFile>.WriteModelToJsonFileAsync(fileInfo, options, cancellationToken);
         return (true, string.Empty);
     }
 
     public static async Task<(bool IsSuccessful, string Error)> ValidateOptionsFile(
         DirectoryInfo projectPath,
-        string? settingsOptionsPath)
+        string? settingsOptionsPath,
+        CancellationToken cancellationToken)
     {
         var fileInfo = GetOptionsFile(projectPath, settingsOptionsPath);
         if (!fileInfo.Exists)
@@ -63,14 +66,13 @@ public static class OptionsHelper
             return (false, "File does not exist");
         }
 
-        var options = await FileHelper<OptionsFile>.ReadJsonFileAndDeserializeAsync(fileInfo);
+        var options = await FileHelper<OptionsFile>.ReadJsonFileToModelAsync(fileInfo, cancellationToken);
         return options is null
             ? (false, "File is invalid")
             : (true, string.Empty);
     }
 
-    private static OptionsFile CreateDefaultOptions(
-        DirectoryInfo projectPath)
+    private static OptionsFile CreateDefaultOptions(DirectoryInfo projectPath)
     {
         var options = new OptionsFile();
         var directories = projectPath.GetDirectories();

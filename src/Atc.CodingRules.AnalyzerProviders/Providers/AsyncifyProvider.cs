@@ -21,13 +21,14 @@ public class AsyncifyProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(GitRawAnalyzerProviderBaseRulesBasePath).ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(GitRawAnalyzerProviderBaseRulesBasePath)
+            .ConfigureAwait(false);
 
         var xml = new XmlDocument();
         xml.LoadXml(htmlDoc.Text);
@@ -75,7 +76,10 @@ public class AsyncifyProvider : AnalyzerProviderBase
             if (nameAttribute.Value.EndsWith("Title", StringComparison.Ordinal))
             {
                 code = code.Replace("Title", string.Empty, StringComparison.Ordinal);
-                var title = code.Replace("Asyncify", string.Empty, StringComparison.Ordinal).NormalizePascalCase();
+                var title = code
+                    .Replace("Asyncify", string.Empty, StringComparison.Ordinal)
+                    .NormalizePascalCase();
+
                 titles.Add(Tuple.Create(code, title));
             }
             else if (nameAttribute.Value.EndsWith("Description", StringComparison.Ordinal))
@@ -85,7 +89,10 @@ public class AsyncifyProvider : AnalyzerProviderBase
             else if (nameAttribute.Value.EndsWith("MessageFormat", StringComparison.Ordinal))
             {
                 code = code.Replace("MessageFormat", string.Empty, StringComparison.Ordinal);
-                var description = xmlElement.InnerText.Replace("\n", string.Empty, StringComparison.Ordinal).Trim();
+                var description = xmlElement.InnerText
+                    .Replace("\n", string.Empty, StringComparison.Ordinal)
+                    .Trim();
+
                 descriptions.Add(Tuple.Create(code, description));
             }
 

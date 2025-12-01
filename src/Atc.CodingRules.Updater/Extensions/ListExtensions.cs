@@ -3,8 +3,7 @@ namespace System.Collections;
 
 public static class ListExtensions
 {
-    public static void TrimEndForEmptyValues(
-        this IList<string> values)
+    public static void TrimEndForEmptyValues(this IList<string> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -17,7 +16,10 @@ public static class ListExtensions
             }
             else
             {
-                var lastLine = values.Last().Trim();
+                var lastLine = values
+                    .Last()
+                    .Trim();
+
                 if (lastLine.Length == 0)
                 {
                     values.RemoveAt(values.Count - 1);

@@ -19,7 +19,8 @@ public static class CommandAppExtensions
     }
 
     private static void ConfigureRunCommand(IConfigurator config)
-        => config.AddCommand<RunCommand>(NameCommandConstants.Run)
+        => config
+            .AddCommand<RunCommand>(NameCommandConstants.Run)
             .WithDescription("Update the project folder with ATC coding rules and configurations")
             .WithExample([".", CreateEquivalentToRun(8)])
             .WithExample([NameCommandConstants.Run, ".", CreateEquivalentToRun(4)])
@@ -37,7 +38,8 @@ public static class CommandAppExtensions
             ]);
 
     private static void ConfigureSanityCheckCommand(IConfigurator config)
-        => config.AddCommand<SanityCheckCommand>(NameCommandConstants.SanityCheck)
+        => config
+            .AddCommand<SanityCheckCommand>(NameCommandConstants.SanityCheck)
             .WithDescription("Sanity check the project files")
             .WithExample([NameCommandConstants.SanityCheck, ".", CreateEquivalentToSanityCheck(8)])
             .WithExample([NameCommandConstants.SanityCheck, CreateArgumentProjectPathWithTestFolder()])
@@ -102,10 +104,12 @@ public static class CommandAppExtensions
     private static string CreateArgumentProjectPathWithTestFolder()
         => @$"{ArgumentCommandConstants.ShortProjectPath} c:\temp\MyProject";
 
-    private static string CreateArgumentProjectTarget(SupportedProjectTargetType targetType)
+    private static string CreateArgumentProjectTarget(
+        SupportedProjectTargetType targetType)
         => @$"{ArgumentCommandConstants.ShortProjectTarget} {targetType}";
 
-    private static string CreateArgumentFetchMode(ProviderCollectingMode collectingMode)
+    private static string CreateArgumentFetchMode(
+        ProviderCollectingMode collectingMode)
         => @$"{ArgumentCommandConstants.LongFetchMode} {collectingMode}";
 
     private static string CreateArgumentCommandsAnalyzerProvidersWithCollect()
@@ -129,11 +133,16 @@ public static class CommandAppExtensions
     private static string CreateEquivalentToOptionsFileCreate(int indentSpaces)
         => PrefixSpaces(indentSpaces, $"(equivalent to '{CreateArgumentCommandsOptionsFileWithCreate()} {CreateArgumentProjectPathWithCurrentFolder()}')");
 
-    private static string CreateEquivalentToOptionsFileValidate(int indentSpaces)
+    private static string CreateEquivalentToOptionsFileValidate(
+        int indentSpaces)
         => PrefixSpaces(indentSpaces, $"(equivalent to '{CreateArgumentCommandsOptionsFileWithValidate()} {CreateArgumentProjectPathWithCurrentFolder()}')");
 
-    private static string CreateEquivalentToAnalyzerProvidersCollect(int indentSpaces)
+    private static string CreateEquivalentToAnalyzerProvidersCollect(
+        int indentSpaces)
         => PrefixSpaces(indentSpaces, $"(equivalent to '{CreateArgumentCommandsAnalyzerProvidersWithCollect()} {CreateArgumentProjectPathWithCurrentFolder()}')");
 
-    private static string PrefixSpaces(int indentSpaces, string value) => value.PadLeft(value.Length + indentSpaces);
+    private static string PrefixSpaces(
+        int indentSpaces,
+        string value)
+        => value.PadLeft(value.Length + indentSpaces);
 }

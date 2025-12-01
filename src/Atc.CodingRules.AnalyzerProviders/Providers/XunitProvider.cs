@@ -21,15 +21,19 @@ public class XunitProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//table[@class='table']").First();
-        var articleTableRows = articleNode.SelectNodes("//*//tr").ToList();
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
+            .ConfigureAwait(false);
+
+        var articleNode = htmlDoc.DocumentNode.SelectNodes("//table[@class='table']")[0];
+        var articleTableRows = articleNode
+            .SelectNodes("//*//tr")
+            .ToList();
 
         foreach (var row in articleTableRows)
         {
@@ -39,8 +43,14 @@ public class XunitProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var cellsTh = row.SelectNodes("th").ToList();
-            var cellsTd = row.SelectNodes("td").ToList();
+            var cellsTh = row
+                .SelectNodes("th")
+                .ToList();
+
+            var cellsTd = row
+                .SelectNodes("td")
+                .ToList();
+
             if (cellsTh.Count <= 0 || cellsTd.Count <= 0)
             {
                 continue;
@@ -52,7 +62,10 @@ public class XunitProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var code = aHrefNode.InnerText.RemoveNewLines().Trim();
+            var code = aHrefNode.InnerText
+                .RemoveNewLines()
+                .Trim();
+
             var title = HtmlEntity.DeEntitize(cellsTd[TableTdColumnTitle].InnerText);
             var link = $"{DocumentationLink}/{code}";
 

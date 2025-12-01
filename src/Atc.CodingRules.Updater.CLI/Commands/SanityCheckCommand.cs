@@ -1,30 +1,25 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
+public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncCommand<ProjectCommandSettings>
 {
-    private readonly ILogger<SanityCheckCommand> logger;
-
-    public SanityCheckCommand(
-        ILogger<SanityCheckCommand> logger)
-        => this.logger = logger;
-
     public override Task<int> ExecuteAsync(
         CommandContext context,
-        ProjectCommandSettings settings)
+        ProjectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings);
+        return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
-        ProjectCommandSettings settings)
+        ProjectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath);
+        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
 
         try
         {
@@ -42,10 +37,11 @@ public class SanityCheckCommand : AsyncCommand<ProjectCommandSettings>
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         ProjectCommandSettings settings,
-        DirectoryInfo projectPath)
+        DirectoryInfo projectPath,
+        CancellationToken cancellationToken)
     {
         var optionsPath = settings.GetOptionsPath();
-        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
+        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath, cancellationToken);
         options.Mappings.ResolvePaths(projectPath);
 
         var projectTarget = ProjectCommandSettings.GetProjectTarget(settings);

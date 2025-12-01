@@ -23,13 +23,14 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
+            .ConfigureAwait(false);
 
         var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
         if (embeddedNode is not null)
@@ -40,8 +41,10 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
             htmlDoc.LoadHtml(html);
         }
 
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
-        var articleRuleLinks = articleNode.SelectNodes("//*//strong//a").ToList();
+        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
+        var articleRuleLinks = articleNode
+            .SelectNodes("//*//strong//a")
+            .ToList();
 
         foreach (var item in articleRuleLinks.Where(x => x.Attributes.Count == 1 && x.InnerText.Contains("(S", StringComparison.Ordinal)))
         {
@@ -53,12 +56,14 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
         }
     }
 
-    private static async Task<List<Rule>> GetRules(
-        HtmlNode item)
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    private static async Task<List<Rule>> GetRules(HtmlNode item)
     {
         var link = $"https://github.com{item.Attributes["href"].Value}";
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(link)
+            .ConfigureAwait(false);
 
         var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
         if (embeddedNode is not null)
@@ -69,9 +74,15 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
             htmlDoc.LoadHtml(html);
         }
 
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']").First();
-        var articleTableRows = articleNode.SelectNodes("//*//table[1]//tr").ToList();
-        var category = articleNode.Descendants("h3").First().InnerText;
+        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
+        var articleTableRows = articleNode
+            .SelectNodes("//*//table[1]//tr")
+            .ToList();
+
+        var category = articleNode
+            .Descendants("h3")
+            .First().InnerText;
+
         var i = category.IndexOf(" Rules", StringComparison.Ordinal);
         if (i > 0)
         {
@@ -86,7 +97,10 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var cells = row.SelectNodes("td").ToList();
+            var cells = row
+                .SelectNodes("td")
+                .ToList();
+
             if (cells.Count <= 0)
             {
                 continue;

@@ -18,5 +18,6 @@ public class AnalyzerProviderBaseRuleData
 
     public string? ExceptionMessage { get; set; }
 
-    public override string ToString() => $"{nameof(Name)}: {Name}, {nameof(Rules)}.Count: {Rules.Count}";
+    public override string ToString()
+        => $"{nameof(Name)}: {Name}, {nameof(Rules)}.Count: {Rules.Count}";
 }

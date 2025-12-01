@@ -20,13 +20,14 @@ public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
+            .ConfigureAwait(false);
 
         var dynamicJson = new DynamicJson(htmlDoc.DocumentNode.InnerText);
         if (dynamicJson.GetValue("result.data.allFile.nodes") is not List<object> nodes)

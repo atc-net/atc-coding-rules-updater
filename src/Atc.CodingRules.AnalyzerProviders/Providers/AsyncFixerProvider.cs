@@ -19,8 +19,7 @@ public class AsyncFixerProvider : AnalyzerProviderBase
         => new(Name);
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
@@ -40,12 +39,12 @@ public class AsyncFixerProvider : AnalyzerProviderBase
                         continue;
                     }
 
-                    if (!tocItem.ContainsKey("text"))
+                    if (!tocItem.TryGetValue("text", out var value))
                     {
                         continue;
                     }
 
-                    var sa = tocItem["text"]
+                    var sa = value
                         .ToString()!
                         .Split(':', StringSplitOptions.RemoveEmptyEntries);
 
@@ -64,7 +63,9 @@ public class AsyncFixerProvider : AnalyzerProviderBase
             }
         }
 
-        var headers3 = htmlDoc.DocumentNode.SelectNodes("//h3").ToList();
+        var headers3 = htmlDoc.DocumentNode
+            .SelectNodes("//h3")
+            .ToList();
 
         foreach (var item in headers3)
         {
@@ -83,8 +84,12 @@ public class AsyncFixerProvider : AnalyzerProviderBase
 
             var code = sa[0];
             var title = sa[1].Trim();
-            var hashTagId =
-                $"user-content-{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title.ToLower(GlobalizationConstants.EnglishCultureInfo).Replace(" ", "-", StringComparison.Ordinal).Replace("/", string.Empty, StringComparison.Ordinal).Replace(".", string.Empty, StringComparison.Ordinal)}";
+            var hashTagId = $"user-content-{code.ToLower(GlobalizationConstants.EnglishCultureInfo)}{title
+                .ToLower(GlobalizationConstants.EnglishCultureInfo)
+                .Replace(" ", "-", StringComparison.Ordinal)
+                .Replace("/", string.Empty, StringComparison.Ordinal)
+                .Replace(".", string.Empty, StringComparison.Ordinal)}";
+
             var link = $"{DocumentationLink.OriginalString}#{hashTagId}";
 
             data.Rules.Add(

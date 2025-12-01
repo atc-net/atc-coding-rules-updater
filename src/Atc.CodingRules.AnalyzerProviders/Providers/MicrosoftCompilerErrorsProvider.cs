@@ -18,13 +18,16 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri + "/toc.json").ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri + "/toc.json")
+            .ConfigureAwait(false);
+
         if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
         {
             data.ExceptionMessage = "Access Denied";
@@ -32,7 +35,9 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
         }
 
         var jsonDoc = JsonDocument.Parse(htmlDoc.DocumentNode.InnerText);
-        var jsonDocItems = jsonDoc.RootElement.GetProperty("items").EnumerateArray();
+        var jsonDocItems = jsonDoc.RootElement
+            .GetProperty("items")
+            .EnumerateArray();
 
         while (jsonDocItems.MoveNext())
         {
@@ -43,13 +48,19 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var tocTitle = jsonElement.GetProperty("toc_title").ToString();
+            var tocTitle = jsonElement
+                .GetProperty("toc_title")
+                .ToString();
+
             if (!tocTitle.Equals("C# compiler messages", StringComparison.Ordinal))
             {
                 continue;
             }
 
-            var jsonChildItems = jsonElement.GetProperty("children").EnumerateArray();
+            var jsonChildItems = jsonElement
+                .GetProperty("children")
+                .EnumerateArray();
+
             while (jsonChildItems.MoveNext())
             {
                 var jsonChildElement = jsonChildItems.Current;
@@ -61,8 +72,13 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
 
                 foreach (var element in jsonChildElement2.EnumerateArray())
                 {
-                    var hrefPart = element.GetProperty("href").ToString();
-                    var code = element.GetProperty("toc_title").ToString();
+                    var hrefPart = element
+                        .GetProperty("href")
+                        .ToString();
+
+                    var code = element
+                        .GetProperty("toc_title")
+                        .ToString();
 
                     var link = hrefPart.StartsWith("../misc/", StringComparison.Ordinal)
                         ? "https://docs.microsoft.com/en-us/dotnet/csharp/" + hrefPart.Replace("../", string.Empty, StringComparison.Ordinal)
@@ -83,7 +99,10 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
         string link)
     {
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(link).ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(link)
+            .ConfigureAwait(false);
+
         if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
         {
             return null;
@@ -97,7 +116,10 @@ public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
 
         var header = mainNode.SelectSingleNode(".//h1");
 
-        var paragraphs = mainNode.SelectNodes(".//p").ToList();
+        var paragraphs = mainNode
+            .SelectNodes(".//p")
+            .ToList();
+
         if (paragraphs.Count < 2)
         {
             return null;

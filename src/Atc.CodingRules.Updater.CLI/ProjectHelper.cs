@@ -423,6 +423,7 @@ public static class ProjectHelper
         await Helpers.FileHelper.WriteAllTextAsync(new FileInfo(temporarySuppressionsFile), suppressionsText);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private static int AddSuppressionLinesToWorksheet(
         ExcelWorksheet worksheet,
         IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer,
@@ -462,8 +463,13 @@ public static class ProjectHelper
                     var indexOfHttp = afterOccurrence.LastIndexOf("- http", StringComparison.Ordinal);
                     if (indexOfHttp != -1)
                     {
-                        message = afterOccurrence.Substring(2, indexOfHttp - 2).Trim();
-                        helpLink = afterOccurrence.Substring(indexOfHttp + 2).Trim();
+                        message = afterOccurrence
+                            .Substring(2, indexOfHttp - 2)
+                            .Trim();
+
+                        helpLink = afterOccurrence
+                            .Substring(indexOfHttp + 2)
+                            .Trim();
                     }
                     else
                     {
@@ -516,11 +522,19 @@ public static class ProjectHelper
 
         var groupedSuppressionLines = suppressionLines
             .GroupBy(x => x.Item1, StringComparer.Ordinal)
-            .Select(group => new { AnalyzerName = group.Key, Values = group.Select(x => x.Item2).ToList() })
+            .Select(group => new
+            {
+                AnalyzerName = group.Key,
+                Values = group
+                    .Select(x => x.Item2)
+                    .ToList(),
+            })
             .OrderBy(x => x.AnalyzerName, StringComparer.Ordinal)
             .ToList();
 
-        return groupedSuppressionLines.Select(x => Tuple.Create(x.AnalyzerName, x.Values)).ToList();
+        return groupedSuppressionLines
+            .Select(x => Tuple.Create(x.AnalyzerName, x.Values))
+            .ToList();
     }
 
     private static void HandleSuppressionLinesForKnownAnalyzerRules(

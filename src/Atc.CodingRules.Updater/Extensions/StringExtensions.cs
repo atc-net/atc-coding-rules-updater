@@ -6,8 +6,7 @@ public static class StringExtensions
 {
     private static readonly string[] LineBreaks = ["\r\n", "\r", "\n"];
 
-    public static string TrimEndForEmptyLines(
-        this string value)
+    public static string TrimEndForEmptyLines(this string value)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -22,8 +21,7 @@ public static class StringExtensions
         return string.Join(Environment.NewLine, values);
     }
 
-    public static Collection<KeyValueItem> GetKeyValues(
-        this string value)
+    public static Collection<KeyValueItem> GetKeyValues(this string value)
         => string.IsNullOrEmpty(value)
             ? []
             : value

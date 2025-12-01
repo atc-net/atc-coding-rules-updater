@@ -1,25 +1,21 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSettings>
+public class OptionsFileValidateCommand(ILogger<OptionsFileValidateCommand> logger)
+    : AsyncCommand<ProjectBaseCommandSettings>
 {
-    private readonly ILogger<OptionsFileValidateCommand> logger;
-
-    public OptionsFileValidateCommand(
-        ILogger<OptionsFileValidateCommand> logger)
-        => this.logger = logger;
-
     public override Task<int> ExecuteAsync(
         CommandContext context,
-        ProjectBaseCommandSettings settings)
+        ProjectBaseCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings);
+        return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
-        ProjectBaseCommandSettings settings)
+        ProjectBaseCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ConsoleHelper.WriteHeader();
 
@@ -28,7 +24,7 @@ public class OptionsFileValidateCommand : AsyncCommand<ProjectBaseCommandSetting
 
         try
         {
-            var (isSuccessful, error) = await OptionsHelper.ValidateOptionsFile(projectPath, optionsPath);
+            var (isSuccessful, error) = await OptionsHelper.ValidateOptionsFile(projectPath, optionsPath, cancellationToken);
             if (isSuccessful)
             {
                 logger.LogInformation("The options file is valid");
