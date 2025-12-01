@@ -5,9 +5,13 @@ public static class FileHelper
     [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "OK.")]
     public static string[] LineBreaks => Helpers.FileHelper.LineBreaks;
 
-    public static string ReadAllText(FileInfo file) => Helpers.FileHelper.ReadAllText(file);
+    public static string ReadAllText(FileInfo file)
+        => Helpers.FileHelper.ReadAllText(file);
 
-    public static Task WriteAllTextAsync(FileInfo file, string content) => Helpers.FileHelper.WriteAllTextAsync(file, content);
+    public static Task WriteAllTextAsync(
+        FileInfo file,
+        string content)
+        => Helpers.FileHelper.WriteAllTextAsync(file, content);
 
     public static Collection<FileInfo> SearchAllForElement(
         DirectoryInfo projectPath,
@@ -67,8 +71,15 @@ public static class FileHelper
             return false;
         }
 
-        var headerLinesA = dataA.ToLines().Take(10).ToList();
-        var headerLinesB = dataB.ToLines().Take(10).ToList();
+        var headerLinesA = dataA
+            .ToLines()
+            .Take(10)
+            .ToList();
+
+        var headerLinesB = dataB
+            .ToLines()
+            .Take(10)
+            .ToList();
 
         if (headerLinesA.Find(x => x.StartsWith("# Version", StringComparison.CurrentCultureIgnoreCase)) !=
             headerLinesB.Find(x => x.StartsWith("# Version", StringComparison.CurrentCultureIgnoreCase)))
@@ -86,23 +97,20 @@ public static class FileHelper
                headerLinesB.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase));
     }
 
-    public static bool ContainsEditorConfigFile(
-        DirectoryInfo? directory)
+    public static bool ContainsEditorConfigFile(DirectoryInfo? directory)
         => directory is not null &&
            directory.Exists
            && Directory.GetFiles(directory.FullName)
                .Any(x => x.Equals(".editorconfig", StringComparison.OrdinalIgnoreCase));
 
-    public static bool ContainsSolutionOrProjectFile(
-        DirectoryInfo? directory)
+    public static bool ContainsSolutionOrProjectFile(DirectoryInfo? directory)
         => directory is not null &&
            directory.Exists
            && Directory.GetFiles(directory.FullName)
                .Any(x => x.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
                          x.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase));
 
-    public static bool IsSolutionOrProjectFile(
-        FileInfo? file)
+    public static bool IsSolutionOrProjectFile(FileInfo? file)
         => file is not null &&
            file.Exists &&
            (".sln".Equals(file.Extension, StringComparison.OrdinalIgnoreCase) ||

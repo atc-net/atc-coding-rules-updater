@@ -152,7 +152,9 @@ public static class EditorConfigHelper
 
         var rootEditorConfigFile = new FileInfo(Path.Combine(projectPath.FullName, FileName));
         var rawFileData = FileHelper.ReadAllText(rootEditorConfigFile);
-        var lines = rawFileData.Split(FileHelper.LineBreaks, StringSplitOptions.None).ToList();
+        var lines = rawFileData
+            .Split(FileHelper.LineBreaks, StringSplitOptions.None)
+            .ToList();
 
         lines.Add(string.Empty);
         lines.Add(string.Empty);
@@ -203,7 +205,10 @@ public static class EditorConfigHelper
         {
             var gitKeyValues = contentGit.GetDotnetDiagnosticSeverityKeyValues();
             var fileKeyValues = contentFile.GetDotnetDiagnosticSeverityKeyValues();
-            var fileCustomKeyValues = customLines.ToArray().GetDotnetDiagnosticSeverityKeyValues();
+            var fileCustomKeyValues = customLines
+                .ToArray()
+                .GetDotnetDiagnosticSeverityKeyValues();
+
             LogSeverityDiffs(logger, gitKeyValues, fileKeyValues, fileCustomKeyValues, contentGit, newContentFile);
         }
     }
@@ -279,8 +284,7 @@ public static class EditorConfigHelper
         return newContentFile;
     }
 
-    private static string ExtractContentBasePart(
-        string content)
+    private static string ExtractContentBasePart(string content)
     {
         var lines = content.Split(FileHelper.LineBreaks, StringSplitOptions.None);
 
@@ -332,7 +336,10 @@ public static class EditorConfigHelper
                         customParts.Add(new Tuple<string, List<string>>(workingOnCustomHeader, workingOnCustomLines));
                     }
 
-                    workingOnCustomHeader = nextLine.Substring(CustomSectionHeaderPrefix.Length).Trim();
+                    workingOnCustomHeader = nextLine
+                        .Substring(CustomSectionHeaderPrefix.Length)
+                        .Trim();
+
                     workingOnCustomLines = [];
                 }
             }

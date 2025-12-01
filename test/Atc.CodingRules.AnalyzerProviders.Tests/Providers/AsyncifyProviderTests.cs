@@ -2,13 +2,14 @@ namespace Atc.CodingRules.AnalyzerProviders.Tests.Providers;
 
 [Trait(Traits.Category, Traits.Categories.Integration)]
 [Trait(Traits.Category, Traits.Categories.SkipWhenLiveUnitTesting)]
-public class AsyncifyProviderTests
+public sealed class AsyncifyProviderTests
 {
     [Theory]
     [InlineData(ProviderCollectingMode.LocalCache)]
     [InlineData(ProviderCollectingMode.GitHub)]
     [InlineData(ProviderCollectingMode.ReCollect)]
-    public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
+    public async Task CollectBaseRules(
+        ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
         var provider = new AsyncifyProvider(NullLogger.Instance);

@@ -2,26 +2,21 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
 [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
-public class RunCommand : AsyncCommand<RunCommandSettings>
+public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSettings>
 {
-    private readonly ILogger<RunCommand> logger;
-
-    public RunCommand(
-        ILogger<RunCommand> logger)
-        => this.logger = logger;
-
     public override Task<int> ExecuteAsync(
         CommandContext context,
-        RunCommandSettings settings)
+        RunCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings);
+        return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
-        RunCommandSettings settings)
+        RunCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         if (!NetworkInformationHelper.HasHttpConnection())
         {
@@ -32,7 +27,7 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath);
+        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
 
         try
         {
@@ -47,7 +42,7 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
             {
                 var organizationName = settings.OrganizationName is not null && settings.OrganizationName.IsSet
                     ? settings.OrganizationName.Value
-                    : AnsiConsole.Ask<string>("What is the [green]Organization name[/]?");
+                    : await AnsiConsole.AskAsync<string>("What is the [green]Organization name[/]?", cancellationToken);
 
                 DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "OrganizationName", "insert organization name here", organizationName);
             }
@@ -56,7 +51,7 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
             {
                 var repositoryName = settings.RepositoryName is not null && settings.RepositoryName.IsSet
                     ? settings.RepositoryName.Value
-                    : AnsiConsole.Ask<string>("What is the [green]Repository name[/]?");
+                    : await AnsiConsole.AskAsync<string>("What is the [green]Repository name[/]?", cancellationToken);
 
                 DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "RepositoryName", "insert repository name here", repositoryName);
             }
@@ -73,10 +68,11 @@ public class RunCommand : AsyncCommand<RunCommandSettings>
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         RunCommandSettings settings,
-        DirectoryInfo projectPath)
+        DirectoryInfo projectPath,
+        CancellationToken cancellationToken)
     {
         var optionsPath = settings.GetOptionsPath();
-        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
+        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath, cancellationToken);
         options.Mappings.ResolvePaths(projectPath);
 
         var projectTarget = ProjectCommandSettings.GetProjectTarget(settings);

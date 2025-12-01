@@ -102,8 +102,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         return JsonSerializer.Deserialize<AnalyzerProviderBaseRuleData>(fileAsJson, AnalyzerProviderSerialization.JsonOptions);
     }
 
-    protected static Task WriteToTempFolder(
-        AnalyzerProviderBaseRuleData data)
+    protected static Task WriteToTempFolder(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 

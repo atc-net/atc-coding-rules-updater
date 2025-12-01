@@ -1,24 +1,20 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class OptionsFileCreateCommand : AsyncCommand<ProjectCommandSettings>
+public class OptionsFileCreateCommand(ILogger<OptionsFileCreateCommand> logger)
+    : AsyncCommand<ProjectCommandSettings>
 {
-    private readonly ILogger<OptionsFileCreateCommand> logger;
-
-    public OptionsFileCreateCommand(
-        ILogger<OptionsFileCreateCommand> logger)
-        => this.logger = logger;
-
     public override Task<int> ExecuteAsync(
         CommandContext context,
-        ProjectCommandSettings settings)
+        ProjectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings);
+        return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
-        ProjectCommandSettings settings)
+        ProjectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ConsoleHelper.WriteHeader();
 
@@ -26,7 +22,7 @@ public class OptionsFileCreateCommand : AsyncCommand<ProjectCommandSettings>
 
         try
         {
-            var (isSuccessful, error) = await OptionsHelper.CreateOptionsFile(projectPath, settings);
+            var (isSuccessful, error) = await OptionsHelper.CreateOptionsFile(projectPath, settings, cancellationToken);
             if (isSuccessful)
             {
                 logger.LogInformation("The options file is created");

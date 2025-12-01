@@ -11,3 +11,4 @@ global using Atc.DotNet;
 global using Atc.Helpers;
 
 global using Microsoft.Extensions.Logging;
+global using Spectre.Console;

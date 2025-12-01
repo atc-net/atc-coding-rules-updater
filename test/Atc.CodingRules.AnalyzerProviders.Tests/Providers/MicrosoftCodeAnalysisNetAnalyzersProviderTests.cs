@@ -8,7 +8,8 @@ public class MicrosoftCodeAnalysisNetAnalyzersProviderTests
     [InlineData(ProviderCollectingMode.LocalCache)]
     [InlineData(ProviderCollectingMode.GitHub)]
     [InlineData(ProviderCollectingMode.ReCollect)]
-    public async Task CollectBaseRules(ProviderCollectingMode providerCollectingMode)
+    public async Task CollectBaseRules(
+        ProviderCollectingMode providerCollectingMode)
     {
         // Arrange
         var provider = new MicrosoftCodeAnalysisNetAnalyzersProvider(NullLogger.Instance);

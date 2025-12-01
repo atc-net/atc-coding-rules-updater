@@ -2,14 +2,19 @@ namespace Atc.CodingRules.Updater.Models;
 
 public class DotnetNugetPackage
 {
-    public DotnetNugetPackage(string packageId, Version currentVersion)
+    public DotnetNugetPackage(
+        string packageId,
+        Version currentVersion)
     {
         PackageId = packageId;
         Version = currentVersion;
         NewestVersion = currentVersion;
     }
 
-    public DotnetNugetPackage(string packageId, Version currentVersion, Version newestVersion)
+    public DotnetNugetPackage(
+        string packageId,
+        Version currentVersion,
+        Version newestVersion)
     {
         PackageId = packageId;
         Version = currentVersion;

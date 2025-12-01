@@ -17,8 +17,7 @@ public static class CodingRulesUpdaterVersionHelper
         return latestVersion is null || !latestVersion.GreaterThan(currentVersion);
     }
 
-    public static void PrintUpdateInfoIfNeeded(
-        ILogger logger)
+    public static void PrintUpdateInfoIfNeeded(ILogger logger)
     {
         if (IsLatestVersion())
         {

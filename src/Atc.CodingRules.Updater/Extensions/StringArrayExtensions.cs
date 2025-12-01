@@ -4,8 +4,7 @@ namespace System;
 
 public static class StringArrayExtensions
 {
-    public static Collection<KeyValueItem> GetKeyValues(
-        this string[] values)
+    public static Collection<KeyValueItem> GetKeyValues(this string[] values)
     {
         ArgumentNullException.ThrowIfNull(values);
 

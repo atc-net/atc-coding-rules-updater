@@ -1,28 +1,26 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class AnalyzerProvidersCollectCommand : AsyncCommand<AnalyzerProvidersCollectCommandSettings>
+public class AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCommand> logger)
+    : AsyncCommand<AnalyzerProvidersCollectCommandSettings>
 {
-    private readonly ILogger<AnalyzerProvidersCollectCommand> logger;
-
-    public AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCommand> logger) => this.logger = logger;
-
     public override Task<int> ExecuteAsync(
         CommandContext context,
-        AnalyzerProvidersCollectCommandSettings settings)
+        AnalyzerProvidersCollectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings);
+        return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     private async Task<int> ExecuteInternalAsync(
-        AnalyzerProvidersCollectCommandSettings settings)
+        AnalyzerProvidersCollectCommandSettings settings,
+        CancellationToken cancellationToken)
     {
         ConsoleHelper.WriteHeader();
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath);
+        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
 
         try
         {
@@ -44,10 +42,11 @@ public class AnalyzerProvidersCollectCommand : AsyncCommand<AnalyzerProvidersCol
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         AnalyzerProvidersCollectCommandSettings settings,
-        DirectoryInfo projectPath)
+        DirectoryInfo projectPath,
+        CancellationToken cancellationToken)
     {
         var optionsPath = settings.GetOptionsPath();
-        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath);
+        var options = await OptionsHelper.CreateDefault(projectPath, optionsPath, cancellationToken);
 
         var analyzerProviderCollectingMode = GetAnalyzerProviderCollectingMode(settings);
         if (analyzerProviderCollectingMode is not null)

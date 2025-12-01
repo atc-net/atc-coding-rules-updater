@@ -21,20 +21,25 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
-    protected override async Task ReCollect(
-        AnalyzerProviderBaseRuleData data)
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         var web = new HtmlWeb();
-        var htmlDoc = await web.LoadFromWebAsync(DocumentationLink!.AbsoluteUri).ConfigureAwait(false);
+        var htmlDoc = await web
+            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
+            .ConfigureAwait(false);
+
         if (htmlDoc.DocumentNode.HasTitleWithAccessDenied())
         {
             data.ExceptionMessage = "Access Denied";
             return;
         }
 
-        var tableRows = htmlDoc.DocumentNode.SelectNodes("//*//table[1]//tr").ToList();
+        var tableRows = htmlDoc.DocumentNode
+            .SelectNodes("//*//table[1]//tr")
+            .ToList();
 
         foreach (var row in tableRows)
         {
@@ -43,7 +48,10 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var cells = row.SelectNodes("td").ToList();
+            var cells = row
+                .SelectNodes("td")
+                .ToList();
+
             if (cells.Count <= 0)
             {
                 continue;

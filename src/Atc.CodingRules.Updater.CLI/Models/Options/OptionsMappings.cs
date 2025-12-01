@@ -15,8 +15,7 @@ public class OptionsMappings
         Src.Paths.Count > 0 ||
         Test.Paths.Count > 0;
 
-    public void ResolvePaths(
-        DirectoryInfo projectPath)
+    public void ResolvePaths(DirectoryInfo projectPath)
     {
         ArgumentNullException.ThrowIfNull(projectPath);
 
@@ -70,7 +69,10 @@ public class OptionsMappings
 
             if (orgPath.StartsWith("./", StringComparison.Ordinal))
             {
-                var s = orgPath.Substring(2).Replace("/", "\\", StringComparison.Ordinal);
+                var s = orgPath
+                    .Substring(2)
+                    .Replace("/", "\\", StringComparison.Ordinal);
+
                 newPath = Path.Combine(projectPath.FullName, s);
                 return true;
             }
@@ -85,7 +87,10 @@ public class OptionsMappings
 
         if (orgPath.StartsWith('\\'))
         {
-            var s = orgPath.Substring(1).Replace("/", "\\", StringComparison.Ordinal);
+            var s = orgPath
+                .Substring(1)
+                .Replace("/", "\\", StringComparison.Ordinal);
+
             newPath = Path.Combine(projectPath.FullName, s);
             return true;
         }

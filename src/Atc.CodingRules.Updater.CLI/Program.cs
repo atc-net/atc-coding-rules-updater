@@ -18,7 +18,9 @@ public static class Program
             .Build();
 
         var consoleLoggerConfiguration = new ConsoleLoggerConfiguration();
-        configuration.GetRequiredSection("ConsoleLogger").Bind(consoleLoggerConfiguration);
+        configuration
+            .GetRequiredSection("ConsoleLogger")
+            .Bind(consoleLoggerConfiguration);
 
         ProgramCsHelper.SetMinimumLogLevelIfNeeded(args, consoleLoggerConfiguration);
 
@@ -74,8 +76,7 @@ public static class Program
         return [.. newArgs];
     }
 
-    private static string[] SetHelpArgumentIfNeeded(
-        string[] args)
+    private static string[] SetHelpArgumentIfNeeded(string[] args)
     {
         if (args.Length == 0)
         {
