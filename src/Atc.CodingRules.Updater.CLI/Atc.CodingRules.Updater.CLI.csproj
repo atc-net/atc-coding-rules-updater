@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <PackageId>atc-coding-rules-updater</PackageId>
     <PackageTags>coding-rules;rules</PackageTags>
     <Description>A .NET Tool that can update a project with the latest atc-coding-rules.</Description>
@@ -13,11 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.465" />
-    <PackageReference Include="Atc.DotNet" Version="2.0.465" />
-    <PackageReference Include="Atc.Console.Spectre" Version="2.0.465" />
+    <PackageReference Include="Atc" Version="3.0.12" />
+    <PackageReference Include="Atc.DotNet" Version="3.0.12" />
+    <PackageReference Include="Atc.Console.Spectre" Version="3.0.12" />
     <PackageReference Include="EPPlus" Version="7.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
