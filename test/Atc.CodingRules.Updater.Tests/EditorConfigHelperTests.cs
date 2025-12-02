@@ -1,7 +1,7 @@
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
 namespace Atc.CodingRules.Updater.Tests;
 
-public class EditorConfigHelperTests
+public sealed class EditorConfigHelperTests
 {
     private static readonly string WorkingDirectory = Path.Combine(Path.GetTempPath(), "atc-coding-rules-updater-editorconfig-test");
     private readonly FileInfo[] testFiles = CollectTestFiles();
@@ -9,9 +9,7 @@ public class EditorConfigHelperTests
     private readonly ITestOutputHelper testOutput;
 
     public EditorConfigHelperTests(ITestOutputHelper testOutput)
-    {
-        this.testOutput = testOutput;
-    }
+        => this.testOutput = testOutput;
 
     [Fact]
     public void DotNet6_Root_Update1()
