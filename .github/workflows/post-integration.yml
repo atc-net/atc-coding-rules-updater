@@ -45,7 +45,7 @@ jobs:
         run: dotnet build -c Release --no-restore /p:UseSourceLink=true
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c Release --no-build --filter "Category!=Integration"
+        run: dotnet test -c Release --no-build --filter-query "/[category!=integration]" --ignore-exit-code 8
 
       - name: ⏩ Merge to stable-branch
         run: |
