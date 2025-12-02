@@ -581,6 +581,7 @@ dotnet_diagnostic.IDE0305.severity = suggestion     # Collection initialization 
 dotnet_diagnostic.SA1010.severity = none            #
 
 dotnet_diagnostic.CA1054.severity = none            # URI parameters should not be strings
+dotnet_diagnostic.CA1308.severity = none            # https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1308
 dotnet_diagnostic.CA1515.severity = suggestion      # Because an application's API isn't typically referenced from outside the assembly, types can be made internal (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515)
 dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 dotnet_diagnostic.CA1859.severity = none            #
