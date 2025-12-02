@@ -17,7 +17,7 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
 
     public static string Name => "Microsoft.VisualStudio.Threading.Analyzers";
 
-    public override Uri? DocumentationLink { get; set; } = new("https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/index.md", UriKind.Absolute);
+    public override Uri? DocumentationLink { get; set; } = new("https://microsoft.github.io/vs-threading/analyzers/index.html", UriKind.Absolute);
 
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
@@ -31,19 +31,20 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
             .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
             .ConfigureAwait(false);
 
-        var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
-        if (embeddedNode is not null)
+        var tableNode = htmlDoc.DocumentNode.SelectSingleNode("//table");
+        if (tableNode is null)
         {
-            var dynamicJson = new DynamicJson(embeddedNode.InnerText);
-            var html = dynamicJson.GetValue("payload.blob.richText")?.ToString();
-
-            htmlDoc.LoadHtml(html);
+            return;
         }
 
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
-        var articleTableRows = articleNode
-            .SelectNodes("//*//table[1]//tr")
+        var articleTableRows = tableNode
+            .SelectNodes(".//tr")?
             .ToList();
+
+        if (articleTableRows is null)
+        {
+            return;
+        }
 
         foreach (var row in articleTableRows)
         {
@@ -69,7 +70,10 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
 
             var code = aHrefNode.InnerText;
             var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
-            var link = "https://github.com/" + aHrefNode.Attributes["href"].Value;
+            var hrefValue = aHrefNode.Attributes["href"].Value;
+            var link = hrefValue.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                ? hrefValue
+                : $"https://microsoft.github.io/vs-threading/analyzers/{hrefValue}";
             var category = cells[TableColumnCategory].InnerText;
 
             data.Rules.Add(
