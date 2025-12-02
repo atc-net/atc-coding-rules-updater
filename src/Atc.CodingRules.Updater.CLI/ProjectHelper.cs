@@ -143,6 +143,7 @@ public static class ProjectHelper
 
         projectFrameworkType = optionsProjectFrameworkMapping?.Type ?? projectType switch
         {
+            DotnetProjectType.AspireAppHost or DotnetProjectType.AspireServiceDefaults => ProjectFrameworkType.Aspire,
             DotnetProjectType.AzureFunctionApp => ProjectFrameworkType.AzureFunctions,
             DotnetProjectType.BlazorServerApp or DotnetProjectType.BlazorWAsmApp => ProjectFrameworkType.Blazor,
             DotnetProjectType.CliApp => ProjectFrameworkType.Cli,
