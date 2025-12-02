@@ -2,8 +2,8 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public class XunitProvider : AnalyzerProviderBase
 {
-    private const int TableThColumnId = 0;
-    private const int TableTdColumnTitle = 0;
+    private const int TableColumnId = 0;
+    private const int TableColumnTitle = 3;
 
     public XunitProvider(
         ILogger logger,
@@ -30,51 +30,53 @@ public class XunitProvider : AnalyzerProviderBase
             .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
             .ConfigureAwait(false);
 
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//table[@class='table']")[0];
-        var articleTableRows = articleNode
-            .SelectNodes("//*//tr")
-            .ToList();
+        var tables = htmlDoc.DocumentNode.SelectNodes("//table");
+        if (tables is null || tables.Count == 0)
+        {
+            return;
+        }
+
+        var articleTableRows = new List<HtmlNode>();
+        foreach (var table in tables)
+        {
+            var rows = table.SelectNodes(".//tr");
+            if (rows is not null)
+            {
+                articleTableRows.AddRange(rows);
+            }
+        }
 
         foreach (var row in articleTableRows)
         {
-            if (row.SelectNodes("th") is null ||
-                row.SelectNodes("td") is null)
+            var rule = TryParseRuleFromRow(row);
+            if (rule is not null)
             {
-                continue;
+                data.Rules.Add(rule);
             }
-
-            var cellsTh = row
-                .SelectNodes("th")
-                .ToList();
-
-            var cellsTd = row
-                .SelectNodes("td")
-                .ToList();
-
-            if (cellsTh.Count <= 0 || cellsTd.Count <= 0)
-            {
-                continue;
-            }
-
-            var aHrefNode = cellsTh[TableThColumnId].SelectSingleNode("a");
-            if (aHrefNode is null)
-            {
-                continue;
-            }
-
-            var code = aHrefNode.InnerText
-                .RemoveNewLines()
-                .Trim();
-
-            var title = HtmlEntity.DeEntitize(cellsTd[TableTdColumnTitle].InnerText);
-            var link = $"{DocumentationLink}/{code}";
-
-            data.Rules.Add(
-                new Rule(
-                    code,
-                    title,
-                    link,
-                    category: null));
         }
+    }
+
+    private Rule? TryParseRuleFromRow(HtmlNode row)
+    {
+        var cells = row.SelectNodes("td");
+        if (cells is null || cells.Count <= TableColumnTitle)
+        {
+            return null;
+        }
+
+        var cellsList = cells.ToList();
+        var aHrefNode = cellsList[TableColumnId].SelectSingleNode("a");
+        if (aHrefNode is null)
+        {
+            return null;
+        }
+
+        var code = aHrefNode.InnerText
+            .RemoveNewLines()
+            .Trim();
+        var title = HtmlEntity.DeEntitize(cellsList[TableColumnTitle].InnerText);
+        var link = $"{DocumentationLink}/{code}";
+
+        return new Rule(code, title, link, category: null);
     }
 }
