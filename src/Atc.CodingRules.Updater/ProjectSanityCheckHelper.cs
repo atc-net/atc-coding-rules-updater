@@ -15,6 +15,7 @@ public static class ProjectSanityCheckHelper
         {
             case SupportedProjectTargetType.DotNet5:
                 HasEnableNetAnalyzers(throwIf, logger, projectPath, projectTarget);
+                HasTargetFrameworkAndImplicitUsings(throwIf, logger, projectPath, "netcoreapp3.1");
                 break;
             case SupportedProjectTargetType.DotNet6:
             case SupportedProjectTargetType.DotNet7:
