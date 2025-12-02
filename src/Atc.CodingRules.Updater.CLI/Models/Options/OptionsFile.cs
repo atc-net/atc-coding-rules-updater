@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Models.Options;
 
 public class OptionsFile
 {
-    public SupportedProjectTargetType ProjectTarget { get; set; } = SupportedProjectTargetType.DotNet8;
+    public SupportedProjectTargetType ProjectTarget { get; set; } = SupportedProjectTargetType.DotNet10;
 
     public bool UseLatestMinorNugetVersion { get; set; } = true;
 
