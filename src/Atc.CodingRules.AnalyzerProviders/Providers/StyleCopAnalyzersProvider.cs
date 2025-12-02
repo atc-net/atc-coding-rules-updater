@@ -1,11 +1,17 @@
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
-public class StyleCopAnalyzersProvider : AnalyzerProviderBase
+public partial class StyleCopAnalyzersProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;
     private const int TableColumnTitle = 1;
     private const int TableColumnDescription = 2;
+
+    [GeneratedRegex(@"\[(?<code>[A-Z]+\d+[A-Z]*)\]\((?<link>[^)]+)\)", RegexOptions.ExplicitCapture, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex RuleIdRegex();
+
+    [GeneratedRegex(@"###\s+(?<category>.+)", RegexOptions.ExplicitCapture, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex CategoryRegex();
 
     public StyleCopAnalyzersProvider(
         ILogger logger,
@@ -20,6 +26,8 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
 
     public override Uri? DocumentationLink { get; set; } = new("https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md", UriKind.Absolute);
 
+    private static Uri RawContentBaseUri { get; } = new("https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/", UriKind.Absolute);
+
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
@@ -27,28 +35,25 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var web = new HtmlWeb();
-        var htmlDoc = await web
-            .LoadFromWebAsync(DocumentationLink!.AbsoluteUri)
-            .ConfigureAwait(false);
-
-        var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
-        if (embeddedNode is not null)
+        var ruleFiles = new[]
         {
-            var dynamicJson = new DynamicJson(embeddedNode.InnerText);
-            var html = dynamicJson.GetValue("payload.blob.richText")?.ToString();
+            "documentation/SpecialRules.md",
+            "documentation/SpacingRules.md",
+            "documentation/ReadabilityRules.md",
+            "documentation/OrderingRules.md",
+            "documentation/NamingRules.md",
+            "documentation/MaintainabilityRules.md",
+            "documentation/LayoutRules.md",
+            "documentation/DocumentationRules.md",
+            "documentation/AlternativeRules.md",
+        };
 
-            htmlDoc.LoadHtml(html);
-        }
-
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
-        var articleRuleLinks = articleNode
-            .SelectNodes("//*//strong//a")
-            .ToList();
-
-        foreach (var item in articleRuleLinks.Where(x => x.Attributes.Count == 1 && x.InnerText.Contains("(S", StringComparison.Ordinal)))
+        using var httpClient = new HttpClient();
+        foreach (var rulePath in ruleFiles)
         {
-            var rules = await GetRules(item);
+            var rules = await GetRulesFromMarkdown(
+                rulePath,
+                httpClient);
             foreach (var rule in rules)
             {
                 data.Rules.Add(rule);
@@ -57,65 +62,48 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    private static async Task<List<Rule>> GetRules(HtmlNode item)
+    private static async Task<List<Rule>> GetRulesFromMarkdown(
+        string rulePath,
+        HttpClient httpClient)
     {
-        var link = $"https://github.com{item.Attributes["href"].Value}";
-        var web = new HtmlWeb();
-        var htmlDoc = await web
-            .LoadFromWebAsync(link)
+        var linkUri = new Uri(RawContentBaseUri, rulePath);
+        var markdown = await httpClient
+            .GetStringAsync(linkUri)
             .ConfigureAwait(false);
 
-        var embeddedNode = htmlDoc.DocumentNode.SelectSingleNode("//script[@data-target='react-app.embeddedData']");
-        if (embeddedNode is not null)
-        {
-            var dynamicJson = new DynamicJson(embeddedNode.InnerText);
-            var html = dynamicJson.GetValue("payload.blob.richText")?.ToString();
-
-            htmlDoc.LoadHtml(html);
-        }
-
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
-        var articleTableRows = articleNode
-            .SelectNodes("//*//table[1]//tr")
-            .ToList();
-
-        var category = articleNode
-            .Descendants("h3")
-            .First().InnerText;
+        var category = ExtractCategoryFromMarkdown(markdown);
+        var tableRows = ExtractTableRowsFromMarkdown(markdown);
 
         var i = category.IndexOf(" Rules", StringComparison.Ordinal);
         if (i > 0)
         {
-            category = category.Substring(0, i);
+            category = category[..i];
         }
 
+        var baseUrl = "/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/";
+
         var rules = new List<Rule>();
-        foreach (var row in articleTableRows)
+        foreach (var row in tableRows)
         {
-            if (row.SelectNodes("td") is null)
+            var columns = row.Split('|', StringSplitOptions.TrimEntries);
+            if (columns.Length < 3)
             {
                 continue;
             }
 
-            var cells = row
-                .SelectNodes("td")
-                .ToList();
-
-            if (cells.Count <= 0)
+            var idColumn = columns[TableColumnId];
+            var match = RuleIdRegex().Match(idColumn);
+            if (!match.Success)
             {
                 continue;
             }
 
-            var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
-            if (aHrefNode is null)
-            {
-                continue;
-            }
-
-            var code = aHrefNode.InnerText;
-            var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText).NormalizePascalCase();
-            var helpLink = $"https://github.com{aHrefNode.Attributes["href"].Value}";
-            var description = cells[TableColumnDescription].InnerText;
+            var code = match.Groups["code"].Value;
+            var relativeLink = match.Groups["link"].Value;
+            var titleTrimmed = columns[TableColumnTitle].Trim();
+            var title = titleTrimmed.NormalizePascalCase();
+            var description = columns[TableColumnDescription].Trim();
+            var helpLink = $"https://github.com{baseUrl}{relativeLink}";
 
             rules.Add(
                 new Rule(
@@ -127,5 +115,38 @@ public class StyleCopAnalyzersProvider : AnalyzerProviderBase
         }
 
         return rules;
+    }
+
+    private static string ExtractCategoryFromMarkdown(string markdown)
+    {
+        var match = CategoryRegex().Match(markdown);
+        return match.Success ? match.Groups["category"].Value.Trim() : "Unknown";
+    }
+
+    private static List<string> ExtractTableRowsFromMarkdown(string markdown)
+    {
+        var lines = markdown.Split('\n');
+        var tableRows = new List<string>();
+        var inTable = false;
+
+        foreach (var line in lines)
+        {
+            var trimmedLine = line.Trim();
+            if (trimmedLine.Contains('|', StringComparison.Ordinal))
+            {
+                inTable = true;
+                if (!trimmedLine.Contains("---", StringComparison.Ordinal) &&
+                    !trimmedLine.Contains("Identifier", StringComparison.OrdinalIgnoreCase))
+                {
+                    tableRows.Add(trimmedLine);
+                }
+            }
+            else if (inTable && !string.IsNullOrWhiteSpace(trimmedLine))
+            {
+                break;
+            }
+        }
+
+        return tableRows;
     }
 }
