@@ -11,11 +11,16 @@ public sealed class StyleCopAnalyzersProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new StyleCopAnalyzersProvider(NullLogger.Instance);
+        AnalyzerProviderBaseRuleData? actual = null;
 
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        await RetryHelper.ExecuteWithRetryAsync(async () =>
+        {
+            // Arrange
+            var provider = new StyleCopAnalyzersProvider(NullLogger.Instance);
+
+            // Act
+            actual = await provider.CollectBaseRules(providerCollectingMode);
+        });
 
         // Assert
         Assert.NotNull(actual);
