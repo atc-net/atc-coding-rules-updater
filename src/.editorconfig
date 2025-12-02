@@ -12,6 +12,7 @@
 
 # AsyncFixer
 # http://www.asyncfixer.com
+dotnet_diagnostic.AsyncFixer02.severity = none            # False positive on synchronous HtmlAgilityPack SelectNodes().ToList()
 
 
 # Asyncify
