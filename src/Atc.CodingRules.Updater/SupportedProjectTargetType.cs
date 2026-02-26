@@ -9,4 +9,5 @@ public enum SupportedProjectTargetType
     DotNet8,  // LTS
     DotNet9,  // STS
     DotNet10, // LTS
+    DotNet11, // STS
 }

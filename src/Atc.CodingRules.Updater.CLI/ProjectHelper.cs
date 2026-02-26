@@ -35,7 +35,8 @@ public static class ProjectHelper
             or SupportedProjectTargetType.DotNet7
             or SupportedProjectTargetType.DotNet8
             or SupportedProjectTargetType.DotNet9
-            or SupportedProjectTargetType.DotNet10)
+            or SupportedProjectTargetType.DotNet10
+            or SupportedProjectTargetType.DotNet11)
         {
             HandleDirectoryBuildPropsFiles(logger, projectPath, options);
 
