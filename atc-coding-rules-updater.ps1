@@ -1,6 +1,6 @@
 Clear-Host
 Write-Host "Updating atc-coding-rules-updater tool to newest version"
-dotnet tool update -g atc-coding-rules-updater
+dotnet tool update -g atc-coding-rules-updater --ignore-failed-sources
 
 $currentPath = Get-Location
 
