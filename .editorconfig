@@ -586,6 +586,7 @@ dotnet_diagnostic.CA1515.severity = suggestion      # Because an application's A
 dotnet_diagnostic.CA1848.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 dotnet_diagnostic.CA1859.severity = none            #
 dotnet_diagnostic.CA1860.severity = none            #
+dotnet_diagnostic.CA1873.severity = none            # Avoid potentially expensive logging - aligns with CA1848/CA2254 opt-out (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1873)
 dotnet_diagnostic.CA2007.severity = none            # Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2254.severity = none            # For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogTrace(ILogger, string, params object[])'
 
