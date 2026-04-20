@@ -47,7 +47,7 @@ The Atc.CodingRules.Updater.CLI library is available through a cross platform co
 The tool can be installed as a .NET Core global tool by the following command
 
 ```powershell
-dotnet tool install --global atc-coding-rules-updater
+dotnet tool install --global atc-coding-rules-updater --ignore-failed-sources
 ```
 
 or by following the instructions [here](https://www.nuget.org/packages/atc-coding-rules-updater/) to install a specific version of the tool.
@@ -64,7 +64,7 @@ Tool 'atc-coding-rules-updater' (version '2.0.xxx') was successfully installed.`
 The tool can be updated by following command
 
 ```powershell
-dotnet tool update --global atc-coding-rules-updater
+dotnet tool update --global atc-coding-rules-updater --ignore-failed-sources
 ```
 
 ### Usage
@@ -290,13 +290,13 @@ By specifying this mapping it will over-rule the automatic detection of the proj
 
 **Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--projectPath` /  `-p`), then it will automatically be found and used. Other given arguments will then override.
 
-## CLI Tool Usage from powershell
+## CLI Tool Usage from PowerShell or Bash
 
 To ensure that the latest version of the CLI tool `atc-coding-rules-updater` is being used, the following methodology can be used:
 
 1) Download the 2 files from `sample` into a project root folder.
 2) Modify the `atc-coding-rules-updater.json` to the projects specific needs.
-3) Run `atc-coding-rules-updater.ps1` from powershell
+3) Run `atc-coding-rules-updater.ps1` from PowerShell, or `atc-coding-rules-updater.sh` from Bash (copy it from the repository root alongside the `atc-coding-rules-updater.json`).
 
 ## Deep dive in what `atc-coding-rules-updater` actual does and doesn't do
 
