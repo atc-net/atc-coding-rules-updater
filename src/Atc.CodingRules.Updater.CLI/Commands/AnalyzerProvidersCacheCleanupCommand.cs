@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class AnalyzerProvidersCacheCleanupCommand(ILogger<AnalyzerProvidersCacheCleanupCommand> logger) : Command
 {
-    public override int Execute(
+    protected override int Execute(
         CommandContext context,
         CancellationToken cancellationToken)
     {

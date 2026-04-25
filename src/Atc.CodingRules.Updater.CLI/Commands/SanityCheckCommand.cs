@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands;
 
 public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncCommand<ProjectCommandSettings>
 {
-    public override Task<int> ExecuteAsync(
+    protected override Task<int> ExecuteAsync(
         CommandContext context,
         ProjectCommandSettings settings,
         CancellationToken cancellationToken)
