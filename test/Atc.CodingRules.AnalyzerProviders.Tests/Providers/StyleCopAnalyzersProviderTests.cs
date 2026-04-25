@@ -28,7 +28,9 @@ public sealed class StyleCopAnalyzersProviderTests
         Assert.Equal(StyleCopAnalyzersProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 198);
-        Assert.All(actual.Rules, rule => Assert.StartsWith("SA", rule.Code, StringComparison.Ordinal));
+
+        // StyleCop ships "SA" rules and a smaller set of "SX" alternative rules.
+        Assert.All(actual.Rules, rule => Assert.Matches("^S[AX][0-9]", rule.Code));
         Assert.Contains(actual.Rules, rule => rule.Code.Equals("SA1600", StringComparison.Ordinal));
     }
 }

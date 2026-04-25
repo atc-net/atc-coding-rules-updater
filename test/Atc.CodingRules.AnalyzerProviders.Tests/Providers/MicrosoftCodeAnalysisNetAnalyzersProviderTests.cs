@@ -23,7 +23,9 @@ public class MicrosoftCodeAnalysisNetAnalyzersProviderTests
         Assert.Equal(MicrosoftCodeAnalysisNetAnalyzersProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 252);
-        Assert.All(actual.Rules, rule => Assert.StartsWith("CA", rule.Code, StringComparison.Ordinal));
+
+        // The catalog mixes "CA", "IDE", and "IL" prefixes — just verify codes look like rule IDs.
+        Assert.All(actual.Rules, rule => Assert.Matches("^(CA|IDE|IL)[0-9]+", rule.Code));
         Assert.Contains(actual.Rules, rule => rule.Code.Equals("CA1707", StringComparison.Ordinal));
     }
 }
