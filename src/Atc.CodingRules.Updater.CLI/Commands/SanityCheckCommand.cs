@@ -1,10 +1,10 @@
 namespace Atc.CodingRules.Updater.CLI.Commands;
 
-public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncCommand<ProjectCommandSettings>
+public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncCommand<SanityCheckCommandSettings>
 {
     protected override Task<int> ExecuteAsync(
         CommandContext context,
-        ProjectCommandSettings settings,
+        SanityCheckCommandSettings settings,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -13,13 +13,26 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
     }
 
     private async Task<int> ExecuteInternalAsync(
-        ProjectCommandSettings settings,
+        SanityCheckCommandSettings settings,
         CancellationToken cancellationToken)
     {
-        ConsoleHelper.WriteHeader();
+        var jsonOutput = settings.OutputJson.GetValueOrDefault();
+        if (!jsonOutput)
+        {
+            ConsoleHelper.WriteHeader();
+        }
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
         var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
+
+        if (jsonOutput)
+        {
+            var diagnostics = ProjectSanityCheckHelper.CheckFilesAndCollect(projectPath, options.ProjectTarget);
+            WriteJsonSummary(diagnostics);
+            return diagnostics.Any(d => d.Severity == SanityCheckSeverity.Error)
+                ? ConsoleExitStatusCodes.Failure
+                : ConsoleExitStatusCodes.Success;
+        }
 
         try
         {
@@ -36,7 +49,7 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
     }
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
-        ProjectCommandSettings settings,
+        SanityCheckCommandSettings settings,
         DirectoryInfo projectPath,
         CancellationToken cancellationToken)
     {
@@ -51,5 +64,22 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
         }
 
         return options;
+    }
+
+    private static void WriteJsonSummary(
+        IReadOnlyList<SanityCheckDiagnostic> diagnostics)
+    {
+        var summary = diagnostics
+            .Select(d => new
+            {
+                Severity = d.Severity.ToString(),
+                d.Code,
+                d.Message,
+                d.FilePath,
+            })
+            .ToArray();
+
+        var json = JsonSerializer.Serialize(summary, new JsonSerializerOptions { WriteIndented = true });
+        System.Console.Out.WriteLine(json);
     }
 }
