@@ -163,6 +163,78 @@ public sealed class ProjectSanityCheckHelperTests
             .Should().Contain(x => x.Message.Contains("TargetFramework", StringComparison.Ordinal));
     }
 
+    [Fact]
+    public void CheckFilesAndCollect_ReturnsEmpty_OnCleanProject()
+    {
+        var directory = PrepareSubDirectory(nameof(CheckFilesAndCollect_ReturnsEmpty_OnCleanProject));
+        WritePropsFile(
+            directory,
+            "<Project>",
+            "  <PropertyGroup>",
+            "    <OrganizationName>Acme</OrganizationName>",
+            "    <RepositoryName>my-repo</RepositoryName>",
+            "  </PropertyGroup>",
+            "</Project>");
+
+        var result = ProjectSanityCheckHelper.CheckFilesAndCollect(directory, SupportedProjectTargetType.DotNet10);
+
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void CheckFilesAndCollect_ReportsWarnings_ForUnfilledPlaceholders()
+    {
+        var directory = PrepareSubDirectory(nameof(CheckFilesAndCollect_ReportsWarnings_ForUnfilledPlaceholders));
+        WritePropsFile(
+            directory,
+            "<Project>",
+            "  <PropertyGroup>",
+            "    <OrganizationName><!-- insert organization name here --></OrganizationName>",
+            "    <RepositoryName><!-- insert repository name here --></RepositoryName>",
+            "  </PropertyGroup>",
+            "</Project>");
+
+        var result = ProjectSanityCheckHelper.CheckFilesAndCollect(directory, SupportedProjectTargetType.DotNet10);
+
+        result.Should().HaveCount(2);
+        result.Should().Contain(d => d.Severity == SanityCheckSeverity.Warning && d.Code == "MissingOrganizationName");
+        result.Should().Contain(d => d.Severity == SanityCheckSeverity.Warning && d.Code == "MissingRepositoryName");
+    }
+
+    [Fact]
+    public void CheckFilesAndCollect_ReportsErrors_ForEnableNetAnalyzersOnDotNet5()
+    {
+        var directory = PrepareSubDirectory(nameof(CheckFilesAndCollect_ReportsErrors_ForEnableNetAnalyzersOnDotNet5));
+        WritePropsFile(
+            directory,
+            "<Project>",
+            "  <PropertyGroup>",
+            "    <OrganizationName>Acme</OrganizationName>",
+            "    <RepositoryName>my-repo</RepositoryName>",
+            "  </PropertyGroup>",
+            "</Project>");
+
+        var srcDir = Directory.CreateDirectory(Path.Combine(directory.FullName, "src"));
+        File.WriteAllText(
+            Path.Combine(srcDir.FullName, "Sample.csproj"),
+            string.Join(
+                Environment.NewLine,
+                "<Project Sdk=\"Microsoft.NET.Sdk\">",
+                "  <PropertyGroup>",
+                "    <TargetFramework>net5.0</TargetFramework>",
+                "    <EnableNETAnalyzers>true</EnableNETAnalyzers>",
+                "  </PropertyGroup>",
+                "</Project>"));
+
+        var result = ProjectSanityCheckHelper.CheckFilesAndCollect(directory, SupportedProjectTargetType.DotNet5);
+
+        result.Should().Contain(d =>
+            d.Severity == SanityCheckSeverity.Error
+            && d.Code == "EnableNETAnalyzers"
+            && d.FilePath != null
+            && d.FilePath.EndsWith("Sample.csproj", StringComparison.OrdinalIgnoreCase));
+    }
+
     private static DirectoryInfo PrepareSubDirectory(string testName)
     {
         var path = Path.Combine(WorkingDirectory, testName);
