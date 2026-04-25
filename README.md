@@ -40,7 +40,9 @@ The Atc.CodingRules.Updater.CLI library is available through a cross platform co
 
 ### Requirements
 
-* [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+* [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+
+The CLI itself targets .NET 10. The `--projectTarget` option lets you point at older runtimes — supported values are `DotNetCore`, `DotNet5`, `DotNet6`, `DotNet7`, `DotNet8`, `DotNet9`, `DotNet10` (default), `DotNet11`.
 
 ### Installation
 
@@ -111,7 +113,8 @@ OPTIONS:
                                                                  diectory)
     -o, --optionsPath [OPTIONSPATH]                              Path to an optional options json-file
     -t, --projectTarget [PROJECTTARGET]                          Sets the ProjectTarget. Valid values are: DotNetCore,
-                                                                 DotNet5, DotNet6, DotNet7, DotNet8 (default)
+                                                                 DotNet5, DotNet6, DotNet7, DotNet8, DotNet9,
+                                                                 DotNet10 (default), DotNet11
         --useLatestMinorNugetVersion                             Indicate if nuget packages should by updated to latest
                                                                  minor version (default true)
         --useTemporarySuppressions                               Indicate if build process should use temporary
@@ -144,7 +147,7 @@ OPTIONS:
         --verbose                          Use verbose for more debug/trace information
     -p, --projectPath <PROJECTPATH>        Path to the project directory (default current diectory)
     -o, --optionsPath [OPTIONSPATH]        Path to an optional options json-file
-    -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8 (default)
+    -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8, DotNet9, DotNet10 (default), DotNet11
 ```
 
 #### Command <span style="color:yellow">options-file</span>
@@ -248,7 +251,7 @@ By specifying this mapping it will over-rule the automatic detection of the proj
 
 ```json
 {
-    "projectTarget": "DotNet8",
+    "projectTarget": "DotNet10",
     "mappings": {
         "sample": { "paths": [ "sample" ] },
         "src": { "paths": [ "src" ] },
@@ -267,7 +270,7 @@ By specifying this mapping it will over-rule the automatic detection of the proj
 
 ```json
 {
-  "projectTarget": "DotNet8",
+  "projectTarget": "DotNet10",
   "useLatestMinorNugetVersion": true,
   "useTemporarySuppressions": false,
   "temporarySuppressionAsExcel": false,
