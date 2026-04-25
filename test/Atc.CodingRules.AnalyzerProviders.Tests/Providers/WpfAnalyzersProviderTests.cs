@@ -23,5 +23,7 @@ public sealed class WpfAnalyzersProviderTests
         Assert.Equal(WpfAnalyzersProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 81);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("WPF", rule.Code, StringComparison.Ordinal));
+        Assert.Contains(actual.Rules, rule => rule.Code.Equals("WPF0001", StringComparison.Ordinal));
     }
 }

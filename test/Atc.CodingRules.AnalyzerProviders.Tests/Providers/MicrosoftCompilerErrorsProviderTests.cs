@@ -23,5 +23,7 @@ public sealed class MicrosoftCompilerErrorsProviderTests
         Assert.Equal(MicrosoftCompilerErrorsProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 850);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("CS", rule.Code, StringComparison.Ordinal));
+        Assert.Contains(actual.Rules, rule => rule.Code.Equals("CS4014", StringComparison.Ordinal));
     }
 }

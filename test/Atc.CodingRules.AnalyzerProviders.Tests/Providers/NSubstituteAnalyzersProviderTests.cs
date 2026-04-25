@@ -23,5 +23,6 @@ public sealed class NSubstituteAnalyzersProviderTests
         Assert.Equal(NSubstituteAnalyzersProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 23);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("NS", rule.Code, StringComparison.Ordinal));
     }
 }

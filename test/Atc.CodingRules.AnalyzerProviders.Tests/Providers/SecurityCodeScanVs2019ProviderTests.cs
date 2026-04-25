@@ -23,5 +23,6 @@ public sealed class SecurityCodeScanVs2019ProviderTests
         Assert.Equal(SecurityCodeScanVs2019Provider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 31);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("SCS", rule.Code, StringComparison.Ordinal));
     }
 }

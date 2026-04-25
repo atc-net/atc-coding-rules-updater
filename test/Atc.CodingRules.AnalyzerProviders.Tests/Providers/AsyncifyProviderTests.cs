@@ -23,5 +23,7 @@ public sealed class AsyncifyProviderTests
         Assert.Equal(AsyncifyProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 2);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("Asyncify", rule.Code, StringComparison.Ordinal));
+        Assert.All(actual.Rules, rule => Assert.False(string.IsNullOrWhiteSpace(rule.Title), $"Rule {rule.Code} has empty title."));
     }
 }

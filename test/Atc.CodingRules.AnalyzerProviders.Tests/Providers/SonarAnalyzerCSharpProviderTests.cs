@@ -23,5 +23,7 @@ public sealed class SonarAnalyzerCSharpProviderTests
         Assert.Equal(SonarAnalyzerCSharpProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 400);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("S", rule.Code, StringComparison.Ordinal));
+        Assert.Contains(actual.Rules, rule => rule.Code.Equals("S1118", StringComparison.Ordinal));
     }
 }

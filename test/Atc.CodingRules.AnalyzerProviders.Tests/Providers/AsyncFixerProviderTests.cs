@@ -28,5 +28,7 @@ public sealed class AsyncFixerProviderTests
         Assert.Equal(AsyncFixerProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 5);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("AsyncFixer", rule.Code, StringComparison.Ordinal));
+        Assert.Contains(actual.Rules, rule => rule.Code.Equals("AsyncFixer01", StringComparison.Ordinal));
     }
 }

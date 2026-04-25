@@ -23,5 +23,7 @@ public sealed class MicrosoftCompilerErrorsProviderUndocumentedTests
         Assert.Equal(MicrosoftCompilerErrorsProviderUndocumented.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 46);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("CS", rule.Code, StringComparison.Ordinal));
+        Assert.Contains(actual.Rules, rule => rule.Code.Equals("CS1998", StringComparison.Ordinal));
     }
 }
