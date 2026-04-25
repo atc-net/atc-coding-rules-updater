@@ -4,7 +4,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands;
 [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "OK.")]
 public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSettings>
 {
-    public override Task<int> ExecuteAsync(
+    protected override Task<int> ExecuteAsync(
         CommandContext context,
         RunCommandSettings settings,
         CancellationToken cancellationToken)

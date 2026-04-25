@@ -3,7 +3,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands;
 public class AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCommand> logger)
     : AsyncCommand<AnalyzerProvidersCollectCommandSettings>
 {
-    public override Task<int> ExecuteAsync(
+    protected override Task<int> ExecuteAsync(
         CommandContext context,
         AnalyzerProvidersCollectCommandSettings settings,
         CancellationToken cancellationToken)

@@ -3,7 +3,7 @@ namespace Atc.CodingRules.Updater.CLI.Commands;
 public class OptionsFileValidateCommand(ILogger<OptionsFileValidateCommand> logger)
     : AsyncCommand<ProjectBaseCommandSettings>
 {
-    public override Task<int> ExecuteAsync(
+    protected override Task<int> ExecuteAsync(
         CommandContext context,
         ProjectBaseCommandSettings settings,
         CancellationToken cancellationToken)
