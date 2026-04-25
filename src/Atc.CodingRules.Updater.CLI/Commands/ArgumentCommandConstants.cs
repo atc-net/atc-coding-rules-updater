@@ -17,4 +17,8 @@ internal static class ArgumentCommandConstants
     public const string LongFetchMode = "--fetchMode";
     public const string LongOrganizationName = " --organizationName";
     public const string LongRepositoryName = " --repositoryName";
+    public const string LongDryRun = "--dry-run";
+    public const string LongIncludeProviders = "--includeProviders";
+    public const string LongExcludeProviders = "--excludeProviders";
+    public const string LongOutputJson = "--json";
 }

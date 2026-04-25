@@ -1,5 +1,14 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes Microsoft .NET CA-prefix rule definitions from Microsoft Learn.
+/// </summary>
+/// <remarks>
+/// Source: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules.
+/// Path: first <c>table</c> → <c>tr</c> rows where the first cell holds an anchor
+/// whose text is <c>"CAxxxx: Title"</c> (or "<c>CAxxxx Title</c>"), the second cell holds the category.
+/// Detects the Microsoft Learn "Access Denied" page and short-circuits to a clear error message.
+/// </remarks>
 public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;
@@ -39,7 +48,13 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
 
         var tableRows = htmlDoc.DocumentNode
             .SelectNodes("//*//table[1]//tr")
-            .ToList();
+            ?.ToList();
+
+        if (tableRows is null)
+        {
+            data.ExceptionMessage = "Could not locate the documentation table on the page.";
+            return;
+        }
 
         foreach (var row in tableRows)
         {

@@ -30,4 +30,8 @@ public class RunCommandSettings : ProjectCommandSettings
     [CommandOption($"{ArgumentCommandConstants.LongRepositoryName} [REPOSITORYNAME]")]
     [Description("Optional: Specify the name of your repository for the Directory.Build.Props file")]
     public FlagValue<string>? RepositoryName { get; init; }
+
+    [CommandOption(ArgumentCommandConstants.LongDryRun)]
+    [Description("Preview mode: log what would be created/updated without writing any files. Skips the temporary-suppression build loop. (default false)")]
+    public bool? DryRun { get; init; }
 }

@@ -2,7 +2,7 @@ namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 public abstract class AnalyzerProviderBase : IAnalyzerProvider
 {
-    private const string GitRawAtcAnalyzerProviderBaseRulesBasePath = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
+    private static readonly string GitRawAtcAnalyzerProviderBaseRulesBasePath = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules-updater/main/AnalyzerProviderBaseRules/";
     private readonly ILogger logger;
     private readonly bool logWithAnsiConsoleMarkup;
 
@@ -16,6 +16,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
 
     public virtual Uri? DocumentationLink { get; set; }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Falling back to a prior snapshot is preferable to crashing the run on a transient scrape failure.")]
     public async Task<AnalyzerProviderBaseRuleData> CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
@@ -48,8 +49,32 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
             }
         }
 
-        await ReCollect(data);
-        await WriteToTempFolder(data);
+        try
+        {
+            await ReCollect(data);
+        }
+        catch (Exception ex)
+        {
+            data.ExceptionMessage = ex.Message;
+        }
+
+        // If ReCollect produced a usable result, persist it; otherwise fall back to a prior on-disk
+        // snapshot if one exists. This keeps the run usable when an upstream documentation page
+        // changes layout or a transient failure leaves us with empty/exception-only data.
+        if (string.IsNullOrEmpty(data.ExceptionMessage) && data.Rules.Count > 0)
+        {
+            await WriteToTempFolder(data);
+        }
+        else
+        {
+            var snapshot = await ReadFromTempFolder(data);
+            if (snapshot is not null)
+            {
+                logger.LogWarning($"     [yellow]{data.Name}[/] collect failed; using prior cached snapshot. Reason: {data.ExceptionMessage ?? "no rules collected"}");
+                StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
+                return snapshot;
+            }
+        }
 
         StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
 

@@ -2,16 +2,33 @@ namespace Atc.CodingRules.AnalyzerProviders;
 
 public static class AnalyzerProviderBaseRulesHelper
 {
-    public static async Task<Collection<AnalyzerProviderBaseRuleData>> GetAnalyzerProviderBaseRules(
+    public static Task<Collection<AnalyzerProviderBaseRuleData>> GetAnalyzerProviderBaseRules(
         ILogger logger,
         ProviderCollectingMode providerCollectingMode,
         bool logWithAnsiConsoleMarkup)
+        => GetAnalyzerProviderBaseRules(
+            logger,
+            providerCollectingMode,
+            logWithAnsiConsoleMarkup,
+            includeProviders: null,
+            excludeProviders: null);
+
+    public static async Task<Collection<AnalyzerProviderBaseRuleData>> GetAnalyzerProviderBaseRules(
+        ILogger logger,
+        ProviderCollectingMode providerCollectingMode,
+        bool logWithAnsiConsoleMarkup,
+        IReadOnlyCollection<string>? includeProviders,
+        IReadOnlyCollection<string>? excludeProviders)
     {
         var stopwatch = Stopwatch.StartNew();
         logger.LogTrace("     Collecting rules metadata");
 
         var analyzerProviders = new AnalyzerProviderCollector(logger);
-        var analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(providerCollectingMode, logWithAnsiConsoleMarkup);
+        var analyzerProviderBaseRules = await analyzerProviders.CollectAllBaseRules(
+            providerCollectingMode,
+            logWithAnsiConsoleMarkup,
+            includeProviders,
+            excludeProviders);
 
         stopwatch.Stop();
         logger.LogTrace($"     Collecting rules metadata time: {stopwatch.Elapsed.GetPrettyTime()}");

@@ -1,6 +1,15 @@
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes StyleCop.Analyzers SAxxxx rules from the documentation Markdown files on GitHub.
+/// </summary>
+/// <remarks>
+/// Source: documentation/SpecialRules.md, SpacingRules.md, ReadabilityRules.md, OrderingRules.md,
+/// NamingRules.md, MaintainabilityRules.md, LayoutRules.md, DocumentationRules.md (raw GitHub master).
+/// Parses category headings (<c>### CategoryName</c>) and rule entries
+/// (<c>[SAxxxx](link.md)</c>) via the regex helpers <c>RuleIdRegex</c> / <c>CategoryRegex</c>.
+/// </remarks>
 public partial class StyleCopAnalyzersProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;

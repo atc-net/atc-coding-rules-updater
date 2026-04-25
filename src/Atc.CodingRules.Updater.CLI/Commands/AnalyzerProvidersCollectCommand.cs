@@ -17,18 +17,32 @@ public class AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCom
         AnalyzerProvidersCollectCommandSettings settings,
         CancellationToken cancellationToken)
     {
-        ConsoleHelper.WriteHeader();
+        var jsonOutput = settings.OutputJson.GetValueOrDefault();
+        if (!jsonOutput)
+        {
+            ConsoleHelper.WriteHeader();
+        }
 
         var projectPath = new DirectoryInfo(settings.ProjectPath);
         var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
 
+        var includeProviders = SplitProviderList(settings.IncludeProviders);
+        var excludeProviders = SplitProviderList(settings.ExcludeProviders);
+
+        Collection<AnalyzerProviderBaseRuleData> result;
         try
         {
-            logger.LogInformation("Working on analyzer providers collect base rules metadata");
-            await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(
+            if (!jsonOutput)
+            {
+                logger.LogInformation("Working on analyzer providers collect base rules metadata");
+            }
+
+            result = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(
                 logger,
                 options.AnalyzerProviderCollectingMode,
-                logWithAnsiConsoleMarkup: true);
+                logWithAnsiConsoleMarkup: !jsonOutput,
+                includeProviders,
+                excludeProviders);
         }
         catch (Exception ex)
         {
@@ -36,8 +50,45 @@ public class AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCom
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Success} Done");
+        if (jsonOutput)
+        {
+            WriteJsonSummary(result);
+        }
+        else
+        {
+            logger.LogInformation($"{EmojisConstants.Success} Done");
+        }
+
         return ConsoleExitStatusCodes.Success;
+    }
+
+    private static void WriteJsonSummary(
+        IEnumerable<AnalyzerProviderBaseRuleData> result)
+    {
+        var summary = result
+            .Select(p => new
+            {
+                p.Name,
+                RuleCount = p.Rules.Count,
+                p.ExceptionMessage,
+            })
+            .ToArray();
+
+        var json = JsonSerializer.Serialize(summary, new JsonSerializerOptions { WriteIndented = true });
+        System.Console.Out.WriteLine(json);
+    }
+
+    private static IReadOnlyCollection<string>? SplitProviderList(
+        FlagValue<string> flag)
+    {
+        if (!flag.IsSet || string.IsNullOrWhiteSpace(flag.Value))
+        {
+            return null;
+        }
+
+        return flag.Value
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .ToArray();
     }
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(

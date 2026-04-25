@@ -1,5 +1,14 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes SonarAnalyzer.CSharp Sxxxx rules from the Sonar rules JSON page.
+/// </summary>
+/// <remarks>
+/// Source: https://rules.sonarsource.com/page-data/csharp/page-data.json.
+/// Path: <c>result.data.allFile.nodes[0].childLanguageJson.rules</c> array.
+/// Each item provides id, type, severity, title, tags. Each rule's link is built from
+/// <see cref="RuleLinkBase"/> and the rule id.
+/// </remarks>
 public class SonarAnalyzerCSharpProvider : AnalyzerProviderBase
 {
     public SonarAnalyzerCSharpProvider(

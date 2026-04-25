@@ -1,5 +1,13 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes xUnit.net analyzer (xUnitxxxx) rules from the rules index page.
+/// </summary>
+/// <remarks>
+/// Source: https://xunit.net/xunit.analyzers/rules.
+/// Path: every <c>//table</c> on the page → <c>.//tr</c> rows; columns are
+/// (Id link, .., .., Title) — see <c>TableColumnId</c> / <c>TableColumnTitle</c>.
+/// </remarks>
 public class XunitProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;

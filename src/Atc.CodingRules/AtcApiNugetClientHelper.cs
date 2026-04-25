@@ -4,47 +4,24 @@ public static class AtcApiNugetClientHelper
 {
     private const string BaseAddress = "https://atc-api.azurewebsites.net/nuget-search";
     private static readonly ConcurrentDictionary<string, Version> Cache = new(StringComparer.Ordinal);
+    private static readonly HttpClient SharedClient = new();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public static Version? GetLatestVersionForPackageId(
         string packageId,
         CancellationToken cancellationToken = default)
-    {
-        var cacheValue = Cache.GetValueOrDefault(packageId);
-        if (cacheValue is not null)
-        {
-            return cacheValue;
-        }
-
-        try
-        {
-            var response = string.Empty;
-            var uri = new Uri($"{BaseAddress}/package?packageId={packageId}");
-            TaskHelper.RunSync(async () =>
-            {
-                using var client = new HttpClient();
-                response = await client.GetStringAsync(uri, cancellationToken);
-            });
-
-            if (string.IsNullOrEmpty(response) ||
-                !Version.TryParse(response, out var version))
-            {
-                return null;
-            }
-
-            Cache.GetOrAdd(packageId, version);
-            return version;
-        }
-        catch
-        {
-            return null;
-        }
-    }
+        => GetLatestVersionCore(logger: null, packageId, cancellationToken);
 
     public static Version? GetLatestVersionForPackageId(
         ILogger logger,
         string packageId,
         CancellationToken cancellationToken = default)
+        => GetLatestVersionCore(logger, packageId, cancellationToken);
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Failures should not crash the caller; cache miss simply returns null.")]
+    private static Version? GetLatestVersionCore(
+        ILogger? logger,
+        string packageId,
+        CancellationToken cancellationToken)
     {
         var cacheValue = Cache.GetValueOrDefault(packageId);
         if (cacheValue is not null)
@@ -59,13 +36,12 @@ public static class AtcApiNugetClientHelper
             TaskHelper.RunSync(async () =>
             {
                 var stopwatch = Stopwatch.StartNew();
-                logger.LogTrace($"     Get newest version for:  {packageId}");
+                logger?.LogTrace($"     Get newest version for:  {packageId}");
 
-                using var client = new HttpClient();
-                response = await client.GetStringAsync(uri, cancellationToken);
+                response = await SharedClient.GetStringAsync(uri, cancellationToken);
 
                 stopwatch.Stop();
-                logger.LogTrace($"     Get newest version time: {stopwatch.Elapsed.GetPrettyTime()}");
+                logger?.LogTrace($"     Get newest version time: {stopwatch.Elapsed.GetPrettyTime()}");
             });
 
             if (string.IsNullOrEmpty(response) ||
@@ -74,8 +50,16 @@ public static class AtcApiNugetClientHelper
                 return null;
             }
 
-            Cache.GetOrAdd(packageId, version);
-            return version;
+            return Cache.GetOrAdd(packageId, version);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+        catch (HttpRequestException ex)
+        {
+            logger?.LogTrace($"     Get newest version error: {ex.Message}");
+            return null;
         }
         catch (WebException ex)
         {
@@ -85,8 +69,12 @@ public static class AtcApiNugetClientHelper
                 return null;
             }
 
-            logger.LogTrace($"     Get newest version error: {ex.GetMessage()}");
-            throw;
+            logger?.LogTrace($"     Get newest version error: {ex.GetMessage()}");
+            return null;
+        }
+        catch
+        {
+            return null;
         }
     }
 }
