@@ -28,5 +28,7 @@ public sealed class MicrosoftVisualStudioThreadingAnalyzersProviderTests
         Assert.Equal(MicrosoftVisualStudioThreadingAnalyzersProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 23);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("VSTHRD", rule.Code, StringComparison.Ordinal));
+        Assert.Contains(actual.Rules, rule => rule.Code.Equals("VSTHRD100", StringComparison.Ordinal));
     }
 }

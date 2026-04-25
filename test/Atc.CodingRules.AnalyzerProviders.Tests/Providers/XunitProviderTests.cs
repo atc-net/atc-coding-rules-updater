@@ -28,5 +28,6 @@ public sealed class XunitProviderTests
         Assert.Equal(XunitProvider.Name, actual.Name);
         Assert.NotNull(actual.Rules);
         Assert.True(actual.Rules.Count >= 50);
+        Assert.All(actual.Rules, rule => Assert.StartsWith("xUnit", rule.Code, StringComparison.OrdinalIgnoreCase));
     }
 }
