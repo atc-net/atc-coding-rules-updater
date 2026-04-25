@@ -22,6 +22,7 @@ public class NSubstituteAnalyzersProvider : AnalyzerProviderBase
     protected override AnalyzerProviderBaseRuleData CreateData()
         => new(Name);
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override async Task ReCollect(AnalyzerProviderBaseRuleData data)
     {
         ArgumentNullException.ThrowIfNull(data);
@@ -36,6 +37,11 @@ public class NSubstituteAnalyzersProvider : AnalyzerProviderBase
         {
             var dynamicJson = new DynamicJson(embeddedNode.InnerText);
             var html = dynamicJson.GetValue("payload.tree.readme.richText")?.ToString();
+
+            if (html is null)
+            {
+                return;
+            }
 
             htmlDoc.LoadHtml(html);
         }
