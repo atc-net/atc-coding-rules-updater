@@ -1,8 +1,8 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.0
-# Updated: 25-09-2023
+# Version: 1.0.1
+# Updated: 20-04-2026
 # Location: src
-# Distribution: DotNet8
+# Distribution: DotNet10
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
 ##########################################
@@ -12,11 +12,6 @@
 
 # AsyncFixer
 # http://www.asyncfixer.com
-dotnet_diagnostic.AsyncFixer02.severity = none            # False positive on synchronous HtmlAgilityPack SelectNodes().ToList()
-
-
-# Asyncify
-# https://github.com/hvanbakel/Asyncify-CSharp
 
 
 # Meziantou
@@ -31,10 +26,6 @@ dotnet_diagnostic.AsyncFixer02.severity = none            # False positive on sy
 # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/
 
 
-# SecurityCodeScan
-# https://security-code-scan.github.io/
-
-
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
 
@@ -47,3 +38,4 @@ dotnet_diagnostic.AsyncFixer02.severity = none            # False positive on sy
 # Custom - Code Analyzers Rules
 ##########################################
 dotnet_diagnostic.SA1204.severity = none            # For now
+dotnet_diagnostic.AsyncFixer02.severity = none      # False positive on synchronous HtmlAgilityPack SelectNodes().ToList() and in-memory LINQ inside async methods
