@@ -39,3 +39,8 @@
 ##########################################
 dotnet_diagnostic.SA1204.severity = none            # For now
 dotnet_diagnostic.AsyncFixer02.severity = none      # False positive on synchronous HtmlAgilityPack SelectNodes().ToList() and in-memory LINQ inside async methods
+dotnet_diagnostic.SA1611.severity = none            # Parameter docs are optional alongside summaries
+dotnet_diagnostic.SA1615.severity = none            # Return-value docs are optional alongside summaries
+dotnet_diagnostic.SA1616.severity = none            # Element return-value docs should not be empty
+dotnet_diagnostic.SA1618.severity = none            # Generic type parameters should be documented
+dotnet_diagnostic.SA1619.severity = none            # Generic type parameters of partial documentation
