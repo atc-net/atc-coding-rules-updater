@@ -128,6 +128,167 @@ public sealed class EditorConfigHelperTests
             .And.Subject.Should().Contain(x => x.Message.Contains("New key/value - dotnet_diagnostic.SA1201.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1201.md"));
     }
 
+    [Fact]
+    public void HandleFile_DryRun_DoesNotWriteFile_WhenContentDiffers()
+    {
+        // Arrange: identical structural shape as Update3_NewKey but with dryRun=true.
+        using var logger = testOutput.BuildLogger();
+        var outputFile = PrepareOutputFile("dry-run-test.editorconfig");
+
+        var contentGit = GetContentFromTestFile("Git_DotNet6_Root_1d.txt");
+        var contentFile = GetContentFromTestFile("File_DotNet6_Root_1a.txt");
+
+        // Act
+        EditorConfigHelper.HandleFile(
+            logger,
+            "log-area",
+            contentGit,
+            contentFile,
+            "log-description-part",
+            outputFile,
+            dryRun: true);
+
+        // Assert: file is not created, log states "would merge"
+        outputFile.Refresh();
+        outputFile.Exists.Should().BeFalse();
+        logger.Entries
+            .Should().Contain(x => x.Message.Contains("(dry-run)", StringComparison.Ordinal)
+                                    && x.Message.Contains("would merge", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void HandleFile_DryRun_DoesNotCreateFile_WhenLocalAbsent()
+    {
+        using var logger = testOutput.BuildLogger();
+        var outputFile = PrepareOutputFile("dry-run-create.editorconfig");
+
+        var contentGit = GetContentFromTestFile("Git_DotNet6_Root_1c.txt");
+        var contentFile = string.Empty;
+
+        EditorConfigHelper.HandleFile(
+            logger,
+            "log-area",
+            contentGit,
+            contentFile,
+            "log-description-part",
+            outputFile,
+            dryRun: true);
+
+        outputFile.Refresh();
+        outputFile.Exists.Should().BeFalse();
+        logger.Entries
+            .Should().Contain(x => x.Message.Contains("(dry-run)", StringComparison.Ordinal)
+                                    && x.Message.Contains("would create", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void HandleFile_DoesNotOverwriteFile_WhenGitContentIsEmpty()
+    {
+        // Arrange: an empty contentGit (404 from upstream) used to fall through to the merge
+        // path and overwrite the user's file with an empty base section. Now we skip with a warning.
+        using var logger = testOutput.BuildLogger();
+        var outputFile = PrepareOutputFile("empty-git-content.editorconfig");
+        var existingContent = string.Join(
+            Environment.NewLine,
+            "root = true",
+            string.Empty,
+            "[*.cs]",
+            "dotnet_diagnostic.SA1234.severity = warning");
+        File.WriteAllText(outputFile.FullName, existingContent);
+
+        // Act
+        EditorConfigHelper.HandleFile(
+            logger,
+            "log-area",
+            contentGit: string.Empty,
+            contentFile: existingContent,
+            "log-description-part",
+            outputFile);
+
+        // Assert: file untouched, warning logged
+        var actual = File.ReadAllText(outputFile.FullName);
+        actual.Should().Be(existingContent);
+        logger.Entries
+            .Should().ContainSingle()
+            .Which.Message.Should().Contain("skipped — upstream content is empty");
+    }
+
+    [Fact]
+    public void HandleFile_EscapesMarkupCharacters_InCustomSectionValue()
+    {
+        // Arrange: contentGit and contentFile share a dotnet_diagnostic key, but the
+        // file's custom section value contains brackets that look like Spectre markup.
+        // LogSeverityDiffs must escape those before logging or a Spectre-backed logger crashes.
+        using var logger = testOutput.BuildLogger();
+        var outputFile = PrepareOutputFile("markup-escape.editorconfig");
+
+        var contentGit = string.Join(
+            Environment.NewLine,
+            "root = true",
+            string.Empty,
+            "[*.cs]",
+            "dotnet_diagnostic.SA1234.severity = warning",
+            string.Empty);
+
+        var contentFile = string.Join(
+            Environment.NewLine,
+            "root = true",
+            string.Empty,
+            "[*.cs]",
+            string.Empty,
+            EditorConfigHelper.SectionDivider,
+            EditorConfigHelper.CustomSectionHeaderPrefix + EditorConfigHelper.CustomSectionHeaderCodeAnalyzersRulesSuffix,
+            EditorConfigHelper.SectionDivider,
+            "[*.cs]",
+            "dotnet_diagnostic.SA1234.severity = none [PersistentState]",
+            string.Empty);
+
+        // Act
+        EditorConfigHelper.HandleFile(
+            logger,
+            "log-area",
+            contentGit,
+            contentFile,
+            "log-description-part",
+            outputFile);
+
+        // Assert: the duplicate-key warning that quotes the file value must contain the
+        // Spectre-escaped form '[[PersistentState]]' rather than the raw '[PersistentState]'.
+        logger.Entries
+            .Should().Contain(x => x.Message.Contains("[[PersistentState]]", StringComparison.Ordinal));
+        logger.Entries
+            .Should().NotContain(x => x.Message.Contains("[PersistentState]", StringComparison.Ordinal)
+                                       && !x.Message.Contains("[[PersistentState]]", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task UpdateRootFileRemoveCustomAtcAutogeneratedRuleSuppressions_DoesNotThrow_WhenAutogeneratedHeaderIsFirstLine()
+    {
+        // Arrange
+        var directory = new DirectoryInfo(Path.Combine(WorkingDirectory, "first-line-header"));
+        if (directory.Exists)
+        {
+            directory.Delete(recursive: true);
+        }
+
+        directory.Create();
+        var editorConfig = new FileInfo(Path.Combine(directory.FullName, EditorConfigHelper.FileName));
+        var content = string.Join(
+            Environment.NewLine,
+            EditorConfigHelper.AutogeneratedCustomSectionHeaderPrefix,
+            EditorConfigHelper.SectionDivider,
+            "[*.cs]",
+            "dotnet_diagnostic.CA1234.severity = none");
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await File.WriteAllTextAsync(editorConfig.FullName, content, cancellationToken);
+
+        // Act + Assert (must not throw)
+        await EditorConfigHelper.UpdateRootFileRemoveCustomAtcAutogeneratedRuleSuppressions(directory);
+
+        var resultContent = await File.ReadAllTextAsync(editorConfig.FullName, cancellationToken);
+        resultContent.Should().NotContain(EditorConfigHelper.AutogeneratedCustomSectionHeaderPrefix);
+    }
+
     private static FileInfo[] CollectTestFiles()
     {
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
