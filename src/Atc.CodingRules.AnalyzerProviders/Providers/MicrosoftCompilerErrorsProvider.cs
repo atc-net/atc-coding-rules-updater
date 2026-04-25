@@ -1,5 +1,14 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes the C# compiler error / warning catalog from Microsoft Learn.
+/// </summary>
+/// <remarks>
+/// Source: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/.
+/// Walks the navigation TOC pages under "compiler-messages" and collects
+/// each <c>CSxxxx</c> ID with its title from the rendered article. Multiple page
+/// shapes are tolerated; a missing block sets <c>data.ExceptionMessage</c>.
+/// </remarks>
 public class MicrosoftCompilerErrorsProvider : AnalyzerProviderBase
 {
     public MicrosoftCompilerErrorsProvider(

@@ -1,5 +1,18 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes AsyncFixer rules from the project README on GitHub.
+/// </summary>
+/// <remarks>
+/// Source: https://github.com/semihokur/AsyncFixer/blob/main/README.md.
+/// Primary path: GitHub embeds the rendered README JSON in
+/// <c>&lt;script data-target="react-app.embeddedData"&gt;</c>; we read
+/// <c>payload.blob.headerInfo.toc</c> for the rule list (each entry's <c>text</c>
+/// is "AsyncFixerNN: Title").
+/// Fallback: traverse <c>//h3</c> headings whose text starts with "Async".
+/// On structural breakage <see cref="Models.AnalyzerProviderBaseRuleData.ExceptionMessage"/> is set
+/// and the prior cached snapshot is reused by the base class.
+/// </remarks>
 public class AsyncFixerProvider : AnalyzerProviderBase
 {
     public AsyncFixerProvider(
@@ -48,6 +61,11 @@ public class AsyncFixerProvider : AnalyzerProviderBase
                         .ToString()!
                         .Split(':', StringSplitOptions.RemoveEmptyEntries);
 
+                    if (sa.Length != 2)
+                    {
+                        continue;
+                    }
+
                     var code = sa[0].Trim();
                     var title = sa[1].Trim();
 
@@ -65,7 +83,13 @@ public class AsyncFixerProvider : AnalyzerProviderBase
 
         var headers3 = htmlDoc.DocumentNode
             .SelectNodes("//h3")
-            .ToList();
+            ?.ToList();
+
+        if (headers3 is null)
+        {
+            data.ExceptionMessage = "Could not locate any rule headings on the page.";
+            return;
+        }
 
         foreach (var item in headers3)
         {
@@ -74,7 +98,9 @@ public class AsyncFixerProvider : AnalyzerProviderBase
                 continue;
             }
 
-            var description = item.NextSibling.NextSibling.InnerText.Replace(" Here is an example:", string.Empty, StringComparison.OrdinalIgnoreCase);
+            var description = item.NextSibling?.NextSibling?.InnerText
+                .Replace(" Here is an example:", string.Empty, StringComparison.OrdinalIgnoreCase)
+                ?? string.Empty;
 
             var sa = item.InnerText.Split(':');
             if (sa.Length != 2)

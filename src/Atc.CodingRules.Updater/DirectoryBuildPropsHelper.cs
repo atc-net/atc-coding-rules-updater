@@ -2,10 +2,20 @@
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 namespace Atc.CodingRules.Updater;
 
+/// <summary>
+/// Downloads <c>Directory.Build.props</c> files from the atc-coding-rules distribution and
+/// keeps the local copy in sync, optionally bumping NuGet package references to the latest minor
+/// version available on the ATC nuget search service.
+/// </summary>
 public static class DirectoryBuildPropsHelper
 {
+    /// <summary>The standard MSBuild props file name picked up by .NET SDK projects.</summary>
     public const string FileName = "Directory.Build.props";
 
+    /// <summary>
+    /// Convenience wrapper around <see cref="FileHelper.SearchAllForElement(DirectoryInfo, string, string, string?, SearchOption, StringComparison)"/>
+    /// scoped to <c>Directory.Build.props</c> files.
+    /// </summary>
     public static Collection<FileInfo> SearchAllForElement(
         DirectoryInfo projectPath,
         string elementName,
@@ -20,13 +30,26 @@ public static class DirectoryBuildPropsHelper
             searchOption,
             stringComparison);
 
+    /// <summary>
+    /// Downloads the upstream <c>Directory.Build.props</c> for <paramref name="urlPart"/> and
+    /// either creates the local file or replaces it (after applying optional package-version bumps).
+    /// </summary>
+    /// <param name="logger">Where progress is reported.</param>
+    /// <param name="area">Short label used in error logs (<c>"root"</c>, <c>"src"</c>, …).</param>
+    /// <param name="rawCodingRulesDistribution">Base raw URL for the chosen project target's distribution folder.</param>
+    /// <param name="useLatestMinorNugetVersion">When <c>true</c>, every <c>&lt;PackageReference&gt;</c> in the upstream content is bumped to the latest minor version reported by the ATC nuget search service.</param>
+    /// <param name="path">Local directory that should end up containing the props file.</param>
+    /// <param name="urlPart">Sub-path appended to <paramref name="rawCodingRulesDistribution"/> (empty for root).</param>
+    /// <param name="dryRun">When <c>true</c>, log what would change without writing any files.</param>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Covers the create / update / dry-run paths with shared setup; splitting hurts readability.")]
     public static void HandleFile(
         ILogger logger,
         string area,
         string rawCodingRulesDistribution,
         bool useLatestMinorNugetVersion,
         DirectoryInfo path,
-        string urlPart)
+        string urlPart,
+        bool dryRun = false)
     {
         ArgumentNullException.ThrowIfNull(path);
 
@@ -46,10 +69,23 @@ public static class DirectoryBuildPropsHelper
         {
             if (!Directory.Exists(file.Directory!.FullName))
             {
-                Directory.CreateDirectory(file.Directory.FullName);
+                if (dryRun)
+                {
+                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create directory {file.Directory!.FullName}");
+                }
+                else
+                {
+                    Directory.CreateDirectory(file.Directory.FullName);
+                }
             }
 
             var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl, displayName);
+            if (string.IsNullOrEmpty(contentGit))
+            {
+                logger.LogWarning($"{Emoji.Known.Warning}   {descriptionPart} skipped — upstream content is empty");
+                return;
+            }
+
             if (useLatestMinorNugetVersion)
             {
                 contentGit = EnsureLatestPackageReferencesVersion(logger, contentGit, LogCategoryType.Trace);
@@ -57,6 +93,12 @@ public static class DirectoryBuildPropsHelper
 
             if (!file.Exists)
             {
+                if (dryRun)
+                {
+                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create {descriptionPart}");
+                    return;
+                }
+
                 FileHelper.CreateFile(logger, file, contentGit, descriptionPart);
                 return;
             }
@@ -64,14 +106,25 @@ public static class DirectoryBuildPropsHelper
             var contentFile = FileHelper.ReadAllText(file);
             if (string.IsNullOrEmpty(contentFile))
             {
+                if (dryRun)
+                {
+                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create {descriptionPart}");
+                    return;
+                }
+
                 FileHelper.CreateFile(logger, file, contentGit, descriptionPart);
                 return;
             }
 
-            if (FileHelper.AreFilesEqual(contentGit, contentFile) &&
-                contentGit.Equals(contentFile, StringComparison.Ordinal))
+            if (contentGit.Equals(contentFile, StringComparison.Ordinal))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
+                return;
+            }
+
+            if (dryRun)
+            {
+                logger.LogInformation($"{EmojisConstants.FileUpdated}   [dim](dry-run)[/] would update {descriptionPart}");
                 return;
             }
 
@@ -79,11 +132,15 @@ public static class DirectoryBuildPropsHelper
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {area} - {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(area)} - {Markup.Escape(ex.Message)}");
             throw;
         }
     }
 
+    /// <summary>
+    /// Returns <c>true</c> when the props file in <paramref name="path"/> contains a placeholder
+    /// element of the form <c>&lt;name&gt;&lt;!-- value --&gt;&lt;/name&gt;</c>.
+    /// </summary>
     public static bool HasFileInsertPlaceholderElement(
         DirectoryInfo path,
         string elementName,
@@ -102,6 +159,11 @@ public static class DirectoryBuildPropsHelper
         return fileContent.Contains(searchText, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Replaces a placeholder element <c>&lt;name&gt;&lt;!-- value --&gt;&lt;/name&gt;</c> in the props file
+    /// at <paramref name="path"/> with <c>&lt;name&gt;newElementValue&lt;/name&gt;</c>. No-op if the file or
+    /// the placeholder is missing.
+    /// </summary>
     public static void UpdateFileInsertPlaceholderElement(
         ILogger logger,
         DirectoryInfo path,
@@ -189,7 +251,7 @@ public static class DirectoryBuildPropsHelper
         var result = new List<DotnetNugetPackage>();
 
         var packageReferencesGit = DotnetNugetHelper.GetAllPackageReferences(fileContent);
-        if (packageReferencesGit.Any())
+        if (packageReferencesGit.Count > 0)
         {
             foreach (var item in packageReferencesGit)
             {

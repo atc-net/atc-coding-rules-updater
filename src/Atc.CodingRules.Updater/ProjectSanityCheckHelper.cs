@@ -1,7 +1,21 @@
 namespace Atc.CodingRules.Updater;
 
+/// <summary>
+/// Pre-flight validation run before <see cref="EditorConfigHelper"/> / <see cref="DirectoryBuildPropsHelper"/>
+/// touch any file. Catches misconfigurations that would otherwise produce broken builds (missing
+/// <c>OrganizationName</c>, redundant <c>EnableNETAnalyzers</c>, <c>ImplicitUsings</c> against an
+/// older <c>TargetFramework</c>, …).
+/// </summary>
 public static class ProjectSanityCheckHelper
 {
+    /// <summary>
+    /// Validates the props/csproj layout under <paramref name="projectPath"/> against the chosen
+    /// <paramref name="projectTarget"/>.
+    /// </summary>
+    /// <param name="throwIf">When <c>true</c>, hard violations throw <see cref="DataException"/>; when <c>false</c>, every diagnostic is logged as a warning instead.</param>
+    /// <param name="logger">Where warnings are reported.</param>
+    /// <param name="projectPath">Project root directory.</param>
+    /// <param name="projectTarget">Target framework profile chosen for this run.</param>
     public static void CheckFiles(
         bool throwIf,
         ILogger logger,
@@ -38,7 +52,7 @@ public static class ProjectSanityCheckHelper
             "<!-- insert organization name here -->",
             SearchOption.TopDirectoryOnly);
 
-        if (!foundFiles.Any())
+        if (foundFiles.Count == 0)
         {
             return;
         }
@@ -56,7 +70,7 @@ public static class ProjectSanityCheckHelper
             "<!-- insert repository name here -->",
             SearchOption.TopDirectoryOnly);
 
-        if (!foundFiles.Any())
+        if (foundFiles.Count == 0)
         {
             return;
         }
@@ -77,7 +91,7 @@ public static class ProjectSanityCheckHelper
             SearchOption.AllDirectories,
             StringComparison.OrdinalIgnoreCase);
 
-        if (!foundFiles.Any())
+        if (foundFiles.Count == 0)
         {
             return;
         }
@@ -124,7 +138,7 @@ public static class ProjectSanityCheckHelper
             SearchOption.TopDirectoryOnly,
             StringComparison.OrdinalIgnoreCase);
 
-        if (!foundDirectoryBuildPropsFilesWithImplicitUsings.Any())
+        if (foundDirectoryBuildPropsFilesWithImplicitUsings.Count == 0)
         {
             return;
         }
@@ -134,7 +148,7 @@ public static class ProjectSanityCheckHelper
             "TargetFramework",
             targetFramework);
 
-        if (!foundFiles.Any())
+        if (foundFiles.Count == 0)
         {
             return;
         }

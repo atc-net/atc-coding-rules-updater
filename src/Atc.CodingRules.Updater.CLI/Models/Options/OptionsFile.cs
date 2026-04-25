@@ -14,6 +14,8 @@ public class OptionsFile
 
     public ProviderCollectingMode AnalyzerProviderCollectingMode { get; set; } = ProviderCollectingMode.LocalCache;
 
+    public bool DryRun { get; set; }
+
     public string? BuildFile { get; set; }
 
     public OptionsMappings Mappings { get; set; } = new();
@@ -22,5 +24,5 @@ public class OptionsFile
     public IList<OptionsProjectFrameworkMapping> ProjectFrameworkMappings { get; set; } = [];
 
     public override string ToString()
-        => $"{nameof(ProjectTarget)}: {ProjectTarget}, {nameof(UseTemporarySuppressions)}: {UseTemporarySuppressions}, {nameof(TemporarySuppressionsPath)}: {TemporarySuppressionAsExcel}, {nameof(TemporarySuppressionAsExcel)}: {TemporarySuppressionsPath}, {nameof(Mappings)}: ({Mappings}), {nameof(ProjectFrameworkMappings)}.Count: {ProjectFrameworkMappings.Count}";
+        => $"{nameof(ProjectTarget)}: {ProjectTarget}, {nameof(UseTemporarySuppressions)}: {UseTemporarySuppressions}, {nameof(TemporarySuppressionsPath)}: {TemporarySuppressionsPath}, {nameof(TemporarySuppressionAsExcel)}: {TemporarySuppressionAsExcel}, {nameof(Mappings)}: ({Mappings}), {nameof(ProjectFrameworkMappings)}.Count: {ProjectFrameworkMappings.Count}";
 }

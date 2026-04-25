@@ -1,5 +1,14 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes NSubstitute.Analyzers rules from the documentation README on GitHub.
+/// </summary>
+/// <remarks>
+/// Source: https://github.com/nsubstitute/NSubstitute.Analyzers/tree/master/documentation/rules.
+/// Same shape as <see cref="MeziantouProvider"/>: GitHub embedded
+/// <c>payload.tree.readme.richText</c> → first markdown-body article → first table →
+/// <c>tr</c> rows with columns (Id link, Category, Title).
+/// </remarks>
 public class NSubstituteAnalyzersProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;
@@ -46,10 +55,23 @@ public class NSubstituteAnalyzersProvider : AnalyzerProviderBase
             htmlDoc.LoadHtml(html);
         }
 
-        var articleNode = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']")[0];
+        var articleNodes = htmlDoc.DocumentNode.SelectNodes("//article[@class='markdown-body entry-content container-lg']");
+        if (articleNodes is null || articleNodes.Count == 0)
+        {
+            data.ExceptionMessage = "Could not locate the documentation article on the page.";
+            return;
+        }
+
+        var articleNode = articleNodes[0];
         var articleTableRows = articleNode
             .SelectNodes("//*//table[1]//tr")
-            .ToList();
+            ?.ToList();
+
+        if (articleTableRows is null)
+        {
+            data.ExceptionMessage = "Could not locate the documentation table on the page.";
+            return;
+        }
 
         foreach (var row in articleTableRows)
         {

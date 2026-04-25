@@ -1,5 +1,14 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes Asyncify-CSharp rules from the project's resource (.resx) file on GitHub.
+/// </summary>
+/// <remarks>
+/// Source: https://raw.githubusercontent.com/hvanbakel/Asyncify-CSharp/master/Asyncify/Asyncify/Resources.resx.
+/// Parses every <c>&lt;data name="AsyncifyXXX[Title|Description|MessageFormat]"&gt;</c>
+/// element in the .resx XML and pairs them by code prefix.
+/// Stable structure (changes rarely); no fallback needed beyond the base-class cached snapshot.
+/// </remarks>
 public class AsyncifyProvider : AnalyzerProviderBase
 {
     [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]

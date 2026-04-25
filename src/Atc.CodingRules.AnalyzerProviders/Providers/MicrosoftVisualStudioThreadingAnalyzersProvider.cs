@@ -1,5 +1,12 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes Microsoft.VisualStudio.Threading.Analyzers (VSTHRDxxx) rules from the docs index page.
+/// </summary>
+/// <remarks>
+/// Source: https://microsoft.github.io/vs-threading/analyzers/index.html.
+/// Path: first <c>table</c> → <c>.//tr</c> rows; columns are (Id link, Title, Category).
+/// </remarks>
 public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderBase
 {
     private const int TableColumnId = 0;

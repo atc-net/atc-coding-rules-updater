@@ -5,20 +5,26 @@ namespace Atc.CodingRules.Updater.CLI;
 
 public static class ProjectHelper
 {
-    private const string RawCodingRulesDistributionBaseUrl = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules/main/distribution";
     private const string AtcCodingRulesSuppressionsFileName = "AtcCodingRulesSuppressions.txt";
-
     private const string AtcCodingRulesSuppressionsFileNameAsExcel = "AtcCodingRulesSuppressions.xlsx";
     private const int MaxNumberOfTimesToBuild = 9;
     private const int BuildDefaultTimeoutInSec = 1200;
 
+    private static readonly string RawCodingRulesDistributionBaseUrl = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules/main/distribution";
+
     public static async Task HandleFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        OptionsFile options)
+        OptionsFile options,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
+
+        if (options.DryRun)
+        {
+            logger.LogInformation("[yellow]Dry-run mode is active — no files will be written.[/]");
+        }
 
         ProjectSanityCheckHelper.CheckFiles(
             throwIf: true,
@@ -40,7 +46,11 @@ public static class ProjectHelper
         {
             HandleDirectoryBuildPropsFiles(logger, projectPath, options);
 
-            if (options.UseTemporarySuppressions)
+            if (options.UseTemporarySuppressions && options.DryRun)
+            {
+                logger.LogInformation($"{AppEmojisConstants.AreaTemporarySuppression} [dim](dry-run)[/] would run the build/suppress loop — skipped");
+            }
+            else if (options.UseTemporarySuppressions)
             {
                 DirectoryInfo? temporarySuppressionsPath = null;
                 if (!string.IsNullOrEmpty(options.TemporarySuppressionsPath))
@@ -59,7 +69,8 @@ public static class ProjectHelper
                     projectPath,
                     buildFile,
                     temporarySuppressionsPath,
-                    options.TemporarySuppressionAsExcel);
+                    options.TemporarySuppressionAsExcel,
+                    cancellationToken);
             }
         }
     }
@@ -89,26 +100,26 @@ public static class ProjectHelper
         logger.LogInformation($"{AppEmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
-        const string projectFrameworkCodingRulesBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/project-frameworks";
+        var projectFrameworkCodingRulesBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/project-frameworks";
 
-        EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty);
+        EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty, options.DryRun);
 
         foreach (var item in options.Mappings.Sample.Paths)
         {
             var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, path, "sample");
+            EditorConfigHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, path, "sample", options.DryRun);
         }
 
         foreach (var item in options.Mappings.Src.Paths)
         {
             var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, path, "src");
+            EditorConfigHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, path, "src", options.DryRun);
         }
 
         foreach (var item in options.Mappings.Test.Paths)
         {
             var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, path, "test");
+            EditorConfigHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, path, "test", options.DryRun);
         }
 
         // Handle Project specific Frameworks
@@ -127,7 +138,8 @@ public static class ProjectHelper
                 "ProjectFramework",
                 projectFrameworkCodingRulesBaseUrl,
                 csProjFile.Directory!,
-                projectFrameworkType.ToStringLowerCase());
+                projectFrameworkType.ToStringLowerCase(),
+                options.DryRun);
         }
     }
 
@@ -167,24 +179,24 @@ public static class ProjectHelper
         logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
 
-        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty);
+        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty, options.DryRun);
 
         foreach (var item in options.Mappings.Sample.Paths)
         {
             var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "sample");
+            DirectoryBuildPropsHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "sample", options.DryRun);
         }
 
         foreach (var item in options.Mappings.Src.Paths)
         {
             var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "src");
+            DirectoryBuildPropsHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "src", options.DryRun);
         }
 
         foreach (var item in options.Mappings.Test.Paths)
         {
             var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "test");
+            DirectoryBuildPropsHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "test", options.DryRun);
         }
     }
 
@@ -194,7 +206,8 @@ public static class ProjectHelper
         DirectoryInfo projectPath,
         FileInfo? buildFile,
         DirectoryInfo? temporarySuppressionsPath,
-        bool temporarySuppressionAsExcel)
+        bool temporarySuppressionAsExcel,
+        CancellationToken cancellationToken)
     {
         logger.LogInformation($"{AppEmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
 
@@ -219,7 +232,7 @@ public static class ProjectHelper
         }
         else
         {
-            rootEditorConfigContent = await EditorConfigHelper.ReadAllText(projectPath);
+            rootEditorConfigContent = await EditorConfigHelper.ReadAllText(projectPath, cancellationToken);
             DeleteSuppressionsFileInTempPath(temporarySuppressionsPath, temporarySuppressionAsExcel);
         }
 
@@ -235,7 +248,8 @@ public static class ProjectHelper
                 useNugetRestore: true,
                 useConfigurationReleaseMode: true,
                 BuildDefaultTimeoutInSec,
-                "     ");
+                "     ",
+                cancellationToken);
         }
         catch (DataException ex)
         {
@@ -271,9 +285,10 @@ public static class ProjectHelper
         else
         {
             var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
-            if (suppressionLinesPrAnalyzer.Any())
+            if (suppressionLinesPrAnalyzer.Count > 0)
             {
                 await EditorConfigHelper.UpdateRootFileAddCustomAtcAutogeneratedRuleSuppressions(projectPath, suppressionLinesPrAnalyzer);
+                var converged = false;
                 for (var i = 0; i < MaxNumberOfTimesToBuild; i++)
                 {
                     var runAgain = await BuildAndCollectErrorsAgainAndUpdateFile(
@@ -282,18 +297,25 @@ public static class ProjectHelper
                         2 + i,
                         buildFile,
                         buildResult,
-                        analyzerProviderBaseRules);
+                        analyzerProviderBaseRules,
+                        cancellationToken);
 
                     if (!runAgain)
                     {
+                        converged = true;
                         break;
                     }
+                }
+
+                if (!converged)
+                {
+                    logger.LogWarning($"{Emoji.Known.Warning}   Build loop did not converge after {MaxNumberOfTimesToBuild + 1} build runs; review the project for analyzers that emit different diagnostics on each pass.");
                 }
 
                 suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
                 if (temporarySuppressionsPath is not null)
                 {
-                    await EditorConfigHelper.WriteAllText(projectPath, rootEditorConfigContent);
+                    await EditorConfigHelper.WriteAllText(projectPath, rootEditorConfigContent, cancellationToken);
                     await CreateSuppressionsFileInTempPath(logger, temporarySuppressionsPath, temporarySuppressionAsExcel, suppressionLinesPrAnalyzer);
                 }
                 else
@@ -318,7 +340,8 @@ public static class ProjectHelper
         int runNumber,
         FileInfo? buildFile,
         Dictionary<string, int> buildResult,
-        Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules)
+        Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules,
+        CancellationToken cancellationToken)
     {
         bool hasFoundNewErrors;
 
@@ -332,7 +355,8 @@ public static class ProjectHelper
                 useNugetRestore: true,
                 useConfigurationReleaseMode: true,
                 BuildDefaultTimeoutInSec,
-                "     ");
+                "     ",
+                cancellationToken);
 
             hasFoundNewErrors = buildResultNextRun.Count > 0;
             foreach (var (key, value) in buildResultNextRun)
@@ -352,7 +376,7 @@ public static class ProjectHelper
         if (hasFoundNewErrors)
         {
             var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
-            if (suppressionLinesPrAnalyzer.Any())
+            if (suppressionLinesPrAnalyzer.Count > 0)
             {
                 await EditorConfigHelper.UpdateRootFileRemoveCustomAtcAutogeneratedRuleSuppressions(projectPath);
                 await EditorConfigHelper.UpdateRootFileAddCustomAtcAutogeneratedRuleSuppressions(projectPath, suppressionLinesPrAnalyzer);

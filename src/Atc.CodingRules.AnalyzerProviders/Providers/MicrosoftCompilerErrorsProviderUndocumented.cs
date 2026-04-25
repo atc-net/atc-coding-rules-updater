@@ -1,8 +1,13 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
 /// <summary>
-/// This Provider holds the rules currently not documented by Microsoft.
+/// Holds compiler error / warning rules that are not yet (or no longer) listed on Microsoft Learn.
 /// </summary>
+/// <remarks>
+/// No HTTP scraping happens here — the rules are an in-process hard-coded list inside this class.
+/// Update the list when Microsoft removes a CSxxxx page that we still want covered, or when a
+/// well-known undocumented diagnostic ID surfaces.
+/// </remarks>
 public class MicrosoftCompilerErrorsProviderUndocumented : AnalyzerProviderBase
 {
     public MicrosoftCompilerErrorsProviderUndocumented(

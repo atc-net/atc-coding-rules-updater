@@ -36,7 +36,8 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             await ProjectHelper.HandleFiles(
                 logger,
                 projectPath,
-                options);
+                options,
+                cancellationToken);
 
             if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "OrganizationName", "insert organization name here"))
             {
@@ -58,7 +59,7 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
             return ConsoleExitStatusCodes.Failure;
         }
 
@@ -101,6 +102,11 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
         if (settings.TemporarySuppressionAsExcel.HasValue)
         {
             options.TemporarySuppressionAsExcel = settings.TemporarySuppressionAsExcel.GetValueOrDefault();
+        }
+
+        if (settings.DryRun.HasValue)
+        {
+            options.DryRun = settings.DryRun.GetValueOrDefault();
         }
 
         var buildFile = GetBuildFile(settings, projectPath);

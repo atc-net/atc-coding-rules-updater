@@ -1,5 +1,13 @@
 namespace Atc.CodingRules.AnalyzerProviders.Providers;
 
+/// <summary>
+/// Scrapes SecurityCodeScan SCS-prefix rules from the project's docs site.
+/// </summary>
+/// <remarks>
+/// Source: https://security-code-scan.github.io.
+/// Path: every <c>//h3</c> heading whose inner text contains "SCS" (in the form
+/// "<c>SCSxxxx - Title</c>"). Pages are flat — no tables.
+/// </remarks>
 public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
 {
     public SecurityCodeScanVs2019Provider(
@@ -29,7 +37,13 @@ public class SecurityCodeScanVs2019Provider : AnalyzerProviderBase
 
         var headers3 = htmlDoc.DocumentNode
             .SelectNodes("//h3")
-            .ToList();
+            ?.ToList();
+
+        if (headers3 is null)
+        {
+            data.ExceptionMessage = "Could not locate any rule headings on the page.";
+            return;
+        }
 
         foreach (var item in headers3.Select(x => x.InnerText))
         {
