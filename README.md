@@ -327,9 +327,9 @@ In scenario A we have root where `src` and `test` destination is defined as:
 
 When the `atc-coding-rules-update` is exceuted first time, the following happens (see legend for explanation):
 
-* ![#70AD47](https://via.placeholder.com/15/70AD47/000000?text=+) arrows indicate files created in `root` folder.
-* ![#00B0F0](https://via.placeholder.com/15/00B0F0/000000?text=+) arrows indicate files created in `src` folder.
-* ![#7030A0](https://via.placeholder.com/15/7030A0/000000?text=+) arrows indicate files created in `test` folder.
+* ![#70AD47](https://placehold.co/15x15/70AD47/70AD47.png) arrows indicate files created in `root` folder.
+* ![#00B0F0](https://placehold.co/15x15/00B0F0/00B0F0.png) arrows indicate files created in `src` folder.
+* ![#7030A0](https://placehold.co/15x15/7030A0/7030A0.png) arrows indicate files created in `test` folder.
 
 ![Img](docs/scenario-a-first-run.png)
 
@@ -356,9 +356,9 @@ In this scenario we have root where `src` and `test` destination is defined as:
 
 When the `atc-coding-rules-update` is executed first time, the following happens (see legend for explanation):
 
-* ![#70AD47](https://via.placeholder.com/15/70AD47/000000?text=+) arrows indicate files created in `root` folder.
-* ![#00B0F0](https://via.placeholder.com/15/00B0F0/000000?text=+) arrows indicate files created in `src` folder.
-* ![#7030A0](https://via.placeholder.com/15/7030A0/000000?text=+) arrows indicate files created in `test` folder.
+* ![#70AD47](https://placehold.co/15x15/70AD47/70AD47.png) arrows indicate files created in `root` folder.
+* ![#00B0F0](https://placehold.co/15x15/00B0F0/00B0F0.png) arrows indicate files created in `src` folder.
+* ![#7030A0](https://placehold.co/15x15/7030A0/7030A0.png) arrows indicate files created in `test` folder.
 
 ![Img](docs/scenario-b-first-run.png)
 
