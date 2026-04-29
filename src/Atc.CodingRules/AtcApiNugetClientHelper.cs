@@ -2,7 +2,7 @@ namespace Atc.CodingRules;
 
 public static class AtcApiNugetClientHelper
 {
-    private const string BaseAddress = "https://atc-api.azurewebsites.net/nuget-search";
+    private const string BaseAddress = "https://atcnet-api-prod-api-ca-01.greenhill-862ffb7c.swedencentral.azurecontainerapps.io/nuget-search";
     private static readonly ConcurrentDictionary<string, Version> Cache = new(StringComparer.Ordinal);
     private static readonly HttpClient SharedClient = new();
 
