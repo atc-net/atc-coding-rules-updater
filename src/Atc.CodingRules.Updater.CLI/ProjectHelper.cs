@@ -10,6 +10,14 @@ public static class ProjectHelper
     private const int MaxNumberOfTimesToBuild = 9;
     private const int BuildDefaultTimeoutInSec = 1200;
 
+    /// <summary>
+    /// The ATC rules set <c>TreatWarningsAsErrors</c>, which turns analyzer violations into build
+    /// errors. A failing project stops MSBuild from building anything that depends on it, so those
+    /// projects were never analysed and their violations were neither suppressed nor counted.
+    /// Disabling the promotion lets the whole solution compile and be analysed in one pass.
+    /// </summary>
+    private const string CollectDiagnosticsBuildArguments = "-p:TreatWarningsAsErrors=false";
+
     private static readonly string RawCodingRulesDistributionBaseUrl = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules/main/distribution";
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Sequential phases of one run; splitting hurts readability.")]
@@ -71,18 +79,68 @@ public static class ProjectHelper
                     buildFile = new FileInfo(options.BuildFile);
                 }
 
+                var buildOptions = new SuppressionBuildOptions(
+                    IsReleaseConfiguration(options.BuildConfiguration),
+                    BuildAdditionalArguments(options.BuildProperties));
+
                 await HandleTemporarySuppressions(
                     logger,
                     projectPath,
                     buildFile,
                     temporarySuppressionsPath,
                     options.TemporarySuppressionAsExcel,
+                    buildOptions,
                     cancellationToken);
             }
         }
 
         return summary;
     }
+
+    /// <summary>
+    /// Formats <paramref name="buildProperties"/> as MSBuild <c>-p:Name=Value</c> switches.
+    /// </summary>
+    /// <remarks>
+    /// MSBuild offers no way to skip a named target, so forwarding properties is the mechanism a
+    /// user has for turning off a conditioned target (an obfuscator, a signing step) during the
+    /// suppression build. Entries without a <c>Name=Value</c> shape are ignored rather than passed
+    /// through as a malformed switch.
+    /// </remarks>
+    internal static string BuildAdditionalArguments(
+        IEnumerable<string> buildProperties)
+    {
+        ArgumentNullException.ThrowIfNull(buildProperties);
+
+        var switches = new List<string>();
+
+        foreach (var property in buildProperties)
+        {
+            if (string.IsNullOrWhiteSpace(property))
+            {
+                continue;
+            }
+
+            var separatorIndex = property.IndexOf('=', StringComparison.Ordinal);
+            if (separatorIndex <= 0 || separatorIndex == property.Length - 1)
+            {
+                continue;
+            }
+
+            switches.Add(property.Contains(' ', StringComparison.Ordinal)
+                ? $"-p:\"{property}\""
+                : $"-p:{property}");
+        }
+
+        return string.Join(' ', switches);
+    }
+
+    /// <summary>
+    /// Maps a configuration name onto the release/debug flag the build helper takes. Release stays
+    /// the default, so omitting <c>--buildConfiguration</c> preserves the previous behaviour.
+    /// </summary>
+    internal static bool IsReleaseConfiguration(string? configuration)
+        => string.IsNullOrWhiteSpace(configuration) ||
+           configuration.Equals("Release", StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Resolves <paramref name="projectPath"/> to an existing directory, or logs a clear error and
@@ -342,9 +400,16 @@ public static class ProjectHelper
         FileInfo? buildFile,
         DirectoryInfo? temporarySuppressionsPath,
         bool temporarySuppressionAsExcel,
+        SuppressionBuildOptions buildOptions,
         CancellationToken cancellationToken)
     {
         logger.LogInformation($"{AppEmojisConstants.AreaTemporarySuppression} Working on temporary suppressions");
+
+        if (!buildOptions.UseReleaseConfiguration || buildOptions.AdditionalBuildArguments.Length > 0)
+        {
+            logger.LogTrace(
+                $"     Build configuration: {(buildOptions.UseReleaseConfiguration ? "Release" : "Debug")} {buildOptions.AdditionalBuildArguments}".TrimEnd());
+        }
 
         if (!FileHelper.ContainsSolutionOrProjectFile(projectPath) &&
             !FileHelper.IsSolutionOrProjectFile(buildFile))
@@ -375,15 +440,18 @@ public static class ProjectHelper
 
         try
         {
+            // First pass collects errors, purely so a genuinely broken build (MSB/NU) can be
+            // reported before any suppression is written. Counting happens in the second pass.
             buildResult = await DotnetBuildHelper.BuildAndCollectErrors(
                 logger,
                 projectPath,
                 1,
                 buildFile,
                 useNugetRestore: true,
-                useConfigurationReleaseMode: true,
+                useConfigurationReleaseMode: buildOptions.UseReleaseConfiguration,
                 BuildDefaultTimeoutInSec,
                 "     ",
+                buildOptions.AdditionalBuildArguments,
                 cancellationToken);
         }
         catch (DataException ex)
@@ -419,6 +487,26 @@ public static class ProjectHelper
         }
         else
         {
+            // Second pass does the counting. With warnings-as-errors disabled the whole solution
+            // compiles, so projects that depend on a violating project are analysed too - without
+            // this their violations were invisible and the generated list was incomplete, not
+            // merely miscounted.
+            try
+            {
+                buildResult = await CollectDiagnosticsForSuppressions(
+                    logger,
+                    projectPath,
+                    2,
+                    buildFile,
+                    buildOptions,
+                    cancellationToken);
+            }
+            catch (DataException ex)
+            {
+                logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+                return;
+            }
+
             var suppressionLinesPrAnalyzer = GetSuppressionLines(analyzerProviderBaseRules, buildResult);
             if (suppressionLinesPrAnalyzer.Count > 0)
             {
@@ -429,10 +517,11 @@ public static class ProjectHelper
                     var runAgain = await BuildAndCollectErrorsAgainAndUpdateFile(
                         logger,
                         projectPath,
-                        2 + i,
+                        3 + i,
                         buildFile,
                         buildResult,
                         analyzerProviderBaseRules,
+                        buildOptions,
                         cancellationToken);
 
                     if (!runAgain)
@@ -469,6 +558,47 @@ public static class ProjectHelper
         logger.LogTrace($"     Collecting build errors time: {stopwatch.Elapsed.GetPrettyTime()}");
     }
 
+    /// <summary>
+    /// Builds and collects the analyzer diagnostics used to generate suppressions.
+    /// </summary>
+    /// <remarks>
+    /// Collects <em>warnings</em> with <c>TreatWarningsAsErrors</c> disabled, so the whole solution
+    /// compiles and every project is analysed. Any <c>--buildProperty</c> values the caller passed
+    /// are appended after the override, so a user can still override it themselves.
+    /// </remarks>
+    internal static Task<Dictionary<string, int>> CollectDiagnosticsForSuppressions(
+        ILogger logger,
+        DirectoryInfo projectPath,
+        int runNumber,
+        FileInfo? buildFile,
+        SuppressionBuildOptions buildOptions,
+        CancellationToken cancellationToken)
+        => DotnetBuildHelper.BuildAndCollectWarnings(
+            logger,
+            projectPath,
+            runNumber,
+            buildFile,
+            useNugetRestore: true,
+            useConfigurationReleaseMode: buildOptions.UseReleaseConfiguration,
+            BuildDefaultTimeoutInSec,
+            "     ",
+            CombineBuildArguments(buildOptions),
+            cancellationToken);
+
+    /// <summary>
+    /// Puts the warnings-as-errors override first so a user-supplied <c>--buildProperty</c> with
+    /// the same name still wins.
+    /// </summary>
+    internal static string CombineBuildArguments(
+        SuppressionBuildOptions buildOptions)
+    {
+        ArgumentNullException.ThrowIfNull(buildOptions);
+
+        return string.IsNullOrEmpty(buildOptions.AdditionalBuildArguments)
+            ? CollectDiagnosticsBuildArguments
+            : $"{CollectDiagnosticsBuildArguments} {buildOptions.AdditionalBuildArguments}";
+    }
+
     private static async Task<bool> BuildAndCollectErrorsAgainAndUpdateFile(
         ILogger logger,
         DirectoryInfo projectPath,
@@ -476,21 +606,19 @@ public static class ProjectHelper
         FileInfo? buildFile,
         Dictionary<string, int> buildResult,
         Collection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules,
+        SuppressionBuildOptions buildOptions,
         CancellationToken cancellationToken)
     {
         bool hasFoundNewErrors;
 
         try
         {
-            var buildResultNextRun = await DotnetBuildHelper.BuildAndCollectErrors(
+            var buildResultNextRun = await CollectDiagnosticsForSuppressions(
                 logger,
                 projectPath,
                 runNumber,
                 buildFile,
-                useNugetRestore: true,
-                useConfigurationReleaseMode: true,
-                BuildDefaultTimeoutInSec,
-                "     ",
+                buildOptions,
                 cancellationToken);
 
             hasFoundNewErrors = buildResultNextRun.Count > 0;
@@ -654,11 +782,12 @@ public static class ProjectHelper
         return rowNr;
     }
 
-    private static string CreateSuppressionsText(
+    internal static string CreateSuppressionsText(
         IEnumerable<Tuple<string, List<string>>> suppressionLinesPrAnalyzer)
     {
         var sb = new StringBuilder();
         sb.AppendLine(GlobalizationConstants.EnglishCultureInfo, $"{EditorConfigHelper.AutogeneratedCustomSectionHeaderPrefix} {DateTime.Now:F}");
+        sb.AppendLine(GlobalizationConstants.EnglishCultureInfo, $"# {CodingRulesUpdaterVersionHelper.GetGeneratedByText()}");
         foreach (var (analyzerName, suppressionLines) in suppressionLinesPrAnalyzer)
         {
             sb.AppendLine(GlobalizationConstants.EnglishCultureInfo, $"{Environment.NewLine}# {analyzerName}");

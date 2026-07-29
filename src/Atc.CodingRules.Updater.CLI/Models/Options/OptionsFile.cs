@@ -25,6 +25,17 @@ public class OptionsFile
 
     public string? BuildFile { get; set; }
 
+    /// <summary>
+    /// Configuration for the temporary-suppression builds. <c>null</c> means Release.
+    /// </summary>
+    public string? BuildConfiguration { get; set; }
+
+    /// <summary>
+    /// MSBuild properties forwarded to the temporary-suppression builds as <c>-p:Name=Value</c>.
+    /// </summary>
+    [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Bound from JSON like the other options.")]
+    public IList<string> BuildProperties { get; set; } = [];
+
     public OptionsMappings Mappings { get; set; } = new();
 
     [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
