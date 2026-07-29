@@ -10,14 +10,8 @@
     <Nullable>annotations</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
-    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
-    <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Atc.Test" Version="2.0.17" />
+    <PackageReference Include="Atc.Test" Version="3.0.0" />
     <PackageReference Include="Atc.XUnit" Version="3.0.174" />
     <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.17" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
@@ -25,10 +19,6 @@
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.3.3" />
     <PackageReference Include="xunit.v3.mtp-v2" Version="3.2.2" />
     <PackageReference Include="Neovolve.Logging.Xunit.v3" Version="7.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +26,7 @@
     <Using Include="Atc.XUnit" />
     <Using Include="AutoFixture" />
     <Using Include="AutoFixture.Xunit3" />
-    <Using Include="FluentAssertions" />
+    <Using Include="AwesomeAssertions" />
     <Using Include="NSubstitute" />
     <Using Include="Xunit" />
     <Using Include="Neovolve.Logging.Xunit" />
