@@ -235,6 +235,68 @@ public sealed class ProjectSanityCheckHelperTests
             && d.FilePath.EndsWith("Sample.csproj", StringComparison.OrdinalIgnoreCase));
     }
 
+    [Fact]
+    public void CheckFiles_ReturnsErrorDiagnostics_WhenNotThrowing()
+    {
+        var directory = PrepareSubDirectory(nameof(CheckFiles_ReturnsErrorDiagnostics_WhenNotThrowing));
+        WritePropsFile(
+            directory,
+            "<Project>",
+            "  <PropertyGroup>",
+            "    <OrganizationName>Acme</OrganizationName>",
+            "    <RepositoryName>my-repo</RepositoryName>",
+            "  </PropertyGroup>",
+            "</Project>");
+
+        var srcDir = Directory.CreateDirectory(Path.Combine(directory.FullName, "src"));
+        File.WriteAllText(
+            Path.Combine(srcDir.FullName, "Sample.csproj"),
+            string.Join(
+                Environment.NewLine,
+                "<Project Sdk=\"Microsoft.NET.Sdk\">",
+                "  <PropertyGroup>",
+                "    <TargetFramework>net5.0</TargetFramework>",
+                "    <EnableNETAnalyzers>true</EnableNETAnalyzers>",
+                "  </PropertyGroup>",
+                "</Project>"));
+
+        using var logger = testOutput.BuildLogger();
+
+        var result = ProjectSanityCheckHelper.CheckFiles(
+            throwIf: false,
+            logger,
+            directory,
+            SupportedProjectTargetType.DotNet5);
+
+        result.Should().Contain(d =>
+            d.Severity == SanityCheckSeverity.Error
+            && d.Code == "EnableNETAnalyzers");
+    }
+
+    [Fact]
+    public void CheckFiles_ReturnsEmpty_OnCleanProject()
+    {
+        var directory = PrepareSubDirectory(nameof(CheckFiles_ReturnsEmpty_OnCleanProject));
+        WritePropsFile(
+            directory,
+            "<Project>",
+            "  <PropertyGroup>",
+            "    <OrganizationName>Acme</OrganizationName>",
+            "    <RepositoryName>my-repo</RepositoryName>",
+            "  </PropertyGroup>",
+            "</Project>");
+
+        using var logger = testOutput.BuildLogger();
+
+        var result = ProjectSanityCheckHelper.CheckFiles(
+            throwIf: false,
+            logger,
+            directory,
+            SupportedProjectTargetType.DotNet10);
+
+        result.Should().BeEmpty();
+    }
+
     private static DirectoryInfo PrepareSubDirectory(string testName)
     {
         var path = Path.Combine(WorkingDirectory, testName);

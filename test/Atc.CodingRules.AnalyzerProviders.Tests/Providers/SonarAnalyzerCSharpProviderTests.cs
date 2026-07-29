@@ -11,11 +11,10 @@ public sealed class SonarAnalyzerCSharpProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new SonarAnalyzerCSharpProvider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new SonarAnalyzerCSharpProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 400);
 
         // Assert
         Assert.NotNull(actual);

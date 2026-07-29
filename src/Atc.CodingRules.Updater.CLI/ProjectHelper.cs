@@ -75,7 +75,36 @@ public static class ProjectHelper
         }
     }
 
-    public static Task SanityCheckFiles(
+    /// <summary>
+    /// Resolves <paramref name="projectPath"/> to an existing directory, or logs a clear error and
+    /// returns <c>null</c>. Without this a mistyped <c>--projectPath</c> surfaces as an unhandled
+    /// <see cref="DirectoryNotFoundException"/> from deep inside the options loader.
+    /// </summary>
+    internal static DirectoryInfo? GetExistingProjectPath(
+        ILogger logger,
+        string projectPath)
+    {
+        if (string.IsNullOrWhiteSpace(projectPath))
+        {
+            logger.LogError($"{EmojisConstants.Error} No project path was given - use --projectPath");
+            return null;
+        }
+
+        var directory = new DirectoryInfo(projectPath);
+        if (!directory.Exists)
+        {
+            logger.LogError($"{EmojisConstants.Error} Project path does not exist: {Markup.Escape(directory.FullName)}");
+            return null;
+        }
+
+        return directory;
+    }
+
+    /// <summary>
+    /// Runs the sanity checks in report-only mode and returns every diagnostic found, so the
+    /// caller can map them to an exit code.
+    /// </summary>
+    public static IReadOnlyList<SanityCheckDiagnostic> SanityCheckFiles(
         ILogger logger,
         DirectoryInfo projectPath,
         OptionsFile options)
@@ -83,13 +112,11 @@ public static class ProjectHelper
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
 
-        ProjectSanityCheckHelper.CheckFiles(
+        return ProjectSanityCheckHelper.CheckFiles(
             throwIf: false,
             logger,
             projectPath,
             options.ProjectTarget);
-
-        return Task.Delay(1);
     }
 
     private static void HandleEditorConfigFiles(

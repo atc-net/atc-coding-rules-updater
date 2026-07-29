@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Atc.CodingRules.Updater.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Atc.CodingRules.AnalyzerProviders\Atc.CodingRules.AnalyzerProviders.csproj" />
     <ProjectReference Include="..\Atc.CodingRules.Updater\Atc.CodingRules.Updater.csproj" />
   </ItemGroup>

@@ -12,7 +12,7 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
         return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    private async Task<int> ExecuteInternalAsync(
+    internal async Task<int> ExecuteInternalAsync(
         SanityCheckCommandSettings settings,
         CancellationToken cancellationToken)
     {
@@ -22,21 +22,20 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
             ConsoleHelper.WriteHeader();
         }
 
-        var projectPath = new DirectoryInfo(settings.ProjectPath);
-        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
-
-        if (jsonOutput)
+        var projectPath = ProjectHelper.GetExistingProjectPath(logger, settings.ProjectPath);
+        if (projectPath is null)
         {
-            var diagnostics = ProjectSanityCheckHelper.CheckFilesAndCollect(projectPath, options.ProjectTarget);
-            WriteJsonSummary(diagnostics);
-            return diagnostics.Any(d => d.Severity == SanityCheckSeverity.Error)
-                ? ConsoleExitStatusCodes.Failure
-                : ConsoleExitStatusCodes.Success;
+            return ConsoleExitStatusCodes.Failure;
         }
 
+        var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
+
+        IReadOnlyList<SanityCheckDiagnostic> diagnostics;
         try
         {
-            await ProjectHelper.SanityCheckFiles(logger, projectPath, options);
+            diagnostics = jsonOutput
+                ? ProjectSanityCheckHelper.CheckFilesAndCollect(projectPath, options.ProjectTarget)
+                : ProjectHelper.SanityCheckFiles(logger, projectPath, options);
         }
         catch (Exception ex)
         {
@@ -44,8 +43,22 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Success} Done");
-        return ConsoleExitStatusCodes.Success;
+        // Both output modes derive the exit code from the same expression; keeping them apart
+        // is what let the text mode silently return Success while --json returned Failure.
+        var hasErrors = diagnostics.Any(d => d.Severity == SanityCheckSeverity.Error);
+
+        if (jsonOutput)
+        {
+            WriteJsonSummary(diagnostics);
+        }
+        else if (!hasErrors)
+        {
+            logger.LogInformation($"{EmojisConstants.Success} Done");
+        }
+
+        return hasErrors
+            ? ConsoleExitStatusCodes.Failure
+            : ConsoleExitStatusCodes.Success;
     }
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(

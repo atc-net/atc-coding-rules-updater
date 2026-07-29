@@ -9,24 +9,6 @@ public class AnalyzerProviderCollector
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public static string[] GetAllBaseRuleProviderNames()
-        =>
-        [
-            AsyncFixerProvider.Name,
-            AsyncifyProvider.Name,
-            MeziantouProvider.Name,
-            MicrosoftCodeAnalysisNetAnalyzersProvider.Name,
-            MicrosoftCompilerErrorsProvider.Name,
-            MicrosoftCompilerErrorsProviderUndocumented.Name,
-            MicrosoftVisualStudioThreadingAnalyzersProvider.Name,
-            NSubstituteAnalyzersProvider.Name,
-            SecurityCodeScanVs2019Provider.Name,
-            StyleCopAnalyzersProvider.Name,
-            SonarAnalyzerCSharpProvider.Name,
-            WpfAnalyzersProvider.Name,
-            XunitProvider.Name,
-        ];
-
     public Task<Collection<AnalyzerProviderBaseRuleData>> CollectAllBaseRules(
         ProviderCollectingMode providerCollectingMode,
         bool logWithAnsiConsoleMarkup)
@@ -123,23 +105,7 @@ public class AnalyzerProviderCollector
     }
 
     private static string GetProviderName(AnalyzerProviderBase provider)
-        => provider switch
-        {
-            AsyncFixerProvider => AsyncFixerProvider.Name,
-            AsyncifyProvider => AsyncifyProvider.Name,
-            MeziantouProvider => MeziantouProvider.Name,
-            MicrosoftCodeAnalysisNetAnalyzersProvider => MicrosoftCodeAnalysisNetAnalyzersProvider.Name,
-            MicrosoftCompilerErrorsProvider => MicrosoftCompilerErrorsProvider.Name,
-            MicrosoftCompilerErrorsProviderUndocumented => MicrosoftCompilerErrorsProviderUndocumented.Name,
-            MicrosoftVisualStudioThreadingAnalyzersProvider => MicrosoftVisualStudioThreadingAnalyzersProvider.Name,
-            NSubstituteAnalyzersProvider => NSubstituteAnalyzersProvider.Name,
-            SecurityCodeScanVs2019Provider => SecurityCodeScanVs2019Provider.Name,
-            StyleCopAnalyzersProvider => StyleCopAnalyzersProvider.Name,
-            SonarAnalyzerCSharpProvider => SonarAnalyzerCSharpProvider.Name,
-            WpfAnalyzersProvider => WpfAnalyzersProvider.Name,
-            XunitProvider => XunitProvider.Name,
-            _ => provider.GetType().Name,
-        };
+        => provider.ProviderName;
 
     public void CacheCleanup()
     {

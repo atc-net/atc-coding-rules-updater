@@ -25,6 +25,7 @@ global using Atc.Helpers;
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Logging.Abstractions;
 global using OfficeOpenXml;
 global using OfficeOpenXml.Style;
 global using Spectre.Console;

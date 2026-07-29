@@ -11,11 +11,10 @@ public sealed class AsyncifyProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new AsyncifyProvider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new AsyncifyProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 2);
 
         // Assert
         Assert.NotNull(actual);

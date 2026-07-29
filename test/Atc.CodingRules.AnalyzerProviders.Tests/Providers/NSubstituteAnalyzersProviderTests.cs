@@ -11,11 +11,10 @@ public sealed class NSubstituteAnalyzersProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new NSubstituteAnalyzersProvider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new NSubstituteAnalyzersProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 23);
 
         // Assert
         Assert.NotNull(actual);

@@ -18,6 +18,7 @@ This repository contains a CLI tool, which can be used to maintain `coding-rules
       - [Option --help](#option---help)
       - [Command run](#command-run)
       - [Command sanity-check](#command-sanity-check)
+      - [Command analyzer-providers](#command-analyzer-providers)
       - [Command options-file](#command-options-file)
     - [Example](#example)
   - [Options file schema / example](#options-file-schema--example)
@@ -115,22 +116,36 @@ OPTIONS:
     -t, --projectTarget [PROJECTTARGET]                          Sets the ProjectTarget. Valid values are: DotNetCore,
                                                                  DotNet5, DotNet6, DotNet7, DotNet8, DotNet9,
                                                                  DotNet10 (default), DotNet11
-        --useLatestMinorNugetVersion                             Indicate if nuget packages should by updated to latest
-                                                                 minor version (default true)
-        --useTemporarySuppressions                               Indicate if build process should use temporary
-                                                                 suppressions - appends to .editorconfig - unless
-                                                                 temporarySuppressionPath is set
-        --temporarySuppressionPath [TEMPORARYSUPPRESSIONPATH]    Optional path to temporary suppressions file - if not
-                                                                 set .editorconfig file is used
-        --temporarySuppressionAsExcel                            Indicate if temporary suppressions file should be saved
-                                                                 as Excel (.xlsx)
-        --buildFile [BUILDFILE]                                  Solution/project file - required when multiple .sln
-                                                                 files exists in root path
-        --organizationName [ORGANIZATIONNAME]                    Optional: Specify the name of your organization for the
-                                                                 Directory.Build.Props file
-        --repositoryName [REPOSITORYNAME]                        Optional: Specify the name of your repository for the
-                                                                 Directory.Build.Props file
+        --useLatestMinorNugetVersion                             Bump PackageReferences in Directory.Build.props to the
+                                                                 latest version within the same major version.
+                                                                 (default true)
+    -s, --useTemporarySuppressions                               Build the project, collect analyzer errors, and write
+                                                                 temporary suppressions. Appended to .editorconfig
+                                                                 unless --temporarySuppressionPath is set.
+                                                                 (default false)
+        --temporarySuppressionPath [TEMPORARYSUPPRESSIONPATH]    Optional output directory for the
+                                                                 temporary-suppressions file. When set, the
+                                                                 .editorconfig is not modified
+        --temporarySuppressionAsExcel                            Write the temporary-suppressions file as Excel (.xlsx)
+                                                                 instead of plain text. (default false)
+        --buildFile [BUILDFILE]                                  Solution (.sln/.slnx) or project (.csproj) file to
+                                                                 build. Required when multiple solution files exist in
+                                                                 --projectPath
+        --organizationName [ORGANIZATIONNAME]                    Organization name to substitute into the
+                                                                 <OrganizationName> placeholder in Directory.Build.props
+        --repositoryName [REPOSITORYNAME]                        Repository name to substitute into the
+                                                                 <RepositoryName> placeholder in Directory.Build.props
+        --dry-run                                                Preview mode: log what would be created or updated
+                                                                 without writing any files. Skips the
+                                                                 temporary-suppression build loop. (default false)
 ```
+
+**Note on `--useLatestMinorNugetVersion`:** despite the name, the bump is bounded by the **major**
+version, not the minor — a package on `3.0.54` will be moved to the newest `3.x`, but never to `4.0.0`.
+
+**Exit codes:** `run` and `sanity-check` return `0` on success and `1` on failure. `sanity-check`
+returns `1` whenever any error-severity diagnostic is found, in both the default and `--json`
+output modes, so it can be used directly as a CI gate.
 
 #### Command <span style="color:yellow">sanity-check</span>
 ```powershell
@@ -148,7 +163,53 @@ OPTIONS:
     -p, --projectPath <PROJECTPATH>        Path to the project directory (default current diectory)
     -o, --optionsPath [OPTIONSPATH]        Path to an optional options json-file
     -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8, DotNet9, DotNet10 (default), DotNet11
+        --json                             Emit a machine-readable JSON summary on stdout (Severity / Code / Message / FilePath per diagnostic). Useful for CI
 ```
+
+#### Command <span style="color:yellow">analyzer-providers</span>
+
+Each analyzer provider scrapes its rule catalog from the upstream documentation site. The results
+are cached under `%TEMP%/AtcAnalyzerProviderBaseRules`, and are what the temporary-suppression
+feature uses to annotate suppressions with a category, title and help link.
+
+```powershell
+USAGE:
+    atc-coding-rules-updater.exe analyzer-providers [OPTIONS] <COMMAND>
+
+EXAMPLES:
+    atc-coding-rules-updater.exe analyzer-providers collect .
+    atc-coding-rules-updater.exe analyzer-providers collect -p c:\temp\MyProject
+    atc-coding-rules-updater.exe analyzer-providers collect -p c:\temp\MyProject --fetchMode ReCollect --verbose
+    atc-coding-rules-updater.exe analyzer-providers cleanup-cache
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    collect          Collect base rules metadata from all Analyzer providers
+    cleanup-cache    Cleanup cache from Analyzer providers
+```
+
+Options for `analyzer-providers collect`:
+
+```powershell
+    -p, --projectPath <PROJECTPATH>              Path to the project root directory
+    -o, --optionsPath [OPTIONSPATH]              Path to an atc-coding-rules-updater.json options file
+        --fetchMode [FETCHMODE]                  Where to read the rule metadata from. Valid values are:
+                                                 LocalCache (default), GitHub, ReCollect
+        --includeProviders [INCLUDEPROVIDERS]    Comma-separated provider names to include
+                                                 (e.g. "AsyncFixer,Meziantou.Analyzer"). When set, only these run
+        --excludeProviders [EXCLUDEPROVIDERS]    Comma-separated provider names to exclude
+                                                 (e.g. "SonarAnalyzer.CSharp"). Applied after --includeProviders
+        --json                                   Emit a machine-readable JSON summary on stdout
+                                                 (Name / Rules.Count / ExceptionMessage per provider). Useful for CI
+```
+
+| `--fetchMode` | Behaviour                                                                       |
+|---------------|---------------------------------------------------------------------------------|
+| `LocalCache`  | Use the cached snapshot in the temp folder if present; otherwise fall back to GitHub. |
+| `GitHub`      | Read the pre-collected JSON from the `atc-coding-rules-updater` repository.       |
+| `ReCollect`   | Re-scrape every provider's documentation site, ignoring both caches.              |
 
 #### Command <span style="color:yellow">options-file</span>
 ```powershell
@@ -410,11 +471,14 @@ dotnet_diagnostic.SA1400.severity = none            # 2 occurrences - Category: 
 
 When using the `--useTemporarySuppressions` option, a `dotnet.exe build` will be executed (up to 10 times depending on the complexity of the solution).
 Hence a requirement is that dotnet.exe can be called from the root path.
-If there are multiple solutions (.sln) files in the root folder, the `--buildFile` option will then be required as a parameter when calling the CLI tool.
+If there are multiple solution files in the root folder, the `--buildFile` option will then be required as a parameter when calling the CLI tool.
 
 ```json
---buildFile                 Optional path to solution/project file - required when multiple .sln files exists in root path
+--buildFile                 Optional path to solution/project file - required when multiple solution files exist in the root path
 ```
+
+Recognised solution and project files are `.sln`, `.slnx` and `.csproj`. If the root path contains
+none of these, the build loop is skipped with a message rather than failing.
 
 ## How to contribute
 

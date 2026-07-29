@@ -11,11 +11,10 @@ public sealed class MeziantouProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new MeziantouProvider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new MeziantouProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 101);
 
         // Assert
         Assert.NotNull(actual);

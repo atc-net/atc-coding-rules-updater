@@ -71,7 +71,7 @@ public static class DirectoryBuildPropsHelper
             {
                 if (dryRun)
                 {
-                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create directory {file.Directory!.FullName}");
+                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create directory {file.Directory.FullName}");
                 }
                 else
                 {
@@ -122,9 +122,18 @@ public static class DirectoryBuildPropsHelper
                 return;
             }
 
+            // An existing props file is never overwritten from the distribution, so upstream
+            // additions would otherwise be adopted by nobody and reported to no one. Report them
+            // before the dry-run short-circuit so --dry-run surfaces them too.
+            LogDrift(logger, GetDrift(contentGit, contentFile), descriptionPart);
+
             if (dryRun)
             {
-                logger.LogInformation($"{EmojisConstants.FileUpdated}   [dim](dry-run)[/] would update {descriptionPart}");
+                // Ask the same question UpdateFile would, so --dry-run cannot promise an update
+                // that the real run would then report as "nothing to update".
+                logger.LogInformation(WouldChange(logger, contentFile, useLatestMinorNugetVersion)
+                    ? $"{EmojisConstants.FileUpdated}   [dim](dry-run)[/] would update {descriptionPart}"
+                    : $"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
                 return;
             }
 
@@ -193,24 +202,145 @@ public static class DirectoryBuildPropsHelper
         }
     }
 
-    private static void UpdateFile(
+    /// <summary>
+    /// Compares which package references and MSBuild properties exist in the upstream and local
+    /// <c>Directory.Build.props</c>. Values are deliberately not compared — see
+    /// <see cref="DirectoryBuildPropsDrift"/>.
+    /// </summary>
+    /// <returns><see cref="DirectoryBuildPropsDrift.Empty"/> when either side is not parseable XML.</returns>
+    internal static DirectoryBuildPropsDrift GetDrift(
+        string contentGit,
+        string contentFile)
+    {
+        var upstream = ParseProjectElements(contentGit);
+        var local = ParseProjectElements(contentFile);
+
+        if (upstream is null || local is null)
+        {
+            return DirectoryBuildPropsDrift.Empty;
+        }
+
+        return new DirectoryBuildPropsDrift(
+            OnlyIn(upstream.Value.PackageIds, local.Value.PackageIds),
+            OnlyIn(local.Value.PackageIds, upstream.Value.PackageIds),
+            OnlyIn(upstream.Value.PropertyNames, local.Value.PropertyNames));
+    }
+
+    /// <summary>
+    /// Reports <paramref name="drift"/>: a one-line summary at information level, then one line
+    /// per difference at debug level. No-op when there is nothing to report.
+    /// </summary>
+    internal static void LogDrift(
+        ILogger logger,
+        DirectoryBuildPropsDrift drift,
+        string descriptionPart)
+    {
+        ArgumentNullException.ThrowIfNull(drift);
+
+        if (!drift.HasDrift)
+        {
+            return;
+        }
+
+        logger.LogInformation(
+            $"{AppEmojisConstants.Drift}   {descriptionPart} differs from the distribution in {drift.Count} place(s) - not applied, since the local file is never overwritten");
+
+        foreach (var packageId in drift.PackageReferencesOnlyUpstream)
+        {
+            logger.LogDebug($"     - PackageReference only in distribution: {packageId}");
+        }
+
+        foreach (var packageId in drift.PackageReferencesOnlyLocal)
+        {
+            logger.LogDebug($"     - PackageReference only in local file: {packageId}");
+        }
+
+        foreach (var propertyName in drift.PropertiesOnlyUpstream)
+        {
+            logger.LogDebug($"     - Property only in distribution: {propertyName}");
+        }
+    }
+
+    private static List<string> OnlyIn(
+        IEnumerable<string> source,
+        IEnumerable<string> other)
+        => source
+            .Except(other, StringComparer.OrdinalIgnoreCase)
+            .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+    /// <summary>
+    /// Extracts package ids and MSBuild property names from props content, or <c>null</c> when the
+    /// content is not parseable XML. Element names are matched on their local name so a props file
+    /// carrying the legacy MSBuild namespace is handled too.
+    /// </summary>
+    private static (List<string> PackageIds, List<string> PropertyNames)? ParseProjectElements(
+        string content)
+    {
+        XDocument document;
+        try
+        {
+            document = XDocument.Parse(content);
+        }
+        catch (XmlException)
+        {
+            return null;
+        }
+
+        var packageIds = document
+            .Descendants()
+            .Where(x => x.Name.LocalName.Equals("PackageReference", StringComparison.Ordinal))
+            .Select(x => x.Attribute("Include")?.Value)
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Select(x => x!)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        var propertyNames = document
+            .Descendants()
+            .Where(x => x.Parent is not null &&
+                        x.Parent.Name.LocalName.Equals("PropertyGroup", StringComparison.Ordinal))
+            .Select(x => x.Name.LocalName)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        return (packageIds, propertyNames);
+    }
+
+    /// <summary>
+    /// Returns <c>true</c> when applying package bumps to <paramref name="fileContent"/> would
+    /// actually change it. Shared by the dry-run branch and, in effect, by
+    /// <see cref="UpdateFile"/>, so the two cannot disagree.
+    /// </summary>
+    internal static bool WouldChange(
+        ILogger logger,
+        string fileContent,
+        bool useLatestMinorNugetVersion)
+        => useLatestMinorNugetVersion &&
+           !EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Trace)
+               .Equals(fileContent, StringComparison.Ordinal);
+
+    internal static void UpdateFile(
         ILogger logger,
         FileInfo file,
         string fileContent,
         string descriptionPart,
         bool useLatestMinorNugetVersion)
     {
-        if (useLatestMinorNugetVersion)
+        var newFileContent = useLatestMinorNugetVersion
+            ? EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Debug)
+            : fileContent;
+
+        // The upstream props content is deliberately not applied to an existing local file (it
+        // carries user-specific values), so the only change this method can make is a package
+        // bump. Without one there is nothing to write, and claiming "updated" would be a lie.
+        if (newFileContent.Equals(fileContent, StringComparison.Ordinal))
         {
-            var newFileContent = EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Debug);
-            if (!FileHelper.AreFilesEqual(fileContent, newFileContent) ||
-                !fileContent.Equals(newFileContent, StringComparison.Ordinal))
-            {
-                fileContent = newFileContent;
-            }
+            logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
+            return;
         }
 
-        File.WriteAllText(file.FullName, fileContent);
+        File.WriteAllText(file.FullName, newFileContent);
         logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
     }
 
@@ -244,7 +374,7 @@ public static class DirectoryBuildPropsHelper
         return fileContent;
     }
 
-    private static List<DotnetNugetPackage> GetPackageReferencesThatNeedsToBeUpdated(
+    internal static List<DotnetNugetPackage> GetPackageReferencesThatNeedsToBeUpdated(
         ILogger logger,
         string fileContent)
     {
@@ -255,19 +385,26 @@ public static class DirectoryBuildPropsHelper
         {
             foreach (var item in packageReferencesGit)
             {
-                if (Version.TryParse(item.Version, out var version))
+                if (!Version.TryParse(item.Version, out var version))
                 {
-                    var latestVersion = AtcApiNugetClientHelper.GetLatestVersionForPackageId(logger, item.PackageId, CancellationToken.None);
+                    // Prerelease ("1.2.3-beta"), floating ("3.0.*") and MSBuild-property
+                    // ("$(SomeVersion)") references cannot be compared as a System.Version.
+                    // Skipping them is correct, but doing it silently left users with no way to
+                    // tell the package had never been considered.
+                    logger.LogTrace($"     Skipping {item.PackageId} @ {item.Version} - version is not comparable");
+                    continue;
+                }
 
-                    if (latestVersion is not null &&
-                        latestVersion.IsNewerThan(version, withinMinorReleaseOnly: true))
-                    {
-                        result.Add(
-                            new DotnetNugetPackage(
-                                item.PackageId,
-                                version,
-                                latestVersion));
-                    }
+                var latestVersion = AtcApiNugetClientHelper.GetLatestVersionForPackageId(logger, item.PackageId, CancellationToken.None);
+
+                if (latestVersion is not null &&
+                    latestVersion.IsNewerThan(version, withinMinorReleaseOnly: true))
+                {
+                    result.Add(
+                        new DotnetNugetPackage(
+                            item.PackageId,
+                            version,
+                            latestVersion));
                 }
             }
         }

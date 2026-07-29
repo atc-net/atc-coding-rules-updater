@@ -77,7 +77,7 @@ public static class EditorConfigHelper
             {
                 if (dryRun)
                 {
-                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create directory {file.Directory!.FullName}");
+                    logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create directory {file.Directory.FullName}");
                 }
                 else
                 {
