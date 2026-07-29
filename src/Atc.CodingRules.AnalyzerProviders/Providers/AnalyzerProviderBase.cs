@@ -36,8 +36,8 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
             var dataFromTemp = await ReadFromTempFolder(data);
             if (dataFromTemp is not null)
             {
+                LogSnapshotAge(data.Name);
                 StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
-
                 return dataFromTemp;
             }
         }
@@ -91,13 +91,13 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     {
         var data = CreateData();
 
-        var tempFolder = Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules");
+        var tempFolder = GetTempFolder();
         if (!Directory.Exists(tempFolder))
         {
             return;
         }
 
-        var tempFile = Path.Combine(tempFolder, data.Name + ".json");
+        var tempFile = GetTempFile(data.Name);
         if (!File.Exists(tempFile))
         {
             return;
@@ -106,6 +106,17 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         File.Delete(tempFile);
         logger.LogInformation($"File is deleted: {tempFile}");
     }
+
+    /// <summary>
+    /// Folder holding the on-disk rule snapshots used by
+    /// <see cref="ProviderCollectingMode.LocalCache"/> and by the failure fallback.
+    /// </summary>
+    protected static string GetTempFolder()
+        => Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules");
+
+    /// <summary>Path of the snapshot file for <paramref name="providerName"/>.</summary>
+    protected static string GetTempFile(string providerName)
+        => Path.Combine(GetTempFolder(), providerName + ".json");
 
     protected abstract AnalyzerProviderBaseRuleData CreateData();
 
@@ -116,13 +127,13 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var tempFolder = Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules");
+        var tempFolder = GetTempFolder();
         if (!Directory.Exists(tempFolder))
         {
             Directory.CreateDirectory(tempFolder);
         }
 
-        var tempFile = Path.Combine(tempFolder, data.Name + ".json");
+        var tempFile = GetTempFile(data.Name);
         var fileInfo = new FileInfo(tempFile);
         if (!fileInfo.Exists)
         {
@@ -148,13 +159,13 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
             return Task.CompletedTask;
         }
 
-        var tempFolder = Path.Combine(Path.GetTempPath(), "AtcAnalyzerProviderBaseRules");
+        var tempFolder = GetTempFolder();
         if (!Directory.Exists(tempFolder))
         {
             Directory.CreateDirectory(tempFolder);
         }
 
-        var tempFile = Path.Combine(tempFolder, data.Name + ".json");
+        var tempFile = GetTempFile(data.Name);
         var json = JsonSerializer.Serialize(data, AnalyzerProviderSerialization.JsonOptions);
         return File.WriteAllTextAsync(tempFile, json);
     }
@@ -195,6 +206,25 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         stopwatch.Stop();
         logger.LogTrace(
             $"     {Colored(providerName, "green")} collect base rules by collecting mode: {Colored(providerCollectingMode.ToString(), "green")} - time: {Colored(stopwatch.Elapsed.GetPrettyTime(), "green")}");
+    }
+
+    /// <summary>
+    /// Reports when the on-disk snapshot for <paramref name="providerName"/> was written, so a
+    /// stale rule catalog served from <see cref="ProviderCollectingMode.LocalCache"/> is visible.
+    /// Snapshots never expire, so otherwise a months-old catalog looks identical to a fresh one.
+    /// </summary>
+    private void LogSnapshotAge(string providerName)
+    {
+        var file = new FileInfo(GetTempFile(providerName));
+        if (!file.Exists)
+        {
+            return;
+        }
+
+        var age = DateTime.UtcNow - file.LastWriteTimeUtc;
+
+        logger.LogTrace(
+            $"     {Colored(providerName, "green")} using cached snapshot from {file.LastWriteTimeUtc:yyyy-MM-dd HH:mm} UTC ({age.GetPrettyTime()} old)");
     }
 
     /// <summary>

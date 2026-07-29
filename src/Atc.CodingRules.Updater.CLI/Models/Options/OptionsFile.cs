@@ -16,6 +16,13 @@ public class OptionsFile
 
     public bool DryRun { get; set; }
 
+    /// <summary>
+    /// Ask the ATC API to bypass its own version cache. Normally left off; the API caches
+    /// resolved versions for 12 hours, so this is the escape hatch when a package published
+    /// inside that window is being reported as the previous version.
+    /// </summary>
+    public bool ForceNugetRefresh { get; set; }
+
     public string? BuildFile { get; set; }
 
     public OptionsMappings Mappings { get; set; } = new();

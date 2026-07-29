@@ -42,29 +42,20 @@ public sealed class AnalyzerProviderBaseMarkupTests
             .Should().Contain(x => x.Message.Contains("[green]", StringComparison.Ordinal));
     }
 
-    private sealed class FakeAnalyzerProvider : AnalyzerProviderBase
+    [Fact]
+    public async Task CollectBaseRules_ReportsSnapshotAge_WhenServingFromLocalCache()
     {
-        public FakeAnalyzerProvider(
-            ILogger logger,
-            bool logWithAnsiConsoleMarkup)
-            : base(logger, logWithAnsiConsoleMarkup)
-        {
-        }
+        using var logger = testOutput.BuildLogger(LogLevel.Trace);
 
-        // Deliberately not a real provider name, so the snapshot this writes to the shared
-        // temp folder cannot be picked up by the LocalCache tests of a real provider.
-        private static string Name => "Fake.MarkupTestProvider";
+        // Seed the snapshot, then read it back through LocalCache.
+        await new FakeAnalyzerProvider(logger, logWithAnsiConsoleMarkup: false)
+            .CollectBaseRules(ProviderCollectingMode.ReCollect);
 
-        protected override AnalyzerProviderBaseRuleData CreateData()
-            => new(Name);
+        var provider = new FakeAnalyzerProvider(logger, logWithAnsiConsoleMarkup: false);
+        await provider.CollectBaseRules(ProviderCollectingMode.LocalCache);
 
-        protected override Task ReCollect(AnalyzerProviderBaseRuleData data)
-        {
-            ArgumentNullException.ThrowIfNull(data);
-
-            data.Rules.Add(new Rule("FAKE001", "Fake rule", link: string.Empty));
-
-            return Task.CompletedTask;
-        }
+        logger.Entries
+            .Should().Contain(x => x.Message.Contains("cached snapshot from", StringComparison.Ordinal)
+                                   && x.Message.Contains(FakeAnalyzerProvider.Name, StringComparison.Ordinal));
     }
 }

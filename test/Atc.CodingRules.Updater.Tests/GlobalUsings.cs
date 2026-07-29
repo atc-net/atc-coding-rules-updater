@@ -1,6 +1,7 @@
 global using System.Data;
 global using System.Reflection;
 
+global using Atc.CodingRules.AnalyzerProviders.Models;
 global using Atc.CodingRules.Updater.CLI;
 global using Atc.CodingRules.Updater.CLI.Commands;
 global using Atc.CodingRules.Updater.CLI.Commands.Settings;

@@ -39,4 +39,8 @@ public class RunCommandSettings : ProjectCommandSettings
     [CommandOption(ArgumentCommandConstants.LongDryRun)]
     [Description("Preview mode: log what would be created or updated without writing any files. Skips the temporary-suppression build loop. (default false)")]
     public bool? DryRun { get; init; }
+
+    [CommandOption(ArgumentCommandConstants.LongForceNugetRefresh)]
+    [Description("Ask the ATC API to re-read package versions from nuget.org instead of serving its 12-hour cache. Use when a just-published version is not being picked up. (default false)")]
+    public bool? ForceNugetRefresh { get; init; }
 }

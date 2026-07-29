@@ -17,15 +17,52 @@ namespace Atc.CodingRules;
 /// </remarks>
 public static class HttpClientHelper
 {
-    private const int MaxAttempts = 3;
+    /// <summary>
+    /// Delay before each retry. The number of attempts is derived from this array rather than
+    /// declared separately, so the two cannot drift out of step and index past the end.
+    /// </summary>
     private static readonly TimeSpan[] BackoffDelays =
     [
         TimeSpan.FromMilliseconds(200),
         TimeSpan.FromMilliseconds(600),
     ];
 
+    private static readonly int MaxAttempts = BackoffDelays.Length + 1;
+
     private static readonly ConcurrentDictionary<string, string> Cache = new(StringComparer.Ordinal);
     private static readonly HttpClient SharedClient = new();
+
+    /// <summary>
+    /// Downloads <paramref name="urls"/> concurrently into the process cache, so the sequential
+    /// <see cref="GetAsString"/> call sites that follow are served from memory.
+    /// </summary>
+    /// <remarks>
+    /// Duplicates, empty entries and already-cached URLs are skipped. Failures are swallowed on
+    /// purpose: this is a warm-up, and the real call site still reports and handles the error.
+    /// </remarks>
+    public static void Prefetch(
+        ILogger logger,
+        IEnumerable<string> urls,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(urls);
+
+        var pending = urls
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Distinct(StringComparer.Ordinal)
+            .Where(x => !Cache.ContainsKey(x))
+            .ToArray();
+
+        if (pending.Length <= 1)
+        {
+            return;
+        }
+
+        TaskHelper.RunSync(async () =>
+            await Task.WhenAll(pending.Select(url => Task.Run(
+                () => GetAsString(logger, url, url, cancellationToken),
+                cancellationToken))));
+    }
 
     public static string GetAsString(
         ILogger logger,

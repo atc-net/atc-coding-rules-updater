@@ -32,6 +32,10 @@ public static class ProjectHelper
             projectPath,
             options.ProjectTarget);
 
+        // The per-file handlers below are sequential and synchronous. Warming the cache first
+        // turns N serial round-trips into one concurrent batch without restructuring them.
+        PrefetchDistributionFiles(logger, projectPath, options, cancellationToken);
+
         HandleEditorConfigFiles(logger, projectPath, options);
 
         if (options.ProjectTarget
@@ -119,6 +123,45 @@ public static class ProjectHelper
             options.ProjectTarget);
     }
 
+    /// <summary>
+    /// Collects every distribution URL this run will ask for and downloads them concurrently into
+    /// the process cache.
+    /// </summary>
+    private static void PrefetchDistributionFiles(
+        ILogger logger,
+        DirectoryInfo projectPath,
+        OptionsFile options,
+        CancellationToken cancellationToken)
+    {
+        var targetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
+        var projectFrameworkBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/project-frameworks";
+
+        var urls = new List<string>
+        {
+            $"{targetBaseUrl}/{EditorConfigHelper.FileName}",
+            $"{targetBaseUrl}/{DirectoryBuildPropsHelper.FileName}",
+        };
+
+        foreach (var (area, _) in EnumerateMappedPaths(options))
+        {
+            urls.Add($"{targetBaseUrl}/{area}/{EditorConfigHelper.FileName}");
+            urls.Add($"{targetBaseUrl}/{area}/{DirectoryBuildPropsHelper.FileName}");
+        }
+
+        foreach (var (csProjFile, projectType) in DotnetCsProjFileHelper.FindAllInPathAndPredictProjectTypes(projectPath))
+        {
+            var projectFrameworkType = DetermineProjectFrameworkType(options, csProjFile, projectType);
+            if (projectFrameworkType == ProjectFrameworkType.None)
+            {
+                continue;
+            }
+
+            urls.Add($"{projectFrameworkBaseUrl}/{projectFrameworkType.ToStringLowerCase()}/{EditorConfigHelper.FileName}");
+        }
+
+        HttpClientHelper.Prefetch(logger, urls, cancellationToken);
+    }
+
     private static void HandleEditorConfigFiles(
         ILogger logger,
         DirectoryInfo projectPath,
@@ -131,22 +174,9 @@ public static class ProjectHelper
 
         EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty, options.DryRun);
 
-        foreach (var item in options.Mappings.Sample.Paths)
+        foreach (var (area, path) in EnumerateMappedPaths(options))
         {
-            var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, path, "sample", options.DryRun);
-        }
-
-        foreach (var item in options.Mappings.Src.Paths)
-        {
-            var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, path, "src", options.DryRun);
-        }
-
-        foreach (var item in options.Mappings.Test.Paths)
-        {
-            var path = new DirectoryInfo(item);
-            EditorConfigHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, path, "test", options.DryRun);
+            EditorConfigHelper.HandleFile(logger, area, rawCodingRulesDistributionProjectTargetBaseUrl, path, area, options.DryRun);
         }
 
         // Handle Project specific Frameworks
@@ -206,24 +236,42 @@ public static class ProjectHelper
         logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
 
-        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty, options.DryRun);
+        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty, options.DryRun, options.ForceNugetRefresh);
 
-        foreach (var item in options.Mappings.Sample.Paths)
+        foreach (var (area, path) in EnumerateMappedPaths(options))
         {
-            var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "sample", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "sample", options.DryRun);
+            DirectoryBuildPropsHelper.HandleFile(logger, area, rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, area, options.DryRun, options.ForceNugetRefresh);
         }
+    }
 
-        foreach (var item in options.Mappings.Src.Paths)
-        {
-            var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "src", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "src", options.DryRun);
-        }
+    /// <summary>
+    /// Yields every configured mapping as an (area, directory) pair, in the fixed
+    /// sample / src / test order the output has always used.
+    /// </summary>
+    internal static IEnumerable<(string Area, DirectoryInfo Path)> EnumerateMappedPaths(
+        OptionsFile options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
 
-        foreach (var item in options.Mappings.Test.Paths)
+        return EnumerateMappedPathsIterator(options);
+    }
+
+    private static IEnumerable<(string Area, DirectoryInfo Path)> EnumerateMappedPathsIterator(
+        OptionsFile options)
+    {
+        var areas = new (string Area, IEnumerable<string> Paths)[]
         {
-            var path = new DirectoryInfo(item);
-            DirectoryBuildPropsHelper.HandleFile(logger, "test", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, "test", options.DryRun);
+            ("sample", options.Mappings.Sample.Paths),
+            ("src", options.Mappings.Src.Paths),
+            ("test", options.Mappings.Test.Paths),
+        };
+
+        foreach (var (area, paths) in areas)
+        {
+            foreach (var path in paths)
+            {
+                yield return (area, new DirectoryInfo(path));
+            }
         }
     }
 
@@ -564,12 +612,12 @@ public static class ProjectHelper
         return sb.ToString();
     }
 
-    private static List<Tuple<string, List<string>>> GetSuppressionLines(
+    internal static List<Tuple<string, List<string>>> GetSuppressionLines(
         IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules,
         Dictionary<string, int> buildResult)
     {
         var suppressionLines = new List<Tuple<string, string>>();
-        var handledCodes = new List<string>();
+        var handledCodes = new HashSet<string>(StringComparer.Ordinal);
 
         HandleSuppressionLinesForKnownAnalyzerRules(analyzerProviderBaseRules, buildResult, suppressionLines, handledCodes);
         HandleSuppressionLinesForUnknownAnalyzerRules(buildResult, suppressionLines, handledCodes);
@@ -595,34 +643,45 @@ public static class ProjectHelper
         IReadOnlyCollection<AnalyzerProviderBaseRuleData> analyzerProviderBaseRules,
         Dictionary<string, int> buildResult,
         ICollection<Tuple<string, string>> suppressionLines,
-        ICollection<string> handledCodes)
+        ISet<string> handledCodes)
     {
+        // Index the rule catalog once instead of re-scanning every provider's full rule list for
+        // each build error. TryAdd means the first provider to document a code owns it, so a code
+        // appearing in two catalogs still produces exactly one dotnet_diagnostic entry.
+        var rulesByCode = new Dictionary<string, (string ProviderName, AnalyzerProviders.Models.Rule Rule)>(StringComparer.Ordinal);
+        foreach (var analyzerProvider in analyzerProviderBaseRules)
+        {
+            foreach (var rule in analyzerProvider.Rules)
+            {
+                rulesByCode.TryAdd(rule.Code, (analyzerProvider.Name, rule));
+            }
+        }
+
         foreach (var (code, count) in buildResult.OrderBy(x => x.Key, StringComparer.Ordinal))
         {
-            foreach (var analyzerProvider in analyzerProviderBaseRules)
+            if (!rulesByCode.TryGetValue(code, out var match))
             {
-                var rule = analyzerProvider.Rules.FirstOrDefault(x => x.Code.Equals(code, StringComparison.Ordinal));
-                if (rule is not null)
-                {
-                    var tabs = CalculateTabIndentationForSuppressionLine(rule.Code.Length);
-                    var suppressionLine = string.IsNullOrEmpty(rule.Category)
-                        ? $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")}{rule.TitleAndLink}"
-                        : $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")} - Category: '{rule.Category}'{rule.TitleAndLink}";
-                    suppressionLines.Add(Tuple.Create(analyzerProvider.Name, suppressionLine));
-                    handledCodes.Add(code);
-                }
+                continue;
             }
+
+            var rule = match.Rule;
+            var tabs = CalculateTabIndentationForSuppressionLine(rule.Code.Length);
+            var suppressionLine = string.IsNullOrEmpty(rule.Category)
+                ? $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")}{rule.TitleAndLink}"
+                : $"dotnet_diagnostic.{code}.severity = suggestion{tabs}# {count.Pluralize("occurrence")} - Category: '{rule.Category}'{rule.TitleAndLink}";
+            suppressionLines.Add(Tuple.Create(match.ProviderName, suppressionLine));
+            handledCodes.Add(code);
         }
     }
 
     private static void HandleSuppressionLinesForUnknownAnalyzerRules(
         Dictionary<string, int> buildResult,
         ICollection<Tuple<string, string>> suppressionLines,
-        ICollection<string> handledCodes)
+        ISet<string> handledCodes)
     {
         foreach (var (code, count) in buildResult.OrderBy(x => x.Key, StringComparer.Ordinal))
         {
-            if (handledCodes.Contains(code, StringComparer.Ordinal))
+            if (handledCodes.Contains(code))
             {
                 continue;
             }
@@ -635,21 +694,12 @@ public static class ProjectHelper
 
     private static string CalculateTabIndentationForSuppressionLine(
         int codeLength)
-    {
-        var tabs = codeLength switch
+        => codeLength switch
         {
-            1 => "\t\t\t",
-            2 => "\t\t\t",
-            3 => "\t\t\t",
-            4 => "\t\t",
-            5 => "\t\t",
-            6 => "\t\t",
-            7 => "\t\t",
+            >= 1 and <= 3 => "\t\t\t",
+            >= 4 and <= 7 => "\t\t",
             _ => "\t",
         };
-
-        return tabs;
-    }
 
     /// <summary>
     /// Pluralize: takes a word, inserts a number in front, and makes the word plural if the number is not exactly 1.
