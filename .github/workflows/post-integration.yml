@@ -26,7 +26,7 @@ jobs:
         uses: nelonoel/branch-name@v1.0.1
 
       - name: ⚛️ Sets environment variables - Nerdbank.GitVersioning
-        uses: dotnet/nbgv@master
+        uses: dotnet/nbgv@v0.5.2
         with:
           setAllVars: true
 
