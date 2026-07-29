@@ -41,6 +41,7 @@ public static class DirectoryBuildPropsHelper
     /// <param name="path">Local directory that should end up containing the props file.</param>
     /// <param name="urlPart">Sub-path appended to <paramref name="rawCodingRulesDistribution"/> (empty for root).</param>
     /// <param name="dryRun">When <c>true</c>, log what would change without writing any files.</param>
+    /// <param name="forceNugetRefresh">When <c>true</c>, ask the ATC API to bypass its own 12-hour version cache.</param>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Covers the create / update / dry-run paths with shared setup; splitting hurts readability.")]
     public static void HandleFile(
         ILogger logger,
@@ -49,7 +50,8 @@ public static class DirectoryBuildPropsHelper
         bool useLatestMinorNugetVersion,
         DirectoryInfo path,
         string urlPart,
-        bool dryRun = false)
+        bool dryRun = false,
+        bool forceNugetRefresh = false)
     {
         ArgumentNullException.ThrowIfNull(path);
 
@@ -88,7 +90,7 @@ public static class DirectoryBuildPropsHelper
 
             if (useLatestMinorNugetVersion)
             {
-                contentGit = EnsureLatestPackageReferencesVersion(logger, contentGit, LogCategoryType.Trace);
+                contentGit = EnsureLatestPackageReferencesVersion(logger, contentGit, LogCategoryType.Trace, forceNugetRefresh);
             }
 
             if (!file.Exists)
@@ -131,13 +133,13 @@ public static class DirectoryBuildPropsHelper
             {
                 // Ask the same question UpdateFile would, so --dry-run cannot promise an update
                 // that the real run would then report as "nothing to update".
-                logger.LogInformation(WouldChange(logger, contentFile, useLatestMinorNugetVersion)
+                logger.LogInformation(WouldChange(logger, contentFile, useLatestMinorNugetVersion, forceNugetRefresh)
                     ? $"{EmojisConstants.FileUpdated}   [dim](dry-run)[/] would update {descriptionPart}"
                     : $"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
                 return;
             }
 
-            UpdateFile(logger, file, contentFile, descriptionPart, useLatestMinorNugetVersion);
+            UpdateFile(logger, file, contentFile, descriptionPart, useLatestMinorNugetVersion, forceNugetRefresh);
         }
         catch (Exception ex)
         {
@@ -315,9 +317,10 @@ public static class DirectoryBuildPropsHelper
     internal static bool WouldChange(
         ILogger logger,
         string fileContent,
-        bool useLatestMinorNugetVersion)
+        bool useLatestMinorNugetVersion,
+        bool forceNugetRefresh = false)
         => useLatestMinorNugetVersion &&
-           !EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Trace)
+           !EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Trace, forceNugetRefresh)
                .Equals(fileContent, StringComparison.Ordinal);
 
     internal static void UpdateFile(
@@ -325,10 +328,11 @@ public static class DirectoryBuildPropsHelper
         FileInfo file,
         string fileContent,
         string descriptionPart,
-        bool useLatestMinorNugetVersion)
+        bool useLatestMinorNugetVersion,
+        bool forceNugetRefresh = false)
     {
         var newFileContent = useLatestMinorNugetVersion
-            ? EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Debug)
+            ? EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Debug, forceNugetRefresh)
             : fileContent;
 
         // The upstream props content is deliberately not applied to an existing local file (it
@@ -347,9 +351,10 @@ public static class DirectoryBuildPropsHelper
     private static string EnsureLatestPackageReferencesVersion(
         ILogger logger,
         string fileContent,
-        LogCategoryType logCategoryType)
+        LogCategoryType logCategoryType,
+        bool forceNugetRefresh)
     {
-        var packageReferencesThatNeedsToBeUpdated = GetPackageReferencesThatNeedsToBeUpdated(logger, fileContent);
+        var packageReferencesThatNeedsToBeUpdated = GetPackageReferencesThatNeedsToBeUpdated(logger, fileContent, forceNugetRefresh);
         foreach (var item in packageReferencesThatNeedsToBeUpdated)
         {
             fileContent = fileContent.Replace(
@@ -376,13 +381,24 @@ public static class DirectoryBuildPropsHelper
 
     internal static List<DotnetNugetPackage> GetPackageReferencesThatNeedsToBeUpdated(
         ILogger logger,
-        string fileContent)
+        string fileContent,
+        bool forceNugetRefresh = false)
     {
         var result = new List<DotnetNugetPackage>();
 
         var packageReferencesGit = DotnetNugetHelper.GetAllPackageReferences(fileContent);
         if (packageReferencesGit.Count > 0)
         {
+            // Resolve every comparable package in one concurrent batch; the loop below then hits
+            // the process cache instead of paying a serial round-trip per package.
+            AtcApiNugetClientHelper.Prefetch(
+                logger,
+                packageReferencesGit
+                    .Where(x => Version.TryParse(x.Version, out _))
+                    .Select(x => x.PackageId),
+                forceNugetRefresh,
+                CancellationToken.None);
+
             foreach (var item in packageReferencesGit)
             {
                 if (!Version.TryParse(item.Version, out var version))
@@ -395,7 +411,7 @@ public static class DirectoryBuildPropsHelper
                     continue;
                 }
 
-                var latestVersion = AtcApiNugetClientHelper.GetLatestVersionForPackageId(logger, item.PackageId, CancellationToken.None);
+                var latestVersion = AtcApiNugetClientHelper.GetLatestVersionForPackageId(logger, item.PackageId, forceNugetRefresh, CancellationToken.None);
 
                 if (latestVersion is not null &&
                     latestVersion.IsNewerThan(version, withinMinorReleaseOnly: true))

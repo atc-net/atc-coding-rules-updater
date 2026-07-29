@@ -15,9 +15,10 @@ internal static class ArgumentCommandConstants
     public const string LongTemporarySuppressionAsExcel = "--temporarySuppressionAsExcel";
     public const string LongBuildFile = "--buildFile";
     public const string LongFetchMode = "--fetchMode";
-    public const string LongOrganizationName = " --organizationName";
-    public const string LongRepositoryName = " --repositoryName";
+    public const string LongOrganizationName = "--organizationName";
+    public const string LongRepositoryName = "--repositoryName";
     public const string LongDryRun = "--dry-run";
+    public const string LongForceNugetRefresh = "--forceNugetRefresh";
     public const string LongIncludeProviders = "--includeProviders";
     public const string LongExcludeProviders = "--excludeProviders";
     public const string LongOutputJson = "--json";

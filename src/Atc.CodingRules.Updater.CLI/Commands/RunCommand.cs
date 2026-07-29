@@ -116,6 +116,11 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             options.DryRun = settings.DryRun.GetValueOrDefault();
         }
 
+        if (settings.ForceNugetRefresh.HasValue)
+        {
+            options.ForceNugetRefresh = settings.ForceNugetRefresh.GetValueOrDefault();
+        }
+
         var buildFile = GetBuildFile(settings, projectPath);
         if (buildFile is not null)
         {
