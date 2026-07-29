@@ -12,7 +12,8 @@ public static class ProjectHelper
 
     private static readonly string RawCodingRulesDistributionBaseUrl = Constants.GitRawContentUrl + "/atc-net/atc-coding-rules/main/distribution";
 
-    public static async Task HandleFiles(
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Sequential phases of one run; splitting hurts readability.")]
+    public static async Task<RunSummary> HandleFiles(
         ILogger logger,
         DirectoryInfo projectPath,
         OptionsFile options,
@@ -20,6 +21,8 @@ public static class ProjectHelper
     {
         ArgumentNullException.ThrowIfNull(projectPath);
         ArgumentNullException.ThrowIfNull(options);
+
+        var summary = new RunSummary { DryRun = options.DryRun };
 
         if (options.DryRun)
         {
@@ -36,7 +39,7 @@ public static class ProjectHelper
         // turns N serial round-trips into one concurrent batch without restructuring them.
         PrefetchDistributionFiles(logger, projectPath, options, cancellationToken);
 
-        HandleEditorConfigFiles(logger, projectPath, options);
+        HandleEditorConfigFiles(logger, projectPath, options, summary);
 
         if (options.ProjectTarget
             is SupportedProjectTargetType.DotNetCore
@@ -48,7 +51,7 @@ public static class ProjectHelper
             or SupportedProjectTargetType.DotNet10
             or SupportedProjectTargetType.DotNet11)
         {
-            HandleDirectoryBuildPropsFiles(logger, projectPath, options);
+            HandleDirectoryBuildPropsFiles(logger, projectPath, options, summary);
 
             if (options.UseTemporarySuppressions && options.DryRun)
             {
@@ -77,6 +80,8 @@ public static class ProjectHelper
                     cancellationToken);
             }
         }
+
+        return summary;
     }
 
     /// <summary>
@@ -165,18 +170,27 @@ public static class ProjectHelper
     private static void HandleEditorConfigFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        OptionsFile options)
+        OptionsFile options,
+        RunSummary summary)
     {
         logger.LogInformation($"{AppEmojisConstants.AreaEditorConfig} Working on EditorConfig files");
 
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
         var projectFrameworkCodingRulesBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/project-frameworks";
 
-        EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty, options.DryRun);
+        summary.Files.Add(new RunFileResult(
+            "root",
+            EditorConfigHelper.FileName,
+            Path.Combine(projectPath.FullName, EditorConfigHelper.FileName),
+            EditorConfigHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, projectPath, string.Empty, options.DryRun)));
 
         foreach (var (area, path) in EnumerateMappedPaths(options))
         {
-            EditorConfigHelper.HandleFile(logger, area, rawCodingRulesDistributionProjectTargetBaseUrl, path, area, options.DryRun);
+            summary.Files.Add(new RunFileResult(
+                area,
+                EditorConfigHelper.FileName,
+                Path.Combine(path.FullName, EditorConfigHelper.FileName),
+                EditorConfigHelper.HandleFile(logger, area, rawCodingRulesDistributionProjectTargetBaseUrl, path, area, options.DryRun)));
         }
 
         // Handle Project specific Frameworks
@@ -190,13 +204,19 @@ public static class ProjectHelper
                 continue;
             }
 
-            EditorConfigHelper.HandleFile(
-                logger,
-                "ProjectFramework",
-                projectFrameworkCodingRulesBaseUrl,
-                csProjFile.Directory!,
+            var csProjDirectory = csProjFile.Directory!;
+
+            summary.Files.Add(new RunFileResult(
                 projectFrameworkType.ToStringLowerCase(),
-                options.DryRun);
+                EditorConfigHelper.FileName,
+                Path.Combine(csProjDirectory.FullName, EditorConfigHelper.FileName),
+                EditorConfigHelper.HandleFile(
+                    logger,
+                    "ProjectFramework",
+                    projectFrameworkCodingRulesBaseUrl,
+                    csProjDirectory,
+                    projectFrameworkType.ToStringLowerCase(),
+                    options.DryRun)));
         }
     }
 
@@ -231,16 +251,56 @@ public static class ProjectHelper
     private static void HandleDirectoryBuildPropsFiles(
         ILogger logger,
         DirectoryInfo projectPath,
-        OptionsFile options)
+        OptionsFile options,
+        RunSummary summary)
     {
         logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Working on Directory.Build.props files");
         var rawCodingRulesDistributionProjectTargetBaseUrl = $"{RawCodingRulesDistributionBaseUrl}/{options.ProjectTarget.ToStringLowerCase()}";
 
-        DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty, options.DryRun, options.ForceNugetRefresh);
+        Record(
+            summary,
+            "root",
+            projectPath,
+            DirectoryBuildPropsHelper.HandleFile(logger, "root", rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, projectPath, string.Empty, options.DryRun, options.ForceNugetRefresh));
 
         foreach (var (area, path) in EnumerateMappedPaths(options))
         {
-            DirectoryBuildPropsHelper.HandleFile(logger, area, rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, area, options.DryRun, options.ForceNugetRefresh);
+            Record(
+                summary,
+                area,
+                path,
+                DirectoryBuildPropsHelper.HandleFile(logger, area, rawCodingRulesDistributionProjectTargetBaseUrl, options.UseLatestMinorNugetVersion, path, area, options.DryRun, options.ForceNugetRefresh));
+        }
+    }
+
+    /// <summary>Folds one props-file result into the run summary.</summary>
+    private static void Record(
+        RunSummary summary,
+        string area,
+        DirectoryInfo path,
+        DirectoryBuildPropsResult result)
+    {
+        summary.Files.Add(new RunFileResult(
+            area,
+            DirectoryBuildPropsHelper.FileName,
+            Path.Combine(path.FullName, DirectoryBuildPropsHelper.FileName),
+            result.Outcome));
+
+        foreach (var bump in result.PackageBumps)
+        {
+            summary.PackageBumps.Add(new RunPackageBump(
+                bump.PackageId,
+                bump.Version.ToString(),
+                bump.NewestVersion.ToString()));
+        }
+
+        if (result.Drift.HasDrift)
+        {
+            summary.Drift.Add(new RunDriftEntry(
+                area,
+                result.Drift.PackageReferencesOnlyUpstream,
+                result.Drift.PackageReferencesOnlyLocal,
+                result.Drift.PropertiesOnlyUpstream));
         }
     }
 

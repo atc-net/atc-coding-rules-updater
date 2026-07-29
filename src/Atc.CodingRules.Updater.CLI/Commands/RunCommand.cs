@@ -14,6 +14,7 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
         return ExecuteInternalAsync(settings, cancellationToken);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Linear argument validation then a single run; splitting hurts readability.")]
     internal async Task<int> ExecuteInternalAsync(
         RunCommandSettings settings,
         CancellationToken cancellationToken)
@@ -32,47 +33,135 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             return ConsoleExitStatusCodes.Failure;
         }
 
-        ConsoleHelper.WriteHeader();
+        var jsonOutput = settings.OutputJson.GetValueOrDefault();
+        if (!jsonOutput)
+        {
+            ConsoleHelper.WriteHeader();
+        }
 
         var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
 
+        // The console logger writes to stdout, so in --json mode the run is silenced to keep the
+        // document parseable. This is the same defect that made 'analyzer-providers collect
+        // --json' unusable.
+        ILogger runLogger = jsonOutput ? NullLogger.Instance : logger;
+
+        RunSummary summary;
         try
         {
-            CodingRulesUpdaterVersionHelper.PrintUpdateInfoIfNeeded(logger);
+            if (!jsonOutput)
+            {
+                CodingRulesUpdaterVersionHelper.PrintUpdateInfoIfNeeded(logger);
+            }
 
-            await ProjectHelper.HandleFiles(
-                logger,
+            summary = await ProjectHelper.HandleFiles(
+                runLogger,
                 projectPath,
                 options,
                 cancellationToken);
 
-            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "OrganizationName", "insert organization name here"))
+            var placeholderExit = await ResolvePlaceholdersAsync(settings, projectPath, runLogger, jsonOutput, cancellationToken);
+            if (placeholderExit is not null)
             {
-                var organizationName = settings.OrganizationName is not null && settings.OrganizationName.IsSet
-                    ? settings.OrganizationName.Value
-                    : await AnsiConsole.AskAsync<string>("What is the [green]Organization name[/]?", cancellationToken);
-
-                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "OrganizationName", "insert organization name here", organizationName);
-            }
-
-            if (DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, "RepositoryName", "insert repository name here"))
-            {
-                var repositoryName = settings.RepositoryName is not null && settings.RepositoryName.IsSet
-                    ? settings.RepositoryName.Value
-                    : await AnsiConsole.AskAsync<string>("What is the [green]Repository name[/]?", cancellationToken);
-
-                DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(logger, projectPath, "RepositoryName", "insert repository name here", repositoryName);
+                return placeholderExit.Value;
             }
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
+            if (jsonOutput)
+            {
+                WriteJson(new { Error = ex.Message });
+            }
+            else
+            {
+                logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
+            }
+
             return ConsoleExitStatusCodes.Failure;
         }
 
-        logger.LogInformation($"{EmojisConstants.Success} Done");
-        return ConsoleExitStatusCodes.Success;
+        if (jsonOutput)
+        {
+            WriteJson(summary);
+        }
+        else
+        {
+            logger.LogInformation($"{EmojisConstants.Success} Done");
+        }
+
+        return MapExitCode(summary, settings.FailOnChanges.GetValueOrDefault());
     }
+
+    /// <summary>
+    /// Maps a completed run to an exit code. Only <c>--failOnChanges</c> can turn a successful run
+    /// into a failure, and only when something was actually created or updated.
+    /// </summary>
+    internal static int MapExitCode(
+        RunSummary summary,
+        bool failOnChanges)
+    {
+        ArgumentNullException.ThrowIfNull(summary);
+
+        return failOnChanges && summary.HasChanges
+            ? ConsoleExitStatusCodes.Failure
+            : ConsoleExitStatusCodes.Success;
+    }
+
+    /// <summary>
+    /// Substitutes the <c>OrganizationName</c> / <c>RepositoryName</c> placeholders, prompting only
+    /// when there is a human to answer. Returns a non-null exit code when the run cannot continue.
+    /// </summary>
+    private static async Task<int?> ResolvePlaceholdersAsync(
+        RunCommandSettings settings,
+        DirectoryInfo projectPath,
+        ILogger runLogger,
+        bool jsonOutput,
+        CancellationToken cancellationToken)
+    {
+        var placeholders = new[]
+        {
+            ("OrganizationName", "insert organization name here", settings.OrganizationName, "Organization name"),
+            ("RepositoryName", "insert repository name here", settings.RepositoryName, "Repository name"),
+        };
+
+        foreach (var (element, placeholder, flag, prompt) in placeholders)
+        {
+            if (!DirectoryBuildPropsHelper.HasFileInsertPlaceholderElement(projectPath, element, placeholder))
+            {
+                continue;
+            }
+
+            string value;
+            if (flag is not null && flag.IsSet)
+            {
+                value = flag.Value;
+            }
+            else if (jsonOutput)
+            {
+                // Prompting would hang a CI job waiting on stdin.
+                WriteJson(new { Error = $"{element} is not set and cannot be prompted for in --json mode. Pass --{char.ToLowerInvariant(element[0])}{element[1..]}." });
+                return ConsoleExitStatusCodes.Failure;
+            }
+            else
+            {
+                value = await AnsiConsole.AskAsync<string>($"What is the [green]{prompt}[/]?", cancellationToken);
+            }
+
+            DirectoryBuildPropsHelper.UpdateFileInsertPlaceholderElement(runLogger, projectPath, element, placeholder, value);
+        }
+
+        return null;
+    }
+
+    private static void WriteJson(object value)
+        => System.Console.Out.WriteLine(
+            JsonSerializer.Serialize(
+                value,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Converters = { new JsonStringEnumConverter() },
+                }));
 
     private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         RunCommandSettings settings,

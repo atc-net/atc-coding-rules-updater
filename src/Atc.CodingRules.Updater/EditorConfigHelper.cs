@@ -10,14 +10,21 @@ namespace Atc.CodingRules.Updater;
 /// any existing local .editorconfig, preserving the user's "Custom - …" sections.
 /// </summary>
 /// <remarks>
-/// See <c>docs/architecture.md</c> for the full merge algorithm. The high-level rules:
+/// See <c>docs/architecture.md</c> for the full merge algorithm. The high-level rules, with the
+/// <see cref="FileUpdateOutcome"/> each one reports:
 /// <list type="bullet">
-/// <item><description>Empty upstream content → skip (don't overwrite).</description></item>
-/// <item><description>Identical files → skip.</description></item>
-/// <item><description>Local missing → write upstream content.</description></item>
-/// <item><description>Identical base section → skip.</description></item>
-/// <item><description>Otherwise rewrite the base section, preserving all <c># Custom -</c> sections from the local file.</description></item>
+/// <item><description>Empty upstream content → don't overwrite (<see cref="FileUpdateOutcome.Skipped"/>).</description></item>
+/// <item><description>Identical files → no write (<see cref="FileUpdateOutcome.Unchanged"/>).</description></item>
+/// <item><description>Local missing → write upstream content (<see cref="FileUpdateOutcome.Created"/>).</description></item>
+/// <item><description>Identical base section → no write (<see cref="FileUpdateOutcome.Unchanged"/>).</description></item>
+/// <item><description>Otherwise rewrite the base section, preserving all <c># Custom -</c> sections from the local file (<see cref="FileUpdateOutcome.Updated"/>).</description></item>
 /// </list>
+/// <para>
+/// <see cref="FileUpdateOutcome.Skipped"/> and <see cref="FileUpdateOutcome.Unchanged"/> are
+/// deliberately distinct: the first means upstream gave us nothing to compare against, the second
+/// means the local file is already correct. Only <c>Created</c> and <c>Updated</c> count as
+/// changes for <c>--failOnChanges</c>.
+/// </para>
 /// </remarks>
 public static class EditorConfigHelper
 {
@@ -49,7 +56,8 @@ public static class EditorConfigHelper
     /// <param name="path">Local directory that should end up containing the .editorconfig.</param>
     /// <param name="urlPart">Sub-path appended to <paramref name="rawCodingRulesDistribution"/> (empty for root).</param>
     /// <param name="dryRun">When <c>true</c>, log what would change without writing any files.</param>
-    public static void HandleFile(
+    /// <returns>What happened to the file, so callers can summarise the run.</returns>
+    public static FileUpdateOutcome HandleFile(
         ILogger logger,
         string area,
         string rawCodingRulesDistribution,
@@ -88,7 +96,7 @@ public static class EditorConfigHelper
             var contentGit = HttpClientHelper.GetAsString(logger, rawGitUrl, displayName).TrimEndForEmptyLines();
             var contentFile = FileHelper.ReadAllText(file);
 
-            HandleFile(logger, area, contentGit, contentFile, descriptionPart, file, dryRun);
+            return HandleFile(logger, area, contentGit, contentFile, descriptionPart, file, dryRun);
         }
         catch (Exception ex)
         {
@@ -102,7 +110,8 @@ public static class EditorConfigHelper
     /// and unit tests: merges <paramref name="contentGit"/> into <paramref name="contentFile"/> and writes
     /// the result to <paramref name="file"/>, with the same merge rules described on the class.
     /// </summary>
-    public static void HandleFile(
+    /// <returns>What happened to the file — see the rule list on the class for which path reports which outcome.</returns>
+    public static FileUpdateOutcome HandleFile(
         ILogger logger,
         string area,
         string contentGit,
@@ -122,13 +131,13 @@ public static class EditorConfigHelper
                 // distribution for a not-yet-published path). Skip rather than overwrite the
                 // user's local file with an empty merge result.
                 logger.LogWarning($"{Emoji.Known.Warning}   {descriptionPart} skipped — upstream content is empty");
-                return;
+                return FileUpdateOutcome.Skipped;
             }
 
             if (FileHelper.AreFilesEqual(contentGit, contentFile))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
-                return;
+                return FileUpdateOutcome.Unchanged;
             }
 
             if (string.IsNullOrEmpty(contentFile))
@@ -136,11 +145,11 @@ public static class EditorConfigHelper
                 if (dryRun)
                 {
                     logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create {descriptionPart}");
-                    return;
+                    return FileUpdateOutcome.Created;
                 }
 
                 FileHelper.CreateFile(logger, file, contentGit, descriptionPart);
-                return;
+                return FileUpdateOutcome.Created;
             }
 
             var contentGitBasePart = ExtractContentBasePart(contentGit);
@@ -149,16 +158,17 @@ public static class EditorConfigHelper
             if (FileHelper.AreFilesEqual(contentGitBasePart, contentFileBasePart))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
-                return;
+                return FileUpdateOutcome.Unchanged;
             }
 
             if (dryRun)
             {
                 logger.LogInformation($"{EmojisConstants.FileUpdated}   [dim](dry-run)[/] would merge {descriptionPart}");
-                return;
+                return FileUpdateOutcome.Updated;
             }
 
             UpdateFile(logger, contentGit, contentFile, file, descriptionPart, contentGitBasePart);
+            return FileUpdateOutcome.Updated;
         }
         catch (Exception ex)
         {

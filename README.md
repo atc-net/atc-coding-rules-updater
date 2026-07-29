@@ -138,7 +138,69 @@ OPTIONS:
         --dry-run                                                Preview mode: log what would be created or updated
                                                                  without writing any files. Skips the
                                                                  temporary-suppression build loop. (default false)
+        --forceNugetRefresh                                      Ask the ATC API to re-read package versions from
+                                                                 nuget.org instead of serving its 12-hour cache. Use
+                                                                 when a just-published version is not being picked up.
+                                                                 (default false)
+        --failOnChanges                                          Exit with a non-zero code when any file was created or
+                                                                 updated. Combine with --dry-run to gate CI on "coding
+                                                                 rules are current" without writing anything.
+                                                                 (default false)
+        --json                                                   Emit a machine-readable JSON summary on stdout
+                                                                 (per-file outcomes, package bumps, props drift)
+                                                                 instead of log output. Useful for CI.
 ```
+
+##### Gating CI on "coding rules are current"
+
+`--failOnChanges` combined with `--dry-run` writes nothing and returns `1` as soon as any file
+would be created or updated, so a pull request can be blocked without the PR-creating workflow:
+
+```powershell
+atc-coding-rules-updater run -p . --dry-run --failOnChanges
+```
+
+Reported-but-not-applied drift does **not** trip it. Drift is never applied by the tool, so a
+re-run would not resolve it and failing on it would leave the build permanently red.
+
+##### Machine-readable output
+
+`--json` writes a single JSON document to stdout and nothing else, so it can be piped straight
+into `jq`:
+
+```json
+{
+  "DryRun": true,
+  "Files": [
+    { "Area": "root", "File": ".editorconfig", "Path": "...", "Outcome": "Unchanged" },
+    { "Area": "root", "File": "Directory.Build.props", "Path": "...", "Outcome": "Updated" }
+  ],
+  "PackageBumps": [
+    { "PackageId": "Meziantou.Analyzer", "FromVersion": "3.0.135", "ToVersion": "3.0.136" }
+  ],
+  "Drift": [
+    {
+      "Area": "src",
+      "PackagesOnlyInDistribution": [],
+      "PackagesOnlyInLocalFile": [ "Nerdbank.GitVersioning" ],
+      "PropertiesOnlyInDistribution": []
+    }
+  ],
+  "HasChanges": true
+}
+```
+
+`Outcome` is one of `Unchanged`, `Created`, `Updated` or `Skipped`. `Skipped` means the
+distribution had nothing to offer for that path; `Unchanged` means the local file was already
+correct. Under `--dry-run` the same values describe what *would* have happened.
+
+Two limitations of this mode:
+
+- **No diagnostics.** Log output is suppressed so that stdout contains only the JSON document, so
+  `--verbose` has no effect when `--json` is set. Drop `--json` to debug a run. Per-provider and
+  per-file problems still surface — failures appear as an `Error` property on the document.
+- **No prompting.** `--organizationName` and `--repositoryName` must be passed explicitly when
+  those placeholders are still present, since prompting would hang waiting on stdin.
 
 **Note on `--useLatestMinorNugetVersion`:** despite the name, the bump is bounded by the **major**
 version, not the minor — a package on `3.0.54` will be moved to the newest `3.x`, but never to `4.0.0`.
