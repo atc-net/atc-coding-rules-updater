@@ -27,7 +27,7 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             return ConsoleExitStatusCodes.Failure;
         }
 
-        if (!NetworkInformationHelper.HasHttpConnection())
+        if (!await NetworkInformationHelper.HasHttpConnectionAsync(cancellationToken))
         {
             System.Console.WriteLine("This tool requires internet connection!");
             return ConsoleExitStatusCodes.Failure;
@@ -203,6 +203,16 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
         if (settings.DryRun.HasValue)
         {
             options.DryRun = settings.DryRun.GetValueOrDefault();
+        }
+
+        if (settings.BuildConfiguration is not null && settings.BuildConfiguration.IsSet)
+        {
+            options.BuildConfiguration = settings.BuildConfiguration.Value;
+        }
+
+        if (settings.BuildProperties is { Length: > 0 })
+        {
+            options.BuildProperties = settings.BuildProperties;
         }
 
         if (settings.ForceNugetRefresh.HasValue)

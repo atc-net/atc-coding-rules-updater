@@ -28,6 +28,15 @@ public class RunCommandSettings : ProjectCommandSettings
     [Description("Solution (.sln) or project (.csproj) file to build. Required when multiple .sln files exist in --projectPath.")]
     public FlagValue<string>? BuildFile { get; init; }
 
+    [CommandOption($"{ArgumentCommandConstants.LongBuildConfiguration} [BUILDCONFIGURATION]")]
+    [Description("Configuration used for the temporary-suppression builds - Release or Debug. Use Debug when a Release-only target, such as an obfuscator, prevents the build from completing. (default Release)")]
+    public FlagValue<string>? BuildConfiguration { get; init; }
+
+    [CommandOption($"{ArgumentCommandConstants.LongBuildProperty} <BUILDPROPERTY>")]
+    [Description("MSBuild property forwarded to the temporary-suppression builds as -p:Name=Value. Repeatable. Use it to switch off a conditioned target, e.g. --buildProperty SkipObfuscation=true.")]
+    [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Spectre.Console.Cli binds repeated options to an array.")]
+    public string[]? BuildProperties { get; init; }
+
     [CommandOption($"{ArgumentCommandConstants.LongOrganizationName} [ORGANIZATIONNAME]")]
     [Description("Organization name to substitute into the <OrganizationName> placeholder in Directory.Build.props.")]
     public FlagValue<string>? OrganizationName { get; init; }

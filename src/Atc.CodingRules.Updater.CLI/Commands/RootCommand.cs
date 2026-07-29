@@ -17,7 +17,7 @@ public class RootCommand : AsyncCommand<RootCommandSettings>
         RootCommandSettings settings,
         CancellationToken cancellationToken)
     {
-        if (!NetworkInformationHelper.HasConnection())
+        if (!await NetworkInformationHelper.HasConnectionAsync(cancellationToken))
         {
             System.Console.WriteLine("This tool requires internet connection!");
             return ConsoleExitStatusCodes.Failure;

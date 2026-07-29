@@ -14,6 +14,8 @@ internal static class ArgumentCommandConstants
     public const string LongTemporarySuppressionPath = "--temporarySuppressionPath";
     public const string LongTemporarySuppressionAsExcel = "--temporarySuppressionAsExcel";
     public const string LongBuildFile = "--buildFile";
+    public const string LongBuildConfiguration = "--buildConfiguration";
+    public const string LongBuildProperty = "--buildProperty";
     public const string LongFetchMode = "--fetchMode";
     public const string LongOrganizationName = "--organizationName";
     public const string LongRepositoryName = "--repositoryName";
