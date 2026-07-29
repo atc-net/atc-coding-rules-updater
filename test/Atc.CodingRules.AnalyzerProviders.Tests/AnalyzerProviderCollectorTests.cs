@@ -23,11 +23,11 @@ public sealed class AnalyzerProviderCollectorTests
             var instance = (AnalyzerProviderBase)Activator.CreateInstance(
                 providerType,
                 NullLogger.Instance,
-                false)!;
+                false);
 
             var staticName = (string)providerType
-                .GetProperty("Name", BindingFlags.Public | BindingFlags.Static)!
-                .GetValue(null)!;
+                .GetProperty("Name", BindingFlags.Public | BindingFlags.Static)
+                .GetValue(null);
 
             instance.ProviderName.Should().Be(staticName);
         }
