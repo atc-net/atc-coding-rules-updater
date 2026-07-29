@@ -131,6 +131,13 @@ OPTIONS:
         --buildFile [BUILDFILE]                                  Solution (.sln/.slnx) or project (.csproj) file to
                                                                  build. Required when multiple solution files exist in
                                                                  --projectPath
+        --buildConfiguration [BUILDCONFIGURATION]                Configuration used for the temporary-suppression
+                                                                 builds - Release or Debug. Use Debug when a
+                                                                 Release-only target, such as an obfuscator, prevents
+                                                                 the build from completing. (default Release)
+        --buildProperty <BUILDPROPERTY>                          MSBuild property forwarded to the
+                                                                 temporary-suppression builds as -p:Name=Value.
+                                                                 Repeatable.
         --organizationName [ORGANIZATIONNAME]                    Organization name to substitute into the
                                                                  <OrganizationName> placeholder in Directory.Build.props
         --repositoryName [REPOSITORYNAME]                        Repository name to substitute into the
@@ -541,6 +548,36 @@ If there are multiple solution files in the root folder, the `--buildFile` optio
 
 Recognised solution and project files are `.sln`, `.slnx` and `.csproj`. If the root path contains
 none of these, the build loop is skipped with a message rather than failing.
+
+#### When a build target blocks the updater
+
+If a target in your build breaks the suppression build — an obfuscator, a signing step, a packaging
+step — there are two levers.
+
+The build runs in Release by default, so if the target is Release-only, switching configuration is
+usually enough and requires no change on your side:
+
+```powershell
+atc-coding-rules-updater run -s . --buildConfiguration Debug
+```
+
+Otherwise, forward an MSBuild property. **MSBuild has no switch to skip a named target** — `-t:`
+selects which targets to run at the top level and will not suppress a target hooked with
+`AfterTargets`/`BeforeTargets` — so the target has to carry a condition it can respond to:
+
+```xml
+<Target Name="Obfuscate" AfterTargets="Build" Condition="'$(SkipObfuscation)' != 'true'">
+```
+
+```powershell
+atc-coding-rules-updater run -s . --buildProperty SkipObfuscation=true
+```
+
+`--buildProperty` is repeatable, and both options can be set in `atc-coding-rules-updater.json`
+(`buildConfiguration`, `buildProperties`) so they do not have to be retyped.
+
+If the offending target comes from an imported third-party `.targets` file you cannot edit, check
+whether it already exposes a disable property — most do.
 
 ## How to contribute
 
