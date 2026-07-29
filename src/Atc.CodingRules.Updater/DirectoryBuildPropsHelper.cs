@@ -42,8 +42,9 @@ public static class DirectoryBuildPropsHelper
     /// <param name="urlPart">Sub-path appended to <paramref name="rawCodingRulesDistribution"/> (empty for root).</param>
     /// <param name="dryRun">When <c>true</c>, log what would change without writing any files.</param>
     /// <param name="forceNugetRefresh">When <c>true</c>, ask the ATC API to bypass its own 12-hour version cache.</param>
+    /// <returns>What happened to the file, plus the package bumps and drift found, so callers can summarise the run.</returns>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Covers the create / update / dry-run paths with shared setup; splitting hurts readability.")]
-    public static void HandleFile(
+    public static DirectoryBuildPropsResult HandleFile(
         ILogger logger,
         string area,
         string rawCodingRulesDistribution,
@@ -85,7 +86,7 @@ public static class DirectoryBuildPropsHelper
             if (string.IsNullOrEmpty(contentGit))
             {
                 logger.LogWarning($"{Emoji.Known.Warning}   {descriptionPart} skipped — upstream content is empty");
-                return;
+                return DirectoryBuildPropsResult.From(FileUpdateOutcome.Skipped);
             }
 
             if (useLatestMinorNugetVersion)
@@ -98,11 +99,11 @@ public static class DirectoryBuildPropsHelper
                 if (dryRun)
                 {
                     logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create {descriptionPart}");
-                    return;
+                    return DirectoryBuildPropsResult.From(FileUpdateOutcome.Created);
                 }
 
                 FileHelper.CreateFile(logger, file, contentGit, descriptionPart);
-                return;
+                return DirectoryBuildPropsResult.From(FileUpdateOutcome.Created);
             }
 
             var contentFile = FileHelper.ReadAllText(file);
@@ -111,35 +112,45 @@ public static class DirectoryBuildPropsHelper
                 if (dryRun)
                 {
                     logger.LogInformation($"{EmojisConstants.FileCreated}   [dim](dry-run)[/] would create {descriptionPart}");
-                    return;
+                    return DirectoryBuildPropsResult.From(FileUpdateOutcome.Created);
                 }
 
                 FileHelper.CreateFile(logger, file, contentGit, descriptionPart);
-                return;
+                return DirectoryBuildPropsResult.From(FileUpdateOutcome.Created);
             }
 
             if (contentGit.Equals(contentFile, StringComparison.Ordinal))
             {
                 logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
-                return;
+                return DirectoryBuildPropsResult.From(FileUpdateOutcome.Unchanged);
             }
 
             // An existing props file is never overwritten from the distribution, so upstream
             // additions would otherwise be adopted by nobody and reported to no one. Report them
             // before the dry-run short-circuit so --dry-run surfaces them too.
-            LogDrift(logger, GetDrift(contentGit, contentFile), descriptionPart);
+            var drift = GetDrift(contentGit, contentFile);
+            LogDrift(logger, drift, descriptionPart);
+
+            var bumps = useLatestMinorNugetVersion
+                ? GetPackageReferencesThatNeedsToBeUpdated(logger, contentFile, forceNugetRefresh)
+                : [];
 
             if (dryRun)
             {
                 // Ask the same question UpdateFile would, so --dry-run cannot promise an update
                 // that the real run would then report as "nothing to update".
-                logger.LogInformation(WouldChange(logger, contentFile, useLatestMinorNugetVersion, forceNugetRefresh)
+                logger.LogInformation(bumps.Count > 0
                     ? $"{EmojisConstants.FileUpdated}   [dim](dry-run)[/] would update {descriptionPart}"
                     : $"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
-                return;
+
+                return new DirectoryBuildPropsResult(
+                    bumps.Count > 0 ? FileUpdateOutcome.Updated : FileUpdateOutcome.Unchanged,
+                    bumps,
+                    drift);
             }
 
-            UpdateFile(logger, file, contentFile, descriptionPart, useLatestMinorNugetVersion, forceNugetRefresh);
+            var outcome = UpdateFile(logger, file, contentFile, descriptionPart, useLatestMinorNugetVersion, forceNugetRefresh);
+            return new DirectoryBuildPropsResult(outcome, bumps, drift);
         }
         catch (Exception ex)
         {
@@ -309,21 +320,7 @@ public static class DirectoryBuildPropsHelper
         return (packageIds, propertyNames);
     }
 
-    /// <summary>
-    /// Returns <c>true</c> when applying package bumps to <paramref name="fileContent"/> would
-    /// actually change it. Shared by the dry-run branch and, in effect, by
-    /// <see cref="UpdateFile"/>, so the two cannot disagree.
-    /// </summary>
-    internal static bool WouldChange(
-        ILogger logger,
-        string fileContent,
-        bool useLatestMinorNugetVersion,
-        bool forceNugetRefresh = false)
-        => useLatestMinorNugetVersion &&
-           !EnsureLatestPackageReferencesVersion(logger, fileContent, LogCategoryType.Trace, forceNugetRefresh)
-               .Equals(fileContent, StringComparison.Ordinal);
-
-    internal static void UpdateFile(
+    internal static FileUpdateOutcome UpdateFile(
         ILogger logger,
         FileInfo file,
         string fileContent,
@@ -341,11 +338,12 @@ public static class DirectoryBuildPropsHelper
         if (newFileContent.Equals(fileContent, StringComparison.Ordinal))
         {
             logger.LogInformation($"{EmojisConstants.FileNotUpdated}   {descriptionPart} nothing to update");
-            return;
+            return FileUpdateOutcome.Unchanged;
         }
 
         File.WriteAllText(file.FullName, newFileContent);
         logger.LogInformation($"{EmojisConstants.FileUpdated}   {descriptionPart} updated");
+        return FileUpdateOutcome.Updated;
     }
 
     private static string EnsureLatestPackageReferencesVersion(

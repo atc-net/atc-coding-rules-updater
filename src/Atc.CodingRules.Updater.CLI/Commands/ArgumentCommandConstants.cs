@@ -19,6 +19,7 @@ internal static class ArgumentCommandConstants
     public const string LongRepositoryName = "--repositoryName";
     public const string LongDryRun = "--dry-run";
     public const string LongForceNugetRefresh = "--forceNugetRefresh";
+    public const string LongFailOnChanges = "--failOnChanges";
     public const string LongIncludeProviders = "--includeProviders";
     public const string LongExcludeProviders = "--excludeProviders";
     public const string LongOutputJson = "--json";

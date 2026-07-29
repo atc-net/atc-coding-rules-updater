@@ -40,6 +40,14 @@ public class RunCommandSettings : ProjectCommandSettings
     [Description("Preview mode: log what would be created or updated without writing any files. Skips the temporary-suppression build loop. (default false)")]
     public bool? DryRun { get; init; }
 
+    [CommandOption(ArgumentCommandConstants.LongFailOnChanges)]
+    [Description("Exit with a non-zero code when any file was created or updated. Combine with --dry-run to gate CI on \"coding rules are current\" without writing anything. (default false)")]
+    public bool? FailOnChanges { get; init; }
+
+    [CommandOption(ArgumentCommandConstants.LongOutputJson)]
+    [Description("Emit a machine-readable JSON summary on stdout (per-file outcomes, package bumps, props drift) instead of log output. Useful for CI.")]
+    public bool? OutputJson { get; init; }
+
     [CommandOption(ArgumentCommandConstants.LongForceNugetRefresh)]
     [Description("Ask the ATC API to re-read package versions from nuget.org instead of serving its 12-hour cache. Use when a just-published version is not being picked up. (default false)")]
     public bool? ForceNugetRefresh { get; init; }

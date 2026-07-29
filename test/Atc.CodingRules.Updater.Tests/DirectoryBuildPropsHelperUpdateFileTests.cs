@@ -60,19 +60,6 @@ public sealed class DirectoryBuildPropsHelperUpdateFileTests
             .Should().Contain(x => x.Message.Contains("nothing to update", StringComparison.Ordinal));
     }
 
-    [Fact]
-    public void WouldChange_ReturnsFalse_WhenPackageBumpsAreDisabled()
-    {
-        using var logger = testOutput.BuildLogger(LogLevel.Trace);
-
-        var actual = DirectoryBuildPropsHelper.WouldChange(
-            logger,
-            PropsContent,
-            useLatestMinorNugetVersion: false);
-
-        actual.Should().BeFalse();
-    }
-
     private static FileInfo PrepareFile(string testName)
     {
         var path = Path.Combine(WorkingDirectory, testName);
