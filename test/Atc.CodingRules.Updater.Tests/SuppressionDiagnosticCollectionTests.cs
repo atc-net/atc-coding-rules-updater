@@ -14,6 +14,7 @@ namespace Atc.CodingRules.Updater.Tests;
 public sealed class SuppressionDiagnosticCollectionTests
 {
     /// <summary>ProjA holds 2 CS0219 sites, ProjB holds 5 and references ProjA.</summary>
+    private const int ProjectASites = 2;
     private const int TotalSites = 7;
 
     private readonly ITestOutputHelper testOutput;
@@ -52,17 +53,19 @@ public sealed class SuppressionDiagnosticCollectionTests
         var errorsFound = errorsPass.GetValueOrDefault("CS0219");
         var warningsFound = warningsPass.GetValueOrDefault("CS0219");
 
-        // The errors pass can only see the project that failed, never its dependents.
-        errorsFound.Should().BeGreaterThan(0);
-        warningsFound.Should().BeGreaterThan(
-            errorsFound,
-            "the dependent project's violations are invisible when the build stops at the first failure");
+        // Exact counts, which pins both halves of issue #47 at once:
+        //
+        //  - the errors pass sees only ProjA, because ProjB depends on it and MSBuild will not
+        //    build a project whose dependency failed;
+        //  - the warnings pass sees every site exactly once. It was 14 for these 7 sites until
+        //    Atc.DotNet 3.0.181 stopped counting MSBuild's duplicate diagnostic lines twice.
+        errorsFound.Should().Be(
+            ProjectASites,
+            "a build that stops at the first failure cannot report the dependent project's violations");
 
-        // At least one entry per real violation site across both projects. Asserted as a lower
-        // bound rather than an exact value because MSBuild currently prints every diagnostic
-        // twice, which Atc.DotNet counts twice - see vNext-issues.md.
-        warningsFound.Should().BeGreaterThanOrEqualTo(TotalSites);
-        errorsFound.Should().BeLessThan(TotalSites);
+        warningsFound.Should().Be(
+            TotalSites,
+            "every violation site across both projects should be counted exactly once");
     }
 
     private static DirectoryInfo CreateFixture(string testName)
