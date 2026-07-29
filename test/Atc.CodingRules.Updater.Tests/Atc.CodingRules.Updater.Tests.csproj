@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Update="Atc.Test" Version="3.0.0" />
-    <PackageReference Update="Atc.XUnit" Version="3.0.174" />
+    <PackageReference Update="Atc.XUnit" Version="3.0.181" />
   </ItemGroup>
 
 </Project>
