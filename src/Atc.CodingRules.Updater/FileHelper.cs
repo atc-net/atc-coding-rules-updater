@@ -6,6 +6,14 @@ namespace Atc.CodingRules.Updater;
 /// </summary>
 public static class FileHelper
 {
+    private static readonly string[] SolutionAndProjectExtensions = [".sln", ".slnx", ".csproj"];
+
+    /// <summary>
+    /// Directories skipped by <see cref="SearchAllForElement"/>: build output and vendored
+    /// dependencies, which can contain generated project files that are not the user's source.
+    /// </summary>
+    private static readonly string[] ExcludedDirectoryNames = ["bin", "obj", ".git", ".vs", "node_modules"];
+
     /// <summary>
     /// Newline tokens recognised by line-splitting helpers (CR, LF, CRLF).
     /// </summary>
@@ -43,7 +51,10 @@ public static class FileHelper
         ArgumentNullException.ThrowIfNull(projectPath);
 
         var result = new Collection<FileInfo>();
-        var files = Directory.GetFiles(projectPath.FullName, searchPattern, searchOption);
+        var files = Directory
+            .EnumerateFiles(projectPath.FullName, searchPattern, searchOption)
+            .Where(x => !IsUnderExcludedDirectory(projectPath.FullName, x));
+
         foreach (var file in files)
         {
             var fileContent = File.ReadAllText(file);
@@ -78,14 +89,14 @@ public static class FileHelper
     }
 
     /// <summary>
-    /// Coarse equality used by the editor-config / build-props merge logic: returns <c>true</c> when
-    /// the two strings have the same length (after normalising newlines) and identical
-    /// <c># Version</c>, <c># Updated</c>, and <c># Distribution</c> headers in the first ten lines.
+    /// Returns <c>true</c> when the two strings have identical content, ignoring line-ending style.
     /// </summary>
     /// <remarks>
-    /// This is intentionally a fast pre-check, not byte-equality — it lets the merge logic skip work
-    /// when only stale comment metadata might differ. For byte-perfect comparison use
-    /// <see cref="string.Equals(string?, StringComparison)"/> directly.
+    /// This used to be a heuristic — equal length plus matching <c># Version</c> / <c># Updated</c> /
+    /// <c># Distribution</c> headers — which meant two genuinely different files of the same length
+    /// compared equal, and the <c>.editorconfig</c> merge in
+    /// <see cref="EditorConfigHelper"/> silently reported "nothing to update".
+    /// Newlines are still normalised on both sides so a CRLF/LF difference alone is not a change.
     /// </remarks>
     public static bool AreFilesEqual(
         string dataA,
@@ -94,39 +105,9 @@ public static class FileHelper
         ArgumentNullException.ThrowIfNull(dataA);
         ArgumentNullException.ThrowIfNull(dataB);
 
-        var l1 = dataA.EnsureEnvironmentNewLines().Length;
-        var l2 = dataB.EnsureEnvironmentNewLines().Length;
-
-        var isSameFileLength = l1.Equals(l2);
-        if (!isSameFileLength)
-        {
-            return false;
-        }
-
-        var headerLinesA = dataA
-            .ToLines()
-            .Take(10)
-            .ToList();
-
-        var headerLinesB = dataB
-            .ToLines()
-            .Take(10)
-            .ToList();
-
-        if (headerLinesA.Find(x => x.StartsWith("# Version", StringComparison.CurrentCultureIgnoreCase)) !=
-            headerLinesB.Find(x => x.StartsWith("# Version", StringComparison.CurrentCultureIgnoreCase)))
-        {
-            return false;
-        }
-
-        if (headerLinesA.Find(x => x.StartsWith("# Updated", StringComparison.CurrentCultureIgnoreCase)) !=
-            headerLinesB.Find(x => x.StartsWith("# Updated", StringComparison.CurrentCultureIgnoreCase)))
-        {
-            return false;
-        }
-
-        return headerLinesA.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase)) ==
-               headerLinesB.Find(x => x.StartsWith("# Distribution", StringComparison.CurrentCultureIgnoreCase));
+        return dataA
+            .EnsureEnvironmentNewLines()
+            .Equals(dataB.EnsureEnvironmentNewLines(), StringComparison.Ordinal);
     }
 
     /// <summary>Returns <c>true</c> when <paramref name="directory"/> exists and contains a top-level <c>.editorconfig</c>.</summary>
@@ -134,20 +115,48 @@ public static class FileHelper
         => directory is not null &&
            directory.Exists
            && Directory.GetFiles(directory.FullName)
-               .Any(x => x.Equals(".editorconfig", StringComparison.OrdinalIgnoreCase));
+               .Any(x => Path.GetFileName(x).Equals(EditorConfigHelper.FileName, StringComparison.OrdinalIgnoreCase));
 
-    /// <summary>Returns <c>true</c> when <paramref name="directory"/> contains at least one <c>.sln</c> or <c>.csproj</c>.</summary>
+    /// <summary>Returns <c>true</c> when <paramref name="directory"/> contains at least one <c>.sln</c>, <c>.slnx</c> or <c>.csproj</c>.</summary>
     public static bool ContainsSolutionOrProjectFile(DirectoryInfo? directory)
         => directory is not null &&
            directory.Exists
            && Directory.GetFiles(directory.FullName)
-               .Any(x => x.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
-                         x.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase));
+               .Any(x => IsSolutionOrProjectExtension(Path.GetExtension(x)));
 
-    /// <summary>Returns <c>true</c> when <paramref name="file"/> exists and has a <c>.sln</c> or <c>.csproj</c> extension.</summary>
+    /// <summary>Returns <c>true</c> when <paramref name="file"/> exists and has a <c>.sln</c>, <c>.slnx</c> or <c>.csproj</c> extension.</summary>
     public static bool IsSolutionOrProjectFile(FileInfo? file)
         => file is not null &&
            file.Exists &&
-           (".sln".Equals(file.Extension, StringComparison.OrdinalIgnoreCase) ||
-            ".csproj".Equals(file.Extension, StringComparison.OrdinalIgnoreCase));
+           IsSolutionOrProjectExtension(file.Extension);
+
+    private static bool IsSolutionOrProjectExtension(string extension)
+        => SolutionAndProjectExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Returns <c>true</c> when <paramref name="filePath"/> sits under a build-output or vendor
+    /// directory relative to <paramref name="rootPath"/>. Matching is done on path segments below
+    /// the root, so a project that happens to live in a folder called <c>bin</c> is not excluded
+    /// wholesale.
+    /// </summary>
+    private static bool IsUnderExcludedDirectory(
+        string rootPath,
+        string filePath)
+    {
+        var relativePath = Path.GetRelativePath(rootPath, filePath);
+        var segments = relativePath.Split(
+            [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar],
+            StringSplitOptions.RemoveEmptyEntries);
+
+        // The final segment is the file name itself, never a directory.
+        for (var i = 0; i < segments.Length - 1; i++)
+        {
+            if (ExcludedDirectoryNames.Contains(segments[i], StringComparer.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

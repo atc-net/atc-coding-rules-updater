@@ -11,11 +11,10 @@ public sealed class MicrosoftCompilerErrorsProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new MicrosoftCompilerErrorsProvider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new MicrosoftCompilerErrorsProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 850);
 
         // Assert
         Assert.NotNull(actual);

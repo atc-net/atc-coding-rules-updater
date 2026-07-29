@@ -11,16 +11,10 @@ public sealed class AsyncFixerProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        AnalyzerProviderBaseRuleData? actual = null;
-
-        await RetryHelper.ExecuteWithRetryAsync(async () =>
-        {
-            // Arrange
-            var provider = new AsyncFixerProvider(NullLogger.Instance);
-
-            // Act
-            actual = await provider.CollectBaseRules(providerCollectingMode);
-        });
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new AsyncFixerProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 5);
 
         // Assert
         Assert.NotNull(actual);

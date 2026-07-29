@@ -52,7 +52,7 @@ public static class ProjectSanityCheckHelper
     /// <param name="logger">Where warnings are reported.</param>
     /// <param name="projectPath">Project root directory.</param>
     /// <param name="projectTarget">Target framework profile chosen for this run.</param>
-    public static void CheckFiles(
+    public static IReadOnlyList<SanityCheckDiagnostic> CheckFiles(
         bool throwIf,
         ILogger logger,
         DirectoryInfo projectPath,
@@ -61,7 +61,7 @@ public static class ProjectSanityCheckHelper
         var diagnostics = CheckFilesAndCollect(projectPath, projectTarget);
         if (diagnostics.Count == 0)
         {
-            return;
+            return diagnostics;
         }
 
         // Errors are reported in groups by code so the output matches the historical wording
@@ -98,6 +98,8 @@ public static class ProjectSanityCheckHelper
         {
             logger.LogWarning(diagnostic.Message);
         }
+
+        return diagnostics;
     }
 
     private static void CheckMissingOrganizationName(

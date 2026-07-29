@@ -11,16 +11,10 @@ public sealed class XunitProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        AnalyzerProviderBaseRuleData? actual = null;
-
-        await RetryHelper.ExecuteWithRetryAsync(async () =>
-        {
-            // Arrange
-            var provider = new XunitProvider(NullLogger.Instance);
-
-            // Act
-            actual = await provider.CollectBaseRules(providerCollectingMode);
-        });
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new XunitProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 50);
 
         // Assert
         Assert.NotNull(actual);

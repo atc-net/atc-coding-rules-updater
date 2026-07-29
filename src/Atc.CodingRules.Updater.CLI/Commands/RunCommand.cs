@@ -14,10 +14,18 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
         return ExecuteInternalAsync(settings, cancellationToken);
     }
 
-    private async Task<int> ExecuteInternalAsync(
+    internal async Task<int> ExecuteInternalAsync(
         RunCommandSettings settings,
         CancellationToken cancellationToken)
     {
+        // Validate the arguments before probing the network, so a typo fails fast and with a
+        // message about the typo rather than about connectivity.
+        var projectPath = ProjectHelper.GetExistingProjectPath(logger, settings.ProjectPath);
+        if (projectPath is null)
+        {
+            return ConsoleExitStatusCodes.Failure;
+        }
+
         if (!NetworkInformationHelper.HasHttpConnection())
         {
             System.Console.WriteLine("This tool requires internet connection!");
@@ -26,7 +34,6 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
 
         ConsoleHelper.WriteHeader();
 
-        var projectPath = new DirectoryInfo(settings.ProjectPath);
         var options = await GetOptionsFromFileAndUserArguments(settings, projectPath, cancellationToken);
 
         try
@@ -132,7 +139,7 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             : null;
     }
 
-    private static FileInfo? GetBuildFile(
+    internal static FileInfo? GetBuildFile(
         RunCommandSettings settings,
         DirectoryInfo projectPath)
     {
@@ -142,10 +149,12 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             buildFile = settings.BuildFile.Value;
         }
 
-        return !string.IsNullOrEmpty(buildFile)
-            ? buildFile.Contains(':', StringComparison.Ordinal)
-                ? new FileInfo(buildFile)
-                : new FileInfo(Path.Combine(projectPath.FullName, buildFile))
-            : null;
+        // Path.Combine returns its second argument unchanged when that argument is rooted, so it
+        // handles absolute and relative --buildFile values on every platform. The colon check this
+        // replaced was redundant, and sent relative paths containing a colon (legal on Unix) to the
+        // current working directory instead of --projectPath.
+        return string.IsNullOrEmpty(buildFile)
+            ? null
+            : new FileInfo(Path.Combine(projectPath.FullName, buildFile));
     }
 }

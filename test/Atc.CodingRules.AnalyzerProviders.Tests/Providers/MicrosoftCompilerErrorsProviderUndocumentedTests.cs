@@ -11,11 +11,10 @@ public sealed class MicrosoftCompilerErrorsProviderUndocumentedTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new MicrosoftCompilerErrorsProviderUndocumented(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new MicrosoftCompilerErrorsProviderUndocumented(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 46);
 
         // Assert
         Assert.NotNull(actual);

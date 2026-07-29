@@ -11,11 +11,10 @@ public sealed class SecurityCodeScanVs2019ProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new SecurityCodeScanVs2019Provider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new SecurityCodeScanVs2019Provider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 31);
 
         // Assert
         Assert.NotNull(actual);

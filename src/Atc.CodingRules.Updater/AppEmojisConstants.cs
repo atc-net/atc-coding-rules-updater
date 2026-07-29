@@ -22,4 +22,7 @@ public static class AppEmojisConstants
 
     /// <summary>Marker for warnings about duplicate dotnet_diagnostic.* keys between git and custom sections.</summary>
     public const string DuplicateKey = Emoji.Known.Key;
+
+    /// <summary>Marker for lines reporting Directory.Build.props drift against the distribution.</summary>
+    public const string Drift = Emoji.Known.Compass;
 }

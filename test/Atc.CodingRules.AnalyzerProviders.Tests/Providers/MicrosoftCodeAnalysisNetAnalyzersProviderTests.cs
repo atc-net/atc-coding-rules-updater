@@ -11,11 +11,10 @@ public class MicrosoftCodeAnalysisNetAnalyzersProviderTests
     public async Task CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
     {
-        // Arrange
-        var provider = new MicrosoftCodeAnalysisNetAnalyzersProvider(NullLogger.Instance);
-
-        // Act
-        var actual = await provider.CollectBaseRules(providerCollectingMode);
+        // Arrange & Act
+        var actual = await RetryHelper.ExecuteWithRetryAsync(
+            () => new MicrosoftCodeAnalysisNetAnalyzersProvider(NullLogger.Instance).CollectBaseRules(providerCollectingMode),
+            x => x.Rules.Count >= 252);
 
         // Assert
         Assert.NotNull(actual);

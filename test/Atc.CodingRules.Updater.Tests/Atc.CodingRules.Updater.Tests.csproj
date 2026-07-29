@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Atc.CodingRules.Updater\Atc.CodingRules.Updater.csproj" />
+    <ProjectReference Include="..\..\src\Atc.CodingRules.Updater.CLI\Atc.CodingRules.Updater.CLI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

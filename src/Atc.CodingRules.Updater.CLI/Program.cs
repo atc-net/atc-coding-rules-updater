@@ -32,7 +32,8 @@ public static class Program
         return app.RunAsync(args);
     }
 
-    private static string[] SetProjectPathFromDotArgumentIfNeeded(string[] args)
+    internal static string[] SetProjectPathFromDotArgumentIfNeeded(
+        string[] args)
     {
         if (!args.Contains(".", StringComparer.Ordinal))
         {
@@ -76,7 +77,7 @@ public static class Program
         return [.. newArgs];
     }
 
-    private static string[] SetHelpArgumentIfNeeded(string[] args)
+    internal static string[] SetHelpArgumentIfNeeded(string[] args)
     {
         if (args.Length == 0)
         {

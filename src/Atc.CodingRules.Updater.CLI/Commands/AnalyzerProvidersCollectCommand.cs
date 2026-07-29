@@ -37,8 +37,12 @@ public class AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCom
                 logger.LogInformation("Working on analyzer providers collect base rules metadata");
             }
 
+            // In --json mode stdout must contain nothing but the JSON document. The console
+            // logger writes to stdout too, so collection progress is discarded rather than
+            // interleaved; per-provider failures are not lost, they are reported through the
+            // ExceptionMessage field of the JSON summary below.
             result = await AnalyzerProviderBaseRulesHelper.GetAnalyzerProviderBaseRules(
-                logger,
+                jsonOutput ? NullLogger.Instance : logger,
                 options.AnalyzerProviderCollectingMode,
                 logWithAnsiConsoleMarkup: !jsonOutput,
                 includeProviders,

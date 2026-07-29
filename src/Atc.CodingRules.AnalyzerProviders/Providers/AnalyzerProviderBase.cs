@@ -16,6 +16,12 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
 
     public virtual Uri? DocumentationLink { get; set; }
 
+    /// <summary>
+    /// The provider's name, derived from the same <see cref="CreateData"/> the collection path
+    /// uses, so there is exactly one place per provider that defines it.
+    /// </summary>
+    public string ProviderName => CreateData().Name;
+
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Falling back to a prior snapshot is preferable to crashing the run on a transient scrape failure.")]
     public async Task<AnalyzerProviderBaseRuleData> CollectBaseRules(
         ProviderCollectingMode providerCollectingMode)
@@ -23,7 +29,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         var data = CreateData();
 
         var stopwatch = Stopwatch.StartNew();
-        logger.LogTrace($"     [green]{data.Name}[/] collect base rules");
+        logger.LogTrace($"     {Colored(data.Name, "green")} collect base rules");
 
         if (providerCollectingMode == ProviderCollectingMode.LocalCache)
         {
@@ -70,7 +76,7 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
             var snapshot = await ReadFromTempFolder(data);
             if (snapshot is not null)
             {
-                logger.LogWarning($"     [yellow]{data.Name}[/] collect failed; using prior cached snapshot. Reason: {data.ExceptionMessage ?? "no rules collected"}");
+                logger.LogWarning($"     {Colored(data.Name, "yellow")} collect failed; using prior cached snapshot. Reason: {data.ExceptionMessage ?? "no rules collected"}");
                 StopTheStopwatchAndLog(stopwatch, data.Name, providerCollectingMode);
                 return snapshot;
             }
@@ -187,8 +193,19 @@ public abstract class AnalyzerProviderBase : IAnalyzerProvider
         ProviderCollectingMode providerCollectingMode)
     {
         stopwatch.Stop();
-        logger.LogTrace(logWithAnsiConsoleMarkup
-            ? $"     [green]{providerName}[/] collect base rules by collecting mode: [green]{providerCollectingMode}[/] - time: [green]{stopwatch.Elapsed.GetPrettyTime()}[/]"
-            : $"     {providerName} collect base rules by collecting mode: {providerCollectingMode} - time: {stopwatch.Elapsed.GetPrettyTime()}");
+        logger.LogTrace(
+            $"     {Colored(providerName, "green")} collect base rules by collecting mode: {Colored(providerCollectingMode.ToString(), "green")} - time: {Colored(stopwatch.Elapsed.GetPrettyTime(), "green")}");
     }
+
+    /// <summary>
+    /// Wraps <paramref name="text"/> in a Spectre colour tag, or returns it untouched when the
+    /// caller asked for plain output. Machine-readable modes such as
+    /// <c>analyzer-providers collect --json</c> rely on this.
+    /// </summary>
+    private string Colored(
+        string text,
+        string color)
+        => logWithAnsiConsoleMarkup
+            ? $"[{color}]{text}[/]"
+            : text;
 }

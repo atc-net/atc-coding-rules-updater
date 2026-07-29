@@ -3,8 +3,13 @@ namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
 public class RunCommandSettings : ProjectCommandSettings
 {
+    /// <remarks>
+    /// The name is historical: the bump is bounded by the <em>major</em> version, not the minor.
+    /// A package on 3.0.54 moves to the newest 3.x, but never to 4.0.0 — see the
+    /// <c>withinMinorReleaseOnly</c> argument in <c>DirectoryBuildPropsHelper</c>.
+    /// </remarks>
     [CommandOption(ArgumentCommandConstants.LongUseLatestMinorNugetVersion)]
-    [Description("Bump PackageReferences in Directory.Build.props to the latest available minor version. (default true)")]
+    [Description("Bump PackageReferences in Directory.Build.props to the latest version within the same major version. (default true)")]
     public bool? UseLatestMinorNugetVersion { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.ShortUseTemporarySuppressions}|{ArgumentCommandConstants.LongUseTemporarySuppressions}")]
