@@ -10,6 +10,11 @@ public static class Program
     {
         ArgumentNullException.ThrowIfNull(args);
 
+        // Must happen before ServiceCollectionFactory.Create, which snapshots the console for the
+        // logger. CommandAppFactory sets UTF-8 too, but it runs after that snapshot is taken, so on
+        // a console using an OEM code page every emoji written by the logger degrades to '?'.
+        System.Console.OutputEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
         args = SetProjectPathFromDotArgumentIfNeeded(args);
         args = SetHelpArgumentIfNeeded(args);
 
