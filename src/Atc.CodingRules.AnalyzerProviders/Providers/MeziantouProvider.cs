@@ -78,14 +78,13 @@ public class MeziantouProvider : AnalyzerProviderBase
 
         foreach (var row in articleTableRows)
         {
-            if (row.SelectNodes("td") is null)
+            var cellNodes = row.SelectNodes("td");
+            if (cellNodes is null)
             {
                 continue;
             }
 
-            var cells = row
-                .SelectNodes("td")
-                .ToList();
+            var cells = cellNodes.ToList();
 
             if (cells.Count <= 0)
             {
@@ -100,14 +99,14 @@ public class MeziantouProvider : AnalyzerProviderBase
 
             var code = aHrefNode.InnerText;
             var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
-            var link = aHrefNode.Attributes["href"].Value;
+            var link = aHrefNode.Attributes["href"]?.Value;
             var category = cells[TableColumnCategory].InnerText;
 
             data.Rules.Add(
                 new Rule(
                     code,
                     title,
-                    link,
+                    link ?? string.Empty,
                     category: category));
         }
     }

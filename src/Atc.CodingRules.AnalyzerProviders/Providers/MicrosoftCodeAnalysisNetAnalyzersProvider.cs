@@ -58,14 +58,13 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
 
         foreach (var row in tableRows)
         {
-            if (row.SelectNodes("td") is null)
+            var cellNodes = row.SelectNodes("td");
+            if (cellNodes is null)
             {
                 continue;
             }
 
-            var cells = row
-                .SelectNodes("td")
-                .ToList();
+            var cells = cellNodes.ToList();
 
             if (cells.Count <= 0)
             {
@@ -91,7 +90,7 @@ public class MicrosoftCodeAnalysisNetAnalyzersProvider : AnalyzerProviderBase
             var code = sa[0];
             var title = sa[1].Trim();
             var description = HtmlEntity.DeEntitize(cells[TableColumnCategory].InnerText);
-            var link = $"{DocumentationLink.OriginalString}/{aHrefNode.Attributes["href"].Value}";
+            var link = $"{DocumentationLink.OriginalString}/{aHrefNode.Attributes["href"]?.Value}";
 
             data.Rules.Add(
                 new Rule(

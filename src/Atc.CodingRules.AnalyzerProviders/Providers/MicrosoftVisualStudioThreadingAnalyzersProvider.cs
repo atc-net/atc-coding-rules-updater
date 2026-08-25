@@ -55,40 +55,52 @@ public class MicrosoftVisualStudioThreadingAnalyzersProvider : AnalyzerProviderB
 
         foreach (var row in articleTableRows)
         {
-            if (row.SelectNodes("td") is null)
+            var rule = CreateRuleFromRow(row);
+            if (rule is not null)
             {
-                continue;
+                data.Rules.Add(rule);
             }
-
-            var cells = row
-                .SelectNodes("td")
-                .ToList();
-
-            if (cells.Count <= 0)
-            {
-                continue;
-            }
-
-            var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
-            if (aHrefNode is null)
-            {
-                continue;
-            }
-
-            var code = aHrefNode.InnerText;
-            var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
-            var hrefValue = aHrefNode.Attributes["href"].Value;
-            var link = hrefValue.StartsWith("http", StringComparison.OrdinalIgnoreCase)
-                ? hrefValue
-                : $"https://microsoft.github.io/vs-threading/analyzers/{hrefValue}";
-            var category = cells[TableColumnCategory].InnerText;
-
-            data.Rules.Add(
-                new Rule(
-                    code,
-                    title,
-                    link,
-                    category: category));
         }
+    }
+
+    private static Rule? CreateRuleFromRow(HtmlNode row)
+    {
+        var cellNodes = row.SelectNodes("td");
+        if (cellNodes is null)
+        {
+            return null;
+        }
+
+        var cells = cellNodes.ToList();
+
+        if (cells.Count <= 0)
+        {
+            return null;
+        }
+
+        var aHrefNode = cells[TableColumnId].SelectSingleNode("a");
+        if (aHrefNode is null)
+        {
+            return null;
+        }
+
+        var hrefValue = aHrefNode.Attributes["href"]?.Value;
+        if (hrefValue is null)
+        {
+            return null;
+        }
+
+        var code = aHrefNode.InnerText;
+        var title = HtmlEntity.DeEntitize(cells[TableColumnTitle].InnerText);
+        var link = hrefValue.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+            ? hrefValue
+            : $"https://microsoft.github.io/vs-threading/analyzers/{hrefValue}";
+        var category = cells[TableColumnCategory].InnerText;
+
+        return new Rule(
+            code,
+            title,
+            link,
+            category: category);
     }
 }
