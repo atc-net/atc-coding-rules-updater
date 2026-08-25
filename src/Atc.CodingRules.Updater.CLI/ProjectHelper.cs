@@ -676,7 +676,7 @@ public static class ProjectHelper
 
         if (temporarySuppressionAsExcel)
         {
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            ExcelPackage.License.SetNonCommercialOrganization("ATC-Net");
 
             using var excelPackage = new ExcelPackage();
 
