@@ -17,7 +17,7 @@
     <PackageReference Include="Atc.DotNet" Version="3.0.186" />
     <PackageReference Include="Atc.Console.Spectre" Version="3.0.186" />
     <PackageReference Include="EPPlus" Version="8.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>
