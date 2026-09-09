@@ -61,7 +61,7 @@ public static class AnalyzerProviderBaseRulesHelper
         {
             if (item.ExceptionMessage is not null)
             {
-                logger.LogError($"     AnalyzerProvider-{item.Name} - {item.ExceptionMessage}");
+                logger.LogError($"     AnalyzerProvider-{item.Name} - {Spectre.Console.Markup.Escape(item.ExceptionMessage)}");
             }
         }
     }

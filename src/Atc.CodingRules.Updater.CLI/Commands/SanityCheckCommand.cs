@@ -39,7 +39,7 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
             return ConsoleExitStatusCodes.Failure;
         }
 

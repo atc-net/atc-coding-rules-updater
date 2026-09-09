@@ -50,7 +50,7 @@ public class AnalyzerProvidersCollectCommand(ILogger<AnalyzerProvidersCollectCom
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage()}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.GetMessage())}");
             return ConsoleExitStatusCodes.Failure;
         }
 

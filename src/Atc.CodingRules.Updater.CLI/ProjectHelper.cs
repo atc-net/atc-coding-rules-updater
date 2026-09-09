@@ -456,12 +456,12 @@ public static class ProjectHelper
         }
         catch (DataException ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
             return;
         }
         catch (IOException ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
             return;
         }
 
@@ -503,7 +503,7 @@ public static class ProjectHelper
             }
             catch (DataException ex)
             {
-                logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+                logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
                 return;
             }
 
@@ -632,7 +632,7 @@ public static class ProjectHelper
         }
         catch (DataException ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.Message}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.Message)}");
             return false;
         }
 

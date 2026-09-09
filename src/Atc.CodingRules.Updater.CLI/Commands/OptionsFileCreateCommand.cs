@@ -34,7 +34,7 @@ public class OptionsFileCreateCommand(ILogger<OptionsFileCreateCommand> logger)
         }
         catch (Exception ex)
         {
-            logger.LogError($"{EmojisConstants.Error} {ex.GetMessage()}");
+            logger.LogError($"{EmojisConstants.Error} {Markup.Escape(ex.GetMessage())}");
             return ConsoleExitStatusCodes.Failure;
         }
 
