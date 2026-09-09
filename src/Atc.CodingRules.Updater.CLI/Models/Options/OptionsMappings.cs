@@ -80,9 +80,14 @@ public class OptionsMappings
         // root", since anything genuinely rooted was returned above.
         relativePath = relativePath.TrimStart('/', '\\');
 
+        // Both separators are accepted on every platform, and normalized to the local one. An
+        // options file is checked in and shared, so a path written on Windows as "src\nested"
+        // has to keep working for someone running the tool on Linux or macOS.
         newPath = Path.Combine(
             projectPath.FullName,
-            relativePath.Replace('/', Path.DirectorySeparatorChar));
+            relativePath
+                .Replace('\\', Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar));
 
         return true;
     }
