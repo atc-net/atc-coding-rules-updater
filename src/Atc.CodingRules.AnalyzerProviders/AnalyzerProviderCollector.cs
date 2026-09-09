@@ -100,7 +100,7 @@ public class AnalyzerProviderCollector
 
         if (unknown.Count > 0)
         {
-            logger.LogWarning($"     Unknown provider name(s) in --{mode}Providers: {string.Join(", ", unknown)}. Known names: {string.Join(", ", known)}");
+            logger.LogWarning($"     Unknown provider name(s) in --{mode}Providers: {Spectre.Console.Markup.Escape(string.Join(", ", unknown))}. Known names: {string.Join(", ", known)}");
         }
     }
 

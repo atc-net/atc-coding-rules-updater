@@ -211,7 +211,7 @@ public static class DirectoryBuildPropsHelper
                 StringComparison.Ordinal);
 
             File.WriteAllText(file.FullName, fileContent);
-            logger.LogDebug($"{EmojisConstants.FileUpdated}   {elementName} in file is updated to '{newElementValue}'");
+            logger.LogDebug($"{EmojisConstants.FileUpdated}   {elementName} in file is updated to '{Markup.Escape(newElementValue)}'");
         }
     }
 
