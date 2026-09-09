@@ -125,7 +125,7 @@ public static class AtcApiNugetClientHelper
         }
         catch (HttpRequestException ex)
         {
-            logger?.LogTrace($"     Get newest version error: {ex.Message}");
+            logger?.LogTrace($"     Get newest version error: {Markup.Escape(ex.Message)}");
             return null;
         }
         catch (WebException ex)
@@ -136,7 +136,7 @@ public static class AtcApiNugetClientHelper
                 return null;
             }
 
-            logger?.LogTrace($"     Get newest version error: {ex.GetMessage()}");
+            logger?.LogTrace($"     Get newest version error: {Markup.Escape(ex.GetMessage())}");
             return null;
         }
         catch

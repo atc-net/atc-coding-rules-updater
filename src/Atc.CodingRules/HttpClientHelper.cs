@@ -120,15 +120,15 @@ public static class HttpClientHelper
             }
             catch (HttpRequestException ex) when (attempt < MaxAttempts)
             {
-                logger.LogTrace($"     Download attempt {attempt}/{MaxAttempts} failed: {ex.Message}");
+                logger.LogTrace($"     Download attempt {attempt}/{MaxAttempts} failed: {Markup.Escape(ex.Message)}");
             }
             catch (WebException ex) when (attempt < MaxAttempts)
             {
-                logger.LogTrace($"     Download attempt {attempt}/{MaxAttempts} failed: {ex.GetMessage()}");
+                logger.LogTrace($"     Download attempt {attempt}/{MaxAttempts} failed: {Markup.Escape(ex.GetMessage())}");
             }
             catch (TaskCanceledException ex) when (attempt < MaxAttempts)
             {
-                logger.LogTrace($"     Download attempt {attempt}/{MaxAttempts} timed out: {ex.Message}");
+                logger.LogTrace($"     Download attempt {attempt}/{MaxAttempts} timed out: {Markup.Escape(ex.Message)}");
             }
 
             // Sleep between attempts; the user's cancellation token short-circuits the wait.

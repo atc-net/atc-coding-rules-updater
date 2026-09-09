@@ -11,6 +11,9 @@
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.186" />
     <PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
+    <!-- Log messages are rendered as Spectre markup by the consumers' console sink, so exception
+         text interpolated into them has to be escaped. -->
+    <PackageReference Include="Spectre.Console" Version="0.57.2" />
   </ItemGroup>
 
   <ItemGroup>

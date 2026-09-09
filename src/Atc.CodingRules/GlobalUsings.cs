@@ -7,3 +7,5 @@ global using System.Net.Http;
 global using Atc.Helpers;
 
 global using Microsoft.Extensions.Logging;
+
+global using Spectre.Console;
