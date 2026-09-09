@@ -89,6 +89,11 @@ public static class OptionsHelper
         var testName = directories.FirstOrDefault(x => x.Name.Equals("test", StringComparison.OrdinalIgnoreCase))?.Name ?? "test";
         options.Mappings.Test.Paths.Add(testName);
 
+        // The names above are bare folder names discovered under projectPath, so they have to be
+        // anchored to it here. Without this the no-options-file run resolved them against the
+        // current directory instead, and wrote into whatever tree the tool started in.
+        options.Mappings.ResolvePaths(projectPath);
+
         return options;
     }
 

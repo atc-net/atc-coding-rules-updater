@@ -58,43 +58,32 @@ public class OptionsMappings
         out string newPath)
     {
         newPath = string.Empty;
-        var di = new DirectoryInfo(orgPath);
-        if (di.FullName.Contains("Atc.CodingRules.Updater.CLI", StringComparison.Ordinal))
+
+        // A fully qualified path - "D:\Code\MyRepo\src", or a UNC share - already says where it
+        // points, so it is taken as written. Note this is deliberately not IsPathRooted: on
+        // Windows that also accepts the drive-relative "\src", which is one of the forms that
+        // does need anchoring.
+        if (Path.IsPathFullyQualified(orgPath))
         {
-            if (orgPath.IndexOfAny(['.', '/', '\\']) == -1)
-            {
-                newPath = Path.Combine(projectPath.FullName, orgPath);
-                return true;
-            }
-
-            if (orgPath.StartsWith("./", StringComparison.Ordinal))
-            {
-                var s = orgPath
-                    .Substring(2)
-                    .Replace("/", "\\", StringComparison.Ordinal);
-
-                newPath = Path.Combine(projectPath.FullName, s);
-                return true;
-            }
-
-            if (orgPath.IndexOfAny(['/', '\\']) != -1)
-            {
-                var s = orgPath.Replace("/", "\\", StringComparison.Ordinal);
-                newPath = Path.Combine(projectPath.FullName, s);
-                return true;
-            }
+            return false;
         }
 
-        if (orgPath.StartsWith('\\'))
-        {
-            var s = orgPath
-                .Substring(1)
-                .Replace("/", "\\", StringComparison.Ordinal);
+        var relativePath = orgPath;
 
-            newPath = Path.Combine(projectPath.FullName, s);
-            return true;
+        if (relativePath.StartsWith("./", StringComparison.Ordinal) ||
+            relativePath.StartsWith(".\\", StringComparison.Ordinal))
+        {
+            relativePath = relativePath.Substring(2);
         }
 
-        return false;
+        // A leading separator here spells "from the project root" rather than "from the volume
+        // root", since anything genuinely rooted was returned above.
+        relativePath = relativePath.TrimStart('/', '\\');
+
+        newPath = Path.Combine(
+            projectPath.FullName,
+            relativePath.Replace('/', Path.DirectorySeparatorChar));
+
+        return true;
     }
 }
