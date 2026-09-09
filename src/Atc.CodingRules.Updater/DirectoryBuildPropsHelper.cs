@@ -405,7 +405,10 @@ public static class DirectoryBuildPropsHelper
                     // ("$(SomeVersion)") references cannot be compared as a System.Version.
                     // Skipping them is correct, but doing it silently left users with no way to
                     // tell the package had never been considered.
-                    logger.LogTrace($"     Skipping {item.PackageId} @ {item.Version} - version is not comparable");
+                    // The version must be escaped: a NuGet range ("[2.9.0,3.0.0)") or an exact pin
+                    // ("[2.1.4]") opens what the console sink reads as a markup tag, which threw
+                    // out of the log call and aborted the whole run for that area.
+                    logger.LogTrace($"     Skipping {item.PackageId} @ {Markup.Escape(item.Version)} - version is not comparable");
                     continue;
                 }
 
