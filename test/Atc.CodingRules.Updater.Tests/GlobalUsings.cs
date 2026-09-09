@@ -7,6 +7,7 @@ global using Atc.CodingRules.Updater.CLI;
 global using Atc.CodingRules.Updater.CLI.Commands;
 global using Atc.CodingRules.Updater.CLI.Commands.Settings;
 global using Atc.CodingRules.Updater.CLI.Models;
+global using Atc.CodingRules.Updater.CLI.Models.Options;
 global using Atc.DotNet;
 
 global using Microsoft.Extensions.Logging;
