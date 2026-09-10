@@ -10,8 +10,13 @@
     <AssemblyName>atc-coding-rules-updater</AssemblyName>
     <PackAsTool>true</PackAsTool>
     <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.186" />
