@@ -1,11 +1,14 @@
-name: "Pre-Integration"
+name: "Build and test"
 
 on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '**'
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    branches:
+      - main
 
 jobs:
   dotnet-build:
