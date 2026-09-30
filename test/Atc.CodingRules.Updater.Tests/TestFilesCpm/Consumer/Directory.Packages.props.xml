@@ -1,0 +1,40 @@
+<Project>
+
+  <PropertyGroup>
+	<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	<!--
+	  Required so the transitive pins below take effect.
+	-->
+	<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+	<!-- Framework packages. -->
+	<ItemGroup>
+	<PackageVersion Include="Atc" Version="3.0.186" />
+	<PackageVersion Include="Azure.Identity" Version="1.21.0" />
+	</ItemGroup>
+
+	<!-- Shared code analyzers, applied to every project in the solution. -->
+	<ItemGroup Label="Code Analyzers">
+	<GlobalPackageReference Include="AsyncFixer" Version="2.0.0" />
+	<GlobalPackageReference Include="Meziantou.Analyzer" Version="3.0.290" />
+	<GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
+	</ItemGroup>
+
+	<!-- Test. -->
+	<ItemGroup>
+	<PackageVersion Include="Atc.Test" Version="3.1.1" />
+	<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+	<!-- NSubstitute is held at 5.x on purpose: a dependency caps it below 6.0.0. -->
+	<PackageVersion Include="NSubstitute" Version="5.3.0" />
+	<PackageVersion Include="xunit.v3" Version="4.0.1" />
+	</ItemGroup>
+
+  <!--
+	Transitive security pins. Not referenced directly by any project.
+  -->
+  <ItemGroup>
+	<PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.12" />
+  </ItemGroup>
+
+</Project>

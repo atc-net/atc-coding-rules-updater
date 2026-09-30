@@ -34,7 +34,7 @@ public class SanityCheckCommand(ILogger<SanityCheckCommand> logger) : AsyncComma
         try
         {
             diagnostics = jsonOutput
-                ? ProjectSanityCheckHelper.CheckFilesAndCollect(projectPath, options.ProjectTarget)
+                ? ProjectSanityCheckHelper.CheckFilesAndCollect(projectPath, options.ProjectTarget, options.CentralPackageManagement)
                 : ProjectHelper.SanityCheckFiles(logger, projectPath, options);
         }
         catch (Exception ex)

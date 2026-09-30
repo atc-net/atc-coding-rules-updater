@@ -51,9 +51,8 @@ public static class FileHelper
         ArgumentNullException.ThrowIfNull(projectPath);
 
         var result = new Collection<FileInfo>();
-        var files = Directory
-            .EnumerateFiles(projectPath.FullName, searchPattern, searchOption)
-            .Where(x => !IsUnderExcludedDirectory(projectPath.FullName, x));
+        var files = EnumerateSourceFiles(projectPath, searchPattern, searchOption)
+            .Select(x => x.FullName);
 
         foreach (var file in files)
         {
@@ -71,6 +70,45 @@ public static class FileHelper
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Enumerates files under <paramref name="projectPath"/> matching <paramref name="searchPattern"/>,
+    /// skipping build output and vendored directories (<c>bin</c>, <c>obj</c>, <c>.git</c>, …),
+    /// which can hold generated project files that are not the user's source.
+    /// </summary>
+    public static IEnumerable<FileInfo> EnumerateSourceFiles(
+        DirectoryInfo projectPath,
+        string searchPattern,
+        SearchOption searchOption = SearchOption.AllDirectories)
+    {
+        ArgumentNullException.ThrowIfNull(projectPath);
+
+        return Directory
+            .EnumerateFiles(projectPath.FullName, searchPattern, searchOption)
+            .Where(x => !IsUnderExcludedDirectory(projectPath.FullName, x))
+            .Select(x => new FileInfo(x));
+    }
+
+    /// <summary>
+    /// Writes <paramref name="content"/> as UTF-8, keeping the byte-order mark when the existing
+    /// file has one. Reading strips the mark, so a plain write would silently drop it from files
+    /// such as Visual Studio-created projects.
+    /// </summary>
+    public static void WriteAllTextPreservingByteOrderMark(
+        string path,
+        string content)
+    {
+        var hasByteOrderMark = false;
+        if (File.Exists(path))
+        {
+            using var stream = File.OpenRead(path);
+            Span<byte> start = stackalloc byte[3];
+            hasByteOrderMark = stream.Read(start) == 3 &&
+                               start[0] == 0xEF && start[1] == 0xBB && start[2] == 0xBF;
+        }
+
+        File.WriteAllText(path, content, new UTF8Encoding(hasByteOrderMark));
     }
 
     /// <summary>
