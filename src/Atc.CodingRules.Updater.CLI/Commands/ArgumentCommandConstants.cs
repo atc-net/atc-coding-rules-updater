@@ -25,4 +25,8 @@ internal static class ArgumentCommandConstants
     public const string LongIncludeProviders = "--includeProviders";
     public const string LongExcludeProviders = "--excludeProviders";
     public const string LongOutputJson = "--json";
+    public const string LongCentralPackageManagement = "--centralPackageManagement";
+    public const string LongUnifyVersions = "--unifyVersions";
+    public const string LongSkipRestoreVerification = "--skipRestoreVerification";
+    public const string LongAllowDirty = "--allowDirty";
 }

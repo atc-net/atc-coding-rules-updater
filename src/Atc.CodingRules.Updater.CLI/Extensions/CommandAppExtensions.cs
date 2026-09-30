@@ -12,6 +12,8 @@ public static class CommandAppExtensions
 
             ConfigureSanityCheckCommand(config);
 
+            ConfigureMigrateToCpmCommand(config);
+
             config.AddBranch(CommandConstants.NameOptionsFile, ConfigureOptionsFileCommands());
 
             config.AddBranch(NameCommandConstants.AnalyzerProviders, ConfigureAnalyzerProvidersCommands());
@@ -50,6 +52,13 @@ public static class CommandAppExtensions
                     CreateArgumentProjectTarget(SupportedProjectTargetType.DotNetCore),
                     CommandConstants.ArgumentLongVerbose
             ]);
+
+    private static void ConfigureMigrateToCpmCommand(IConfigurator config)
+        => config
+            .AddCommand<MigrateToCpmCommand>(NameCommandConstants.MigrateToCpm)
+            .WithDescription("Migrate the project folder to NuGet Central Package Management (Directory.Packages.props)")
+            .WithExample([NameCommandConstants.MigrateToCpm, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongDryRun])
+            .WithExample([NameCommandConstants.MigrateToCpm, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongBuildFile, "MySolution.slnx"]);
 
     private static Action<IConfigurator<CommandSettings>> ConfigureOptionsFileCommands()
         => node =>

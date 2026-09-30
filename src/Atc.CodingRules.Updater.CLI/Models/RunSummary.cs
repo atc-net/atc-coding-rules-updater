@@ -9,6 +9,14 @@ public sealed class RunSummary
     /// <summary>When <c>true</c>, the outcomes describe what would have happened.</summary>
     public bool DryRun { get; set; }
 
+    /// <summary>
+    /// <c>true</c> when the run used the Central Package Management path; <c>null</c> when it did
+    /// not. It is left out of the JSON when <c>null</c>, so repositories that do not use CPM get
+    /// exactly the output they got before.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public bool? CentralPackageManagement { get; set; }
+
     /// <summary>Every rule file the run considered.</summary>
     public Collection<RunFileResult> Files { get; } = [];
 

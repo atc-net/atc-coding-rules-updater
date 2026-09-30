@@ -17,6 +17,13 @@ public class OptionsFile
     public bool DryRun { get; set; }
 
     /// <summary>
+    /// Whether Central Package Management (<c>Directory.Packages.props</c>) is auto-detected or
+    /// turned off. There is deliberately no "force on" value: a repository is moved to CPM by the
+    /// <c>migrate-to-cpm</c> command, never by an option.
+    /// </summary>
+    public CentralPackageManagementMode CentralPackageManagement { get; set; }
+
+    /// <summary>
     /// Ask the ATC API to bypass its own version cache. Normally left off; the API caches
     /// resolved versions for 12 hours, so this is the escape hatch when a package published
     /// inside that window is being reported as the previous version.

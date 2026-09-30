@@ -154,16 +154,18 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
     }
 
     private static void WriteJson(object value)
-        => System.Console.Out.WriteLine(
-            JsonSerializer.Serialize(
-                value,
-                new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    Converters = { new JsonStringEnumConverter() },
-                }));
+        => System.Console.Out.WriteLine(SerializeJson(value));
 
-    private static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
+    internal static string SerializeJson(object value)
+        => JsonSerializer.Serialize(
+            value,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Converters = { new JsonStringEnumConverter() },
+            });
+
+    internal static async Task<OptionsFile> GetOptionsFromFileAndUserArguments(
         RunCommandSettings settings,
         DirectoryInfo projectPath,
         CancellationToken cancellationToken)
@@ -205,6 +207,26 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             options.DryRun = settings.DryRun.GetValueOrDefault();
         }
 
+        if (settings.ForceNugetRefresh.HasValue)
+        {
+            options.ForceNugetRefresh = settings.ForceNugetRefresh.GetValueOrDefault();
+        }
+
+        if (settings.CentralPackageManagement is not null && settings.CentralPackageManagement.IsSet)
+        {
+            options.CentralPackageManagement = settings.CentralPackageManagement.Value;
+        }
+
+        ApplyBuildSettings(settings, projectPath, options);
+
+        return options;
+    }
+
+    private static void ApplyBuildSettings(
+        RunCommandSettings settings,
+        DirectoryInfo projectPath,
+        OptionsFile options)
+    {
         if (settings.BuildConfiguration is not null && settings.BuildConfiguration.IsSet)
         {
             options.BuildConfiguration = settings.BuildConfiguration.Value;
@@ -215,18 +237,11 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
             options.BuildProperties = settings.BuildProperties;
         }
 
-        if (settings.ForceNugetRefresh.HasValue)
-        {
-            options.ForceNugetRefresh = settings.ForceNugetRefresh.GetValueOrDefault();
-        }
-
         var buildFile = GetBuildFile(settings, projectPath);
         if (buildFile is not null)
         {
             options.BuildFile = buildFile.FullName;
         }
-
-        return options;
     }
 
     private static DirectoryInfo? GetTemporarySuppressionsPath(

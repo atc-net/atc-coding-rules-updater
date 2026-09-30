@@ -10,9 +10,12 @@ This document describes how `atc-coding-rules-updater` is structured and how the
 │   • Program.cs                       — wires up DI, parses args          │
 │   • Commands/RunCommand              — orchestrates a `run`              │
 │   • Commands/SanityCheckCommand      — read-only validation              │
+│   • Commands/MigrateToCpmCommand     — move a repo to Directory.Packages │
 │   • Commands/OptionsFile*            — create / validate the json file   │
 │   • Commands/AnalyzerProviders*      — collect / cleanup analyzer data   │
-│   • ProjectHelper                    — top-level run orchestrator        │
+│   • Helpers/ProjectHelper            — top-level run orchestrator        │
+│   • Helpers/CentralPackageManagementRunHelper — run step for CPM repos   │
+│   • Helpers/TemporarySuppressionHelper — build / suppress loop           │
 └────────────────┬─────────────────────────────────────────────────────────┘
                  │ depends on
                  ▼
@@ -150,11 +153,20 @@ The fallback at the bottom (added in this round of work) means a transient HTML 
 |---|---|
 | CLI argument parsing | `src/Atc.CodingRules.Updater.CLI/Commands/Settings/*` |
 | CLI command bodies | `src/Atc.CodingRules.Updater.CLI/Commands/*Command.cs` |
-| Top-level `run` orchestrator | `src/Atc.CodingRules.Updater.CLI/ProjectHelper.cs` |
+| Top-level `run` orchestrator | `src/Atc.CodingRules.Updater.CLI/Helpers/ProjectHelper.cs` |
+| `run` step for CPM repositories | `src/Atc.CodingRules.Updater.CLI/Helpers/CentralPackageManagementRunHelper.cs` |
+| Temporary-suppression build loop | `src/Atc.CodingRules.Updater.CLI/Helpers/TemporarySuppressionHelper.cs` |
 | `OptionsFile` defaults / mappings | `src/Atc.CodingRules.Updater.CLI/Models/Options/*` |
-| Editor-config merge | `src/Atc.CodingRules.Updater/EditorConfigHelper.cs` |
-| Directory.Build.props merge | `src/Atc.CodingRules.Updater/DirectoryBuildPropsHelper.cs` |
-| Pre-flight checks | `src/Atc.CodingRules.Updater/ProjectSanityCheckHelper.cs` |
+| Editor-config merge | `src/Atc.CodingRules.Updater/EditorConfig/EditorConfigHelper.cs` |
+| Directory.Build.props merge | `src/Atc.CodingRules.Updater/DirectoryBuildProps/DirectoryBuildPropsHelper.cs` |
+| Pre-flight checks | `src/Atc.CodingRules.Updater/SanityCheck/ProjectSanityCheckHelper.cs` |
+| Central Package Management detection | `src/Atc.CodingRules.Updater/CentralPackageManagement/CentralPackageManagementHelper.cs` |
+| CPM pre-flight checks | `src/Atc.CodingRules.Updater/CentralPackageManagement/CentralPackageManagementSanityCheck.cs` |
+| Package item parsing (namespace-safe) | `src/Atc.CodingRules.Updater/MsBuild/PackageItemParser.cs` |
+| Formatting-safe MSBuild file edits | `src/Atc.CodingRules.Updater/MsBuild/MsBuildFileTextEditor.cs` |
+| Distribution props → CPM layout | `src/Atc.CodingRules.Updater/CentralPackageManagement/CpmContentTransformer.cs` |
+| Directory.Packages.props bumps / appends | `src/Atc.CodingRules.Updater/CentralPackageManagement/DirectoryPackagesPropsHelper.cs` |
+| `migrate-to-cpm` plan / execution | `src/Atc.CodingRules.Updater/CentralPackageManagement/Migration/CpmMigrationPlanner.cs`, `CpmMigrationExecutor.cs`, `DotnetCpmMigrationEnvironment.cs` |
 | HTTP client + cache | `src/Atc.CodingRules/HttpClientHelper.cs` |
 | Provider base class | `src/Atc.CodingRules.AnalyzerProviders/Providers/AnalyzerProviderBase.cs` |
 | Provider registry | `src/Atc.CodingRules.AnalyzerProviders/AnalyzerProviderCollector.cs` |

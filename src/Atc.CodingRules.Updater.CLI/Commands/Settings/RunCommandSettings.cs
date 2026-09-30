@@ -57,6 +57,10 @@ public class RunCommandSettings : ProjectCommandSettings
     [Description("Emit a machine-readable JSON summary on stdout (per-file outcomes, package bumps, props drift) instead of log output. Useful for CI.")]
     public bool? OutputJson { get; init; }
 
+    [CommandOption($"{ArgumentCommandConstants.LongCentralPackageManagement} [CENTRALPACKAGEMANAGEMENT]")]
+    [Description("Central Package Management (Directory.Packages.props) handling: Auto detects it, Disabled always uses the non-CPM behaviour. (default Auto)")]
+    public FlagValue<CentralPackageManagementMode>? CentralPackageManagement { get; init; }
+
     [CommandOption(ArgumentCommandConstants.LongForceNugetRefresh)]
     [Description("Ask the ATC API to re-read package versions from nuget.org instead of serving its 12-hour cache. Use when a just-published version is not being picked up. (default false)")]
     public bool? ForceNugetRefresh { get; init; }

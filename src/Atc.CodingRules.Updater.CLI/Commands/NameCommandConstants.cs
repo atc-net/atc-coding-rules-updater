@@ -9,4 +9,6 @@ internal static class NameCommandConstants
     public const string AnalyzerProvidersCleanupCache = "cleanup-cache";
 
     public const string Run = "run";
+
+    public const string MigrateToCpm = "migrate-to-cpm";
 }

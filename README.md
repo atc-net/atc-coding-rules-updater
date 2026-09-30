@@ -18,6 +18,7 @@ This repository contains a CLI tool, which can be used to maintain `coding-rules
       - [Option --help](#option---help)
       - [Command run](#command-run)
       - [Command sanity-check](#command-sanity-check)
+      - [Command migrate-to-cpm](#command-migrate-to-cpm)
       - [Command analyzer-providers](#command-analyzer-providers)
       - [Command options-file](#command-options-file)
     - [Example](#example)
@@ -31,6 +32,7 @@ This repository contains a CLI tool, which can be used to maintain `coding-rules
     - [A use case-scenario for coding rules structure setups - Scenario A](#a-use-case-scenario-for-coding-rules-structure-setups---scenario-a)
     - [A use case-scenario for coding rules structure setups - Scenario B](#a-use-case-scenario-for-coding-rules-structure-setups---scenario-b)
     - [For both use-case scenarios](#for-both-use-case-scenarios)
+  - [Central Package Management (Directory.Packages.props)](#central-package-management-directorypackagesprops)
   - [Temporary suppressions](#temporary-suppressions)
     - [Build](#build)
   - [How to contribute](#how-to-contribute)
@@ -156,6 +158,9 @@ OPTIONS:
         --json                                                   Emit a machine-readable JSON summary on stdout
                                                                  (per-file outcomes, package bumps, props drift)
                                                                  instead of log output. Useful for CI.
+        --centralPackageManagement [CENTRALPACKAGEMANAGEMENT]    Central Package Management (Directory.Packages.props)
+                                                                 handling: Auto detects it, Disabled always uses the
+                                                                 non-CPM behaviour. (default Auto)
 ```
 
 ##### Gating CI on "coding rules are current"
@@ -234,6 +239,45 @@ OPTIONS:
     -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8, DotNet9, DotNet10 (default), DotNet11
         --json                             Emit a machine-readable JSON summary on stdout (Severity / Code / Message / FilePath per diagnostic). Useful for CI
 ```
+
+#### Command <span style="color:yellow">migrate-to-cpm</span>
+
+Converts a repository to NuGet [Central Package Management](https://learn.microsoft.com/nuget/consume-packages/central-package-management).
+This is the only way the updater turns Central Package Management on - `run` never does. See
+[Central Package Management](#central-package-management-directorypackagesprops) for what it changes and how it
+protects the repository.
+
+```powershell
+USAGE:
+    atc-coding-rules-updater.exe migrate-to-cpm [OPTIONS]
+
+EXAMPLES:
+    atc-coding-rules-updater.exe migrate-to-cpm -p . --dry-run
+    atc-coding-rules-updater.exe migrate-to-cpm -p . --buildFile MySolution.slnx
+
+OPTIONS:
+    -h, --help                                   Prints help information
+        --verbose                                Use verbose for more debug/trace information
+    -p, --projectPath <PROJECTPATH>              Path to the project root directory (defaults to the current directory)
+    -o, --optionsPath [OPTIONSPATH]              Path to an atc-coding-rules-updater.json options file
+        --dry-run                                Show the migration plan without writing any files. (default false)
+        --unifyVersions                          Give every project the highest version of a package instead of keeping
+                                                 differences through VersionOverride. This changes what restores.
+                                                 (default false)
+        --skipRestoreVerification                Do not run dotnet restore before and after to verify the migration.
+                                                 Not recommended. (default false)
+        --allowDirty                             Allow a dirty or missing git working tree. Without git there is no
+                                                 simple way to undo the migration. (default false)
+        --buildFile [BUILDFILE]                  Solution (.sln/.slnx) or project file to restore. Required when the
+                                                 project path holds more than one
+        --buildConfiguration [BUILDCONFIGURATION]    Configuration to restore with. Release turns NuGet warnings into
+                                                 errors, as CI does. (default Release)
+        --json                                   Emit a machine-readable JSON result on stdout instead of log output
+```
+
+The exit code is `0` when the repository was migrated, already migrated, had nothing to migrate, or `--dry-run`
+was used, and `1` when the migration was blocked or rolled back. `--buildFile` and `--buildConfiguration` fall back
+to `buildFile` / `buildConfiguration` in `atc-coding-rules-updater.json`.
 
 #### Command <span style="color:yellow">analyzer-providers</span>
 
@@ -497,6 +541,83 @@ When the `atc-coding-rules-update` is executed first time, the following happens
 For both scenario A and scenario B, when the `atc-coding-rules-update` is executed a second time it will only update `.editorconfig` file. And as previously stated, it will only update the ATC-part of these files.
 
 ![Img](docs/scenario-ab-second-run.png)
+
+## Central Package Management (Directory.Packages.props)
+
+The updater supports repositories that use NuGet
+[Central Package Management](https://learn.microsoft.com/nuget/consume-packages/central-package-management) (CPM),
+where every package version lives in one `Directory.Packages.props`. The guiding rule is that **an existing setup is
+never broken**: CPM is detected automatically, and a repository is only ever switched to CPM by the explicit
+`migrate-to-cpm` command.
+
+### Detection
+
+CPM is on when `ManagePackageVersionsCentrally` is `true` in the root `Directory.Packages.props` or the root
+`Directory.Build.props`. Set `"centralPackageManagement": "Disabled"` in `atc-coding-rules-updater.json` (or pass
+`--centralPackageManagement Disabled`) to always use the non-CPM behaviour.
+
+| Repository state | What `run` does |
+|---|---|
+| No CPM | Exactly what it did before. The files it writes and the `--json` output are unchanged; the console shows one tip about `migrate-to-cpm`. |
+| CPM enabled | The CPM-aware path described below. |
+| `Directory.Packages.props` exists, but CPM is not enabled | Treated as no CPM, with a warning. The updater never turns the flag on. |
+| A mixed or broken CPM state | The sanity checks stop the run before anything is written. |
+
+### What `run` does in a CPM repository
+
+* **Missing props files are created without versions.** The distribution's `Label="Code Analyzers"` group becomes
+  `GlobalPackageReference` entries in `Directory.Packages.props`, and every other package becomes a versionless
+  `PackageReference` plus a `PackageVersion` entry. Metadata such as `PrivateAssets` stays on the reference.
+* **Existing props files are never changed.** Only drift is reported, and a package declared as a
+  `GlobalPackageReference` counts as present.
+* **`Directory.Packages.props` is only changed in two ways:**
+  * `--useLatestMinorNugetVersion` bumps the version of the packages the distribution owns - the code analyzers and
+    the distribution's test packages - within the same major version. Every other entry, such as a deliberate version
+    cap or a transitive security pin, is never touched.
+  * Entries that a props file created in the same run needs are appended under an `atc-coding-rules: ...` label.
+    An entry that already exists, in any group, is never duplicated.
+* Nothing is removed, reordered or reformatted, and `Directory.Packages.props` is never created by `run`.
+* When the SDK pinned in `global.json` is older than 7.0.100, which is the first SDK that understands
+  `GlobalPackageReference`, the code analyzers are reported and skipped.
+
+The sanity checks (also available through `sanity-check`) report these CPM problems before anything is written. Build
+output such as `obj/` is ignored.
+
+| Code | Severity | Meaning |
+|---|---|---|
+| `CpmVersionOnPackageReference` | Error | A `PackageReference` has a `Version` - restore error NU1008 (a Warning when every such item is conditional, since the condition may exclude it) |
+| `CpmMissingPackageVersion` | Error | A versionless `PackageReference` has no `PackageVersion` - restore error NU1010 (a Warning when every such item is conditional) |
+| `CpmDuplicateGlobalAndPackageReference` | Warning | A package is both a `GlobalPackageReference` and referenced directly |
+| `CpmProjectOptOut` | Warning | A project sets `ManagePackageVersionsCentrally` to `false`; its references are not checked |
+| `CpmPackagesPropsWithoutFlag` | Warning | `Directory.Packages.props` exists, but CPM is not enabled |
+
+### What `migrate-to-cpm` does
+
+1. **Checks** that the repository does not use CPM yet and that the git working tree is clean, so `git checkout .` is
+   always a complete undo.
+2. **Plans** the migration and reports every blocker in one pass. Blockers include floating versions, `Update=`
+   items, an existing `VersionOverride`, `packages.config`, conditional references with different versions, and
+   versioned references in imported `.props`/`.targets` files other than `Directory.Build.props`/`.targets`.
+3. **Restores** the repository once (Release by default) to record what every project resolves. Every project under
+   the root must be part of that restore, because `Directory.Packages.props` affects all of them; otherwise the
+   migration stops with `ProjectNotCoveredByRestore` and asks for a `--buildFile` that includes every project.
+4. **Writes** a new `Directory.Packages.props` and removes the versions from every `PackageReference`:
+   * When projects use different versions of a package, the highest becomes the central version and the others keep
+     theirs through `VersionOverride`, unless `--unifyVersions` is used.
+   * The root `Code Analyzers` group becomes `GlobalPackageReference` entries.
+   * Versions are not bumped, and `CentralPackageTransitivePinningEnabled` is not turned on, because both would
+     change what restores.
+5. **Restores again and compares.** If restore fails, raises a new warning (for example NU1507 when there are several
+   package sources and no package source mapping), or any project gains, loses or changes a package, every file is
+   put back byte for byte and the differences are listed. The git working tree is then checked again, and anything
+   left over, such as a `packages.lock.json` that restore rewrote, is reported.
+
+Files are written as UTF-8 and keep their byte-order mark when they had one.
+
+Afterwards, review and commit the changes and run `atc-coding-rules-updater run`, which now takes the CPM path.
+
+**Limitations:** only the root `Directory.Packages.props` is read (nested or imported ones are not followed), and a
+per-project opt-out from CPM is reported but not handled.
 
 ## Temporary suppressions
 
