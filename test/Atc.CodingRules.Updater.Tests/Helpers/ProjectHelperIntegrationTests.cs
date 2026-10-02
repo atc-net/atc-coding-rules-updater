@@ -123,7 +123,7 @@ public sealed class ProjectHelperIntegrationTests
 
         summary.CentralPackageManagement.Should().BeNull();
         workspace.FileExists("Directory.Packages.props").Should().BeFalse();
-        logger.Entries.Should().ContainSingle(x => x.Message.Contains("migrate-to-cpm", StringComparison.Ordinal));
+        logger.Entries.Should().ContainSingle(x => x.Message.Contains("cpm migrate", StringComparison.Ordinal));
         PackageItemParser.Parse(workspace.ReadFile("test/Directory.Build.props"))!
             .Should().NotBeEmpty().And.OnlyContain(x => x.Version != null);
     }

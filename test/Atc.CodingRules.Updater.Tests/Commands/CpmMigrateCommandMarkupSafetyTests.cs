@@ -2,16 +2,16 @@ namespace Atc.CodingRules.Updater.Tests.Commands;
 
 /// <summary>
 /// Log messages are rendered as Spectre markup by the console sink, so every message
-/// <c>migrate-to-cpm</c> logs must survive being parsed as markup. A blocker code in square
+/// <c>cpm migrate</c> logs must survive being parsed as markup. A blocker code in square
 /// brackets did not, and crashed the command with "Could not find color or style".
 /// </summary>
-public sealed class MigrateToCpmCommandMarkupSafetyTests
+public sealed class CpmMigrateCommandMarkupSafetyTests
 {
     private const string ProjectContent = "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <ItemGroup>\n    <PackageReference Include=\"Atc\" Version=\"3.0.186\" />\n  </ItemGroup>\n</Project>";
 
     private readonly ITestOutputHelper testOutput;
 
-    public MigrateToCpmCommandMarkupSafetyTests(ITestOutputHelper testOutput)
+    public CpmMigrateCommandMarkupSafetyTests(ITestOutputHelper testOutput)
         => this.testOutput = testOutput;
 
     [Fact]
@@ -82,11 +82,11 @@ public sealed class MigrateToCpmCommandMarkupSafetyTests
         TestWorkspace workspace,
         FakeEnvironment environment)
     {
-        using var logger = testOutput.BuildLoggerFor<MigrateToCpmCommand>(LogLevel.Trace);
-        var command = new MigrateToCpmCommand(logger);
+        using var logger = testOutput.BuildLoggerFor<CpmMigrateCommand>(LogLevel.Trace);
+        var command = new CpmMigrateCommand(logger);
 
         var exitCode = await command.ExecuteInternalAsync(
-            new MigrateToCpmCommandSettings { ProjectPath = workspace.Root.FullName },
+            new CpmMigrateCommandSettings { ProjectPath = workspace.Root.FullName },
             environment,
             TestContext.Current.CancellationToken);
 

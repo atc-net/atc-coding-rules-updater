@@ -8,7 +8,7 @@ public class ProjectBaseCommandSettings : BaseCommandSettings
     public string ProjectPath { get; init; } = string.Empty;
 
     [CommandOption($"{ArgumentCommandConstants.ShortOptionsPath}|{ArgumentCommandConstants.LongOptionsTarget} [OPTIONSPATH]")]
-    [Description("Path to an atc-coding-rules-updater.json options file. Defaults to the one in --projectPath if present.")]
+    [Description("Path to an atc-coding-rules-updater.json options file. Defaults to the one in --project-path if present.")]
     public FlagValue<string>? OptionsPath { get; init; }
 
     public override ValidationResult Validate()

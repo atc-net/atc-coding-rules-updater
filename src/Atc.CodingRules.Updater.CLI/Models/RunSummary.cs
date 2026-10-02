@@ -2,7 +2,7 @@ namespace Atc.CodingRules.Updater.CLI.Models;
 
 /// <summary>
 /// Machine-readable result of a <c>run</c>, emitted by <c>--json</c> and used by
-/// <c>--failOnChanges</c>.
+/// <c>--fail-on-changes</c>.
 /// </summary>
 public sealed class RunSummary
 {

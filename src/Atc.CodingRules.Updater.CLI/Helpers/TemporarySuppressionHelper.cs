@@ -97,7 +97,7 @@ public static class TemporarySuppressionHelper
 
     /// <summary>
     /// Maps a configuration name onto the release/debug flag the build helper takes. Release stays
-    /// the default, so omitting <c>--buildConfiguration</c> preserves the previous behaviour.
+    /// the default, so omitting <c>--build-configuration</c> preserves the previous behaviour.
     /// </summary>
     internal static bool IsReleaseConfiguration(string? configuration)
         => string.IsNullOrWhiteSpace(configuration) ||
@@ -273,7 +273,7 @@ public static class TemporarySuppressionHelper
     /// </summary>
     /// <remarks>
     /// Collects <em>warnings</em> with <c>TreatWarningsAsErrors</c> disabled, so the whole solution
-    /// compiles and every project is analysed. Any <c>--buildProperty</c> values the caller passed
+    /// compiles and every project is analysed. Any <c>--build-property</c> values the caller passed
     /// are appended after the override, so a user can still override it themselves.
     /// </remarks>
     internal static Task<Dictionary<string, int>> CollectDiagnosticsForSuppressions(
@@ -296,7 +296,7 @@ public static class TemporarySuppressionHelper
             cancellationToken);
 
     /// <summary>
-    /// Puts the warnings-as-errors override first so a user-supplied <c>--buildProperty</c> with
+    /// Puts the warnings-as-errors override first so a user-supplied <c>--build-property</c> with
     /// the same name still wins.
     /// </summary>
     internal static string CombineBuildArguments(

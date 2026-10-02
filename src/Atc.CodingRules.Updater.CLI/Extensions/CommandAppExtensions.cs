@@ -12,7 +12,7 @@ public static class CommandAppExtensions
 
             ConfigureSanityCheckCommand(config);
 
-            ConfigureMigrateToCpmCommand(config);
+            config.AddBranch(NameCommandConstants.Cpm, ConfigureCpmCommands());
 
             config.AddBranch(CommandConstants.NameOptionsFile, ConfigureOptionsFileCommands());
 
@@ -53,12 +53,23 @@ public static class CommandAppExtensions
                     CommandConstants.ArgumentLongVerbose
             ]);
 
-    private static void ConfigureMigrateToCpmCommand(IConfigurator config)
-        => config
-            .AddCommand<MigrateToCpmCommand>(NameCommandConstants.MigrateToCpm)
-            .WithDescription("Migrate the project folder to NuGet Central Package Management (Directory.Packages.props)")
-            .WithExample([NameCommandConstants.MigrateToCpm, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongDryRun])
-            .WithExample([NameCommandConstants.MigrateToCpm, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongBuildFile, "MySolution.slnx"]);
+    private static Action<IConfigurator<CommandSettings>> ConfigureCpmCommands()
+        => node =>
+        {
+            node.SetDescription("Commands for NuGet Central Package Management (Directory.Packages.props)");
+
+            node
+                .AddCommand<CpmValidateCommand>(NameCommandConstants.CpmValidate)
+                .WithDescription("Check whether the project folder can be migrated to Central Package Management: show the plan and every blocker, write nothing")
+                .WithExample([NameCommandConstants.Cpm, NameCommandConstants.CpmValidate, CreateArgumentProjectPathWithDot()])
+                .WithExample([NameCommandConstants.Cpm, NameCommandConstants.CpmValidate, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongOutputJson]);
+
+            node
+                .AddCommand<CpmMigrateCommand>(NameCommandConstants.CpmMigrate)
+                .WithDescription("Migrate the project folder to Central Package Management, verified by restoring before and after")
+                .WithExample([NameCommandConstants.Cpm, NameCommandConstants.CpmMigrate, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongDryRun])
+                .WithExample([NameCommandConstants.Cpm, NameCommandConstants.CpmMigrate, CreateArgumentProjectPathWithDot(), ArgumentCommandConstants.LongBuildFile, "MySolution.slnx"]);
+        };
 
     private static Action<IConfigurator<CommandSettings>> ConfigureOptionsFileCommands()
         => node =>

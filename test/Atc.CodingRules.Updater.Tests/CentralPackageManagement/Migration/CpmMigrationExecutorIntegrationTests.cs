@@ -1,7 +1,7 @@
 namespace Atc.CodingRules.Updater.Tests.CentralPackageManagement.Migration;
 
 /// <summary>
-/// <c>migrate-to-cpm</c> against real repositories: real git, real <c>dotnet restore</c> and real
+/// <c>cpm migrate</c> against real repositories: real git, real <c>dotnet restore</c> and real
 /// packages from nuget.org, so they need network access.
 /// </summary>
 [Trait(Traits.Category, Traits.Categories.Integration)]

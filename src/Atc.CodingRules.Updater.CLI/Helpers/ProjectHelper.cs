@@ -64,7 +64,7 @@ public static class ProjectHelper
 
     /// <summary>
     /// Resolves <paramref name="projectPath"/> to an existing directory, or logs a clear error and
-    /// returns <c>null</c>. Without this a mistyped <c>--projectPath</c> surfaces as an unhandled
+    /// returns <c>null</c>. Without this a mistyped <c>--project-path</c> surfaces as an unhandled
     /// <see cref="DirectoryNotFoundException"/> from deep inside the options loader.
     /// </summary>
     internal static DirectoryInfo? GetExistingProjectPath(
@@ -73,7 +73,7 @@ public static class ProjectHelper
     {
         if (string.IsNullOrWhiteSpace(projectPath))
         {
-            logger.LogError($"{EmojisConstants.Error} No project path was given - use --projectPath");
+            logger.LogError($"{EmojisConstants.Error} No project path was given - use --project-path");
             return null;
         }
 
@@ -250,7 +250,7 @@ public static class ProjectHelper
         }
 
         // Console only: the summary and its JSON stay exactly as before for these repositories.
-        logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Tip: 'atc-coding-rules-updater {NameCommandConstants.MigrateToCpm}' can move package versions into {CentralPackageManagementHelper.PackagesPropsFileName} (Central Package Management)");
+        logger.LogInformation($"{AppEmojisConstants.AreaDirectoryBuildProps} Tip: 'atc-coding-rules-updater {NameCommandConstants.Cpm} {NameCommandConstants.CpmMigrate}' can move package versions into {CentralPackageManagementHelper.PackagesPropsFileName} (Central Package Management)");
 
         Record(
             summary,

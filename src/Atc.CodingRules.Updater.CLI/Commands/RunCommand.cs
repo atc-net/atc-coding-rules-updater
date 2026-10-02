@@ -93,7 +93,7 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
     }
 
     /// <summary>
-    /// Maps a completed run to an exit code. Only <c>--failOnChanges</c> can turn a successful run
+    /// Maps a completed run to an exit code. Only <c>--fail-on-changes</c> can turn a successful run
     /// into a failure, and only when something was actually created or updated.
     /// </summary>
     internal static int MapExitCode(
@@ -269,9 +269,9 @@ public class RunCommand(ILogger<RunCommand> logger) : AsyncCommand<RunCommandSet
         }
 
         // Path.Combine returns its second argument unchanged when that argument is rooted, so it
-        // handles absolute and relative --buildFile values on every platform. The colon check this
+        // handles absolute and relative --build-file values on every platform. The colon check this
         // replaced was redundant, and sent relative paths containing a colon (legal on Unix) to the
-        // current working directory instead of --projectPath.
+        // current working directory instead of --project-path.
         return string.IsNullOrEmpty(buildFile)
             ? null
             : new FileInfo(Path.Combine(projectPath.FullName, buildFile));
