@@ -19,7 +19,7 @@ public class OptionsFile
     /// <summary>
     /// Whether Central Package Management (<c>Directory.Packages.props</c>) is auto-detected or
     /// turned off. There is deliberately no "force on" value: a repository is moved to CPM by the
-    /// <c>migrate-to-cpm</c> command, never by an option.
+    /// <c>cpm migrate</c> command, never by an option.
     /// </summary>
     public CentralPackageManagementMode CentralPackageManagement { get; set; }
 

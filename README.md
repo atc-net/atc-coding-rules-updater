@@ -18,7 +18,7 @@ This repository contains a CLI tool, which can be used to maintain `coding-rules
       - [Option --help](#option---help)
       - [Command run](#command-run)
       - [Command sanity-check](#command-sanity-check)
-      - [Command migrate-to-cpm](#command-migrate-to-cpm)
+      - [Command cpm](#command-cpm)
       - [Command analyzer-providers](#command-analyzer-providers)
       - [Command options-file](#command-options-file)
     - [Example](#example)
@@ -45,7 +45,7 @@ The Atc.CodingRules.Updater.CLI library is available through a cross platform co
 
 * [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 
-The CLI itself targets .NET 10. The `--projectTarget` option lets you point at older runtimes — supported values are `DotNetCore`, `DotNet5`, `DotNet6`, `DotNet7`, `DotNet8`, `DotNet9`, `DotNet10` (default), `DotNet11`.
+The CLI itself targets .NET 10. The `--project-target` option lets you point at older runtimes — supported values are `DotNetCore`, `DotNet5`, `DotNet6`, `DotNet7`, `DotNet8`, `DotNet9`, `DotNet10` (default), `DotNet11`.
 
 ### Installation
 
@@ -75,6 +75,11 @@ dotnet tool update --global atc-coding-rules-updater --ignore-failed-sources
 ### Usage
 
 Since the tool is published as a .NET Tool, it can be launched from anywhere using any shell or command-line interface by calling **atc-coding-rules-updater**. The help information is displayed when providing the `--help` argument to **atc-coding-rules-updater**
+
+Commands are named `<noun> <verb>` (for example `cpm validate`, `options-file create`), and options are kebab-case
+(for example `--project-path`, `--options-path`). The camelCase option names from earlier versions
+(`--projectPath`, `--optionsPath`, `--useTemporarySuppressions`, …) still work, so existing scripts keep running,
+but only the kebab-case names are documented.
 
 #### Option <span style="color:yellow">--help</span>
 ```powershell
@@ -106,70 +111,70 @@ EXAMPLES:
     atc-coding-rules-updater.exe run .     (equivalent to 'run -p [CurrentFolder]')
     atc-coding-rules-updater.exe run -p .  (equivalent to 'run -p [CurrentFolder]')
     atc-coding-rules-updater.exe run -p c:\temp\MyProject
-    atc-coding-rules-updater.exe run -p c:\temp\MyProject -t DotNetCore --useTemporarySuppressions  --organizationName
-MyCompany  --repositoryName MyRepo --verbose
+    atc-coding-rules-updater.exe run -p c:\temp\MyProject -t DotNetCore --use-temporary-suppressions  --organization-name
+MyCompany  --repository-name MyRepo --verbose
 
 OPTIONS:
-    -h, --help                                                   Prints help information
-        --verbose                                                Use verbose for more debug/trace information
-    -p, --projectPath <PROJECTPATH>                              Path to the project directory (default current
-                                                                 diectory)
-    -o, --optionsPath [OPTIONSPATH]                              Path to an optional options json-file
-    -t, --projectTarget [PROJECTTARGET]                          Sets the ProjectTarget. Valid values are: DotNetCore,
-                                                                 DotNet5, DotNet6, DotNet7, DotNet8, DotNet9,
-                                                                 DotNet10 (default), DotNet11
-        --useLatestMinorNugetVersion                             Bump PackageReferences in Directory.Build.props to the
-                                                                 latest version within the same major version.
-                                                                 (default true)
-    -s, --useTemporarySuppressions                               Build the project, collect analyzer errors, and write
-                                                                 temporary suppressions. Appended to .editorconfig
-                                                                 unless --temporarySuppressionPath is set.
-                                                                 (default false)
-        --temporarySuppressionPath [TEMPORARYSUPPRESSIONPATH]    Optional output directory for the
-                                                                 temporary-suppressions file. When set, the
-                                                                 .editorconfig is not modified
-        --temporarySuppressionAsExcel                            Write the temporary-suppressions file as Excel (.xlsx)
-                                                                 instead of plain text. (default false)
-        --buildFile [BUILDFILE]                                  Solution (.sln/.slnx) or project (.csproj) file to
-                                                                 build. Required when multiple solution files exist in
-                                                                 --projectPath
-        --buildConfiguration [BUILDCONFIGURATION]                Configuration used for the temporary-suppression
-                                                                 builds - Release or Debug. Use Debug when a
-                                                                 Release-only target, such as an obfuscator, prevents
-                                                                 the build from completing. (default Release)
-        --buildProperty <BUILDPROPERTY>                          MSBuild property forwarded to the
-                                                                 temporary-suppression builds as -p:Name=Value.
-                                                                 Repeatable.
-        --organizationName [ORGANIZATIONNAME]                    Organization name to substitute into the
-                                                                 <OrganizationName> placeholder in Directory.Build.props
-        --repositoryName [REPOSITORYNAME]                        Repository name to substitute into the
-                                                                 <RepositoryName> placeholder in Directory.Build.props
-        --dry-run                                                Preview mode: log what would be created or updated
-                                                                 without writing any files. Skips the
-                                                                 temporary-suppression build loop. (default false)
-        --forceNugetRefresh                                      Ask the ATC API to re-read package versions from
-                                                                 nuget.org instead of serving its 12-hour cache. Use
-                                                                 when a just-published version is not being picked up.
-                                                                 (default false)
-        --failOnChanges                                          Exit with a non-zero code when any file was created or
-                                                                 updated. Combine with --dry-run to gate CI on "coding
-                                                                 rules are current" without writing anything.
-                                                                 (default false)
-        --json                                                   Emit a machine-readable JSON summary on stdout
-                                                                 (per-file outcomes, package bumps, props drift)
-                                                                 instead of log output. Useful for CI.
-        --centralPackageManagement [CENTRALPACKAGEMANAGEMENT]    Central Package Management (Directory.Packages.props)
-                                                                 handling: Auto detects it, Disabled always uses the
-                                                                 non-CPM behaviour. (default Auto)
+    -h, --help                                                       Prints help information
+        --verbose                                                    Use verbose for more debug/trace information
+    -p, --project-path <PROJECTPATH>                                 Path to the project directory (default current
+                                                                     diectory)
+    -o, --options-path [OPTIONSPATH]                                 Path to an optional options json-file
+    -t, --project-target [PROJECTTARGET]                             Sets the ProjectTarget. Valid values are: DotNetCore,
+                                                                     DotNet5, DotNet6, DotNet7, DotNet8, DotNet9,
+                                                                     DotNet10 (default), DotNet11
+        --use-latest-minor-nuget-version                             Bump PackageReferences in Directory.Build.props to the
+                                                                     latest version within the same major version.
+                                                                     (default true)
+    -s, --use-temporary-suppressions                                 Build the project, collect analyzer errors, and write
+                                                                     temporary suppressions. Appended to .editorconfig
+                                                                     unless --temporary-suppression-path is set.
+                                                                     (default false)
+        --temporary-suppression-path [TEMPORARYSUPPRESSIONPATH]      Optional output directory for the
+                                                                     temporary-suppressions file. When set, the
+                                                                     .editorconfig is not modified
+        --temporary-suppression-as-excel                             Write the temporary-suppressions file as Excel (.xlsx)
+                                                                     instead of plain text. (default false)
+        --build-file [BUILDFILE]                                     Solution (.sln/.slnx) or project (.csproj) file to
+                                                                     build. Required when multiple solution files exist in
+                                                                     --project-path
+        --build-configuration [BUILDCONFIGURATION]                   Configuration used for the temporary-suppression
+                                                                     builds - Release or Debug. Use Debug when a
+                                                                     Release-only target, such as an obfuscator, prevents
+                                                                     the build from completing. (default Release)
+        --build-property <BUILDPROPERTY>                             MSBuild property forwarded to the
+                                                                     temporary-suppression builds as -p:Name=Value.
+                                                                     Repeatable.
+        --organization-name [ORGANIZATIONNAME]                       Organization name to substitute into the
+                                                                     <OrganizationName> placeholder in Directory.Build.props
+        --repository-name [REPOSITORYNAME]                           Repository name to substitute into the
+                                                                     <RepositoryName> placeholder in Directory.Build.props
+        --dry-run                                                    Preview mode: log what would be created or updated
+                                                                     without writing any files. Skips the
+                                                                     temporary-suppression build loop. (default false)
+        --force-nuget-refresh                                        Ask the ATC API to re-read package versions from
+                                                                     nuget.org instead of serving its 12-hour cache. Use
+                                                                     when a just-published version is not being picked up.
+                                                                     (default false)
+        --fail-on-changes                                            Exit with a non-zero code when any file was created or
+                                                                     updated. Combine with --dry-run to gate CI on "coding
+                                                                     rules are current" without writing anything.
+                                                                     (default false)
+        --json                                                       Emit a machine-readable JSON summary on stdout
+                                                                     (per-file outcomes, package bumps, props drift)
+                                                                     instead of log output. Useful for CI.
+        --central-package-management [CENTRALPACKAGEMANAGEMENT]      Central Package Management (Directory.Packages.props)
+                                                                     handling: Auto detects it, Disabled always uses the
+                                                                     non-CPM behaviour. (default Auto)
 ```
 
 ##### Gating CI on "coding rules are current"
 
-`--failOnChanges` combined with `--dry-run` writes nothing and returns `1` as soon as any file
+`--fail-on-changes` combined with `--dry-run` writes nothing and returns `1` as soon as any file
 would be created or updated, so a pull request can be blocked without the PR-creating workflow:
 
 ```powershell
-atc-coding-rules-updater run -p . --dry-run --failOnChanges
+atc-coding-rules-updater run -p . --dry-run --fail-on-changes
 ```
 
 Reported-but-not-applied drift does **not** trip it. Drift is never applied by the tool, so a
@@ -211,10 +216,10 @@ Two limitations of this mode:
 - **No diagnostics.** Log output is suppressed so that stdout contains only the JSON document, so
   `--verbose` has no effect when `--json` is set. Drop `--json` to debug a run. Per-provider and
   per-file problems still surface — failures appear as an `Error` property on the document.
-- **No prompting.** `--organizationName` and `--repositoryName` must be passed explicitly when
+- **No prompting.** `--organization-name` and `--repository-name` must be passed explicitly when
   those placeholders are still present, since prompting would hang waiting on stdin.
 
-**Note on `--useLatestMinorNugetVersion`:** despite the name, the bump is bounded by the **major**
+**Note on `--use-latest-minor-nuget-version`:** despite the name, the bump is bounded by the **major**
 version, not the minor — a package on `3.0.54` will be moved to the newest `3.x`, but never to `4.0.0`.
 
 **Exit codes:** `run` and `sanity-check` return `0` on success and `1` on failure. `sanity-check`
@@ -232,52 +237,65 @@ EXAMPLES:
     atc-coding-rules-updater.exe sanity-check -p c:\temp\MyProject -t DotNetCore --verbose
 
 OPTIONS:
-    -h, --help                             Prints help information
-        --verbose                          Use verbose for more debug/trace information
-    -p, --projectPath <PROJECTPATH>        Path to the project directory (default current diectory)
-    -o, --optionsPath [OPTIONSPATH]        Path to an optional options json-file
-    -t, --projectTarget [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8, DotNet9, DotNet10 (default), DotNet11
-        --json                             Emit a machine-readable JSON summary on stdout (Severity / Code / Message / FilePath per diagnostic). Useful for CI
+    -h, --help                              Prints help information
+        --verbose                           Use verbose for more debug/trace information
+    -p, --project-path <PROJECTPATH>        Path to the project directory (default current diectory)
+    -o, --options-path [OPTIONSPATH]        Path to an optional options json-file
+    -t, --project-target [PROJECTTARGET]    Sets the ProjectTarget. Valid values are: DotNetCore, DotNet5, DotNet6, DotNet7, DotNet8, DotNet9, DotNet10 (default), DotNet11
+        --json                              Emit a machine-readable JSON summary on stdout (Severity / Code / Message / FilePath per diagnostic). Useful for CI
 ```
 
-#### Command <span style="color:yellow">migrate-to-cpm</span>
+#### Command <span style="color:yellow">cpm</span>
 
-Converts a repository to NuGet [Central Package Management](https://learn.microsoft.com/nuget/consume-packages/central-package-management).
-This is the only way the updater turns Central Package Management on - `run` never does. See
-[Central Package Management](#central-package-management-directorypackagesprops) for what it changes and how it
-protects the repository.
+Commands for NuGet [Central Package Management](https://learn.microsoft.com/nuget/consume-packages/central-package-management)
+(`Directory.Packages.props`). `cpm migrate` is the only way the updater turns Central Package Management on - `run`
+never does. See [Central Package Management](#central-package-management-directorypackagesprops) for what it changes
+and how it protects the repository.
 
 ```powershell
 USAGE:
-    atc-coding-rules-updater.exe migrate-to-cpm [OPTIONS]
+    atc-coding-rules-updater.exe cpm validate [OPTIONS]
+    atc-coding-rules-updater.exe cpm migrate [OPTIONS]
 
 EXAMPLES:
-    atc-coding-rules-updater.exe migrate-to-cpm -p . --dry-run
-    atc-coding-rules-updater.exe migrate-to-cpm -p . --buildFile MySolution.slnx
+    atc-coding-rules-updater.exe cpm validate -p .
+    atc-coding-rules-updater.exe cpm validate -p . --json
+    atc-coding-rules-updater.exe cpm migrate -p . --dry-run
+    atc-coding-rules-updater.exe cpm migrate -p . --build-file MySolution.slnx
 
-OPTIONS:
-    -h, --help                                   Prints help information
-        --verbose                                Use verbose for more debug/trace information
-    -p, --projectPath <PROJECTPATH>              Path to the project root directory (defaults to the current directory)
-    -o, --optionsPath [OPTIONSPATH]              Path to an atc-coding-rules-updater.json options file
-        --dry-run                                Show the migration plan without writing any files. (default false)
-        --unifyVersions                          Give every project the highest version of a package instead of keeping
-                                                 differences through VersionOverride. This changes what restores.
-                                                 (default false)
-        --skipRestoreVerification                Do not run dotnet restore before and after to verify the migration.
-                                                 Not recommended. (default false)
-        --allowDirty                             Allow a dirty or missing git working tree. Without git there is no
-                                                 simple way to undo the migration. (default false)
-        --buildFile [BUILDFILE]                  Solution (.sln/.slnx) or project file to restore. Required when the
-                                                 project path holds more than one
-        --buildConfiguration [BUILDCONFIGURATION]    Configuration to restore with. Release turns NuGet warnings into
-                                                 errors, as CI does. (default Release)
-        --json                                   Emit a machine-readable JSON result on stdout instead of log output
+COMMANDS:
+    validate    Check whether the project folder can be migrated to Central Package Management: show the plan and
+                every blocker, write nothing
+    migrate     Migrate the project folder to Central Package Management, verified by restoring before and after
+
+OPTIONS (both commands):
+    -h, --help                                        Prints help information
+        --verbose                                     Use verbose for more debug/trace information
+    -p, --project-path <PROJECTPATH>                  Path to the project root directory (defaults to the current
+                                                      directory). Pass '.' for the current directory
+    -o, --options-path [OPTIONSPATH]                  Path to an atc-coding-rules-updater.json options file. Defaults
+                                                      to the one in --project-path if present
+        --unify-versions                              Give every project the highest version of a package instead of
+                                                      keeping differences through VersionOverride. This changes what
+                                                      restores. (default false)
+        --build-file [BUILDFILE]                      Solution (.sln/.slnx) or project file to restore. Required when
+                                                      the project path holds more than one
+        --build-configuration [BUILDCONFIGURATION]    Configuration to restore with. Release turns NuGet warnings into
+                                                      errors, as CI does. (default Release)
+        --json                                        Emit a machine-readable JSON result on stdout instead of log output
+
+OPTIONS (cpm migrate only):
+        --dry-run                                     Show the migration plan without writing any files. (default false)
+        --skip-restore-verification                   Do not run dotnet restore before and after to verify the
+                                                      migration. Not recommended. (default false)
+        --allow-dirty                                 Allow a dirty or missing git working tree. Without git there is
+                                                      no simple way to undo the migration. (default false)
 ```
 
-The exit code is `0` when the repository was migrated, already migrated, had nothing to migrate, or `--dry-run`
-was used, and `1` when the migration was blocked or rolled back. `--buildFile` and `--buildConfiguration` fall back
-to `buildFile` / `buildConfiguration` in `atc-coding-rules-updater.json`.
+The exit code is `0` when the repository was migrated, already migrated, had nothing to migrate, or was only
+validated (or `--dry-run` was used), and `1` when the migration is blocked or was rolled back - so
+`cpm validate` can gate CI. `--build-file` and `--build-configuration` fall back to `buildFile` /
+`buildConfiguration` in `atc-coding-rules-updater.json`.
 
 #### Command <span style="color:yellow">analyzer-providers</span>
 
@@ -292,7 +310,7 @@ USAGE:
 EXAMPLES:
     atc-coding-rules-updater.exe analyzer-providers collect .
     atc-coding-rules-updater.exe analyzer-providers collect -p c:\temp\MyProject
-    atc-coding-rules-updater.exe analyzer-providers collect -p c:\temp\MyProject --fetchMode ReCollect --verbose
+    atc-coding-rules-updater.exe analyzer-providers collect -p c:\temp\MyProject --fetch-mode ReCollect --verbose
     atc-coding-rules-updater.exe analyzer-providers cleanup-cache
 
 OPTIONS:
@@ -306,19 +324,19 @@ COMMANDS:
 Options for `analyzer-providers collect`:
 
 ```powershell
-    -p, --projectPath <PROJECTPATH>              Path to the project root directory
-    -o, --optionsPath [OPTIONSPATH]              Path to an atc-coding-rules-updater.json options file
-        --fetchMode [FETCHMODE]                  Where to read the rule metadata from. Valid values are:
+    -p, --project-path <PROJECTPATH>              Path to the project root directory
+    -o, --options-path [OPTIONSPATH]              Path to an atc-coding-rules-updater.json options file
+        --fetch-mode [FETCHMODE]                  Where to read the rule metadata from. Valid values are:
                                                  LocalCache (default), GitHub, ReCollect
-        --includeProviders [INCLUDEPROVIDERS]    Comma-separated provider names to include
+        --include-providers [INCLUDEPROVIDERS]    Comma-separated provider names to include
                                                  (e.g. "AsyncFixer,Meziantou.Analyzer"). When set, only these run
-        --excludeProviders [EXCLUDEPROVIDERS]    Comma-separated provider names to exclude
-                                                 (e.g. "SonarAnalyzer.CSharp"). Applied after --includeProviders
+        --exclude-providers [EXCLUDEPROVIDERS]    Comma-separated provider names to exclude
+                                                 (e.g. "SonarAnalyzer.CSharp"). Applied after --include-providers
         --json                                   Emit a machine-readable JSON summary on stdout
                                                  (Name / Rules.Count / ExceptionMessage per provider). Useful for CI
 ```
 
-| `--fetchMode` | Behaviour                                                                       |
+| `--fetch-mode` | Behaviour                                                                       |
 |---------------|---------------------------------------------------------------------------------|
 | `LocalCache`  | Use the cached snapshot in the temp folder if present; otherwise fall back to GitHub. |
 | `GitHub`      | Read the pre-collected JSON from the `atc-coding-rules-updater` repository.       |
@@ -377,7 +395,7 @@ Running the command above produces the following output
 
 ## Options file schema / example
 
-The tool has an optional options parameter, which can be used to control the paths for persisting the .editorconfigs and props files. This can be applied as follows `--optionsPath 'C:\Temp\atc-coding-rules-updater.json'`
+The tool has an optional options parameter, which can be used to control the paths for persisting the .editorconfigs and props files. This can be applied as follows `--options-path 'C:\Temp\atc-coding-rules-updater.json'`
 
 By default the atc-coding-rules-updater will detect projects in the solution and try to fetch the matching project specific rules and supply an .editorconfig in those projects. This mapping can however be over-ruled as seen in [atc-coding-rules-updater.json example 3](#atc-coding-rules-updaterjson-example-3)
 
@@ -465,7 +483,7 @@ By specifying this mapping it will over-rule the automatic detection of the proj
 }
 ```
 
-**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--projectPath` /  `-p`), then it will automatically be found and used. Other given arguments will then override.
+**Note:** If there is a `atc-coding-rules-updater.json` file present in the root folder (given by options `--project-path` /  `-p`), then it will automatically be found and used. Other given arguments will then override.
 
 ## CLI Tool Usage from PowerShell or Bash
 
@@ -548,17 +566,17 @@ The updater supports repositories that use NuGet
 [Central Package Management](https://learn.microsoft.com/nuget/consume-packages/central-package-management) (CPM),
 where every package version lives in one `Directory.Packages.props`. The guiding rule is that **an existing setup is
 never broken**: CPM is detected automatically, and a repository is only ever switched to CPM by the explicit
-`migrate-to-cpm` command.
+`cpm migrate` command.
 
 ### Detection
 
 CPM is on when `ManagePackageVersionsCentrally` is `true` in the root `Directory.Packages.props` or the root
 `Directory.Build.props`. Set `"centralPackageManagement": "Disabled"` in `atc-coding-rules-updater.json` (or pass
-`--centralPackageManagement Disabled`) to always use the non-CPM behaviour.
+`--central-package-management Disabled`) to always use the non-CPM behaviour.
 
 | Repository state | What `run` does |
 |---|---|
-| No CPM | Exactly what it did before. The files it writes and the `--json` output are unchanged; the console shows one tip about `migrate-to-cpm`. |
+| No CPM | Exactly what it did before. The files it writes and the `--json` output are unchanged; the console shows one tip about `cpm migrate`. |
 | CPM enabled | The CPM-aware path described below. |
 | `Directory.Packages.props` exists, but CPM is not enabled | Treated as no CPM, with a warning. The updater never turns the flag on. |
 | A mixed or broken CPM state | The sanity checks stop the run before anything is written. |
@@ -571,7 +589,7 @@ CPM is on when `ManagePackageVersionsCentrally` is `true` in the root `Directory
 * **Existing props files are never changed.** Only drift is reported, and a package declared as a
   `GlobalPackageReference` counts as present.
 * **`Directory.Packages.props` is only changed in two ways:**
-  * `--useLatestMinorNugetVersion` bumps the version of the packages the distribution owns - the code analyzers and
+  * `--use-latest-minor-nuget-version` bumps the version of the packages the distribution owns - the code analyzers and
     the distribution's test packages - within the same major version. Every other entry, such as a deliberate version
     cap or a transitive security pin, is never touched.
   * Entries that a props file created in the same run needs are appended under an `atc-coding-rules: ...` label.
@@ -591,7 +609,10 @@ output such as `obj/` is ignored.
 | `CpmProjectOptOut` | Warning | A project sets `ManagePackageVersionsCentrally` to `false`; its references are not checked |
 | `CpmPackagesPropsWithoutFlag` | Warning | `Directory.Packages.props` exists, but CPM is not enabled |
 
-### What `migrate-to-cpm` does
+### What `cpm validate` and `cpm migrate` do
+
+`cpm validate` only plans (step 2) and reports the result; it writes nothing and does not run git or restore.
+`cpm migrate` runs every step below.
 
 1. **Checks** that the repository does not use CPM yet and that the git working tree is clean, so `git checkout .` is
    always a complete undo.
@@ -600,10 +621,10 @@ output such as `obj/` is ignored.
    versioned references in imported `.props`/`.targets` files other than `Directory.Build.props`/`.targets`.
 3. **Restores** the repository once (Release by default) to record what every project resolves. Every project under
    the root must be part of that restore, because `Directory.Packages.props` affects all of them; otherwise the
-   migration stops with `ProjectNotCoveredByRestore` and asks for a `--buildFile` that includes every project.
+   migration stops with `ProjectNotCoveredByRestore` and asks for a `--build-file` that includes every project.
 4. **Writes** a new `Directory.Packages.props` and removes the versions from every `PackageReference`:
    * When projects use different versions of a package, the highest becomes the central version and the others keep
-     theirs through `VersionOverride`, unless `--unifyVersions` is used.
+     theirs through `VersionOverride`, unless `--unify-versions` is used.
    * The root `Code Analyzers` group becomes `GlobalPackageReference` entries.
    * Versions are not bumped, and `CentralPackageTransitivePinningEnabled` is not turned on, because both would
      change what restores.
@@ -628,9 +649,9 @@ The challenge is that this initial suppression list takes a long time to hand-wr
 The three CLI options for generating temporary suppressions are as follows.
 
 ```json
---useTemporarySuppressions      Use temporary suppressions from build - appends to .editorconfig - unless temporarySuppressionPath is set
---temporarySuppressionPath      Optional path to temporary suppressions file - if not set .editorconfig file is used
---temporarySuppressionAsExcel   Optional - save temporary suppressions file as Excel (.xlsx)
+--use-temporary-suppressions      Use temporary suppressions from build - appends to .editorconfig - unless temporarySuppressionPath is set
+--temporary-suppression-path      Optional path to temporary suppressions file - if not set .editorconfig file is used
+--temporary-suppression-as-excel   Optional - save temporary suppressions file as Excel (.xlsx)
 ```
 
 Below an example of the auto-generated supressions is shown:
@@ -659,12 +680,12 @@ dotnet_diagnostic.SA1400.severity = none            # 2 occurrences - Category: 
 
 ### Build
 
-When using the `--useTemporarySuppressions` option, a `dotnet.exe build` will be executed (up to 10 times depending on the complexity of the solution).
+When using the `--use-temporary-suppressions` option, a `dotnet.exe build` will be executed (up to 10 times depending on the complexity of the solution).
 Hence a requirement is that dotnet.exe can be called from the root path.
-If there are multiple solution files in the root folder, the `--buildFile` option will then be required as a parameter when calling the CLI tool.
+If there are multiple solution files in the root folder, the `--build-file` option will then be required as a parameter when calling the CLI tool.
 
 ```json
---buildFile                 Optional path to solution/project file - required when multiple solution files exist in the root path
+--build-file                 Optional path to solution/project file - required when multiple solution files exist in the root path
 ```
 
 Recognised solution and project files are `.sln`, `.slnx` and `.csproj`. If the root path contains
@@ -679,7 +700,7 @@ The build runs in Release by default, so if the target is Release-only, switchin
 usually enough and requires no change on your side:
 
 ```powershell
-atc-coding-rules-updater run -s . --buildConfiguration Debug
+atc-coding-rules-updater run -s . --build-configuration Debug
 ```
 
 Otherwise, forward an MSBuild property. **MSBuild has no switch to skip a named target** — `-t:`
@@ -691,10 +712,10 @@ selects which targets to run at the top level and will not suppress a target hoo
 ```
 
 ```powershell
-atc-coding-rules-updater run -s . --buildProperty SkipObfuscation=true
+atc-coding-rules-updater run -s . --build-property SkipObfuscation=true
 ```
 
-`--buildProperty` is repeatable, and both options can be set in `atc-coding-rules-updater.json`
+`--build-property` is repeatable, and both options can be set in `atc-coding-rules-updater.json`
 (`buildConfiguration`, `buildProperties`) so they do not have to be retyped.
 
 If the offending target comes from an imported third-party `.targets` file you cannot edit, check

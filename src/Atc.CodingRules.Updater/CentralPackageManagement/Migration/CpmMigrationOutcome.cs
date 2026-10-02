@@ -1,7 +1,7 @@
 namespace Atc.CodingRules.Updater.CentralPackageManagement.Migration;
 
 /// <summary>
-/// How a <c>migrate-to-cpm</c> run ended.
+/// How a <c>cpm validate</c> or <c>cpm migrate</c> run ended.
 /// </summary>
 public enum CpmMigrationOutcome
 {

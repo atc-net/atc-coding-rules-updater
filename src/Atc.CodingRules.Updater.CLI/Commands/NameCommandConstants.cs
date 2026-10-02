@@ -10,5 +10,7 @@ internal static class NameCommandConstants
 
     public const string Run = "run";
 
-    public const string MigrateToCpm = "migrate-to-cpm";
+    public const string Cpm = "cpm";
+    public const string CpmValidate = "validate";
+    public const string CpmMigrate = "migrate";
 }

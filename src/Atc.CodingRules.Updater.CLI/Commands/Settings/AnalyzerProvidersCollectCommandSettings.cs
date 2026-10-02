@@ -12,7 +12,7 @@ public class AnalyzerProvidersCollectCommandSettings : ProjectBaseCommandSetting
     public FlagValue<string> IncludeProviders { get; init; } = new FlagValue<string>();
 
     [CommandOption($"{ArgumentCommandConstants.LongExcludeProviders} [EXCLUDEPROVIDERS]")]
-    [Description("Comma-separated provider names to exclude (e.g. \"SonarAnalyzer.CSharp\"). Applied after --includeProviders.")]
+    [Description("Comma-separated provider names to exclude (e.g. \"SonarAnalyzer.CSharp\"). Applied after --include-providers.")]
     public FlagValue<string> ExcludeProviders { get; init; } = new FlagValue<string>();
 
     [CommandOption(ArgumentCommandConstants.LongOutputJson)]

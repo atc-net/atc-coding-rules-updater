@@ -13,7 +13,7 @@ public class RunCommandSettings : ProjectCommandSettings
     public bool? UseLatestMinorNugetVersion { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.ShortUseTemporarySuppressions}|{ArgumentCommandConstants.LongUseTemporarySuppressions}")]
-    [Description("Build the project, collect analyzer errors, and write temporary suppressions. Appended to .editorconfig unless --temporarySuppressionPath is set. (default false)")]
+    [Description("Build the project, collect analyzer errors, and write temporary suppressions. Appended to .editorconfig unless --temporary-suppression-path is set. (default false)")]
     public bool? UseTemporarySuppressions { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.LongTemporarySuppressionPath} [TEMPORARYSUPPRESSIONPATH]")]
@@ -25,7 +25,7 @@ public class RunCommandSettings : ProjectCommandSettings
     public bool? TemporarySuppressionAsExcel { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.LongBuildFile} [BUILDFILE]")]
-    [Description("Solution (.sln) or project (.csproj) file to build. Required when multiple .sln files exist in --projectPath.")]
+    [Description("Solution (.sln) or project (.csproj) file to build. Required when multiple .sln files exist in --project-path.")]
     public FlagValue<string>? BuildFile { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.LongBuildConfiguration} [BUILDCONFIGURATION]")]
@@ -33,7 +33,7 @@ public class RunCommandSettings : ProjectCommandSettings
     public FlagValue<string>? BuildConfiguration { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.LongBuildProperty} <BUILDPROPERTY>")]
-    [Description("MSBuild property forwarded to the temporary-suppression builds as -p:Name=Value. Repeatable. Use it to switch off a conditioned target, e.g. --buildProperty SkipObfuscation=true.")]
+    [Description("MSBuild property forwarded to the temporary-suppression builds as -p:Name=Value. Repeatable. Use it to switch off a conditioned target, e.g. --build-property SkipObfuscation=true.")]
     [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Spectre.Console.Cli binds repeated options to an array.")]
     public string[]? BuildProperties { get; init; }
 

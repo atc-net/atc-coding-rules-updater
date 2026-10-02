@@ -8,7 +8,7 @@ namespace Atc.CodingRules.Updater.DirectoryBuildProps;
 /// Only presence is compared, never values. An existing local props file is deliberately never
 /// overwritten because it carries repository-specific values (<c>OrganizationName</c>,
 /// <c>RepositoryName</c>, …), and package versions are handled separately by
-/// <c>--useLatestMinorNugetVersion</c>. Comparing values would therefore report differences that
+/// <c>--use-latest-minor-nuget-version</c>. Comparing values would therefore report differences that
 /// are correct by design.
 /// </remarks>
 /// <param name="PackageReferencesOnlyUpstream">Package ids the distribution has that the local file does not — typically a newly added analyzer.</param>

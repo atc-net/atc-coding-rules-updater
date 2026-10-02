@@ -181,7 +181,7 @@ public static class CpmMigrationExecutor
             ? null
             : new CpmMigrationBlocker(
                 "ProjectNotCoveredByRestore",
-                $"The restore did not cover {string.Join(", ", missing)}, which the migration would also affect; pass a --buildFile that includes every project, or use --skipRestoreVerification",
+                $"The restore did not cover {string.Join(", ", missing)}, which the migration would also affect; pass a --build-file that includes every project, or use --skip-restore-verification",
                 FilePath: null);
     }
 
@@ -198,8 +198,8 @@ public static class CpmMigrationExecutor
 
         return await environment.IsWorkingTreeCleanAsync(projectPath, cancellationToken) switch
         {
-            null => new CpmMigrationBlocker("NotAGitRepository", "The repository is not under git, so there is no simple way to undo the migration; use --allowDirty to proceed anyway", FilePath: null),
-            false => new CpmMigrationBlocker("DirtyWorkingTree", "The git working tree has uncommitted changes; commit or stash them first so the migration can be undone with git, or use --allowDirty", FilePath: null),
+            null => new CpmMigrationBlocker("NotAGitRepository", "The repository is not under git, so there is no simple way to undo the migration; use --allow-dirty to proceed anyway", FilePath: null),
+            false => new CpmMigrationBlocker("DirtyWorkingTree", "The git working tree has uncommitted changes; commit or stash them first so the migration can be undone with git, or use --allow-dirty", FilePath: null),
             true => null,
         };
     }

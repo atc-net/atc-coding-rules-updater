@@ -1,31 +1,24 @@
-namespace Atc.CodingRules.Updater.CLI.Commands;
+namespace Atc.CodingRules.Updater.CLI.Helpers;
 
 /// <summary>
-/// Converts a repository to NuGet Central Package Management (<c>Directory.Packages.props</c>).
+/// The work shared by <c>cpm validate</c> and <c>cpm migrate</c>: building the migration options,
+/// running <see cref="CpmMigrationExecutor"/>, and reporting the result as log output or JSON.
 /// </summary>
-/// <remarks>
-/// This is the only way the updater turns Central Package Management on; <c>run</c> never does.
-/// See <see cref="CpmMigrationExecutor"/> for the safety checks around the migration.
-/// </remarks>
-public class MigrateToCpmCommand(ILogger<MigrateToCpmCommand> logger) : AsyncCommand<MigrateToCpmCommandSettings>
+public static class CpmCommandHelper
 {
-    protected override Task<int> ExecuteAsync(
-        CommandContext context,
-        MigrateToCpmCommandSettings settings,
-        CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(context);
-        ArgumentNullException.ThrowIfNull(settings);
-        return ExecuteInternalAsync(settings, new DotnetCpmMigrationEnvironment(), cancellationToken);
-    }
-
-    internal async Task<int> ExecuteInternalAsync(
-        MigrateToCpmCommandSettings settings,
+    /// <summary>
+    /// Runs the migration (or, for <c>cpm validate</c>, only plans it) and returns the exit code.
+    /// </summary>
+    internal static async Task<int> ExecuteAsync(
+        ILogger logger,
+        CpmCommandSettings settings,
         ICpmMigrationEnvironment environment,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(settings);
+
         var jsonOutput = settings.OutputJson.GetValueOrDefault();
-        var runLogger = jsonOutput ? NullLogger.Instance : (ILogger)logger;
+        var runLogger = jsonOutput ? NullLogger.Instance : logger;
         if (!jsonOutput)
         {
             ConsoleHelper.WriteHeader();
@@ -60,23 +53,29 @@ public class MigrateToCpmCommand(ILogger<MigrateToCpmCommand> logger) : AsyncCom
     /// <summary>
     /// Combines the command-line flags with the options file. <c>buildFile</c> and
     /// <c>buildConfiguration</c> are shared with <c>run</c>, so a repository configures them once.
+    /// Settings that are not <see cref="CpmMigrateCommandSettings"/> come from
+    /// <c>cpm validate</c>, which always only plans.
     /// </summary>
     internal static async Task<CpmMigrationOptions> CreateOptions(
-        MigrateToCpmCommandSettings settings,
+        CpmCommandSettings settings,
         DirectoryInfo projectPath,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(projectPath);
+
         var optionsFile = await OptionsHelper.CreateDefault(projectPath, settings.GetOptionsPath(), cancellationToken);
 
         var buildFile = settings.BuildFile is { IsSet: true } ? settings.BuildFile.Value : optionsFile.BuildFile;
         var buildConfiguration = settings.BuildConfiguration is { IsSet: true } ? settings.BuildConfiguration.Value : optionsFile.BuildConfiguration;
+        var migrateSettings = settings as CpmMigrateCommandSettings;
 
         return new CpmMigrationOptions
         {
-            DryRun = settings.DryRun.GetValueOrDefault(),
+            DryRun = migrateSettings is null || migrateSettings.DryRun.GetValueOrDefault(),
             UnifyVersions = settings.UnifyVersions.GetValueOrDefault(),
-            SkipRestoreVerification = settings.SkipRestoreVerification.GetValueOrDefault(),
-            AllowDirty = settings.AllowDirty.GetValueOrDefault(),
+            SkipRestoreVerification = migrateSettings?.SkipRestoreVerification.GetValueOrDefault() ?? false,
+            AllowDirty = migrateSettings?.AllowDirty.GetValueOrDefault() ?? false,
             RestoreTarget = string.IsNullOrWhiteSpace(buildFile)
                 ? null
                 : Path.GetFullPath(buildFile, projectPath.FullName),
@@ -139,7 +138,7 @@ public class MigrateToCpmCommand(ILogger<MigrateToCpmCommand> logger) : AsyncCom
         switch (result.Outcome)
         {
             case CpmMigrationOutcome.DryRun:
-                logger.LogInformation("[dim](dry-run)[/] nothing was written");
+                logger.LogInformation($"[dim](dry-run)[/] nothing was written - run 'atc-coding-rules-updater {NameCommandConstants.Cpm} {NameCommandConstants.CpmMigrate}' to apply it");
                 break;
             case CpmMigrationOutcome.Migrated:
                 logger.LogInformation($"{EmojisConstants.Success} Migrated. Review and commit the changes, then run 'atc-coding-rules-updater run', which now detects Central Package Management. Consider enabling CentralPackageTransitivePinningEnabled afterwards.");

@@ -1,25 +1,17 @@
 namespace Atc.CodingRules.Updater.CLI.Commands.Settings;
 
 /// <summary>
-/// Settings for the <c>migrate-to-cpm</c> command.
+/// Settings shared by the <c>cpm</c> commands. Used directly by <c>cpm validate</c>.
 /// </summary>
-public class MigrateToCpmCommandSettings : ProjectCommandSettings
+/// <remarks>
+/// Derives from <see cref="ProjectBaseCommandSettings"/>, not <see cref="ProjectCommandSettings"/>:
+/// the cpm commands do not use a project target, so they do not offer <c>--project-target</c>.
+/// </remarks>
+public class CpmCommandSettings : ProjectBaseCommandSettings
 {
-    [CommandOption(ArgumentCommandConstants.LongDryRun)]
-    [Description("Show the migration plan without writing any files. (default false)")]
-    public bool? DryRun { get; init; }
-
     [CommandOption(ArgumentCommandConstants.LongUnifyVersions)]
     [Description("Give every project the highest version of a package instead of keeping differences through VersionOverride. This changes what restores. (default false)")]
     public bool? UnifyVersions { get; init; }
-
-    [CommandOption(ArgumentCommandConstants.LongSkipRestoreVerification)]
-    [Description("Do not run dotnet restore before and after to verify the migration. Not recommended. (default false)")]
-    public bool? SkipRestoreVerification { get; init; }
-
-    [CommandOption(ArgumentCommandConstants.LongAllowDirty)]
-    [Description("Allow a dirty or missing git working tree. Without git there is no simple way to undo the migration. (default false)")]
-    public bool? AllowDirty { get; init; }
 
     [CommandOption($"{ArgumentCommandConstants.LongBuildFile} [BUILDFILE]")]
     [Description("Solution (.sln/.slnx) or project file to restore. Required when the project path holds more than one.")]
