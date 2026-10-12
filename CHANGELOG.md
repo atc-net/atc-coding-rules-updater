@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/atc-net/atc-coding-rules-updater/compare/v2.0.270...v2.1.0) (2026-10-12)
+
+
+### New features
+
+* support NuGet Central Package Management (Directory.Packages.props) ([9b7a17f](https://github.com/atc-net/atc-coding-rules-updater/commit/9b7a17f9de206372149cf07d266d33dede5472ba))
+
 ## [2.0.270](https://github.com/atc-net/atc-coding-rules-updater/compare/v2.0.269...v2.0.270) (2026-09-10)
 
 
